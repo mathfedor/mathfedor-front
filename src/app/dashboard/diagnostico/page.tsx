@@ -376,16 +376,6 @@ const DiagnosticoPage = () => {
               />
             </div>
             <p className="whitespace-pre-line" dangerouslySetInnerHTML={{ __html: diagnosticConfigs[0].description }} />
-            <div className="mt-4 flex flex-wrap gap-2">
-              {diagnosticConfigs[0].tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 bg-gray-100 dark:bg-[#282828] text-gray-700 rounded-full text-sm"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
           </div>
         )
       };
@@ -446,18 +436,6 @@ const DiagnosticoPage = () => {
   };
 
   const { title, content } = getCurrentContent();
-
-  // Función para verificar si se puede avanzar
-  const canProceed = () => {
-    if (currentStep === 1) return true; // Siempre se puede avanzar desde la descripción
-    // Verificamos si es un paso de ejercicios (pasos impares después de la descripción: 3,5,7...)
-    if (((currentStep - 1) % 2) === 0) {
-      const topicIndex = Math.floor((currentStep - 2) / 2);
-      const currentTopic = diagnosticConfigs[0].topics[topicIndex];
-      return currentTopic.exercises.every((_, index) => selectedAnswers[index] !== null);
-    }
-    return true;
-  };
 
   // Calcular el promedio de efectividad
   const getAverage = () => {
@@ -763,7 +741,7 @@ const DiagnosticoPage = () => {
                     <div className="mt-6 p-4 bg-gray-100 dark:bg-[#282828] rounded-lg">
                       <h3 className="text-lg font-medium text-black mb-2">Ejemplo de pregunta:</h3>
                       <p className="text-gray-700 italic">
-                        "¿Puedes ayudarme a encontrar todos los divisores del número 24 y explicarme el proceso paso a paso?"
+                        &quot;¿Puedes ayudarme a encontrar todos los divisores del número 24 y explicarme el proceso paso a paso?&quot;
                       </p>
                     </div>
                   </div>

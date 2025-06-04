@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { use } from 'react';
 import Sidebar from '@/components/Sidebar';
-import { diagnosticService } from '@/services/diagnostic.service';
 import { DiagnosticConfig } from '@/types/diagnostic.types';
 import { authService } from '@/services/auth.service';
 import { chatService } from '@/services/chat.service';
@@ -119,10 +118,8 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   });
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState({ title: '', message: '' });
-  const [diagnosticId, setDiagnosticId] = useState<string>('');
   const [inputAnswers, setInputAnswers] = useState<{ [key: string]: string }>({});
   const [inputValidation, setInputValidation] = useState<{ [key: string]: boolean }>({});
-  const [exerciseAnswers, setExerciseAnswers] = useState<ExerciseAnswer[]>([]);
   const [showResults, setShowResults] = useState(false);
 
   // Array de preguntas y respuestas por paso
@@ -275,7 +272,6 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         const configs = await moduleService.findByGroup('Grado11');
         if (configs && configs.length > 0) {
           setDiagnosticConfigs(configs as unknown as (DiagnosticConfig & { topics: Topic[] })[]);
-          setDiagnosticId(configs[0]._id);
         }
       } catch (error) {
         console.error('Error al obtener la configuración del diagnóstico:', error);
@@ -345,9 +341,6 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         options: exercise.options
       };
     });
-
-    // Actualizar el estado con las nuevas respuestas
-    setExerciseAnswers(prev => [...prev, ...newAnswers]);
 
     // Calcular estadísticas
     const correctAnswers = newAnswers.filter(answer => answer.isCorrect).length;

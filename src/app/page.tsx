@@ -1,4 +1,5 @@
 // import Image from 'next/image';
+import Link from 'next/link';
 import MathGraph3D from "@/components/MathGraph3D";
 import Footer from "@/components/Footer";
 
@@ -70,7 +71,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Tarjeta Retos */}
-            <a href="/retos" className="block bg-orange-500 text-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+            <Link href="/retos" className="block bg-orange-500 text-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
               <div className="p-6 text-center">
                 <div className="flex justify-center mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -80,10 +81,10 @@ export default function HomePage() {
                 <h2 className="text-2xl font-bold mb-3">Retos</h2>
                 <p className="text-center">Los retos Matemáticos de Fedor son un producto digital descargable.</p>
               </div>
-            </a>
+            </Link>
             
             {/* Tarjeta Módulos */}
-            <a href="/modulos" className="block bg-purple-600 text-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+            <Link href="/modulos" className="block bg-purple-600 text-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
               <div className="p-6 text-center">
                 <div className="flex justify-center mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -93,7 +94,7 @@ export default function HomePage() {
                 <h2 className="text-2xl font-bold mb-3">Módulos</h2>
                 <p className="text-center">Tenemos el Método Fedor, para que las matemáticas se aprendan de manera práctica, fácil y rápida</p>
               </div>
-            </a>
+            </Link>
             
             {/* Tarjeta Instituciones Educativas */}
             <a 

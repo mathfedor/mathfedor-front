@@ -1,5 +1,11 @@
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+}
+
 export const chatService = {
-    sendChatMessages: async (messages: any[], token: string) => {
+    sendChatMessages: async (messages: ChatMessage[], token: string) => {
         const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/chat`;
         const response = await fetch(apiUrl, {
             method: 'POST',

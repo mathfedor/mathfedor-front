@@ -7,20 +7,13 @@ import { authService } from '@/services/auth.service';
 import { Tooltip } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  rol: string;
-}
+import { User } from '@/types/auth.types';
 
 export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showTopicsModal, setShowTopicsModal] = useState(false);
 
   useEffect(() => {
     const checkAuth = () => {
@@ -115,7 +108,6 @@ export default function DashboardPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setShowTopicsModal(true)}
                       >
                         Temas
                       </Button>
@@ -145,7 +137,6 @@ export default function DashboardPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setShowTopicsModal(true)}
                       >
                         Temas
                       </Button>
@@ -175,7 +166,6 @@ export default function DashboardPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setShowTopicsModal(true)}
                       >
                         Temas
                       </Button>

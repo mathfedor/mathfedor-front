@@ -5,6 +5,12 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Footer from "@/components/Footer";
 
+interface FormErrors {
+  nombre?: string;
+  email?: string;
+  password?: string;
+}
+
 export default function RegisterPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -12,11 +18,11 @@ export default function RegisterPage() {
     email: '',
     password: ''
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -25,7 +31,7 @@ export default function RegisterPage() {
   };
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors: FormErrors = {};
     
     // Validar nombre
     if (!formData.nombre.trim()) {
@@ -50,7 +56,7 @@ export default function RegisterPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     if (!validateForm()) {
@@ -84,7 +90,7 @@ export default function RegisterPage() {
       router.push('/login?registered=true');
       
     } catch (error) {
-      setSubmitError(error.message || 'Ocurrió un error al registrar el usuario');
+      setSubmitError(error instanceof Error ? error.message : 'Ocurrió un error al registrar el usuario');
     } finally {
       setIsLoading(false);
     }

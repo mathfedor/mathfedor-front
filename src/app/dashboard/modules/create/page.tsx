@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { authService } from '@/services/auth.service';
 import Sidebar from '@/components/Sidebar';
 import { FiUpload, FiPlus, FiX, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
-import { moduleService, ModuleFormData } from '@/services/module.service';
+import { moduleService } from '@/services/module.service';
+import { ModuleFormData } from '@/types/module.types';
 
 interface User {
   id: string;
@@ -110,14 +111,14 @@ export default function CreateModulePage() {
     // Validación específica para el campo price
     if (name === 'price') {
       const numericValue = Number(value) || 0;
-      setFormData(prev => ({
+      setFormData((prev: ModuleFormData) => ({
         ...prev,
         [name]: numericValue
       }));
       return;
     }
 
-    setFormData(prev => ({
+    setFormData((prev: ModuleFormData) => ({
       ...prev,
       [name]: value
     }));
@@ -126,14 +127,14 @@ export default function CreateModulePage() {
   const handleObjectiveChange = (index: number, value: string) => {
     const newObjectives = [...formData.tags];
     newObjectives[index] = value;
-    setFormData(prev => ({
+    setFormData((prev: ModuleFormData) => ({
       ...prev,
       tags: newObjectives
     }));
   };
 
   const addObjective = () => {
-    setFormData(prev => ({
+    setFormData((prev: ModuleFormData) => ({
       ...prev,
       tags: [...prev.tags, '']
     }));
@@ -143,7 +144,7 @@ export default function CreateModulePage() {
     const file = e.target.files?.[0];
     if (file && (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
       file.type === 'application/vnd.ms-excel')) {
-      setFormData(prev => ({
+      setFormData((prev: ModuleFormData) => ({
         ...prev,
         file
       }));
@@ -160,7 +161,7 @@ export default function CreateModulePage() {
     const file = e.target.files?.[0];
     if (file) {
       // Solo guardamos el nombre del archivo
-      setFormData(prev => ({
+      setFormData((prev: ModuleFormData) => ({
         ...prev,
         imageName: file.name
       }));
@@ -267,7 +268,7 @@ export default function CreateModulePage() {
                   Objetivos
                 </label>
                 <div className="space-y-3">
-                  {formData.tags.map((tag, index) => (
+                  {formData.tags.map((tag: string, index: number) => (
                     <div key={index} className="flex gap-2">
                       <input
                         type="text"
@@ -371,7 +372,7 @@ export default function CreateModulePage() {
                     {formData.imageName && (
                       <button
                         type="button"
-                        onClick={() => setFormData(prev => ({ ...prev, imageName: '' }))}
+                        onClick={() => setFormData((prev: ModuleFormData) => ({ ...prev, imageName: '' }))}
                         className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm whitespace-nowrap"
                       >
                         Eliminar
@@ -402,7 +403,7 @@ export default function CreateModulePage() {
                   {formData.file && (
                     <button
                       type="button"
-                      onClick={() => setFormData(prev => ({ ...prev, file: null }))}
+                      onClick={() => setFormData((prev: ModuleFormData) => ({ ...prev, file: null }))}
                       className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm"
                     >
                       Eliminar

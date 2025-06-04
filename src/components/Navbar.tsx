@@ -1,29 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
-import { authService } from '@/services/auth.service';
-import { User } from '@/types/auth.types';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
   const pathname = usePathname();
-  const router = useRouter();
   const isDashboard = pathname?.startsWith('/dashboard');
-
-  useEffect(() => {
-    const currentUser = authService.getCurrentUser();
-    setUser(currentUser);
-  }, []);
-
-  const handleLogout = () => {
-    authService.logout();
-    router.push('/login');
-  };
 
   if (isDashboard) return null;
   return (

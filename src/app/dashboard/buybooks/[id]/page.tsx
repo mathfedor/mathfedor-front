@@ -11,6 +11,48 @@ import Sidebar from '@/components/Sidebar';
 import crypto from 'crypto';
 import { purchaseService, PurchaseTransaction } from '@/services/purchase.service';
 
+// Interfaces para los tipos de Wompi
+interface WompiPaymentMethod {
+  type?: string;
+  phoneNumber?: string;
+  legal_id?: string;
+  legal_id_type?: string;
+}
+
+interface WompiTransaction {
+  id: string;
+  status: string;
+  paymentMethodType?: string;
+  paymentMethod?: WompiPaymentMethod;
+  customerNumberPrefix?: string;
+  extra?: {
+    externalIdentifier?: string;
+    transactionId?: string;
+  };
+}
+
+interface WompiCheckoutResult {
+  transaction: WompiTransaction;
+}
+
+interface WompiCheckout {
+  open: (callback: (result: WompiCheckoutResult) => void) => void;
+}
+
+declare global {
+  interface Window {
+    WidgetCheckout: new (config: {
+      currency: string;
+      amountInCents: number;
+      reference: string;
+      publicKey: string;
+      signature: { integrity: string };
+      redirectUrl: string;
+      customerData: { email: string; fullName: string };
+    }) => WompiCheckout;
+  }
+}
+
 export default function BuyBookPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
@@ -49,14 +91,24 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
   const handlePurchase = async () => {
     try {
       const user = authService.getCurrentUser();
-      if (!user) {
-        throw new Error('Usuario no autenticado');
+      if (!user || !user.id) {
+        throw new Error('Usuario no autenticado o datos incompletos');
       }
 
-      const reference = `MOD${user?.id}${Date.now()}`;
+      const publicKey = process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY;
+      const secretKey = process.env.NEXT_PUBLIC_WOMPI_INTEGRITY;
+      
+      if (!publicKey) {
+        throw new Error('Clave pública de Wompi no configurada');
+      }
+      
+      if (!secretKey) {
+        throw new Error('Clave secreta de Wompi no configurada');
+      }
+
+      const reference = `MOD${user.id}${Date.now()}`;
       const amount = module?.price ? module.price * 100 : 0;
       const currency = 'COP';
-      const secretKey = process.env.NEXT_PUBLIC_WOMPI_INTEGRITY;
 
       // Generar hash SHA256
       const dataToHash = `${reference}${amount}${currency}${secretKey}`;
@@ -66,11 +118,11 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
         .digest('hex');
 
       // Crear instancia del checkout
-      const checkout = new (window as any).WidgetCheckout({
+      const checkout = new window.WidgetCheckout({
         currency: currency,
         amountInCents: amount,
         reference: reference,
-        publicKey: process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY,
+        publicKey: publicKey,
         signature: {
           integrity: integrity
         },
@@ -82,7 +134,7 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
       });
 
       // Abrir el widget
-      checkout.open(async (result: any) => {
+      checkout.open(async (result: WompiCheckoutResult) => {
         const transaction = result.transaction;
         console.log("Transaction:", transaction);
         try {
@@ -96,19 +148,24 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
             id: transaction.id,
             payment_method_type: transaction.paymentMethodType || 'UNKNOWN',
             payment_method: {
-              type: transaction.paymentMethod?.type,
-              phone_number: transaction.paymentMethod?.phoneNumber,
-              phone_number_prefix: transaction?.customerNumberPrefix,
-              legal_id: transaction.payment_method?.legal_id,
-              legal_id_type: transaction.payment_method?.legal_id_type,
+              type: transaction.paymentMethod?.type || 'UNKNOWN',
+              phone_number: transaction.paymentMethod?.phoneNumber || '',
+              phone_number_prefix: transaction?.customerNumberPrefix || '',
+              legal_id: transaction.paymentMethod?.legal_id || '',
+              legal_id_type: transaction.paymentMethod?.legal_id_type || '',
               extra: {
-                external_identifier: transaction?.extra?.externalIdentifier,
-                transaction_id: transaction?.extra?.transactionId
+                external_identifier: transaction?.extra?.externalIdentifier || '',
+                transaction_id: transaction?.extra?.transactionId || ''
               }
             },
             reference: reference,
             status: transaction.status || 'PENDING'
           };
+
+          // Validar user.id nuevamente dentro del callback
+          if (!user.id) {
+            throw new Error('ID de usuario no disponible');
+          }
 
           await purchaseService.createPurchase(user.id, id, purchaseTransaction);
 

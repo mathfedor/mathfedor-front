@@ -10,7 +10,7 @@ export default function RecoverPasswordPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
@@ -40,7 +40,7 @@ export default function RecoverPasswordPage() {
       setSuccess(true);
       
     } catch (error) {
-      setError(error.message || 'Ha ocurrido un error al enviar la solicitud');
+      setError(error instanceof Error ? error.message : 'Ha ocurrido un error al enviar la solicitud');
     } finally {
       setIsLoading(false);
     }
