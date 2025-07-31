@@ -83,99 +83,106 @@ export default function DashboardPage() {
         <div className="flex-1 bg-[#F9F9F9]">
           <div className="p-8">
             <div className="mb-8">
-              <h1 className="text-2xl font-bold text-gray-900">Mis Módulos</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
               <p className="mt-1 text-sm text-gray-500">
-                Continúa aprendiendo donde lo dejaste
+                Bienvenido, {user.name} {user.lastName}
               </p>
             </div>
 
             {/* Course grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-white rounded-lg shadow overflow-hidden">
-                <div className="h-48 bg-gray-200"></div>
-                <div className="p-4">
-                  <h3 className="text-lg font-medium text-gray-900">Progreso de estudiantes</h3>
-                  <p className="mt-1 text-sm text-gray-500">Profesor: Juan Pérez</p>
-                  <div className="mt-4">
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-blue-500 h-2 rounded-full" style={{ width: '60%' }}></div>
+              {/* Sección de Progreso de estudiantes - Solo para Teacher */}
+              {user.role === 'Teacher' && (
+                <div className="bg-white rounded-lg shadow overflow-hidden">
+                  <div className="h-48 bg-gray-200"></div>
+                  <div className="p-4">
+                    <h3 className="text-lg font-medium text-gray-900">Progreso de estudiantes</h3>
+                    <p className="mt-1 text-sm text-gray-500">Profesor: {user.name} {user.lastName}</p>
+                    <div className="mt-4">
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-blue-500 h-2 rounded-full" style={{ width: '60%' }}></div>
+                      </div>
+                      <p className="mt-2 text-xs text-gray-500">60% completado</p>
                     </div>
-                    <p className="mt-2 text-xs text-gray-500">60% completado</p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="topics">Temas</Label>
-                    <Tooltip content="Ver la lista de temas">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                      >
-                        Temas
-                      </Button>
-                    </Tooltip>
-                  </div>
-                  <button className="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
-                    Ver
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-white rounded-lg shadow overflow-hidden">
-                <div className="h-48 bg-gray-200"></div>
-                <div className="p-4">
-                  <h3 className="text-lg font-medium text-gray-900">Mis modulos</h3>
-                  <p className="mt-1 text-sm text-gray-500">Profesor: Juan Pérez</p>
-                  <div className="mt-4">
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-blue-500 h-2 rounded-full" style={{ width: '60%' }}></div>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="topics">Temas</Label>
+                      <Tooltip content="Ver la lista de temas">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                        >
+                          Temas
+                        </Button>
+                      </Tooltip>
                     </div>
-                    <p className="mt-2 text-xs text-gray-500">60% completado</p>
+                    <button className="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+                      Ver
+                    </button>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="topics">Temas</Label>
-                    <Tooltip content="Ver la lista de temas">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                      >
-                        Temas
-                      </Button>
-                    </Tooltip>
-                  </div>
-                  <button className="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
-                    Ver
-                  </button>
                 </div>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-white rounded-lg shadow overflow-hidden">
-                <div className="h-48 bg-gray-200"></div>
-                <div className="p-4">
-                  <h3 className="text-lg font-medium text-gray-900">Usuarios</h3>
-                  <p className="mt-1 text-sm text-gray-500">Profesor: Juan Pérez</p>
-                  <div className="mt-4">
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-blue-500 h-2 rounded-full" style={{ width: '60%' }}></div>
+              )}
+
+              {/* Sección de Mis módulos - Solo para Student */}
+              {user.role === 'Student' && (
+                <div className="bg-white rounded-lg shadow overflow-hidden">
+                  <div className="h-48 bg-gray-200"></div>
+                  <div className="p-4">
+                    <h3 className="text-lg font-medium text-gray-900">Mis módulos</h3>
+                    <p className="mt-1 text-sm text-gray-500">Estudiante: {user.name} {user.lastName}</p>
+                    <div className="mt-4">
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-blue-500 h-2 rounded-full" style={{ width: '60%' }}></div>
+                      </div>
+                      <p className="mt-2 text-xs text-gray-500">60% completado</p>
                     </div>
-                    <p className="mt-2 text-xs text-gray-500">60% completado</p>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="topics">Temas</Label>
+                      <Tooltip content="Ver la lista de temas">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                        >
+                          Temas
+                        </Button>
+                      </Tooltip>
+                    </div>
+                    <button className="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+                      Ver
+                    </button>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="topics">Temas</Label>
-                    <Tooltip content="Ver la lista de temas">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                      >
-                        Temas
-                      </Button>
-                    </Tooltip>
-                  </div>
-                  <button className="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
-                    Ver
-                  </button>
                 </div>
-              </div>
+              )}
+
+              {/* Sección de Usuarios - Solo para Admin */}
+              {user.role === 'Admin' && (
+                <div className="bg-white rounded-lg shadow overflow-hidden">
+                  <div className="h-48 bg-gray-200"></div>
+                  <div className="p-4">
+                    <h3 className="text-lg font-medium text-gray-900">Usuarios</h3>
+                    <p className="mt-1 text-sm text-gray-500">Administrador: {user.name} {user.lastName}</p>
+                    <div className="mt-4">
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-blue-500 h-2 rounded-full" style={{ width: '60%' }}></div>
+                      </div>
+                      <p className="mt-2 text-xs text-gray-500">60% completado</p>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="topics">Temas</Label>
+                      <Tooltip content="Ver la lista de temas">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                        >
+                          Temas
+                        </Button>
+                      </Tooltip>
+                    </div>
+                    <button className="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+                      Ver
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

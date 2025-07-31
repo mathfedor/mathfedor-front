@@ -7,7 +7,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section con video de fondo que ocupa todo el ancho */}
-      <section className="relative h-[300px] bg-gray-200 w-full">
+      <section className="relative h-[500px] bg-gray-200 w-full">
         <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
           <source src="/fedor-descargas.mp4" type="video/mp4" />
         </video>
@@ -24,9 +24,9 @@ export default function HomePage() {
                 <span className="bg-gradient-to-r from-fedor-orange via-orange-500 to-amber-400 text-transparent bg-clip-text">Bienvenidos al Universo de</span> <span className="bg-gradient-to-r from-orange-500 via-pink-500 via-purple-500 via-blue-500 to-orange-500 text-transparent bg-clip-text">Matemáticas de Fedor</span>
               </h1>
               <p className="text-lg md:text-xl mb-6">Transformando la Educación para tus hijos.</p>
-              <button className="bg-fedor-light-gray text-fedor-orange font-bold py-2 px-4 rounded hover:bg-gray-100 transition-colors duration-200">
+              <Link href="/login" className="inline-block bg-fedor-orange text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-200 shadow-md hover:shadow-lg">
                 Comienza Ahora
-              </button>
+              </Link>
               
               <div className="mt-12">
                 <h2 className="text-2xl md:text-3xl font-bold mb-4">Matemáticas de Fedor</h2>
@@ -123,9 +123,14 @@ export default function HomePage() {
           <h2 className="text-3xl font-bold text-center mb-12">Contáctanos</h2>
           <div className="bg-white p-6 rounded-lg shadow-md">
             <p className="text-center">Si tienes alguna pregunta, no dudes en contactarnos.</p>
-            <button className="mt-4 bg-fedor-orange text-white font-bold py-2 px-4 rounded hover:bg-orange-600 transition-colors duration-200">
+            <a 
+              href="https://wa.me/573227496445?text=Hola%20amigos%20de%20Fedor%2C%20quisiera%20informaci%C3%B3n%20sobre%20la%20Plataforma."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-block bg-fedor-orange text-white font-bold py-2 px-4 rounded hover:bg-orange-600 transition-colors duration-200"
+            >
               Enviar Mensaje
-            </button>
+            </a>
           </div>
         </div>
       </section>

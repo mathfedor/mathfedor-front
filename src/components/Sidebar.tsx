@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon } from 'react-icons/fi';
+import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { Tooltip } from '@/components/ui/tooltip';
 import { authService } from '@/services/auth.service';
@@ -46,7 +46,8 @@ const roleMenuItems: Record<string, MenuItem[]> = {
   ],
   admin: [
     { icon: <FiPlusCircle className="w-5 h-5" />, title: 'Crear Diagnóstico', href: '/dashboard/diagnosis' },
-    { icon: <FiPlusCircle className="w-5 h-5" />, title: 'Crear Módulo', href: '/dashboard/modules/create' },
+    { icon: <FiBook className="w-5 h-5" />, title: 'Crear Módulo', href: '/dashboard/modules/create' },
+    { icon: <FiGlobe className="w-5 h-5" />, title: 'Instituciones', href: '/dashboard/institutions' },
     { icon: <FiUsers className="w-5 h-5" />, title: 'Usuarios', href: '/dashboard/users' }
   ]
 };
