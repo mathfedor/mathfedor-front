@@ -21,9 +21,15 @@ export interface Module {
     duration: string;
     exercises: Array<{
       statement: string;
-      options: string[];
-      correctAnswer: string;
-      explanation: string;
+      options?: string[];
+      correctAnswer?: string;
+      explanation?: string;
+      type?: string;
+      image?: string;
+      template?: string;
+      variables?: string[];
+      defaultValues?: number[];
+      range?: number[];
     }>;
   }>;
 }

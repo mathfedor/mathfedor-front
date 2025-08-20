@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe } from 'react-icons/fi';
+import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { Tooltip } from '@/components/ui/tooltip';
 import { authService } from '@/services/auth.service';
@@ -39,7 +39,9 @@ const roleMenuItems: Record<string, MenuItem[]> = {
       href: '/dashboard/cursos',
       submenu: [] // Se llenará dinámicamente
     },
-    { icon: <FiFileText className="w-5 h-5" />, title: 'Diagnóstico', href: '/dashboard/diagnostico' }
+    { icon: <FiFileText className="w-5 h-5" />, title: 'Diagnóstico', href: '/dashboard/diagnostico' },
+    { icon: <FiPackage className="w-5 h-5" />, title: 'Simulacro', href: '/dashboard/simulation' },
+    { icon: <FiCode className="w-5 h-5" />, title: 'Simulador', href: '/dashboard/simulator' }
   ],
   teacher: [
     { icon: <FiUser className="w-5 h-5" />, title: 'Estudiantes', href: '/dashboard/estudiantes' }
@@ -47,6 +49,8 @@ const roleMenuItems: Record<string, MenuItem[]> = {
   admin: [
     { icon: <FiPlusCircle className="w-5 h-5" />, title: 'Crear Diagnóstico', href: '/dashboard/diagnosis' },
     { icon: <FiBook className="w-5 h-5" />, title: 'Crear Módulo', href: '/dashboard/modules/create' },
+    { icon: <FiBarChart className="w-5 h-5" />, title: 'Crear Simulador', href: '/dashboard/adminsimulator' },
+    { icon: <FiMonitor className="w-5 h-5" />, title: 'Crear Simulacro', href: '/dashboard/adminsimulation' },
     { icon: <FiGlobe className="w-5 h-5" />, title: 'Instituciones', href: '/dashboard/institutions' },
     { icon: <FiUsers className="w-5 h-5" />, title: 'Usuarios', href: '/dashboard/users' }
   ]
