@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "setup-google": "echo 'NEXT_PUBLIC_GOOGLE_CLIENT_ID=TU_GOOGLE_CLIENT_ID_AQUI' > .env.local && echo 'Archivo .env.local creado. Reemplaza TU_GOOGLE_CLIENT_ID_AQUI con tu Client ID real de Google.'"
   },
   "dependencies": {
     "@react-three/drei": "^10.0.6",

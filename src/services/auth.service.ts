@@ -10,8 +10,6 @@ class AuthService {
       if (!response.data.token) {
         throw new Error('Credenciales invalidas');
       }
-
-      console.log('Token recibido:', response);
       // Guardar el token en localStorage
       localStorage.setItem('token', response.data.token);
       // Guardar la información del usuario
@@ -25,6 +23,35 @@ class AuthService {
       console.error('Error en login:', error);
       if (error instanceof Error) {
         throw new Error(error.message || 'Error al iniciar sesión');
+      }
+      throw error;
+    }
+  }
+
+  async socialLogin(provider: string, token: string): Promise<LoginResponse> {
+    try {
+      const response = await api.post<LoginResponse>('/auth/social-login', {
+        provider,
+        token
+      });
+      
+      // Si no hay token en la respuesta, consideramos que hubo un error
+      if (!response.data.token) {
+        throw new Error('Error en la autenticación social');
+      }
+      // Guardar el token en localStorage
+      localStorage.setItem('token', response.data.token);
+      // Guardar la información del usuario
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+
+      return {
+        ...response.data,
+        ok: true
+      };
+    } catch (error) {
+      console.error('Error en social login:', error);
+      if (error instanceof Error) {
+        throw new Error(error.message || 'Error al iniciar sesión con Google');
       }
       throw error;
     }
