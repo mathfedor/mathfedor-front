@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 import { authService } from '@/services/auth.service';
@@ -24,7 +24,7 @@ interface TransactionResponse {
   };
 }
 
-export default function ThanksContent() {
+function ThanksContentInner() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [transaction, setTransaction] = useState<TransactionResponse['data'] | null>(null);
@@ -128,19 +128,17 @@ export default function ThanksContent() {
               {isSuccess ? (
                 <>
                   <div className="text-green-500 text-5xl mb-4">✅</div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">¡Compra Exitosa!</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">¡Pago Exitoso!</h2>
                   <p className="text-gray-600 mb-4">
-                    Tu módulo ha sido agregado a tu biblioteca
+                    Tu transacción ha sido procesada correctamente. Ya tienes acceso a todos los módulos.
                   </p>
-                  <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
-                    <p className="text-sm text-gray-600">
-                      <span className="font-semibold">ID de Transacción:</span> {transaction.id}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      <span className="font-semibold">Monto:</span> ${transaction.amount_in_cents / 100} {transaction.currency}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      <span className="font-semibold">Fecha:</span> {new Date(transaction.created_at).toLocaleString()}
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                    <h3 className="font-semibold text-green-800 mb-2">Detalles de la transacción:</h3>
+                    <p className="text-sm text-green-700">
+                      <strong>ID:</strong> {transaction?.id}<br />
+                      <strong>Estado:</strong> {transaction?.status}<br />
+                      <strong>Monto:</strong> ${transaction?.amount_in_cents ? (transaction.amount_in_cents / 100).toFixed(2) : 'N/A'}<br />
+                      <strong>Método de pago:</strong> {transaction?.payment_method?.type || 'N/A'}
                     </p>
                   </div>
                 </>
@@ -149,20 +147,63 @@ export default function ThanksContent() {
                   <div className="text-yellow-500 text-5xl mb-4">⚠️</div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-2">Transacción Pendiente</h2>
                   <p className="text-gray-600 mb-4">
-                    Tu transacción está siendo procesada
+                    Tu transacción está siendo procesada. Te notificaremos cuando esté completa.
                   </p>
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                    <h3 className="font-semibold text-yellow-800 mb-2">Estado actual:</h3>
+                    <p className="text-sm text-yellow-700">
+                      <strong>ID:</strong> {transaction?.id}<br />
+                      <strong>Estado:</strong> {transaction?.status}<br />
+                      <strong>Monto:</strong> ${transaction?.amount_in_cents ? (transaction.amount_in_cents / 100).toFixed(2) : 'N/A'}
+                    </p>
+                  </div>
                 </>
               )}
-              <button
-                onClick={() => router.push('/dashboard')}
-                className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors"
-              >
-                Volver al Dashboard
-              </button>
+              
+              <div className="space-y-3">
+                <button
+                  onClick={() => router.push('/dashboard')}
+                  className="w-full bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors font-medium"
+                >
+                  Ir al Dashboard
+                </button>
+                <button
+                  onClick={() => router.push('/dashboard/modules')}
+                  className="w-full bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors font-medium"
+                >
+                  Ver Módulos
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">
+      <div className="min-h-screen flex">
+        <Sidebar />
+        <div className="flex-1 bg-[#F9F9F9]">
+          <div className="pt-12 px-8 pb-8">
+            <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500 mx-auto"></div>
+              <p className="mt-4 text-gray-600">Cargando...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function ThanksContent() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <ThanksContentInner />
+    </Suspense>
   );
 } 

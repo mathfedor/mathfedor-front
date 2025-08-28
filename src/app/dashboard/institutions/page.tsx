@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 import { authService } from '@/services/auth.service';
-import { institutionService, CreateInstitutionData } from '@/services/institution.service';
+import { institutionService } from '@/services/institution.service';
+import { CreateInstitutionData } from '@/types/institution.types';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { User } from '@/types/auth.types';
@@ -76,19 +77,7 @@ export default function InstitutionsPage() {
       
       if (response.success) {
         // Mapear los datos del backend al formato de la UI
-        const institutionsData = response.data.map((institution: {
-          id: string;
-          name: string;
-          type: Institution['type'];
-          location: {
-            city: string;
-            region: string;
-            address: string;
-          };
-          email: string;
-          createdAt: string;
-          status: string;
-        }) => ({
+        const institutionsData = (response.data as Institution[]).map((institution) => ({
           id: institution.id,
           name: institution.name,
           type: institution.type,
@@ -98,8 +87,8 @@ export default function InstitutionsPage() {
             address: institution.location.address
           },
           email: institution.email,
-          createdAt: institution.createdAt,
-          status: institution.status
+          createdAt: institution.createdAt || '',
+          status: institution.status || 'active'
         }));
         
         setInstitutions(institutionsData);
@@ -125,15 +114,10 @@ export default function InstitutionsPage() {
       const institutionData: CreateInstitutionData = {
         name: formData.name,
         type: formData.type,
-        location: {
-          city: formData.city,
-          region: formData.region,
-          address: formData.address
-        },
-        email: formData.email,
-        status: 'active',
-        createdAt: new Date().toISOString().split('T')[0],
-        updatedAt: new Date().toISOString().split('T')[0]
+        city: formData.city,
+        region: formData.region,
+        address: formData.address,
+        email: formData.email
       };
 
       // Llamar al servicio

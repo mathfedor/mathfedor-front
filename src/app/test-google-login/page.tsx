@@ -86,7 +86,7 @@ export default function TestGoogleLoginPage() {
           <h3 className="font-semibold text-yellow-800 mb-2">Instrucciones:</h3>
           <ol className="text-sm text-yellow-700 space-y-1">
             <li>1. Configura tu Google Client ID en el archivo .env.local</li>
-            <li>2. Haz clic en "Ir a Login"</li>
+            <li>2. Haz clic en &quot;Ir a Login&quot;</li>
             <li>3. Prueba el botón de Google</li>
             <li>4. Verifica que la redirección funcione correctamente</li>
           </ol>

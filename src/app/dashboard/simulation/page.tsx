@@ -252,7 +252,7 @@ export default function SimulationPage() {
         console.error('No hay respuesta correcta definida para el ejercicio:', exercise);
         return {
           exerciseId: `${currentTopic.title}_ex${index + 1}`,
-          selectedAnswer: exercise.options[selectedAnswers[index]],
+          selectedAnswer: exercise.options?.[selectedAnswers[index]] || 'Sin respuesta',
           isCorrect: false
         };
       }
@@ -262,7 +262,7 @@ export default function SimulationPage() {
       if (isCorrect) correctAnswers++;
       return {
         exerciseId: `${currentTopic.title}_ex${index + 1}`,
-        selectedAnswer: exercise.options[userAnswerPosition],
+        selectedAnswer: exercise.options?.[userAnswerPosition] || 'Sin respuesta',
         isCorrect
       };
     });
@@ -443,7 +443,7 @@ export default function SimulationPage() {
                   <h3 className="text-black dark:text-white font-medium mb-4">Ejercicio {index + 1}</h3>
                   <p className="text-gray-700 dark:text-gray-300 mb-4">{exercise.statement}</p>
                   <div className="space-y-3">
-                    {exercise.options.map((option, optIndex) => (
+                    {exercise.options?.map((option, optIndex) => (
                       <div key={optIndex} className="flex items-center space-x-3">
                         <input
                           type="radio"
@@ -669,7 +669,9 @@ export default function SimulationPage() {
     if (!currentTopic || !currentTopic.exercises) return;
     const randomAnswers: { [key: string]: number } = {};
     currentTopic.exercises.forEach((ex, idx) => {
-      randomAnswers[idx] = Math.floor(Math.random() * ex.options.length);
+      if (ex.options && ex.options.length > 0) {
+        randomAnswers[idx] = Math.floor(Math.random() * ex.options.length);
+      }
     });
     setSelectedAnswers(randomAnswers);
   };

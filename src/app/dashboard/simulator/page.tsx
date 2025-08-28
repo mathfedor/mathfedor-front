@@ -219,11 +219,11 @@ export default function SimulatorPage() {
     const pointsPerExercise = 10 / exercises.length;
     let correctAnswers = 0;
     const answers = exercises.map((exercise, index) => {
-      if (!exercise.correctAnswer) {
-        console.error('No hay respuesta correcta definida para el ejercicio:', exercise);
+      if (!exercise.correctAnswer || !exercise.options) {
+        console.error('No hay respuesta correcta definida o opciones para el ejercicio:', exercise);
         return {
           exerciseId: `${currentTopic.title}_ex${index + 1}`,
-          selectedAnswer: exercise.options[selectedAnswers[index]],
+          selectedAnswer: exercise.options?.[selectedAnswers[index]] || 'Sin opciones',
           isCorrect: false
         };
       }
@@ -233,7 +233,7 @@ export default function SimulatorPage() {
       if (isCorrect) correctAnswers++;
       return {
         exerciseId: `${currentTopic.title}_ex${index + 1}`,
-        selectedAnswer: exercise.options[userAnswerPosition],
+        selectedAnswer: exercise.options?.[userAnswerPosition] || 'Opción no válida',
         isCorrect
       };
     });
@@ -1372,27 +1372,29 @@ export default function SimulatorPage() {
                     )}
                     
                     <p className="text-gray-700 dark:text-gray-300 mb-4" dangerouslySetInnerHTML={{ __html: processedStatement }} />
-                    <div className="space-y-3">
-                      {exercise.options.map((option, optIndex) => (
-                        <div key={optIndex} className="flex items-center space-x-3">
-                          <input
-                            type="radio"
-                            name={`exercise-${index}`}
-                            id={`option-${index}-${optIndex}`}
-                            value={optIndex}
-                            checked={selectedAnswers[index] === optIndex}
-                            onChange={(e) => handleAnswerSelect(index, '', parseInt(e.target.value))}
-                            className="text-blue-500 focus:ring-blue-500"
-                          />
-                          <label
-                            htmlFor={`option-${index}-${optIndex}`}
-                            className="text-gray-700 dark:text-gray-300"
-                          >
-                            {option}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
+                    {exercise.options && exercise.options.length > 0 && (
+                      <div className="space-y-3">
+                        {exercise.options.map((option, optIndex) => (
+                          <div key={optIndex} className="flex items-center space-x-3">
+                            <input
+                              type="radio"
+                              name={`exercise-${index}`}
+                              id={`option-${index}-${optIndex}`}
+                              value={optIndex}
+                              checked={selectedAnswers[index] === optIndex}
+                              onChange={(e) => handleAnswerSelect(index, '', parseInt(e.target.value))}
+                              className="text-blue-500 focus:ring-blue-500"
+                            />
+                            <label
+                              htmlFor={`option-${index}-${optIndex}`}
+                              className="text-gray-700 dark:text-gray-300"
+                            >
+                              {option}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -1548,7 +1550,9 @@ export default function SimulatorPage() {
     if (!currentTopic || !currentTopic.exercises) return;
     const randomAnswers: { [key: string]: number } = {};
     currentTopic.exercises.forEach((ex, idx) => {
-      randomAnswers[idx] = Math.floor(Math.random() * ex.options.length);
+      if (ex.options && ex.options.length > 0) {
+        randomAnswers[idx] = Math.floor(Math.random() * ex.options.length);
+      }
     });
     setSelectedAnswers(randomAnswers);
   };

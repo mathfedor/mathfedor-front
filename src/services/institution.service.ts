@@ -1,26 +1,13 @@
+import { Institution, CreateInstitutionData } from '@/types/institution.types';
 
-export interface CreateInstitutionData {
-    name: string;
-    type: 'Universidad' | 'Colegio' | 'Escuela' | 'Tecnico';
-    location: {
-        city: string;
-        region: string;
-        address: string;
-    };
-    email: string;
-    status: 'active' | 'inactive';
-    createdAt: string;
-    updatedAt: string;
-}
-
-export interface InstitutionResponse {
+export interface InstitutionResponse<T = unknown> {
     success: boolean;
     message: string;
-    data?: any;
+    data?: T;
 }
 
 class InstitutionService {
-    async createInstitution(institutionData: CreateInstitutionData): Promise<InstitutionResponse> {
+    async createInstitution(institutionData: CreateInstitutionData): Promise<InstitutionResponse<Institution>> {
         try {
             const token = localStorage.getItem('token');
 
@@ -53,7 +40,7 @@ class InstitutionService {
         }
     }
 
-    async getInstitutions(status?: string): Promise<InstitutionResponse> {
+    async getInstitutions(status?: string): Promise<InstitutionResponse<Institution[]>> {
         try {
             const token = localStorage.getItem('token');
             
@@ -91,7 +78,7 @@ class InstitutionService {
         }
     }
 
-    async updateInstitution(institutionId: string, institutionData: Partial<CreateInstitutionData>): Promise<InstitutionResponse> {
+    async updateInstitution(institutionId: string, institutionData: Partial<CreateInstitutionData>): Promise<InstitutionResponse<Institution>> {
         try {
             const token = localStorage.getItem('token');
 
