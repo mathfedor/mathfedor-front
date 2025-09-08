@@ -441,7 +441,7 @@ export default function SimulationPage() {
             {currentTopic.exercises?.map((exercise, index) => (
                 <div key={index} className="bg-gray-100 dark:bg-[#282828] rounded-lg p-6">
                   <h3 className="text-black dark:text-white font-medium mb-4">Ejercicio {index + 1}</h3>
-                  <p className="text-gray-700 dark:text-gray-300 mb-4">{exercise.statement}</p>
+                  <p className="text-gray-700 dark:text-gray-300 mb-4" dangerouslySetInnerHTML={{ __html: exercise.statement }}></p>
                   <div className="space-y-3">
                     {exercise.options?.map((option, optIndex) => (
                       <div key={optIndex} className="flex items-center space-x-3">
