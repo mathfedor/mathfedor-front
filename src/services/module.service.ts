@@ -57,7 +57,8 @@ export const moduleService = {
     formDataToSend.append('image', formData.imageName);
     formDataToSend.append('status', formData.status || 'active');
     formDataToSend.append('createdBy', user.id);
-    formDataToSend.append('topics[]', JSON.stringify([]));
+    // Enviar topics como un array JSON en la clave 'topics' (no 'topics[]')
+    formDataToSend.append('topics', JSON.stringify([]));
 
     // Agregar los tags como array
     formData.tags.forEach((tag, index) => {

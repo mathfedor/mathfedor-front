@@ -433,9 +433,9 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         content: (
           <div className="space-y-6">
             {currentTopic.exercises.map((exercise, index) => (
-              <div key={index} className="bg-[#282828] rounded-lg p-6">
-                <h3 className="text-white font-medium mb-4">Ejercicio {index + 1}</h3>
-                <p className="text-gray-300 mb-4">{exercise.statement}</p>
+              <div key={index} className="bg-white dark:bg-[#282828] border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                <h3 className="text-black dark:text-white font-medium mb-4">Ejercicio {index + 1}</h3>
+                <p className="text-black dark:text-gray-200 mb-4">{exercise.statement}</p>
                 <div className="space-y-3">
                   {exercise.options.map((option, optIndex) => (
                     <div key={optIndex} className="flex items-center space-x-3">
@@ -450,7 +450,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                       />
                       <label
                         htmlFor={`option-${index}-${optIndex}`}
-                        className="text-gray-300"
+                        className="text-black dark:text-gray-200"
                       >
                         {option}
                       </label>
@@ -494,7 +494,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                       return (
                         <span
                           key={fragIdx}
-                          className="text-gray-300 whitespace-pre-line align-middle"
+                          className="text-gray-700 dark:text-gray-300 whitespace-pre-line align-middle"
                           dangerouslySetInnerHTML={{ __html: fragment }}
                         />
                       );
@@ -508,7 +508,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                     return (
                       <div className="mt-4 bg-[#282828] rounded-lg p-6">
                         <div className="flex items-center flex-wrap gap-2">
-                          <span className="text-gray-300 mb-0 mr-2 whitespace-nowrap" dangerouslySetInnerHTML={{ __html: String(typedExample.statement) }} />
+                          <span className="text-gray-700 dark:text-gray-300 mb-0 mr-2 whitespace-nowrap" dangerouslySetInnerHTML={{ __html: String(typedExample.statement) }} />
                           {typedExample.inputs.map((input, inputIdx) => (
                             <input
                               key={inputIdx}
@@ -681,7 +681,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
             {process.env.NODE_ENV === 'development' && !showChat && (currentStep % 2) === 0 && (
               <button
                 onClick={fillRandomAnswers}
-                className="flex items-center gap-1 px-4 py-2 text-sm font-medium bg-[#282828] hover:bg-[#363636] rounded-md transition-colors"
+                className="flex items-center gap-1 px-4 py-2 text-sm font-medium bg-gray-200 hover:bg-gray-300 dark:bg-[#282828] dark:hover:bg-[#363636] rounded-md transition-colors"
               >
                 <FiShuffle className="w-4 h-4" />
                 Llenar aleatorio
@@ -691,8 +691,8 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
               onClick={handlePrevious}
               disabled={currentStep === 1 && !showChat}
               className={`flex items-center gap-1 px-4 py-2 text-sm font-medium ${currentStep === 1 && !showChat
-                ? 'bg-[#1E1E1E] text-gray-500 cursor-not-allowed'
-                : 'bg-[#282828] hover:bg-[#363636]'
+                ? 'bg-gray-100 dark:bg-[#1E1E1E] text-gray-500 cursor-not-allowed'
+                : 'bg-gray-200 hover:bg-gray-300 dark:bg-[#282828] dark:hover:bg-[#363636]'
                 } rounded-md transition-colors`}
             >
               <FiChevronLeft className="w-4 h-4" />
@@ -701,7 +701,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
             <Tooltip content="Ver la lista de temas" position="bottom">
               <button
                 onClick={() => setIsMaterialOpen(!isMaterialOpen)}
-                className="px-4 py-2 text-sm font-medium bg-[#282828] hover:bg-[#363636] rounded-md transition-colors"
+                className="px-4 py-2 text-sm font-medium bg-gray-200 hover:bg-gray-300 dark:bg-[#282828] dark:hover:bg-[#363636] rounded-md transition-colors"
               >
                 Temas
               </button>
@@ -711,8 +711,8 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                 onClick={handleNext}
                 disabled={currentStep === totalSteps && showChat}
                 className={`flex items-center gap-1 px-4 py-2 text-sm font-medium ${currentStep === totalSteps && showChat
-                  ? 'bg-[#1E1E1E] text-gray-500 cursor-not-allowed'
-                  : 'bg-[#282828] hover:bg-[#363636]'
+                  ? 'bg-gray-100 dark:bg-[#1E1E1E] text-gray-500 cursor-not-allowed'
+                  : 'bg-gray-200 hover:bg-gray-300 dark:bg-[#282828] dark:hover:bg-[#363636]'
                   } rounded-md transition-colors`}
               >
                 Siguiente
@@ -760,7 +760,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         {/* Contenido principal */}
         <div className="h-[calc(100vh-64px)]">
           {showResults ? (
-            <div className="h-full bg-[#1E1F25] p-8">
+            <div className="h-full bg-gray-100 dark:bg-[#1E1F25] p-8">
               <div className="max-w-4xl mx-auto">
                 <h2 className="text-2xl font-bold text-white mb-6">Resultados del Módulo</h2>
                 
@@ -829,12 +829,12 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
               </div>
             </div>
           ) : showChat ? (
-            <div className="h-full flex bg-[#1E1F25]">
+            <div className="h-full flex bg-gray-100 dark:bg-[#1E1F25]">
               {/* Columna izquierda - Texto explicativo */}
-              <div className="w-[40%] border-r border-gray-700 p-6 overflow-y-auto">
-                <div className="prose prose-invert max-w-none">
-                  <h2 className="text-xl font-medium text-white mb-4">Asistente de Matemáticas</h2>
-                  <div className="space-y-4 text-gray-300">
+              <div className="w-[40%] border-r border-gray-300 dark:border-gray-700 p-6 overflow-y-auto">
+                <div className="prose prose-lg max-w-none dark:prose-invert">
+                  <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Asistente de Matemáticas</h2>
+                  <div className="space-y-4 text-black dark:text-gray-200 text-base md:text-lg">
                     <p>
                       Bienvenido al asistente de matemáticas. Aquí puedes hacer preguntas sobre:
                     </p>
@@ -854,9 +854,9 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                       <li>Proporcionar ejemplos adicionales</li>
                       <li>Verificar tus respuestas</li>
                     </ul>
-                    <div className="mt-6 p-4 bg-[#282828] rounded-lg">
-                      <h3 className="text-lg font-medium text-white mb-2">Ejemplo de pregunta:</h3>
-                      <p className="text-gray-300 italic">
+                    <div className="mt-6 p-4 bg-gray-100 dark:bg-[#282828] rounded-lg">
+                      <h3 className="text-xl font-semibold text-black dark:text-white mb-2">Ejemplo de pregunta:</h3>
+                      <p className="text-black dark:text-gray-200 italic text-base md:text-lg">
                         &quot;¿Puedes ayudarme a encontrar todos los divisores del número 24 y explicarme el proceso paso a paso?&quot;
                       </p>
                     </div>
@@ -877,10 +877,10 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                         <div
                           className={`max-w-[70%] rounded-lg p-4 ${message.role === 'user'
                             ? 'bg-blue-600 text-white'
-                            : 'bg-[#282828] text-gray-300'
+                            : 'bg-gray-100 dark:bg-[#282828] text-black dark:text-gray-200'
                             }`}
                         >
-                          <p className="whitespace-pre-wrap">{message.content}</p>
+                          <p className="whitespace-pre-wrap text-base md:text-lg">{message.content}</p>
                           <span className="text-xs opacity-70 mt-2 block">
                             {message.timestamp.toLocaleTimeString()}
                           </span>
@@ -889,7 +889,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                     ))}
                     {isLoading && (
                       <div className="flex justify-start">
-                        <div className="bg-[#282828] text-gray-300 rounded-lg p-4">
+                        <div className="bg-gray-100 dark:bg-[#282828] text-black dark:text-gray-200 rounded-lg p-4">
                           <div className="flex space-x-2">
                             <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
                             <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-100"></div>
@@ -902,7 +902,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                 </div>
 
                 {/* Área de entrada de texto */}
-                <div className="border-t border-gray-700 p-4">
+                <div className="border-t border-gray-300 dark:border-gray-700 p-4">
                   <div className="max-w-3xl mx-auto">
                     <div className="relative">
                       <textarea
@@ -910,7 +910,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                         onChange={(e) => setInputMessage(e.target.value)}
                         onKeyPress={handleKeyPress}
                         placeholder="Escribe tu mensaje..."
-                        className="w-full bg-[#282828] text-white rounded-lg pl-4 pr-12 py-3 min-h-[50px] max-h-[200px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-gray-100 dark:bg-[#282828] text-black dark:text-white rounded-lg pl-4 pr-12 py-3 min-h-[50px] max-h-[200px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-lg"
                         rows={1}
                       />
                       <button
@@ -931,33 +931,33 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
           ) : (
             <div className="h-full flex">
               {/* Sección de Resumen */}
-              <div className="w-[75%] bg-[#1E1F25] overflow-y-auto">
+              <div className="w-[75%] bg-gray-100 dark:bg-[#1E1F25] overflow-y-auto">
                 <div className="p-6">
-                  <h2 className="text-xl font-medium text-white mb-4">{title}</h2>
-                  <div className="text-gray-300">
+                  <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">{title}</h2>
+                  <div className="text-black dark:text-gray-200 text-base md:text-lg">
                     {content}
                   </div>
                 </div>
               </div>
 
               {/* Sección de Comentarios */}
-              <div className="w-[25%] bg-[#1E1F25] border-l border-gray-700 overflow-y-auto">
+              <div className="w-[25%] bg-gray-100 dark:bg-[#1E1F25] border-l border-gray-300 dark:border-gray-700 overflow-y-auto">
                 <div className="p-6">
                   <div className="flex justify-between items-center mb-4">
                     <div className="flex gap-4">
-                      <button className="text-white font-medium hover:text-gray-300 transition-colors">Todo</button>
-                      <button className="text-gray-400 hover:text-white transition-colors">Preguntas</button>
-                      <button className="text-gray-400 hover:text-white transition-colors">Aportes</button>
+                      <button className="text-black dark:text-white font-medium hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base">Todo</button>
+                      <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base">Preguntas</button>
+                      <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base">Aportes</button>
                     </div>
                     <div className="flex items-center">
-                      <span className="text-gray-400 text-sm mr-2">Más votados</span>
-                      <FiChevronDown className="text-gray-400 w-4 h-4" />
+                      <span className="text-black dark:text-gray-400 text-sm mr-2">Más votados</span>
+                      <FiChevronDown className="text-black dark:text-gray-400 w-4 h-4" />
                     </div>
                   </div>
                   <div className="relative mb-6">
                     <textarea
                       placeholder="Escribe tu comentario o pregunta"
-                      className="w-full bg-[#282828] text-white rounded-lg p-4 min-h-[100px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full bg-gray-100 dark:bg-[#282828] text-black dark:text-white rounded-lg p-4 min-h-[100px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-lg"
                     ></textarea>
                   </div>
 
@@ -972,19 +972,19 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <span className="text-white font-medium">{comment.author.name}</span>
-                              <span className="text-gray-400 text-sm">•</span>
-                              <span className="text-gray-400 text-sm">{comment.author.role}</span>
-                              <span className="text-gray-400 text-sm">•</span>
-                              <span className="text-gray-400 text-sm">{comment.author.timeAgo}</span>
+                              <span className="text-black dark:text-white font-semibold">{comment.author.name}</span>
+                              <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                              <span className="text-gray-500 dark:text-gray-400 text-sm">{comment.author.role}</span>
+                              <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                              <span className="text-gray-500 dark:text-gray-400 text-sm">{comment.author.timeAgo}</span>
                             </div>
-                            <p className="text-gray-300">{comment.content}</p>
+                            <p className="text-black dark:text-gray-200 text-base md:text-lg">{comment.content}</p>
                             <div className="flex items-center gap-2 mt-2">
-                              <button className="flex items-center gap-1 text-gray-400 hover:text-white">
+                              <button className="flex items-center gap-1 text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
                                 <span>❤️</span>
                                 <span>{comment.likes}</span>
                               </button>
-                              <button className="text-gray-400 hover:text-white">
+                              <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
                                 Responder
                               </button>
                             </div>
@@ -997,10 +997,10 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                             {comment.replies.map((reply, index) => (
                               <div key={reply.id} className="relative">
                                 {/* Línea conectora con curva */}
-                                <div className="absolute -left-4 top-4 w-4 h-[calc(100%+16px)] border-l-2 border-b-2 border-gray-700 rounded-bl-xl"></div>
+                                <div className="absolute -left-4 top-4 w-4 h-[calc(100%+16px)] border-l-2 border-b-2 border-gray-300 dark:border-gray-700 rounded-bl-xl"></div>
 
                                 {/* Línea horizontal */}
-                                <div className="absolute -left-4 top-4 w-4 h-[2px] bg-gray-700"></div>
+                                <div className="absolute -left-4 top-4 w-4 h-[2px] bg-gray-300 dark:bg-gray-700"></div>
 
                                 {/* Contenido de la respuesta */}
                                 <div className="flex gap-3 pl-4">
@@ -1009,19 +1009,19 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                                   </div>
                                   <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-1">
-                                      <span className="text-white font-medium">{reply.author.name}</span>
-                                      <span className="text-gray-400 text-sm">•</span>
-                                      <span className="text-gray-400 text-sm">{reply.author.role}</span>
-                                      <span className="text-gray-400 text-sm">•</span>
-                                      <span className="text-gray-400 text-sm">{reply.author.timeAgo}</span>
+                                      <span className="text-black dark:text-white font-semibold">{reply.author.name}</span>
+                                      <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                                      <span className="text-gray-500 dark:text-gray-400 text-sm">{reply.author.role}</span>
+                                      <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                                      <span className="text-gray-500 dark:text-gray-400 text-sm">{reply.author.timeAgo}</span>
                                     </div>
-                                    <p className="text-gray-300">{reply.content}</p>
+                                    <p className="text-black dark:text-gray-200 text-base md:text-lg">{reply.content}</p>
                                     <div className="flex items-center gap-2 mt-2">
-                                      <button className="flex items-center gap-1 text-gray-400 hover:text-white">
+                                      <button className="flex items-center gap-1 text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
                                         <span>❤️</span>
                                         <span>{reply.likes}</span>
                                       </button>
-                                      <button className="text-gray-400 hover:text-white">
+                                      <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
                                         Responder
                                       </button>
                                     </div>
@@ -1030,7 +1030,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
                                 {/* Línea final para la última respuesta */}
                                 {index === comment.replies.length - 1 && (
-                                  <div className="absolute -left-4 top-4 h-4 border-l-2 border-gray-700"></div>
+                                  <div className="absolute -left-4 top-4 h-4 border-l-2 border-gray-300 dark:border-gray-700"></div>
                                 )}
                               </div>
                             ))}
@@ -1055,13 +1055,13 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
             />
 
             {/* Modal */}
-            <div className="fixed right-0 top-16 w-[25%] h-[calc(100vh-64px)] bg-[#1E1F25] shadow-xl overflow-hidden">
-              <div className="p-4 border-b border-gray-700">
+            <div className="fixed right-0 top-16 w-[25%] h-[calc(100vh-64px)] bg-white dark:bg-[#1E1F25] shadow-xl overflow-hidden">
+              <div className="p-4 border-b border-gray-300 dark:border-gray-700">
                 <div className="flex justify-between items-center mb-2">
                   <div>
-                    <h3 className="text-white font-medium mb-1">Progreso del curso</h3>
+                    <h3 className="text-black dark:text-white font-medium mb-1">Progreso del curso</h3>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm text-gray-400">19%</span>
+                      <span className="text-sm text-gray-600 dark:text-gray-400">19%</span>
                       <span className="text-sm text-gray-400">
                         {diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'Cargando...'}
                       </span>
@@ -1069,12 +1069,12 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                   </div>
                   <button
                     onClick={() => setIsMaterialOpen(false)}
-                    className="text-gray-400 hover:text-white"
+                    className="text-gray-600 dark:text-gray-400 hover:text-white"
                   >
                     <FiX className="w-5 h-5" />
                   </button>
                 </div>
-                <div className="h-1 w-full bg-gray-700 rounded-full">
+                <div className="h-1 w-full bg-gray-300 dark:bg-gray-700 rounded-full">
                   <div className="h-full w-[19%] bg-green-500 rounded-full"></div>
                 </div>
               </div>
@@ -1091,14 +1091,14 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
                   {/* Título del módulo */}
                   <div className="pl-12 mb-4">
-                    <span className="text-gray-400 text-sm">
+                    <span className="text-gray-600 dark:text-gray-400 text-sm">
                       {diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'Cargando...'}
                     </span>
                   </div>
 
                   {diagnosticConfigs.length > 0 ? (
                     diagnosticConfigs[0].topics.map((topic, index) => (
-                      <div key={index} className="group relative flex items-center py-4 px-3 hover:bg-[#282828] transition-colors cursor-pointer">
+                      <div key={index} className="group relative flex items-center py-4 px-3 hover:bg-gray-200 dark:hover:bg-[#282828] transition-colors cursor-pointer">
                         {/* Línea del timeline */}
                         {index < diagnosticConfigs[0].topics.length - 1 && (
                           <div
@@ -1121,19 +1121,19 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
                         {/* Contenido de la clase */}
                         <div className="flex items-center flex-1 pl-5">
-                          <div className="w-20 h-12 rounded overflow-hidden flex-shrink-0 mr-3">
+                          <div className="w-30 h-18 rounded overflow-hidden flex-shrink-0 mr-3">
                             <Image
                               src={topic.image ? `/images/${topic.image}` : '/images/default-topic.png'}
                               alt={topic.title}
-                              width={80}
-                              height={48}
+                              width={120}
+                              height={72}
                               className="object-cover w-full h-full"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-white text-sm font-medium mb-1 truncate pr-2">{topic.title}</h4>
+                            <h4 className="text-black dark:text-white text-sm font-medium mb-1 truncate pr-2">{topic.title}</h4>
                             <div className="flex items-center gap-2">
-                              <span className="text-xs text-gray-400">{topic.duration}</span>
+                              <span className="text-xs text-gray-600 dark:text-gray-400">{topic.duration}</span>
                               {topic.completed && (
                                 <span className="text-xs text-orange-400 flex items-center gap-1">
                                   <span className="w-1.5 h-1.5 rounded-full bg-orange-400"></span>
@@ -1146,7 +1146,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                       </div>
                     ))
                   ) : (
-                    <div className="text-gray-400 text-center py-4">Cargando temas...</div>
+                    <div className="text-gray-600 dark:text-gray-400 text-center py-4">Cargando temas...</div>
                   )}
                 </div>
               </div>
