@@ -30,7 +30,11 @@ const DiagnosticoPage = () => {
   const [diagnosticConfigs, setDiagnosticConfigs] = useState<DiagnosticConfig[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
-  const totalSteps = diagnosticConfigs[0]?.topics?.length * 2 + 1 || 0; // Descripción + temas + ejercicios
+  // Pasos de contenido: 1 (descripción general) + 2 por tema (descripción + ejercicios)
+  const totalContentSteps = (diagnosticConfigs[0]?.topics?.length || 0) * 2 + 1;
+  // Índices adicionales para resumen y chat
+  const summaryStepIndex = totalContentSteps + 1;
+  const chatStepIndex = summaryStepIndex + 1;
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: number }>({});
   const [results, setResults] = useState<{
     goodAnswers: number;
@@ -59,6 +63,65 @@ const DiagnosticoPage = () => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState({ title: '', message: '' });
   const [diagnosticId, setDiagnosticId] = useState<string>('');
+  const [studyPlan, setStudyPlan] = useState<string>('');
+  const [isLoadingStudyPlan, setIsLoadingStudyPlan] = useState(false);
+
+  // Helper para renderizar texto con imágenes embebidas mediante tokens {img_img...}
+  const renderTextWithImages = (input: string, imageSize?: { width: number; height: number }) => {
+    const width = imageSize?.width ?? 800;
+    const height = imageSize?.height ?? 400;
+    return (
+      <>
+        {String(input)
+          .split(/(\{img_img[^}]+\})/g)
+          .filter(Boolean)
+          .map((fragment, index) => {
+            if (/^\{img_img[^}]+\}$/.test(fragment)) {
+              const src = fragment.replace('{img_', '').replace('}', '.png');
+              return (
+                <span key={index} className="inline-block align-middle mx-2">
+                  <Image
+                    src={`/${src}`}
+                    alt={src}
+                    width={width}
+                    height={height}
+                    className="object-contain inline rounded"
+                  />
+                </span>
+              );
+            }
+            return (
+              <span
+                key={index}
+                className="text-gray-700 dark:text-gray-300 whitespace-pre-line align-middle"
+                dangerouslySetInnerHTML={{ __html: fragment }}
+              />
+            );
+          })}
+      </>
+    );
+  };
+
+  // Helper para prefijar opciones con A./B./C./D. y normalizar minúsculas
+  const formatOptionLabel = (optionText: unknown, optionIndex: number) => {
+    const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+    const expected = letters[optionIndex] || letters[0];
+
+    // Detectar prefijo existente: "a. ", "A.", etc.
+    const prefixRegex = /^\s*([A-Za-z])\.?\s+/;
+    const text = String(optionText ?? '');
+    const match = text.match(prefixRegex);
+
+    if (match) {
+      const letter = match[1].toUpperCase();
+      const rest = text.replace(prefixRegex, '');
+      // Mantener la letra detectada pero en mayúscula con formato "X. "
+      return `${letter}. ${rest}`.trim();
+    }
+
+    // No tenía prefijo; agregamos el esperado por posición
+    return `${expected}. ${text}`.trim();
+  };
 
   useEffect(() => {
     setUser(authService.getCurrentUser());
@@ -356,7 +419,7 @@ const DiagnosticoPage = () => {
   const getCurrentContent = () => {
     if (!diagnosticConfigs.length) return { title: 'Cargando...', content: null };
     // Si el paso es mayor al número de pasos de temas, retorna contenido vacío
-    if (currentStep > totalSteps) {
+    if (currentStep > totalContentSteps) {
       return { title: '', content: null };
     }
 
@@ -375,7 +438,7 @@ const DiagnosticoPage = () => {
                 className="w-[40%] h-auto rounded-lg"
               />
             </div>
-            <p className="whitespace-pre-line" dangerouslySetInnerHTML={{ __html: diagnosticConfigs[0].description }} />
+            {renderTextWithImages(diagnosticConfigs[0].description)}
           </div>
         )
       };
@@ -396,7 +459,9 @@ const DiagnosticoPage = () => {
             {currentTopic.exercises.map((exercise, index) => (
               <div key={index} className="bg-gray-100 dark:bg-[#282828] rounded-lg p-6">
                 <h3 className="text-black dark:text-white font-medium mb-4">Ejercicio {index + 1}</h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-4">{exercise.statement}</p>
+                <div className="text-gray-700 dark:text-gray-300 mb-4">
+                  {renderTextWithImages(exercise.statement, { width: 160, height: 80 })}
+                </div>
                 <div className="space-y-3">
                   {exercise.options.map((option, optIndex) => (
                     <div key={optIndex} className="flex items-center space-x-3">
@@ -413,7 +478,7 @@ const DiagnosticoPage = () => {
                         htmlFor={`option-${index}-${optIndex}`}
                         className="text-gray-700 dark:text-gray-300"
                       >
-                        {option}
+                        {formatOptionLabel(option, optIndex)}
                       </label>
                     </div>
                   ))}
@@ -428,7 +493,7 @@ const DiagnosticoPage = () => {
         title: currentTopic.title,
         content: (
           <div className="prose prose-sm dark:prose-invert max-w-none">
-            <p className="whitespace-pre-line" dangerouslySetInnerHTML={{ __html: currentTopic.description }} />
+            {renderTextWithImages(currentTopic.description)}
           </div>
         )
       };
@@ -447,7 +512,7 @@ const DiagnosticoPage = () => {
 
   // Paso de resumen de resultados
   const getSummaryContent = () => (
-    <div className="p-6 mt-16">
+    <div className="p-6 mt-16 relative">
       <h2 className="text-2xl font-bold text-black mb-6">Resumen de Resultados</h2>
       <div className="flex gap-8 mb-6">
         <div className="bg-gray-100 dark:bg-[#282828] rounded-lg p-4 text-center">
@@ -463,6 +528,37 @@ const DiagnosticoPage = () => {
           <div className="text-2xl text-blue-400 font-bold">{getAverage()}</div>
         </div>
       </div>
+      {(() => {
+        const totalAnswered = results.goodAnswers + results.wrongAnswers;
+        const hitRate = totalAnswered > 0 ? (results.goodAnswers / totalAnswered) * 100 : 0;
+        const showCelebration = results.wrongAnswers === 0 || hitRate >= 99;
+        if (!showCelebration) return null;
+        return (
+          <div className="relative mb-8">
+            <div className="text-green-500 text-xl font-semibold mb-4">¡Excelente! Rendimiento sobresaliente 🎉</div>
+            <div className="pointer-events-none select-none">
+              <div className="absolute inset-0 overflow-hidden">
+                {Array.from({ length: 80 }).map((_, i) => (
+                  <span
+                    key={i}
+                    className="absolute inline-block"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      top: `-${Math.random() * 30 + 10}px`,
+                      width: `${Math.random() * 6 + 4}px`,
+                      height: `${Math.random() * 10 + 6}px`,
+                      backgroundColor: [`#EF4444`, `#F59E0B`, `#10B981`, `#3B82F6`, `#8B5CF6`][i % 5],
+                      transform: `rotate(${Math.random() * 360}deg)`,
+                      animation: `fall ${Math.random() * 2 + 2.5}s linear ${Math.random()}s forwards`
+                    }}
+                  />
+                ))}
+              </div>
+              <style>{`@keyframes fall { to { transform: translateY(120vh) rotate(720deg); opacity: 0.9; } }`}</style>
+            </div>
+          </div>
+        );
+      })()}
       <div className="overflow-x-auto mb-8">
         <table className="min-w-full text-sm text-left text-gray-700 dark:text-gray-300">
           <thead>
@@ -507,26 +603,90 @@ const DiagnosticoPage = () => {
           ))}
         </div>
       </div>
+      {results.wrongAnswers > 0 && (
+        <div className="mt-8 bg-gray-100 dark:bg-[#282828] rounded-lg p-6">
+          <div className="flex items-center justify-between mb-3">
+            <div className="text-gray-700 dark:text-gray-300 font-medium">Plan de estudio recomendado</div>
+            <button
+              onClick={async () => {
+                try {
+                  setIsLoadingStudyPlan(true);
+                  const allTopics = (diagnosticConfigs[0]?.topics || []).map(t => t.title).join(', ');
+                  const weakTopics = results.subjects
+                    .filter(s => s.points < s.maxPoints || s.percentage < 100)
+                    .map(s => s.title)
+                    .join(', ');
+                  const studyPlanMessage = {
+                    role: 'user' as const,
+                    content: `Basado en los temas: ${allTopics} y que Matemáticas de Fedor no tiene videos. Créame un plan de estudio para reforzar los temas ${weakTopics}.`,
+                    timestamp: new Date()
+                  };
+                  const data = await chatService.studyPlan([studyPlanMessage], authService.getToken() || '');
+                  setStudyPlan(data.response);
+                } catch (error) {
+                  console.error('Error al generar el plan de estudio:', error);
+                  setStudyPlan('No se pudo generar el plan de estudio en este momento.');
+                } finally {
+                  setIsLoadingStudyPlan(false);
+                }
+              }}
+              disabled={isLoadingStudyPlan}
+              className={`px-4 py-2 rounded-md text-sm font-medium ${isLoadingStudyPlan ? 'bg-gray-300 dark:bg-[#1E1E1E] text-gray-500 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+            >
+              {isLoadingStudyPlan ? 'Generando…' : 'Generar plan de estudio'}
+            </button>
+          </div>
+          {studyPlan && (
+            <div className="study-plan-container overflow-x-auto">
+              <div className="prose prose-sm dark:prose-invert max-w-none">
+                <div className="whitespace-pre-line" dangerouslySetInnerHTML={{ __html: studyPlan }} />
+              </div>
+              <style jsx>{`
+                .study-plan-container table {
+                  width: 80%;
+                  margin-left: auto;
+                  margin-right: auto;
+                  border-collapse: separate;
+                  border-spacing: 12px 8px; /* espacio entre columnas y filas */
+                }
+                .study-plan-container th,
+                .study-plan-container td {
+                  padding: 12px 16px; /* acolchado interno por celda */
+                }
+                .study-plan-container thead th {
+                  text-align: left;
+                }
+                @media (max-width: 768px) {
+                  .study-plan-container table {
+                    width: 100%;
+                    border-spacing: 8px 6px;
+                  }
+                  .study-plan-container th,
+                  .study-plan-container td {
+                    padding: 10px 12px;
+                  }
+                }
+              `}</style>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 
   // Modificar la lógica de navegación para insertar el paso de resumen antes del chat
-  const isSummaryStep = currentStep === totalSteps;
-  const isChatStep = currentStep === totalSteps + 1;
+  const isSummaryStep = currentStep === summaryStepIndex;
+  const isChatStep = currentStep === chatStepIndex;
 
   // Actualizar la lógica de navegación
   const handleNext = async () => {
     const isExerciseStep = ((currentStep - 1) % 2) === 0;
-    // No validar si es el antepenúltimo paso (Resumen de Resultados)
+    // No validar en el paso de Resumen; pasar al Chat
     if (isSummaryStep) {
       setCurrentStep(currentStep + 1); // Avanzar al chat sin validar
       return;
     }
-    // No validar si el siguiente paso es el resumen
-    if (currentStep === totalSteps - 1) {
-      setCurrentStep(currentStep + 1);
-      return;
-    }
+    // Si estamos en el penúltimo paso de contenido, el siguiente es Resumen (pero aún podría ser descripción de tema)
     if (isExerciseStep) {
       const success = await validateAndSubmitAnswers();
       if (!success) {
@@ -538,17 +698,22 @@ const DiagnosticoPage = () => {
         return;
       }
     }
-    if (currentStep < totalSteps) {
+    // Avanzar dentro de contenido
+    if (currentStep < totalContentSteps) {
       setCurrentStep(currentStep + 1);
-    } else if (currentStep === totalSteps) {
-      setCurrentStep(currentStep + 1); // Ir al chat después del resumen
+    } else if (currentStep === totalContentSteps) {
+      // Último paso de contenido (últimos ejercicios) → ir a Resumen
+      setCurrentStep(currentStep + 1);
+    } else if (currentStep === summaryStepIndex) {
+      // Resumen → Chat
+      setCurrentStep(currentStep + 1);
     }
   };
 
   const handlePrevious = () => {
     if (showChat) {
       setShowChat(false);
-      setCurrentStep(totalSteps);
+      setCurrentStep(summaryStepIndex);
     } else if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     }
@@ -645,8 +810,8 @@ const DiagnosticoPage = () => {
             {!showChat && (
               <button
                 onClick={handleNext}
-                disabled={currentStep === totalSteps && showChat}
-                className={`flex items-center gap-1 px-4 py-2 text-sm font-medium ${currentStep === totalSteps && showChat
+                disabled={isChatStep}
+                className={`flex items-center gap-1 px-4 py-2 text-sm font-medium ${isChatStep
                   ? 'bg-gray-100 dark:bg-[#1E1E1E] text-gray-500 cursor-not-allowed'
                   : 'bg-gray-200 dark:bg-[#282828] hover:bg-gray-300 dark:hover:bg-[#363636]'
                   } rounded-md transition-colors`}

@@ -56,6 +56,12 @@ interface InputMultipleExercise {
   }>;
 }
 
+interface InputSingleExercise {
+  type: 'input_single';
+  statement: string;
+  expectedAnswer: string;
+}
+
 interface ExerciseAnswer {
   topicId: string;
   topicTitle: string;
@@ -407,22 +413,25 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     }
 
     // Procesar exampleExercises
-    let parsedExamples: InputMultipleExercise[] = [];
+    let parsedExamples: (InputMultipleExercise | InputSingleExercise)[][] = [];
     if (Array.isArray(currentTopic.exampleExercises)) {
       parsedExamples = currentTopic.exampleExercises.map((ex) => {
         try {
+          //console.log("exampleExercises EX", ex);
           const cleanJson = ex.values
             ?.replace(/\n/g, '')
             ?.replace(/\r/g, '')
             ?.replace(/\t/g, '')
             ?.trim();
           if (!cleanJson) {
-            return { type: 'input_multiple', statement: '', inputs: [] };
+            return [];
           }
           const parsed = JSON.parse(cleanJson);
-          return Array.isArray(parsed) ? parsed[0] : parsed;
-        } catch {
-          return { type: 'input_multiple', statement: '', inputs: [] };
+          // Mantener todas las posiciones si es array; normalizar a array de ejercicios
+          return Array.isArray(parsed) ? parsed : [parsed];
+        } catch (err) {
+          console.log("[catch] -No cleanJson", err);
+          return [];
         }
       });
     }
@@ -500,63 +509,118 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                       );
                     }
                   })}
-                
+
                 {/* Si hay un ejercicio de ejemplo correspondiente a esta parte, mostrarlo */}
-                {parsedExamples[partIndex] && (() => {
-                  const typedExample = parsedExamples[partIndex] as InputMultipleExercise;
-                  if (typedExample.type === 'input_multiple' && Array.isArray(typedExample.inputs)) {
-                    return (
-                      <div className="mt-4 bg-[#282828] rounded-lg p-6">
-                        <div className="flex items-center flex-wrap gap-2">
-                          <span className="text-gray-700 dark:text-gray-300 mb-0 mr-2 whitespace-nowrap" dangerouslySetInnerHTML={{ __html: String(typedExample.statement) }} />
-                          {typedExample.inputs.map((input, inputIdx) => (
-                            <input
-                              key={inputIdx}
-                              type="text"
-                              value={inputAnswers[`${partIndex}_${inputIdx}`] || ''}
-                              onChange={(e) => handleInputChange(partIndex.toString(), inputIdx, e.target.value)}
-                              className={`bg-[#1E1E1E] text-white rounded-md px-2 py-1 w-16 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm border ${
-                                inputValidation[`${partIndex}_${inputIdx}`] !== undefined
-                                  ? inputValidation[`${partIndex}_${inputIdx}`]
+                {parsedExamples[partIndex] && parsedExamples[partIndex].length > 0 && (
+                  <div className="mt-2 w-full md:w-1/4 min-w-0 break-words">
+                    {parsedExamples[partIndex].map((example, exIdx) => (
+                      <div key={`example-${partIndex}-${exIdx}`} className="w-full">
+                        {example.type === 'input_multiple' && Array.isArray(example.inputs) && (
+                          <div className="mt-4 bg-white dark:bg-[#282828] rounded-lg p-6">
+                            <div className="flex items-start gap-4">
+                              <span className="text-gray-700 dark:text-gray-300 mb-0 mr-2 whitespace-normal break-words flex-shrink-0" dangerouslySetInnerHTML={{ __html: String(example.statement) }} />
+                              <div className={`flex gap-2 ${example.inputs.length >= 10 ? 'flex-col' : 'flex-wrap items-center'} max-w-full`}>
+                                {example.inputs.map((input, inputIdx) => (
+                                  <div key={inputIdx} className={`flex items-center gap-2 ${example.inputs.length >= 10 ? 'mb-2' : ''}`}>
+                                    {input.input && (
+                                      <span className="text-black dark:text-gray-200 whitespace-pre">{input.input}</span>
+                                    )}
+                                    <input
+                                      type="text"
+                                      value={inputAnswers[`${partIndex}_${inputIdx}`] || ''}
+                                      onChange={(e) => handleInputChange(partIndex.toString(), inputIdx, e.target.value)}
+                                      className={`bg-gray-100 dark:bg-[#1E1E1E] text-black dark:text-white rounded-md px-2 py-1 w-16 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm border ${inputValidation[`${partIndex}_${inputIdx}`] !== undefined
+                                        ? inputValidation[`${partIndex}_${inputIdx}`]
+                                          ? 'border-green-500'
+                                          : 'border-red-500'
+                                        : 'border-gray-300 dark:border-gray-600'
+                                        }`}
+                                      placeholder={`...`}
+                                    />
+                                    {example.inputs.length >= 10 && (
+                                      <span className="text-xs text-gray-500 dark:text-gray-400">#{inputIdx + 1}</span>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                              <button
+                                onClick={() => validateInputAnswers(partIndex.toString(), example.inputs)}
+                                className="ml-4 bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition-colors text-sm flex-shrink-0"
+                              >
+                                Verificar
+                              </button>
+                            </div>
+                            {/* Mensajes de validación debajo de los inputs */}
+                            <div className="flex gap-2 mt-2">
+                              {example.inputs.map((input, inputIdx) => (
+                                inputValidation[`${partIndex}_${inputIdx}`] !== undefined && (
+                                  <span
+                                    key={inputIdx}
+                                    className={`text-xs ${inputValidation[`${partIndex}_${inputIdx}`]
+                                      ? 'text-green-500'
+                                      : 'text-red-500'
+                                      }`}
+                                  >
+                                    {inputValidation[`${partIndex}_${inputIdx}`]
+                                      ? '¡Correcto!'
+                                      : 'Incorrecto'}
+                                  </span>
+                                )
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {example.type === 'input_single' && (
+                          <div className="mt-4 bg-white dark:bg-[#282828] rounded-lg p-6">
+                            <div className="flex items-center gap-4">
+                              <span className="text-gray-700 dark:text-gray-300 mb-0 mr-2 whitespace-normal break-words flex-shrink-0" dangerouslySetInnerHTML={{ __html: String(example.statement) }} />
+                              <input
+                                type="text"
+                                value={inputAnswers[`${partIndex}_0`] || ''}
+                                onChange={(e) => handleInputChange(partIndex.toString(), 0, e.target.value)}
+                                className={`bg-gray-100 dark:bg-[#1E1E1E] text-black dark:text-white rounded-md px-3 py-2 w-24 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm border ${inputValidation[`${partIndex}_0`] !== undefined
+                                  ? inputValidation[`${partIndex}_0`]
                                     ? 'border-green-500'
                                     : 'border-red-500'
-                                  : 'border-gray-600'
-                              }`}
-                              placeholder={`...`}
-                              style={{ marginRight: '6px' }}
-                            />
-                          ))}
-                          <button
-                            onClick={() => validateInputAnswers(partIndex.toString(), typedExample.inputs)}
-                            className="ml-4 bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition-colors text-sm"
-                          >
-                            Verificar
-                          </button>
-                        </div>
-                        {/* Mensajes de validación debajo de los inputs */}
-                        <div className="flex gap-2 mt-2">
-                          {typedExample.inputs.map((input, inputIdx) => (
-                            inputValidation[`${partIndex}_${inputIdx}`] !== undefined && (
-                              <span
-                                key={inputIdx}
-                                className={`text-xs ${
-                                  inputValidation[`${partIndex}_${inputIdx}`]
+                                  : 'border-gray-300 dark:border-gray-600'
+                                  }`}
+                                placeholder={`...`}
+                              />
+                              <button
+                                onClick={() => {
+                                  const answer = inputAnswers[`${partIndex}_0`] || '';
+                                  const isValid = answer.toLowerCase() === example.expectedAnswer.toLowerCase();
+                                  setInputValidation(prev => ({
+                                    ...prev,
+                                    [`${partIndex}_0`]: isValid
+                                  }));
+                                }}
+                                className="ml-4 bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition-colors text-sm flex-shrink-0"
+                              >
+                                Verificar
+                              </button>
+                            </div>
+                            {/* Mensaje de validación */}
+                            {inputValidation[`${partIndex}_0`] !== undefined && (
+                              <div className="mt-2">
+                                <span
+                                  className={`text-sm ${inputValidation[`${partIndex}_0`]
                                     ? 'text-green-500'
                                     : 'text-red-500'
-                                }`}
-                              >
-                                {inputValidation[`${partIndex}_${inputIdx}`]
-                                  ? '¡Correcto!'
-                                  : 'Incorrecto'}
-                              </span>
-                            )
-                          ))}
-                        </div>
+                                    }`}
+                                >
+                                  {inputValidation[`${partIndex}_0`]
+                                    ? '¡Correcto!'
+                                    : 'Incorrecto'}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
-                    );
-                  }
-                  return null;
-                })()}
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -617,7 +681,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
     try {
       const response = await chatService.sendChatMessages([userMessage], token);
-      
+
       const assistantMessage: Message = {
         role: 'assistant',
         content: response.response,
@@ -647,13 +711,13 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   const fillRandomAnswers = () => {
     const currentTopic = diagnosticConfigs[0].topics[Math.floor((currentStep - 1) / 2)];
     const exercises = currentTopic.exercises;
-    
+
     const randomAnswers: { [key: string]: string } = {};
     exercises.forEach((_, index) => {
       const randomIndex = Math.floor(Math.random() * exercises[index].options.length);
       randomAnswers[index] = randomIndex.toString();
     });
-    
+
     setSelectedAnswers(randomAnswers);
   };
 
@@ -763,7 +827,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
             <div className="h-full bg-gray-100 dark:bg-[#1E1F25] p-8">
               <div className="max-w-4xl mx-auto">
                 <h2 className="text-2xl font-bold text-white mb-6">Resultados del Módulo</h2>
-                
+
                 {/* Tabla de resultados */}
                 <div className="bg-[#282828] rounded-lg shadow-lg overflow-hidden mb-6">
                   <table className="w-full">
@@ -782,11 +846,10 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                           <td className="px-6 py-4 text-white">{Math.round(subject.points)}</td>
                           <td className="px-6 py-4 text-white">{subject.maxPoints}</td>
                           <td className="px-6 py-4">
-                            <span className={`px-3 py-1 rounded-full text-sm ${
-                              subject.percentage >= 70 ? 'bg-green-500/20 text-green-400' :
-                              subject.percentage >= 50 ? 'bg-yellow-500/20 text-yellow-400' :
-                              'bg-red-500/20 text-red-400'
-                            }`}>
+                            <span className={`px-3 py-1 rounded-full text-sm ${subject.percentage >= 70 ? 'bg-green-500/20 text-green-400' :
+                                subject.percentage >= 50 ? 'bg-yellow-500/20 text-yellow-400' :
+                                  'bg-red-500/20 text-red-400'
+                              }`}>
                               {subject.percentage.toFixed(2)}
                             </span>
                           </td>
@@ -1102,18 +1165,16 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                         {/* Línea del timeline */}
                         {index < diagnosticConfigs[0].topics.length - 1 && (
                           <div
-                            className={`absolute left-[25px] top-[50%] w-[2px] h-[calc(100%)] ${
-                              topic.completed ? 'bg-orange-400' : 'bg-gray-700'
-                            }`}
+                            className={`absolute left-[25px] top-[50%] w-[2px] h-[calc(100%)] ${topic.completed ? 'bg-orange-400' : 'bg-gray-700'
+                              }`}
                           ></div>
                         )}
 
                         {/* Círculo numerado */}
                         <div className="relative z-10">
                           <div
-                            className={`w-[30px] h-[30px] rounded-full flex items-center justify-center text-white text-sm font-medium ${
-                              topic.completed ? 'bg-orange-400' : 'bg-gray-700'
-                            }`}
+                            className={`w-[30px] h-[30px] rounded-full flex items-center justify-center text-white text-sm font-medium ${topic.completed ? 'bg-orange-400' : 'bg-gray-700'
+                              }`}
                           >
                             {index + 1}
                           </div>
