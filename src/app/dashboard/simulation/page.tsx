@@ -439,32 +439,41 @@ export default function SimulationPage() {
         content: (
           <div className="space-y-6">
             {currentTopic.exercises?.map((exercise, index) => (
-                <div key={index} className="bg-gray-100 dark:bg-[#282828] rounded-lg p-6">
-                  <h3 className="text-black dark:text-white font-medium mb-4">Ejercicio {index + 1}</h3>
-                  <p className="text-gray-700 dark:text-gray-300 mb-4" dangerouslySetInnerHTML={{ __html: exercise.statement }}></p>
-                  <div className="space-y-3">
-                    {exercise.options?.map((option, optIndex) => (
-                      <div key={optIndex} className="flex items-center space-x-3">
-                        <input
-                          type="radio"
-                          name={`exercise-${index}`}
-                          id={`option-${index}-${optIndex}`}
-                          value={optIndex}
-                          checked={selectedAnswers[index] === optIndex}
-                          onChange={(e) => handleAnswerSelect(index, '', parseInt(e.target.value))}
-                          className="text-blue-500 focus:ring-blue-500"
-                        />
-                        <label
-                          htmlFor={`option-${index}-${optIndex}`}
-                          className="text-gray-700 dark:text-gray-300"
-                        >
-                          {option}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
+              <div key={index} className="bg-gray-100 dark:bg-[#282828] rounded-lg p-6">
+                <h3 className="text-black dark:text-white font-medium mb-4">Ejercicio {index + 1}</h3>
+                {/* Ajuste de statement */}
+                <div className="mb-4">
+                  <p
+                    className="text-gray-700 dark:text-gray-300 break-words whitespace-pre-line max-w-full"
+                    style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}
+                    dangerouslySetInnerHTML={{ __html: exercise.statement }}
+                  ></p>
                 </div>
-              ))}
+                <div className="space-y-3">
+                  {exercise.options?.map((option, optIndex) => (
+                    <div key={optIndex} className="flex items-center space-x-3">
+                      <input
+                        type="radio"
+                        name={`exercise-${index}`}
+                        id={`option-${index}-${optIndex}`}
+                        value={optIndex}
+                        checked={selectedAnswers[index] === optIndex}
+                        onChange={(e) => handleAnswerSelect(index, '', parseInt(e.target.value))}
+                        className="text-blue-500 focus:ring-blue-500"
+                      />
+                      {/* Ajuste de opción */}
+                      <label
+                        htmlFor={`option-${index}-${optIndex}`}
+                        className="text-gray-700 dark:text-gray-300 break-words max-w-[85%] whitespace-pre-line"
+                        style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}
+                      >
+                        {option}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         )
       };
@@ -1106,4 +1115,4 @@ export default function SimulationPage() {
       </div>
     </div>
   );
-} 
+}

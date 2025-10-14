@@ -123,6 +123,19 @@ class DiagnosticService {
 
     return response.json();
   }
+
+  async checkUserDiagnostic(diagnosticId: string, userId: string) {
+    const token = authService.getToken();
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/diagnostics/results/${diagnosticId}/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!res.ok) throw new Error('Error consultando diagnóstico');
+    return await res.json(); // { exists: boolean }
+  }
 }
 
-export const diagnosticService = new DiagnosticService(); 
+export const diagnosticService = new DiagnosticService();

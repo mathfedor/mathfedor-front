@@ -245,6 +245,54 @@ const DiagnosticoPage = () => {
         if (configs && configs.length > 0) {
           setDiagnosticConfigs(configs);
           setDiagnosticId(configs[0]._id); // Guardamos el diagnosticId
+
+          // Consulta si el usuario ya tiene diagnóstico
+          const userId = authService.getCurrentUser()?.id;
+          if (userId) {
+            const result = await diagnosticService.checkUserDiagnostic(configs[0]._id, userId);
+            if (result.exists) {
+              setAlertMessage({
+                title: 'Diagnóstico existente',
+                message: 'Ya tienes un diagnóstico, si continúas se sobrescribirá el anterior.'
+              });
+              setIsAlertOpen(true);
+
+              // Marcar respuestas guardadas en todos los temas y ejercicios
+              if (result.diagnosticResult?.answers) {
+                console.log('Respuestas previas encontradas:', result.diagnosticResult.answers);
+                const newSelectedAnswers: { [key: string]: number } = {};
+
+                // Recorremos todos los topics y ejercicios
+                configs[0].topics.forEach((topic, topicIdx) => {
+                  topic.exercises?.forEach((exercise, exIdx) => {
+                    const exerciseId = `${topic.title}_ex${exIdx + 1}`;
+                    interface AnswerObj {
+                      exerciseId: string;
+                      selectedAnswer: string;
+                      isCorrect: boolean;
+                    }
+
+                    const answersArray: AnswerObj[] = result.diagnosticResult?.answers ?? [];
+                    const answerObj: AnswerObj | undefined = answersArray.find((a: AnswerObj) => a.exerciseId === exerciseId);
+                    if (answerObj) {
+                      // Buscar el índice de la opción que coincide con selectedAnswer
+                      const optionIndex = exercise.options.findIndex(opt => {
+                        // Normalizar espacios y minúsculas para comparar
+                        return String(opt).trim().toLowerCase() === String(answerObj.selectedAnswer).trim().toLowerCase();
+                      });
+                      if (optionIndex !== -1) {
+                        // La clave es el índice del ejercicio dentro del tema
+                        newSelectedAnswers[`${topicIdx}_${exIdx}`] = optionIndex;
+                      }
+                    }
+                  });
+                });
+
+                // Guardar respuestas seleccionadas
+                setSelectedAnswers(newSelectedAnswers);
+              }
+            }
+          }
         }
       } catch (error) {
         console.error('Error al obtener la configuración del diagnóstico:', error);
@@ -266,10 +314,10 @@ const DiagnosticoPage = () => {
     router.push('/');
   };
 
-  const handleAnswerSelect = (exerciseIndex: number, answer: string, optionIndex: number) => {
+  const handleAnswerSelect = (exerciseKey: string, answer: string, optionIndex: number) => {
     setSelectedAnswers(prev => ({
       ...prev,
-      [exerciseIndex]: optionIndex
+      [exerciseKey]: optionIndex
     }));
   };
 
@@ -335,7 +383,7 @@ const DiagnosticoPage = () => {
       if (isCorrect) correctAnswers++;
       return {
         exerciseId: `${currentTopic.title}_ex${index + 1}`,
-        selectedAnswer: exercise.options[userAnswerPosition],
+        selectedAnswer: exercise.options[userAnswerPosition]+'',
         isCorrect
       };
     });
@@ -394,6 +442,8 @@ const DiagnosticoPage = () => {
         answers: [...results.answers, ...answers]
       };
 
+      console.log('Enviando resultados del diagnóstico:');
+      console.log(diagnosticResult);
       await diagnosticService.submitResults(diagnosticResult);
       setSelectedAnswers({}); // Limpiar respuestas para el siguiente tema
       return true;
@@ -426,69 +476,65 @@ const DiagnosticoPage = () => {
     // Si es el paso 1, mostrar la descripción del diagnóstico
     if (currentStep === 1) {
       return {
-        title: "FERNANDO BASTIDAS PARRA",
+        title: diagnosticConfigs[0].title,
         content: (
-          <div className="prose prose-sm dark:prose-invert max-w-none">
-            <div className="mb-6 flex justify-center">
-              <Image
-                src="/Img-fernando-metodofedor.png"
-                alt="Método Fedor"
-                width={800}
-                height={400}
-                className="w-[40%] h-auto rounded-lg"
-              />
+          <div>
+            <div className="prose prose-sm dark:prose-invert max-w-none mb-8">
+              {renderTextWithImages(diagnosticConfigs[0].description)}
             </div>
-            {renderTextWithImages(diagnosticConfigs[0].description)}
           </div>
         )
       };
     }
 
-    const topics = diagnosticConfigs[0].topics;
-    // Ajustamos el índice para tener en cuenta que el paso 1 es la descripción
+    // Determinar el índice del tema actual
     const currentTopicIndex = Math.floor((currentStep - 2) / 2);
-    // Un paso es ejercicio si es par después de la descripción (2,4,6...)
-    const isExerciseStep = ((currentStep - 1) % 2) === 0;
-    const currentTopic = topics[currentTopicIndex];
+    const currentTopic = diagnosticConfigs[0].topics[currentTopicIndex];
 
-    if (isExerciseStep) {
+    // Si es paso de ejercicios
+    if ((currentStep - 2) % 2 === 1) {
       return {
         title: `Ejercicios - ${currentTopic.title}`,
         content: (
-          <div className="space-y-6">
-            {currentTopic.exercises.map((exercise, index) => (
-              <div key={index} className="bg-gray-100 dark:bg-[#282828] rounded-lg p-6">
-                <h3 className="text-black dark:text-white font-medium mb-4">Ejercicio {index + 1}</h3>
-                <div className="text-gray-700 dark:text-gray-300 mb-4">
-                  {renderTextWithImages(exercise.statement, { width: 160, height: 80 })}
+          <div>
+            {currentTopic.exercises.map((exercise, index) => {
+              const exerciseKey = `${currentTopic.title}_ex${index + 1}`;
+              return (
+                <div key={exerciseKey} className="bg-gray-100 dark:bg-[#282828] rounded-lg p-6 mb-6">
+                  <h3 className="text-black dark:text-white font-medium mb-4">Ejercicio {index + 1}</h3>
+                  <div className="text-gray-700 dark:text-gray-300 mb-4">
+                    {renderTextWithImages(exercise.statement, { width: 160, height: 80 })}
+                  </div>
+                  <div className="space-y-3">
+                    {exercise.options.map((option, optIndex) => (
+                      <div key={optIndex} className="flex items-center space-x-3">
+                        <input
+                          type="radio"
+                          name={exerciseKey}
+                          id={`${exerciseKey}_option${optIndex}`}
+                          value={optIndex}
+                          checked={selectedAnswers[exerciseKey] === optIndex}
+                          onChange={(e) => handleAnswerSelect(exerciseKey, '', parseInt(e.target.value))}
+                          className="text-blue-500 focus:ring-blue-500"
+                        />
+                        <label
+                          htmlFor={`${exerciseKey}_option${optIndex}`}
+                          className="text-gray-700 dark:text-gray-300 break-words max-w-[85%] whitespace-pre-line"
+                          style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}
+                        >
+                          {formatOptionLabel(option, optIndex)}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="space-y-3">
-                  {exercise.options.map((option, optIndex) => (
-                    <div key={optIndex} className="flex items-center space-x-3">
-                      <input
-                        type="radio"
-                        name={`exercise-${index}`}
-                        id={`option-${index}-${optIndex}`}
-                        value={optIndex}
-                        checked={selectedAnswers[index] === optIndex}
-                        onChange={(e) => handleAnswerSelect(index, '', parseInt(e.target.value))}
-                        className="text-blue-500 focus:ring-blue-500"
-                      />
-                      <label
-                        htmlFor={`option-${index}-${optIndex}`}
-                        className="text-gray-700 dark:text-gray-300"
-                      >
-                        {formatOptionLabel(option, optIndex)}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )
       };
     } else {
+      // Paso de descripción de tema
       return {
         title: currentTopic.title,
         content: (
@@ -643,7 +689,7 @@ const DiagnosticoPage = () => {
               </div>
               <style jsx>{`
                 .study-plan-container table {
-                  width: 80%;
+                  width: 50%;
                   margin-left: auto;
                   margin-right: auto;
                   border-collapse: separate;
@@ -1203,4 +1249,4 @@ const DiagnosticoPage = () => {
   );
 }
 
-export default DiagnosticoPage; 
+export default DiagnosticoPage;
