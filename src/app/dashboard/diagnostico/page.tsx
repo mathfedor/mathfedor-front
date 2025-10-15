@@ -259,30 +259,21 @@ const DiagnosticoPage = () => {
 
               // Marcar respuestas guardadas en todos los temas y ejercicios
               if (result.diagnosticResult?.answers) {
-                console.log('Respuestas previas encontradas:', result.diagnosticResult.answers);
                 const newSelectedAnswers: { [key: string]: number } = {};
 
                 // Recorremos todos los topics y ejercicios
-                configs[0].topics.forEach((topic, topicIdx) => {
+                configs[0].topics.forEach((topic) => {
                   topic.exercises?.forEach((exercise, exIdx) => {
                     const exerciseId = `${topic.title}_ex${exIdx + 1}`;
-                    interface AnswerObj {
-                      exerciseId: string;
-                      selectedAnswer: string;
-                      isCorrect: boolean;
-                    }
-
-                    const answersArray: AnswerObj[] = result.diagnosticResult?.answers ?? [];
-                    const answerObj: AnswerObj | undefined = answersArray.find((a: AnswerObj) => a.exerciseId === exerciseId);
+                    const answerObj = result.diagnosticResult.answers.find((a: { exerciseId: string; answer: string }) => a.exerciseId === exerciseId);
                     if (answerObj) {
                       // Buscar el índice de la opción que coincide con selectedAnswer
                       const optionIndex = exercise.options.findIndex(opt => {
-                        // Normalizar espacios y minúsculas para comparar
                         return String(opt).trim().toLowerCase() === String(answerObj.selectedAnswer).trim().toLowerCase();
                       });
                       if (optionIndex !== -1) {
-                        // La clave es el índice del ejercicio dentro del tema
-                        newSelectedAnswers[`${topicIdx}_${exIdx}`] = optionIndex;
+                        // La clave es el id del ejercicio
+                        newSelectedAnswers[exerciseId] = optionIndex;
                       }
                     }
                   });
@@ -342,12 +333,6 @@ const DiagnosticoPage = () => {
     }
 
     const currentTopic = diagnosticConfigs[0].topics[currentTopicIndex];
-    console.log('Validando tema:', {
-      currentStep,
-      currentTopicIndex,
-      topicTitle: currentTopic?.title,
-      hasExercises: !!currentTopic?.exercises
-    });
 
     if (!currentTopic || !currentTopic.exercises || currentTopic.exercises.length === 0) {
       console.error('No se encontró el tema actual o sus ejercicios', {
@@ -360,7 +345,7 @@ const DiagnosticoPage = () => {
 
     const exercises = currentTopic.exercises;
 
-    const allAnswered = exercises.every((_, index) => selectedAnswers[index] !== undefined);
+    const allAnswered = exercises.every((_, index) => selectedAnswers[`${currentTopic.title}_ex${index + 1}`] !== undefined);
     if (!allAnswered) {
       console.log('Faltan respuestas por completar');
       return false;
@@ -369,21 +354,22 @@ const DiagnosticoPage = () => {
     const pointsPerExercise = 10 / exercises.length;
     let correctAnswers = 0;
     const answers = exercises.map((exercise, index) => {
+      const exerKey = `${currentTopic.title}_ex${index + 1}`;
       if (!exercise.correctAnswer) {
         console.error('No hay respuesta correcta definida para el ejercicio:', exercise);
         return {
           exerciseId: `${currentTopic.title}_ex${index + 1}`,
-          selectedAnswer: exercise.options[selectedAnswers[index]],
+          selectedAnswer: exercise.options[selectedAnswers[exerKey]],
           isCorrect: false
         };
       }
       const correctAnswerPosition = exercise.correctAnswer.charCodeAt(0) - 65; // Convierte A=0, B=1, C=2, etc.
-      const userAnswerPosition = selectedAnswers[index];
+      const userAnswerPosition = selectedAnswers[exerKey];
       const isCorrect = userAnswerPosition === correctAnswerPosition;
       if (isCorrect) correctAnswers++;
       return {
         exerciseId: `${currentTopic.title}_ex${index + 1}`,
-        selectedAnswer: exercise.options[userAnswerPosition]+'',
+        selectedAnswer: exercise.options[userAnswerPosition] + '',
         isCorrect
       };
     });
@@ -442,10 +428,8 @@ const DiagnosticoPage = () => {
         answers: [...results.answers, ...answers]
       };
 
-      console.log('Enviando resultados del diagnóstico:');
-      console.log(diagnosticResult);
       await diagnosticService.submitResults(diagnosticResult);
-      setSelectedAnswers({}); // Limpiar respuestas para el siguiente tema
+      //setSelectedAnswers({}); // Limpiar respuestas para el siguiente tema
       return true;
     } catch (error) {
       console.error('Error al enviar resultados:', error);
@@ -476,12 +460,19 @@ const DiagnosticoPage = () => {
     // Si es el paso 1, mostrar la descripción del diagnóstico
     if (currentStep === 1) {
       return {
-        title: diagnosticConfigs[0].title,
+        title: "FERNANDO BASTIDAS PARRA",
         content: (
-          <div>
-            <div className="prose prose-sm dark:prose-invert max-w-none mb-8">
-              {renderTextWithImages(diagnosticConfigs[0].description)}
+          <div className="prose prose-sm dark:prose-invert max-w-none">
+            <div className="mb-6 flex justify-center">
+              <Image
+                src="/Img-fernando-metodofedor.png"
+                alt="Método Fedor"
+                width={800}
+                height={400}
+                className="w-[40%] h-auto rounded-lg"
+              />
             </div>
+            {renderTextWithImages(diagnosticConfigs[0].description)}
           </div>
         )
       };
@@ -812,8 +803,10 @@ const DiagnosticoPage = () => {
     if (!currentTopic || !currentTopic.exercises) return;
     const randomAnswers: { [key: string]: number } = {};
     currentTopic.exercises.forEach((ex, idx) => {
-      randomAnswers[idx] = Math.floor(Math.random() * ex.options.length);
+      const exerciseKey = `${currentTopic.title}_ex${idx + 1}`;
+      randomAnswers[exerciseKey] = Math.floor(Math.random() * ex.options.length);
     });
+    console.log('Respuestas aleatorias generadas:', randomAnswers);
     setSelectedAnswers(randomAnswers);
   };
 
