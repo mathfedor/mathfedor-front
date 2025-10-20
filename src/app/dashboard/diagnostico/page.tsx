@@ -65,6 +65,31 @@ const DiagnosticoPage = () => {
   const [diagnosticId, setDiagnosticId] = useState<string>('');
   const [studyPlan, setStudyPlan] = useState<string>('');
   const [isLoadingStudyPlan, setIsLoadingStudyPlan] = useState(false);
+  const [progressPercent, setProgressPercent] = useState(0);
+
+  const computeProgressPercent = (topics: Array<{ completed?: boolean }>): number => {
+    if (!topics || topics.length === 0) return 0;
+    const completedCount = topics.filter(t => !!t.completed).length;
+    return Math.round((completedCount / topics.length) * 100);
+  };
+
+  // Función para calcular el paso correspondiente a un tema
+  const getStepForTopic = (topicIndex: number, isExerciseStep: boolean = false): number => {
+    // Paso 1 es la descripción general
+    // Paso 2 es descripción del primer tema
+    // Paso 3 es ejercicios del primer tema
+    // Paso 4 es descripción del segundo tema
+    // Paso 5 es ejercicios del segundo tema
+    // etc.
+    return 2 + (topicIndex * 2) + (isExerciseStep ? 1 : 0);
+  };
+
+  // Función para navegar a un tema específico
+  const navigateToTopic = (topicIndex: number, isExerciseStep: boolean = false) => {
+    const targetStep = getStepForTopic(topicIndex, isExerciseStep);
+    setCurrentStep(targetStep);
+    setIsMaterialOpen(false); // Cerrar el modal
+  };
 
   // Helper para renderizar texto con imágenes embebidas mediante tokens {img_img...}
   const renderTextWithImages = (input: string, imageSize?: { width: number; height: number }) => {
@@ -245,6 +270,7 @@ const DiagnosticoPage = () => {
         if (configs && configs.length > 0) {
           setDiagnosticConfigs(configs);
           setDiagnosticId(configs[0]._id); // Guardamos el diagnosticId
+          setProgressPercent(computeProgressPercent(configs[0].topics || []));
 
           // Consulta si el usuario ya tiene diagnóstico
           const userId = authService.getCurrentUser()?.id;
@@ -256,6 +282,18 @@ const DiagnosticoPage = () => {
                 message: 'Ya tienes un diagnóstico, si continúas se sobrescribirá el anterior.'
               });
               setIsAlertOpen(true);
+
+              // Marcar temas como completados si están en diagnosticResult.subjects
+              if (result.diagnosticResult?.subjects) {
+                const completedTopicTitles = result.diagnosticResult.subjects.map((s: { title: string }) => s.title);
+                configs[0].topics.forEach((topic) => {
+                  if (completedTopicTitles.includes(topic.title)) {
+                    topic.completed = true;
+                  }
+                });
+                // Recalcular progreso basado en temas completados
+                setProgressPercent(computeProgressPercent(configs[0].topics || []));
+              }
 
               // Marcar respuestas guardadas en todos los temas y ejercicios
               if (result.diagnosticResult?.answers) {
@@ -396,6 +434,17 @@ const DiagnosticoPage = () => {
       subjects: [...prev.subjects, newSubject],
       answers: [...prev.answers, ...answers]
     }));
+
+    // Marcar el tópico como completado y recalcular progreso
+    try {
+      const updatedConfigs = [...diagnosticConfigs];
+      const topicRef = updatedConfigs[0]?.topics?.[currentTopicIndex];
+      if (topicRef) {
+        topicRef.completed = true;
+        setDiagnosticConfigs(updatedConfigs);
+        setProgressPercent(computeProgressPercent(updatedConfigs[0]?.topics || []));
+      }
+    } catch {}
 
     // Validar datos requeridos
     if (!diagnosticId) {
@@ -1149,8 +1198,8 @@ const DiagnosticoPage = () => {
                   <div>
                     <h3 className="text-black dark:text-white font-medium mb-1">Progreso del curso</h3>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">19%</span>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Fundamentos de SEO</span>
+                      <span className="text-sm text-gray-600 dark:text-gray-400">{progressPercent}%</span>
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Diagnóstico</span>
                     </div>
                   </div>
                   <button
@@ -1161,7 +1210,7 @@ const DiagnosticoPage = () => {
                   </button>
                 </div>
                 <div className="h-1 w-full bg-gray-300 dark:bg-gray-700 rounded-full">
-                  <div className="h-full w-[19%] bg-green-500 rounded-full"></div>
+                  <div className="h-full bg-green-500 rounded-full" style={{ width: `${progressPercent}%` }}></div>
                 </div>
               </div>
               <div className="overflow-y-auto h-[calc(100%-88px)]">
@@ -1177,7 +1226,7 @@ const DiagnosticoPage = () => {
 
                   {/* Título del módulo */}
                   <div className="pl-12 mb-4">
-                    <span className="text-gray-600 dark:text-gray-400 text-sm">Fundamentos de SEO</span>
+                    <span className="text-gray-600 dark:text-gray-400 text-sm">Diagnóstico</span>
                   </div>
 
                   {diagnosticConfigs.length > 0 ? (
@@ -1204,10 +1253,13 @@ const DiagnosticoPage = () => {
                         </div>
 
                         {/* Contenido de la clase */}
-                        <div className="flex items-center flex-1 pl-5">
+                        <div 
+                          className="flex items-center flex-1 pl-5"
+                          onClick={() => navigateToTopic(index, false)} // Navegar a descripción del tema
+                        >
                           <div className="w-20 h-12 rounded overflow-hidden flex-shrink-0 mr-3">
                             <Image
-                              src={topic.image || '/clase1.png'}
+                              src={topic.image || '/logo_casco.png'}
                               alt={topic.title}
                               width={80}
                               height={48}
