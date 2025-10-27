@@ -21,6 +21,9 @@ export default function DownloadsPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const [alertMessage, setAlertMessage] = useState({ title: '', message: '' });
+    const [isDownloading, setIsDownloading] = useState(false);
+    const [downloadingModuleId, setDownloadingModuleId] = useState<string | null>(null);
+
     const router = useRouter();
 
     useEffect(() => {
@@ -56,10 +59,14 @@ export default function DownloadsPage() {
 
     const handleDownload = async (moduleId: string) => {
         try {
+            setIsDownloading(true);
+            setDownloadingModuleId(moduleId);
+
             const userData = authService.getCurrentUser();
             if (!userData) {
                 throw new Error('No se encontró información del usuario');
             }
+
             // Aquí iría la lógica para descargar el archivo Excel
             const response = await moduleService.downloadModuleExcel(moduleId, userData.id);
 
@@ -73,13 +80,26 @@ export default function DownloadsPage() {
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
-        } catch (error) {
-            console.error('Error al descargar:', error);
+
+            // Mostrar mensaje de éxito
             setAlertMessage({
-                title: 'Error',
-                message: 'No se pudo descargar el archivo'
+                title: 'Éxito',
+                message: 'Archivo descargado correctamente'
             });
             setIsAlertOpen(true);
+
+        } catch (error) {
+            console.error('Error al descargar:', error);
+            const errorMessage = error instanceof Error ? error.message : 'No se pudo descargar el archivo';
+
+            setAlertMessage({
+                title: 'Error',
+                message: errorMessage
+            });
+            setIsAlertOpen(true);
+        } finally {
+            setIsDownloading(false);
+            setDownloadingModuleId(null);
         }
     };
 
@@ -92,6 +112,46 @@ export default function DownloadsPage() {
                 title={alertMessage.title}
                 message={alertMessage.message}
             />
+
+            {/* Modal de loading para descarga */}
+            {isDownloading && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white dark:bg-[#1E1F25] rounded-lg p-8 max-w-md mx-4 text-center">
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                        <h3 className="text-lg font-semibold text-black dark:text-white mb-2">
+                            Estamos personalizando tu módulo
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-400 mb-4">
+                            Por favor espera mientras preparamos tu archivo...
+                        </p>
+                        
+                        {/* Warning sobre la contraseña */}
+                        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+                            <div className="flex items-start">
+                                <div className="flex-shrink-0">
+                                    <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div className="ml-3">
+                                    <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-200 mb-2">
+                                        ⚠️ Importante: Contraseña del archivo
+                                    </h3>
+                                    <div className="text-sm text-yellow-700 dark:text-yellow-300">
+                                        <p className="mb-2">
+                                            Se te enviará un correo con la contraseña del archivo.
+                                        </p>
+                                        <p className="font-semibold">
+                                            Guarda esta contraseña en un lugar seguro. La aplicación NO guarda esta contraseña, 
+                                            por lo que si la pierdes, no podrás abrir el archivo nuevamente.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
             <div className="flex-1 p-8">
                 <div className="max-w-7xl mx-auto">
                     <h1 className="text-2xl font-bold mb-6">Descargas</h1>
@@ -130,11 +190,31 @@ export default function DownloadsPage() {
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <button
-                                                        onClick={() => handleDownload(module.module_id)}
-                                                        className="flex items-center gap-2 text-blue-500 hover:text-blue-400 transition-colors"
+                                                        type="button"
+                                                        disabled={isDownloading}
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            e.stopPropagation();
+                                                            handleDownload(module.module_id);
+                                                        }}
+                                                        className={`flex items-center gap-2 transition-colors ${isDownloading && downloadingModuleId === module.module_id
+                                                                ? 'text-gray-400 cursor-not-allowed'
+                                                                : 'text-blue-500 hover:text-blue-400'
+                                                            }`}
                                                     >
-                                                        <FiDownload className="w-4 h-4" />
-                                                        <span>Descargar Excel</span>
+                                                        {isDownloading && downloadingModuleId === module.module_id ? (
+                                                            <>
+                                                                <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-gray-400"></div>
+                                                                <span>Personalizando...</span>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <FiDownload className="w-4 h-4" />
+                                                                <span className="cursor-pointer">
+                                                                    Descargar Excel
+                                                                </span>
+                                                            </>
+                                                        )}
                                                     </button>
                                                 </td>
                                             </tr>
