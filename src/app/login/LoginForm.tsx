@@ -180,7 +180,7 @@ function LoginFormContent() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             O{' '}
-            <a href="/registro" className="font-medium text-orange-600 hover:text-orange-500">
+            <a href="/registro" className="text-lg font-medium text-orange-600 hover:text-orange-500">
               crea una cuenta nueva
             </a>
           </p>

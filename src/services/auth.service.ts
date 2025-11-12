@@ -1,5 +1,6 @@
 import api from './api.config';
 import { LoginCredentials, User, LoginResponse } from '@/types/auth.types';
+import { AxiosError } from 'axios';
 
 class AuthService {
   async login(credentials: LoginCredentials): Promise<LoginResponse> {
@@ -21,10 +22,17 @@ class AuthService {
       };
     } catch (error) {
       console.error('Error en login:', error);
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          throw new Error('Credenciales inválidas');
+        }
+        const apiMessage = (error.response?.data as { message?: string } | undefined)?.message;
+        throw new Error(apiMessage || error.message || 'Error al iniciar sesión');
+      }
       if (error instanceof Error) {
         throw new Error(error.message || 'Error al iniciar sesión');
       }
-      throw error;
+      throw new Error('Error al iniciar sesión');
     }
   }
 

@@ -12,6 +12,13 @@ export interface User {
   avatar?: string;
 }
 
+export interface RegisterUserPayload {
+  name: string;
+  email: string;
+  password: string;
+  rol: string;
+}
+
 export interface LoginResponse {
   token: string;
   user: User;

@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode } from 'react-icons/fi';
+import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { Tooltip } from '@/components/ui/tooltip';
 import { authService } from '@/services/auth.service';
@@ -99,6 +99,13 @@ export default function Sidebar() {
     ...baseMenuItems,
     ...(isClient && user && user.role ? roleMenuItems[user.role.toLowerCase() as keyof typeof roleMenuItems] || [] : [])
   ];
+
+  if (user) {
+    menuItems = [
+      ...menuItems,
+      { icon: <FiShoppingCart className="w-5 h-5" />, title: 'Comprar', href: '/books' }
+    ];
+  }
 
   // Si el usuario es estudiante, actualizamos el submenu de módulos
   if (user?.role?.toLowerCase() === 'student') {

@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Footer from "@/components/Footer";
+import { usersService } from '@/services/users.service';
+import { AxiosError } from 'axios';
 
 interface FormErrors {
-  nombre?: string;
+  name?: string;
   email?: string;
   password?: string;
 }
@@ -14,7 +16,7 @@ interface FormErrors {
 export default function RegisterPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    nombre: '',
+    name: '',
     email: '',
     password: ''
   });
@@ -34,8 +36,8 @@ export default function RegisterPage() {
     const newErrors: FormErrors = {};
     
     // Validar nombre
-    if (!formData.nombre.trim()) {
-      newErrors.nombre = 'El nombre es obligatorio';
+    if (!formData.name.trim()) {
+      newErrors.name = 'El nombre es obligatorio';
     }
     
     // Validar email
@@ -67,30 +69,26 @@ export default function RegisterPage() {
     setSubmitError('');
     
     try {
-      const response = await fetch('api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          nombre: formData.nombre,
-          email: formData.email,
-          password: formData.password,
-          rol: 'Estudiante' // Por defecto todos los usuarios nuevos son estudiantes
-        }),
+      await usersService.createUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        rol: 'Student', // Por defecto todos los usuarios nuevos son estudiantes
       });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Error al registrar usuario');
-      }
       
       // Registro exitoso
       router.push('/login?registered=true');
       
     } catch (error) {
-      setSubmitError(error instanceof Error ? error.message : 'Ocurrió un error al registrar el usuario');
+      let message = 'Ocurrió un error al registrar el usuario';
+      
+      if (error instanceof AxiosError) {
+        message = (error.response?.data as { message?: string } | undefined)?.message ?? error.message ?? message;
+      } else if (error instanceof Error) {
+        message = error.message;
+      }
+      
+      setSubmitError(message);
     } finally {
       setIsLoading(false);
     }
@@ -113,21 +111,21 @@ export default function RegisterPage() {
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="rounded-md shadow-sm space-y-4">
               <div>
-                <label htmlFor="nombre" className="sr-only">Nombre completo</label>
+                <label htmlFor="name" className="sr-only">Nombre completo</label>
                 <input
-                  id="nombre"
-                  name="nombre"
+                  id="name"
+                  name="name"
                   type="text"
                   required
                   className={`appearance-none rounded-md relative block w-full px-3 py-4 border ${
-                    errors.nombre ? 'border-red-500' : 'border-gray-300'
+                    errors.name ? 'border-red-500' : 'border-gray-300'
                   } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm`}
                   placeholder="Nombre completo"
-                  value={formData.nombre}
+                  value={formData.name}
                   onChange={handleChange}
                 />
-                {errors.nombre && (
-                  <p className="text-red-500 text-xs mt-1">{errors.nombre}</p>
+                {errors.name && (
+                  <p className="text-red-500 text-xs mt-1">{errors.name}</p>
                 )}
               </div>
               

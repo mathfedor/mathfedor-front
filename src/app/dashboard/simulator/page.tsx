@@ -117,7 +117,8 @@ export default function SimulatorPage() {
   };
 
   const getVariableValue = (exerciseId: string, variable: string, defaultValue: number) => {
-    return variableValues[exerciseId]?.[variable] ?? defaultValue;
+    const normalizedVariable = variable.toLowerCase();
+    return variableValues[exerciseId]?.[normalizedVariable] ?? defaultValue;
   };
 
   const renderTemplate = (template: string, variables: string[], defaultValues: number[], exerciseId: string) => {
@@ -143,7 +144,7 @@ export default function SimulatorPage() {
       }
       
       // Agregar el placeholder como objeto
-      const varName = match[1];
+      const varName = match[1].toLowerCase();
       const mappedVar = variableMap[varName];
       if (mappedVar) {
         parts.push(mappedVar);
@@ -170,8 +171,8 @@ export default function SimulatorPage() {
                 key={`${exerciseId}-${part.variable}-${index}`}
                 type="number"
                 value={value}
-                onChange={(e) => handleVariableChange(exerciseId, part.variable, parseFloat(e.target.value) || 0)}
-                className="w-16 px-2 py-1 text-center border border-gray-300 rounded bg-white text-orange-500 font-medium inline-block"
+                onChange={(e) => handleVariableChange(exerciseId, part.variable.toLowerCase(), parseFloat(e.target.value) || 0)}
+                className="w-24 px-3 py-1 text-center border border-gray-300 rounded bg-white text-orange-500 font-medium inline-block"
                 style={{ display: 'inline-block' }}
               />
             );
