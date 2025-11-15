@@ -45,7 +45,30 @@ function ThanksContentInner() {
           throw new Error('ID de transacción no encontrado');
         }
 
-        // Obtener el estado de la transacción
+        // Si el ID contiene "MOD", es una compra con cupón (gratuita), no hacer fetch a Wompi
+        if (transactionId.includes('MOD')) {
+          // Crear objeto de transacción para compra con cupón
+          const couponTransaction: TransactionResponse['data'] = {
+            id: transactionId,
+            status: 'APPROVED',
+            amount_in_cents: 0, // Las compras con cupón que resultan en amount <= 0 son gratuitas
+            currency: 'COP',
+            reference: transactionId,
+            created_at: new Date().toISOString(),
+            finalized_at: new Date().toISOString(),
+            payment_method: {
+              type: 'COUPON',
+              extra: {}
+            }
+          };
+          
+          console.log("Coupon transaction data:", couponTransaction);
+          setTransaction(couponTransaction);
+          setIsLoading(false);
+          return;
+        }
+
+        // Si no contiene "MOD", es una transacción de Wompi, hacer fetch
         const wompiBaseUrl = process.env.WOMPI_ENVIRONMENT === 'PROD' 
           ? 'https://production.wompi.co/v1'
           : 'https://sandbox.wompi.co/v1';

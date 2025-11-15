@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart } from 'react-icons/fi';
+import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart, FiTag } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { Tooltip } from '@/components/ui/tooltip';
 import { authService } from '@/services/auth.service';
@@ -52,7 +52,8 @@ const roleMenuItems: Record<string, MenuItem[]> = {
     { icon: <FiBarChart className="w-5 h-5" />, title: 'Crear Simulador', href: '/dashboard/adminsimulator' },
     { icon: <FiMonitor className="w-5 h-5" />, title: 'Crear Simulacro', href: '/dashboard/adminsimulation' },
     { icon: <FiGlobe className="w-5 h-5" />, title: 'Instituciones', href: '/dashboard/institutions' },
-    { icon: <FiUsers className="w-5 h-5" />, title: 'Usuarios', href: '/dashboard/users' }
+    { icon: <FiUsers className="w-5 h-5" />, title: 'Usuarios', href: '/dashboard/users' },
+    { icon: <FiTag className="w-5 h-5" />, title: 'Cupones', href: '/dashboard/coupons' }
   ]
 };
 
