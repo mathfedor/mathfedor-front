@@ -1,5 +1,5 @@
 import api from './api.config';
-import { RegisterUserPayload, User } from '@/types/auth.types';
+import { RegisterUserPayload, User, Student } from '@/types/auth.types';
 
 class UsersService {
     async createUser(user: RegisterUserPayload): Promise<User> {
@@ -40,6 +40,18 @@ class UsersService {
                 'Authorization': `Bearer ${token}`
             }
         });
+    }
+    async updateStudent(id: string, studentData: Partial<Student>): Promise<User> {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('No hay token de autenticación');
+        }
+        const response = await api.patch<User>(`/users/${id}/student`, studentData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return response.data;
     }
 }
 

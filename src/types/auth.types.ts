@@ -3,6 +3,15 @@ export interface LoginCredentials {
   password: string;
 }
 
+export interface Student {
+  country?: string | null;
+  department?: string | null;
+  city?: string | null;
+  institution?: string | null;
+  name?: string | null;
+  email?: string | null;
+}
+
 export interface User {
   id: string;
   name: string;
@@ -10,6 +19,7 @@ export interface User {
   role: string;
   lastName: string;
   avatar?: string;
+  student?: Student;
 }
 
 export interface RegisterUserPayload {
@@ -17,6 +27,7 @@ export interface RegisterUserPayload {
   email: string;
   password: string;
   rol: string;
+  student?: Student;
 }
 
 export interface LoginResponse {
