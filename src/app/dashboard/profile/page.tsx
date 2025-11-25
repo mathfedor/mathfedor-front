@@ -48,6 +48,40 @@ export default function ProfilePage() {
     }
   }, [router]);
 
+  // Sincronizar studentData solo cuando se abre el formulario (no cuando user cambia durante la edición)
+  useEffect(() => {
+    if (showStudentForm) {
+      if (user?.student) {
+        // Actualizar los datos del formulario con los datos actuales del usuario
+        const newStudentData = {
+          country: user.student.country || 'Colombia',
+          department: user.student.department || '',
+          city: user.student.city || '',
+          institution: user.student.institution || '',
+          name: user.student.name || '',
+          email: user.student.email || ''
+        };
+        setStudentData(newStudentData);
+        // Cargar ciudades si hay departamento
+        if (user.student.department && DEPARTMENTS[user.student.department]) {
+          setAvailableCities(DEPARTMENTS[user.student.department]);
+        }
+      } else {
+        // Si no hay datos de estudiante, resetear al estado inicial
+        setStudentData({
+          country: 'Colombia',
+          department: '',
+          city: '',
+          institution: '',
+          name: '',
+          email: ''
+        });
+        setAvailableCities([]);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showStudentForm]); // Solo cuando se abre/cierra el formulario, no cuando user cambia
+
   const handleDepartmentChange = (department: string) => {
     setStudentData({ ...studentData, department, city: '' });
     setAvailableCities(DEPARTMENTS[department] || []);
@@ -55,45 +89,113 @@ export default function ProfilePage() {
 
   const handleSubmitStudent = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user?.id) return;
+    e.stopPropagation();
+    
+    // Obtener el usuario del estado o del localStorage como respaldo
+    let currentUser: User | null = user;
+    if (!currentUser?.id) {
+      currentUser = authService.getCurrentUser();
+      console.log('Usuario obtenido del localStorage:', currentUser);
+      
+      if (!currentUser) {
+        console.error('No hay usuario disponible en localStorage');
+        setSubmitMessage({
+          type: 'error',
+          message: 'Error: No se pudo obtener la información del usuario. Por favor, recarga la página.'
+        });
+        return;
+      }
+      
+      // Intentar obtener el ID de diferentes formas (id, _id)
+      const userWithId = currentUser as User & { _id?: string };
+      const userId = currentUser.id || userWithId._id;
+      
+      if (!userId) {
+        console.error('No hay ID de usuario disponible');
+        console.error('Usuario completo:', currentUser);
+        console.error('Claves del objeto usuario:', Object.keys(currentUser));
+        setSubmitMessage({
+          type: 'error',
+          message: 'Error: No se pudo obtener la información del usuario. Por favor, recarga la página.'
+        });
+        return;
+      }
+      
+      // Si el usuario tiene _id pero no id, normalizarlo
+      if (!currentUser.id && userWithId._id) {
+        currentUser = { ...currentUser, id: userWithId._id };
+      }
+      
+      // Actualizar el estado con el usuario del localStorage
+      setUser(currentUser);
+    }
+    
+    // Asegurarse de que tenemos el ID
+    if (!currentUser || !currentUser.id) {
+      console.error('No se pudo obtener el ID del usuario después de todos los intentos');
+      setSubmitMessage({
+        type: 'error',
+        message: 'Error: No se pudo obtener el ID del usuario. Por favor, recarga la página.'
+      });
+      return;
+    }
+    
+    const userId = currentUser.id;
+
+    if (submitting) {
+      console.warn('Ya se está enviando el formulario');
+      return;
+    }
 
     setSubmitting(true);
     setSubmitMessage(null);
 
     try {
       // Preparar los datos asegurándonos de que todos los campos se envíen explícitamente
-      // Convertir strings vacíos a null para que el backend los procese correctamente
       const dataToSend: Partial<Student> = {
         country: studentData.country || 'Colombia',
-        department: studentData.department && studentData.department.trim() !== '' ? studentData.department : null,
-        city: studentData.city && studentData.city.trim() !== '' ? studentData.city : null,
-        institution: studentData.institution && studentData.institution.trim() !== '' ? studentData.institution : null,
-        name: studentData.name && studentData.name.trim() !== '' ? studentData.name : null,
-        email: studentData.email && studentData.email.trim() !== '' ? studentData.email : null
+        department: studentData.department && studentData.department.trim() !== '' ? studentData.department.trim() : null,
+        city: studentData.city && studentData.city.trim() !== '' ? studentData.city.trim() : null,
+        institution: studentData.institution && studentData.institution.trim() !== '' ? studentData.institution.trim() : null,
+        name: studentData.name && studentData.name.trim() !== '' ? studentData.name.trim() : null,
+        email: studentData.email && studentData.email.trim() !== '' ? studentData.email.trim() : null
       };
 
-      console.log('Enviando datos del estudiante:', dataToSend); // Debug
-
-      const updatedUser = await usersService.updateStudent(user.id, dataToSend);
-      
-      console.log('Usuario actualizado recibido:', updatedUser); // Debug
+      const updatedUser = await usersService.updateStudent(userId, dataToSend);
       
       // Actualizar el usuario en localStorage
       localStorage.setItem('user', JSON.stringify(updatedUser));
+      
+      // Actualizar el estado del usuario con la respuesta
       setUser(updatedUser);
-      setShowStudentForm(false);
+      
+      // Disparar un evento personalizado para notificar a otros componentes del cambio
+      window.dispatchEvent(new CustomEvent('userUpdated', { detail: updatedUser }));
+      
+      // Cerrar el formulario después de un pequeño delay para que el usuario vea el mensaje
+      setTimeout(() => {
+        setShowStudentForm(false);
+      }, 500);
+      
       setSubmitMessage({
         type: 'success',
         message: 'Datos del estudiante guardados exitosamente'
       });
     } catch (error) {
-      console.error('Error al guardar los datos del estudiante:', error); // Debug
+      console.error('=== ERROR AL GUARDAR ===');
+      console.error('Error completo:', error);
+      if (error instanceof Error) {
+        console.error('Mensaje de error:', error.message);
+        console.error('Stack:', error.stack);
+      }
+      
       setSubmitMessage({
         type: 'error',
         message: error instanceof Error ? error.message : 'Error al guardar los datos del estudiante'
       });
     } finally {
       setSubmitting(false);
+      console.log('=== FINALIZADO (submitting = false) ===');
     }
   };
 
@@ -232,7 +334,7 @@ export default function ProfilePage() {
 
               <div className="mb-4">
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Nombre
+                  Nombre completo
                 </label>
                 <input
                   type="text"

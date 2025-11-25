@@ -26,35 +26,49 @@ export default function DownloadsPage() {
 
     const router = useRouter();
 
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                if (!authService.isAuthenticated()) {
-                    router.replace('/login');
-                    return;
-                }
-
-                const userData = authService.getCurrentUser();
-                if (!userData) {
-                    throw new Error('No se encontró información del usuario');
-                }
-
-                // Aquí iría la llamada para obtener los módulos comprados
-                const purchasedModules = await moduleService.getPurchasedModules(userData.id);
-                setModules(purchasedModules);
-            } catch (error) {
-                console.error('Error:', error);
-                setAlertMessage({
-                    title: 'Error',
-                    message: error instanceof Error ? error.message : 'Error al cargar los módulos'
-                });
-                setIsAlertOpen(true);
-            } finally {
-                setIsLoading(false);
+    const loadModules = async () => {
+        try {
+            if (!authService.isAuthenticated()) {
+                router.replace('/login');
+                return;
             }
+
+            const userData = authService.getCurrentUser();
+            if (!userData) {
+                throw new Error('No se encontró información del usuario');
+            }
+
+            // Aquí iría la llamada para obtener los módulos comprados
+            const purchasedModules = await moduleService.getPurchasedModules(userData.id);
+            setModules(purchasedModules);
+        } catch (error) {
+            console.error('Error:', error);
+            setAlertMessage({
+                title: 'Error',
+                message: error instanceof Error ? error.message : 'Error al cargar los módulos'
+            });
+            setIsAlertOpen(true);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        setIsLoading(true);
+        loadModules();
+
+        // Escuchar cambios en el usuario
+        const handleUserUpdate = () => {
+            setIsLoading(true);
+            loadModules();
         };
 
-        checkAuth();
+        window.addEventListener('userUpdated', handleUserUpdate);
+
+        return () => {
+            window.removeEventListener('userUpdated', handleUserUpdate);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router]);
 
     const handleDownload = async (moduleId: string) => {
@@ -139,7 +153,7 @@ export default function DownloadsPage() {
                                     </h3>
                                     <div className="text-sm text-yellow-700 dark:text-yellow-300">
                                         <p className="mb-2">
-                                            Se te enviará un correo con la contraseña del archivo.
+                                            Se te enviará a tu correo electrónico la contraseña del archivo.
                                         </p>
                                         <p className="font-semibold">
                                             Guarda esta contraseña en un lugar seguro. La aplicación NO guarda esta contraseña, 

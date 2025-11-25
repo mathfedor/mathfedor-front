@@ -69,13 +69,29 @@ export default function Sidebar() {
 
   useEffect(() => {
     setIsClient(true);
-    const currentUser = authService.getCurrentUser();
-    setUser(currentUser);
+    const loadUserAndModules = () => {
+      const currentUser = authService.getCurrentUser();
+      setUser(currentUser);
 
-    // Cargar módulos si el usuario es estudiante
-    if (currentUser?.role?.toLowerCase() === 'student') {
-      loadModules();
-    }
+      // Cargar módulos si el usuario es estudiante
+      if (currentUser?.role?.toLowerCase() === 'student') {
+        loadModules();
+      }
+    };
+
+    // Cargar inicialmente
+    loadUserAndModules();
+
+    // Escuchar cambios en el usuario
+    const handleUserUpdate = () => {
+      loadUserAndModules();
+    };
+
+    window.addEventListener('userUpdated', handleUserUpdate);
+
+    return () => {
+      window.removeEventListener('userUpdated', handleUserUpdate);
+    };
   }, []);
 
   const loadModules = async () => {

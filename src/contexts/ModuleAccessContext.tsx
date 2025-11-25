@@ -47,6 +47,17 @@ export function ModuleAccessProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     loadModuleAccess();
+
+    // Escuchar cambios en el usuario
+    const handleUserUpdate = () => {
+      loadModuleAccess();
+    };
+
+    window.addEventListener('userUpdated', handleUserUpdate);
+
+    return () => {
+      window.removeEventListener('userUpdated', handleUserUpdate);
+    };
   }, []);
 
   const hasAccess = (moduleId: string) => {
