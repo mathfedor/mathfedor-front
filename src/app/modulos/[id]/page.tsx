@@ -111,7 +111,7 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
 
                 <div className="border-t pt-6">
                   <div className="flex justify-between items-center mb-6">
-                    <span className="text-3xl font-bold text-orange-500">${module.price}</span>
+                    <span className="text-3xl font-bold text-orange-500">${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
                     <button
                       onClick={handleBuyClick}
                       className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors text-lg font-semibold"

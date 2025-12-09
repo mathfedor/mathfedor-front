@@ -120,7 +120,8 @@ export default function Sidebar() {
   if (user) {
     menuItems = [
       ...menuItems,
-      { icon: <FiShoppingCart className="w-5 h-5" />, title: 'Comprar', href: '/books' }
+      { icon: <FiShoppingCart className="w-5 h-5" />, title: 'Comprar', href: '/books' },
+      { icon: <FiUser className="w-5 h-5" />, title: 'Perfil', href: '/dashboard/profile' }
     ];
   }
 

@@ -25,7 +25,7 @@ export default function HomePage() {
               </h1>
               <p className="text-lg md:text-xl mb-6">Transformando la Educación para tus hijos.</p>
               <Link href="/login" className="inline-block bg-fedor-orange text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-200 shadow-md hover:shadow-lg">
-                Comienza Ahora
+                Zona Fedor
               </Link>
               
               <div className="mt-12">
