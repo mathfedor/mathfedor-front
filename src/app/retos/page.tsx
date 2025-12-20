@@ -1,12 +1,72 @@
+import Link from 'next/link';
 import Footer from "@/components/Footer";
+import MathGraph3D from "@/components/MathGraph3D";
 
 export default function RetosPage() {
   return (
     <div className="min-h-screen">
+      {/* Hero Section con video de fondo y texto superpuesto */}
+      <section className="relative h-[600px] bg-blue-600 w-full overflow-hidden">
+        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
+          <source src="/fedor-descargas.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-blue-600 bg-opacity-60"></div>
+        
+        {/* Contenido superpuesto */}
+        <div className="relative z-10 flex items-center h-full">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              {/* Texto principal */}
+              <div className="text-white">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                  Desafía tu mente
+                  <br />
+                  <span className="text-orange-300">con retos</span>
+                  <br />
+                  matemáticos
+                  <br />
+                  únicos
+                </h1>
+                <p className="text-xl mb-8 opacity-90">
+                  Pon a prueba tus habilidades y descubre nuevas formas de resolver problemas
+                </p>
+                <Link 
+                  href="/books" 
+                  className="inline-block bg-orange-500 text-white font-bold py-4 px-8 rounded-lg hover:bg-orange-600 transition-colors duration-200 shadow-lg text-lg"
+                >
+                  Comenzar Retos
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <main className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center">Retos Matemáticos</h1>
-          <p className="text-lg text-center max-w-3xl mx-auto mb-12">Pon a prueba tus habilidades con estos desafiantes retos matemáticos diseñados para estimular tu pensamiento lógico y creatividad.</p>
+          {/* Sección de introducción con gráfico 3D */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+            {/* Columna de texto */}
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold mb-8">Retos Matemáticos</h1>
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                Pon a prueba tus habilidades con estos desafiantes retos matemáticos diseñados para estimular tu pensamiento lógico y creatividad.
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                Cada reto está cuidadosamente diseñado para ayudarte a desarrollar diferentes aspectos del razonamiento matemático, desde álgebra básica hasta geometría avanzada.
+              </p>
+            </div>
+            
+            {/* Columna del gráfico 3D */}
+            <div>
+              <div className="relative h-[400px] bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                <div className="absolute top-4 left-4 bg-white bg-opacity-90 p-3 rounded-lg shadow-sm z-10 backdrop-blur-sm">
+                  <p className="text-sm font-medium text-gray-700">Mira cómo las matemáticas toman forma</p>
+                </div>
+                <MathGraph3D />
+              </div>
+            </div>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Reto 1 */}
