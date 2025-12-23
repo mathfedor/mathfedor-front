@@ -5,15 +5,11 @@ import Footer from "@/components/Footer";
 export default function HomePage() {
   return (
     <div className="min-h-screen">
-      {/* Hero Section con imagen de fondo y texto superpuesto */}
+      {/* Hero Section con video de fondo y texto superpuesto */}
       <section className="relative h-[600px] bg-blue-600 w-full overflow-hidden">
-        <Image
-          src="/home-image.png"
-          alt="Estudiantes aprendiendo matemáticas con tecnología"
-          fill
-          className="absolute inset-0 w-full h-full object-cover"
-          priority
-        />
+        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
+          <source src="/fedor-descargas.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-blue-600 bg-opacity-60"></div>
         
         {/* Contenido superpuesto */}
@@ -23,11 +19,11 @@ export default function HomePage() {
               {/* Texto principal */}
               <div className="text-white">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                  Aprende matemáticas
+                  Domina la matemáticas
                   <br />
-                  <span className="text-orange-300">a tu ritmo con</span>
+                  <span className="text-orange-300">con el Método Fedor</span>
                   <br />
-                  la tecnología
+                  Y la tecnología
                   <br />
                   del futuro
                 </h1>
