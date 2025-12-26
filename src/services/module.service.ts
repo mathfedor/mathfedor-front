@@ -145,13 +145,13 @@ export const moduleService = {
     return data.data;
   },
 
-  async downloadModuleExcel(moduleId: string, userId: string) {
+  async downloadModuleExcel(moduleId: string, userId: string, fileIndex: number) {
     const token = authService.getToken();
     if (!token) {
       throw new Error('No se encontró el token de autenticación');
     }
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/learning/download/${moduleId}/${userId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/learning/download/${moduleId}/${userId}/${fileIndex}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`

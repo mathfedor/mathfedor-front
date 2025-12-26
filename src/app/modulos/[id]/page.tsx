@@ -89,6 +89,20 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
               </div>
               <div className="md:w-1/2 p-8">
                 <h1 className="text-4xl font-bold mb-4">{module.title}</h1>
+                
+                {/* Precio y botón de comprar movidos arriba */}
+                <div className="border-b pb-6 mb-6">
+                  <div className="flex justify-between items-center">
+                    <span className="text-3xl font-bold text-orange-500">${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
+                    <button
+                      onClick={handleBuyClick}
+                      className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors text-lg font-semibold"
+                    >
+                      Comprar
+                    </button>
+                  </div>
+                </div>
+
                 <div
                   className="text-gray-600 mb-6 whitespace-pre-line prose prose-lg max-w-none"
                   dangerouslySetInnerHTML={{ __html: module.description.replace(/\n/g, '<br/>') }}
@@ -106,18 +120,6 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
                         <li className="text-gray-500">No hay objetivos definidos</li>
                       )}
                     </ul>
-                  </div>
-                </div>
-
-                <div className="border-t pt-6">
-                  <div className="flex justify-between items-center mb-6">
-                    <span className="text-3xl font-bold text-orange-500">${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
-                    <button
-                      onClick={handleBuyClick}
-                      className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors text-lg font-semibold"
-                    >
-                      Comprar
-                    </button>
                   </div>
                 </div>
               </div>

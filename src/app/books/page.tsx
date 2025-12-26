@@ -16,7 +16,20 @@ export default function BooksPage() {
     const fetchModules = async () => {
       try {
         const data = await moduleService.getAllModules();
-        setModules(data);
+        // Ordenar módulos por la propiedad group (Grado1, Grado2, Grado3, etc.)
+        const sortedModules = data.sort((a, b) => {
+          // Extraer el número del grado para ordenar correctamente
+          const getGradeNumber = (group: string) => {
+            const match = group?.match(/Grado(\d+)/);
+            return match ? parseInt(match[1]) : 999; // Si no tiene formato Grado#, va al final
+          };
+          
+          const gradeA = getGradeNumber(a.group || '');
+          const gradeB = getGradeNumber(b.group || '');
+          
+          return gradeA - gradeB;
+        });
+        setModules(sortedModules);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Error al cargar los módulos');
       } finally {

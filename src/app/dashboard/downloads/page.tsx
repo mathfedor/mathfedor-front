@@ -14,6 +14,12 @@ interface Module {
     description: string;
     purchaseDate: string;
     status: 'active' | 'expired';
+    gradeConfig?: {
+        downloadFiles: Array<{
+            name: string;
+            description?: string;
+        }>;
+    };
 }
 
 export default function DownloadsPage() {
@@ -71,10 +77,10 @@ export default function DownloadsPage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router]);
 
-    const handleDownload = async (moduleId: string) => {
+    const handleDownload = async (moduleId: string, fileIndex: number, fileName?: string) => {
         try {
             setIsDownloading(true);
-            setDownloadingModuleId(moduleId);
+            setDownloadingModuleId(`${moduleId}-${fileIndex}`);
 
             const userData = authService.getCurrentUser();
             if (!userData) {
@@ -82,14 +88,14 @@ export default function DownloadsPage() {
             }
 
             // Aquí iría la lógica para descargar el archivo Excel
-            const response = await moduleService.downloadModuleExcel(moduleId, userData.id);
+            const response = await moduleService.downloadModuleExcel(moduleId, userData.id, fileIndex);
 
             // Crear un blob con los datos y descargar
             const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `modulo-${moduleId}.xlsx`;
+            a.download = fileName ? `${fileName}.xlsx` : `modulo-${moduleId}-${fileIndex}.xlsx`;
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
@@ -203,33 +209,69 @@ export default function DownloadsPage() {
                                                         : 'Sin fecha'}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <button
-                                                        type="button"
-                                                        disabled={isDownloading}
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            e.stopPropagation();
-                                                            handleDownload(module.module_id);
-                                                        }}
-                                                        className={`flex items-center gap-2 transition-colors ${isDownloading && downloadingModuleId === module.module_id
-                                                                ? 'text-gray-400 cursor-not-allowed'
-                                                                : 'text-blue-500 hover:text-blue-400'
-                                                            }`}
-                                                    >
-                                                        {isDownloading && downloadingModuleId === module.module_id ? (
-                                                            <>
-                                                                <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-gray-400"></div>
-                                                                <span>Personalizando...</span>
-                                                            </>
+                                                    <div className="flex flex-col gap-2">
+                                                        {module.gradeConfig?.downloadFiles && module.gradeConfig.downloadFiles.length > 0 ? (
+                                                            module.gradeConfig.downloadFiles.map((file, fileIndex) => (
+                                                                <button
+                                                                    key={fileIndex}
+                                                                    type="button"
+                                                                    disabled={isDownloading}
+                                                                    onClick={(e) => {
+                                                                        e.preventDefault();
+                                                                        e.stopPropagation();
+                                                                        handleDownload(module.module_id, fileIndex, file.name);
+                                                                    }}
+                                                                    className={`flex items-center gap-2 transition-colors text-sm ${isDownloading && downloadingModuleId === `${module.module_id}-${fileIndex}`
+                                                                            ? 'text-gray-400 cursor-not-allowed'
+                                                                            : 'text-blue-500 hover:text-blue-400'
+                                                                        }`}
+                                                                >
+                                                                    {isDownloading && downloadingModuleId === `${module.module_id}-${fileIndex}` ? (
+                                                                        <>
+                                                                            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-gray-400"></div>
+                                                                            <span>Personalizando...</span>
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            <FiDownload className="w-4 h-4" />
+                                                                            <span className="cursor-pointer">
+                                                                                {file.name || `Archivo ${fileIndex + 1}`}
+                                                                            </span>
+                                                                        </>
+                                                                    )}
+                                                                </button>
+                                                            ))
                                                         ) : (
-                                                            <>
-                                                                <FiDownload className="w-4 h-4" />
-                                                                <span className="cursor-pointer">
-                                                                    Descargar Excel
-                                                                </span>
-                                                            </>
+                                                            // Fallback para módulos sin gradeConfig (compatibilidad hacia atrás)
+                                                            <button
+                                                                type="button"
+                                                                disabled={isDownloading}
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    e.stopPropagation();
+                                                                    handleDownload(module.module_id, 0);
+                                                                }}
+                                                                className={`flex items-center gap-2 transition-colors ${isDownloading && downloadingModuleId === `${module.module_id}-0`
+                                                                        ? 'text-gray-400 cursor-not-allowed'
+                                                                        : 'text-blue-500 hover:text-blue-400'
+                                                                    }`}
+                                                            >
+                                                                {isDownloading && downloadingModuleId === `${module.module_id}-0` ? (
+                                                                    <>
+                                                                        <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-gray-400"></div>
+                                                                        <span>Personalizando...</span>
+                                                                    </>
+                                                                ) : (
+                                                                    <>
+                                                                        <FiDownload className="w-4 h-4" />
+                                                                        <span className="cursor-pointer">
+                                                                            Descargar Excel
+                                                                        </span>
+                                                                    </>
+                                                                )}
+                                                            </button>
                                                         )}
-                                                    </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))}
