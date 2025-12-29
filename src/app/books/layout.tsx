@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Módulos de Matemáticas - Método Fedor | Preparación ICFES y Pre-Universitario',
-  description: 'Domina las matemáticas con el Método Fedor. Preparación para ICFES, pre-universitario y desarrollo del pensamiento lógico. Más de 1000 estudiantes satisfechos. Aprende a tu ritmo con nuestros módulos especializados.',
+  description: 'Domina las matemáticas con el Método Fedor. Preparación para ICFES, pre-universitario y desarrollo del pensamiento lógico. Más de 10.000 estudiantes satisfechos. Aprende a tu ritmo con nuestros módulos especializados.',
   keywords: [
     'matemáticas',
     'método fedor',

@@ -276,7 +276,7 @@ export default function BooksPage() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               ¡Oferta exclusiva! <br />
-              Obtén Matemáticas de Fedor con un 30% de descuento por lanzamiento.
+              Obtén Matemáticas de Fedor con un 50% de descuento por lanzamiento.
             </h2>
             <p className="text-xl mb-8 opacity-90">
               Disponible solo hasta [fecha límite].
@@ -369,7 +369,7 @@ export default function BooksPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               <div>
-                <div className="text-5xl font-bold mb-2">1000+</div>
+                <div className="text-5xl font-bold mb-2">10.000+</div>
                 <div className="text-xl">Estudiantes Satisfechos</div>
               </div>
               <div>
@@ -425,7 +425,7 @@ export default function BooksPage() {
                         <span className="text-gray-500 text-sm ml-2">COP</span>
                       </div>
                       <button className="bg-orange-500 text-white py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors font-semibold">
-                        Ver Detalles
+                        Comprar Ahora
                       </button>
                     </div>
                   </div>

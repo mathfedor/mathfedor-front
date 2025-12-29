@@ -185,16 +185,16 @@ function ThanksContentInner() {
               
               <div className="space-y-3">
                 <button
-                  onClick={() => router.push('/dashboard')}
+                  onClick={() => router.push('/dashboard/profile')}
                   className="w-full bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors font-medium"
                 >
-                  Ir al Dashboard
+                  Llenar datos del estudiente
                 </button>
                 <button
-                  onClick={() => router.push('/dashboard/modules')}
+                  onClick={() => router.push('/dashboard/downloads')}
                   className="w-full bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors font-medium"
                 >
-                  Ver Módulos
+                  Ver mis Módulos para descargar
                 </button>
               </div>
             </div>

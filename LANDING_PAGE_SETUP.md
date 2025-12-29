@@ -101,7 +101,7 @@ verification: {
 Actualiza los números en `src/app/books/page.tsx` (líneas ~180-195) con datos reales:
 
 ```tsx
-<div className="text-5xl font-bold mb-2">1000+</div> // Estudiantes reales
+<div className="text-5xl font-bold mb-2">10.000+</div> // Estudiantes reales
 <div className="text-5xl font-bold mb-2">95%</div>   // Tasa real
 <div className="text-5xl font-bold mb-2">4.9/5</div> // Calificación real
 ```

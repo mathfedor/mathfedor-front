@@ -144,7 +144,7 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             ¡Oferta exclusiva! <br />
-            Obtén Matemáticas de Fedor con un 30% de descuento por lanzamiento.
+            Obtén Matemáticas de Fedor con un 50% de descuento por lanzamiento.
           </h2>
           <p className="text-xl mb-8 opacity-90">
             Disponible solo hasta [fecha límite].
