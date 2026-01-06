@@ -413,7 +413,7 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
 
                         {hasCoupon && (
                           <div className="mt-3">
-                            <div className="flex gap-2">
+                            <div className="flex flex-col sm:flex-row gap-2">
                               <input
                                 type="text"
                                 value={couponCode}
@@ -426,7 +426,7 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
                                 type="button"
                                 onClick={handleCouponValidation}
                                 disabled={validatingCoupon || !couponCode.trim()}
-                                className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                className="w-full sm:w-auto px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed whitespace-nowrap"
                               >
                                 {validatingCoupon ? 'Validando...' : 'Validar'}
                               </button>

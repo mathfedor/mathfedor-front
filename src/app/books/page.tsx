@@ -314,10 +314,10 @@ export default function BooksPage() {
                 </div>
                 <div className="p-6">
                   <p className="text-gray-600 italic mb-3">
-                    &ldquo;Gracias al Método Fedor mejoré mi puntaje en el ICFES y logré ingresar a la universidad de mis sueños.&rdquo;
+                    &ldquo;Se creó el Método Fedor para aprender matemáticas de una manera más fácil y divertida.&rdquo;
                   </p>
-                  <p className="font-semibold text-gray-900">- María González</p>
-                  <p className="text-sm text-gray-500">Estudiante de Ingeniería</p>
+                  <p className="font-semibold text-gray-900">- María de los Ángeles Restrepo</p>
+                  <p className="text-sm text-gray-500">Entrevista NOTI5</p>
                 </div>
               </div>
 
@@ -334,9 +334,9 @@ export default function BooksPage() {
                 </div>
                 <div className="p-6">
                   <p className="text-gray-600 italic mb-3">
-                    &ldquo;Las matemáticas siempre fueron mi punto débil, pero con Fedor todo cambió. Ahora las disfruto.&rdquo;
+                    &ldquo;El método no sólo me ayudó con el grado que cursaba, sino también a mejorar el rendimiento académico y a entender materias como física y trigonometría.&rdquo;
                   </p>
-                  <p className="font-semibold text-gray-900">- Carlos Ramírez</p>
+                  <p className="font-semibold text-gray-900">- Sofia Caballero</p>
                   <p className="text-sm text-gray-500">Estudiante de Bachillerato</p>
                 </div>
               </div>
@@ -354,7 +354,7 @@ export default function BooksPage() {
                 </div>
                 <div className="p-6">
                   <p className="text-gray-600 italic mb-3">
-                    &ldquo;El método es claro y efectivo. Pasé de tener miedo a las matemáticas a ser el mejor de mi clase.&rdquo;
+                    &ldquo;El método me llevó a ser uno de los mejores ICFES de Cali, dado que me permitió tener más razonamiento y perfeccionar procedimientos.&rdquo;
                   </p>
                   <p className="font-semibold text-gray-900">- Ana Martínez</p>
                   <p className="text-sm text-gray-500">Estudiante Pre-Universitaria</p>
