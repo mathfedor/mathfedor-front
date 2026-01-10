@@ -385,13 +385,10 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
                   </div>
 
                   <div>
-                    <h2 className="text-2xl font-bold mb-4">{module.title}</h2>
-                    <div
-                      className="text-gray-600 mb-6 whitespace-pre-line prose prose-lg max-w-none"
-                      dangerouslySetInnerHTML={{ __html: module.description.replace(/\n/g, '<br/>') }}
-                    />
-
-                    <div className="border-t pt-6">
+                    <h2 className="text-2xl font-bold mb-6">{module.title}</h2>
+                    
+                    {/* Precio y elementos de pago movidos arriba */}
+                    <div className="border-b pb-6 mb-6">
                       {/* Campo de cupón */}
                       <div className="mb-6">
                         <label className="flex items-center mb-3">
@@ -441,7 +438,7 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
                                 <p className="text-sm text-green-800 dark:text-green-200">
                                   ✓ Cupón aplicado: {couponDiscount.discountType === 'percentage'
                                     ? `${couponDiscount.discount}% de descuento`
-                                    : `$${couponDiscount.discount} de descuento`}
+                                    : `${couponDiscount.discount} de descuento`}
                                 </p>
                               </div>
                             )}
@@ -450,7 +447,7 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
                       </div>
 
                       {/* Precio y botón de pago */}
-                      <div className="flex justify-between items-center mb-6">
+                      <div className="flex justify-between items-center">
                         <div>
                           <div className="flex flex-col">
                             {couponDiscount && (
@@ -475,6 +472,12 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
                         </button>
                       </div>
                     </div>
+
+                    {/* Descripción movida abajo */}
+                    <div
+                      className="text-gray-600 mb-6 whitespace-pre-line prose prose-lg max-w-none"
+                      dangerouslySetInnerHTML={{ __html: module.description.replace(/\n/g, '<br/>') }}
+                    />
                   </div>
                 </div>
               </div>
@@ -484,4 +487,4 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
       </div>
     </div>
   );
-} 
+}
