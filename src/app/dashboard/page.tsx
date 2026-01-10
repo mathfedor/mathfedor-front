@@ -4,9 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 import { authService } from '@/services/auth.service';
-import { Tooltip } from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { User } from '@/types/auth.types';
 
 export default function DashboardPage() {
