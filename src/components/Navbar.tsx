@@ -115,8 +115,8 @@ export default function Navbar() {
               Home
             </Link>
             <Link
-              href="/modulos"
-              className={`block px-3 py-2 rounded-md text-base font-medium ${pathname === '/modulos'
+              href="/books"
+              className={`block px-3 py-2 rounded-md text-base font-medium ${pathname === '/books'
                   ? 'text-fedor-orange bg-white'
                   : 'text-white hover:bg-white hover:text-fedor-orange'
                 }`}
