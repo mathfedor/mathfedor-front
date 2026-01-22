@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart, FiTag } from 'react-icons/fi';
+import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart, FiTag, FiHelpCircle } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { Tooltip } from '@/components/ui/tooltip';
 import { authService } from '@/services/auth.service';
@@ -104,6 +104,11 @@ export default function Sidebar() {
   };
 
   const handleNavigation = (href: string) => {
+    // Si es el enlace de ayuda, abrir WhatsApp en nueva pestaña
+    if (href === 'whatsapp://help') {
+      window.open('https://wa.me/message/DY5UNLUUUA36J1?text=Hola%20amigos%20de%20Fedor%2C%20necesito%20ayuda.', '_blank');
+      return;
+    }
     router.push(href);
   };
 
@@ -120,8 +125,9 @@ export default function Sidebar() {
   if (user) {
     menuItems = [
       ...menuItems,
-      { icon: <FiShoppingCart className="w-5 h-5" />, title: 'Comprar', href: '/books' },
-      { icon: <FiUser className="w-5 h-5" />, title: 'Perfil', href: '/dashboard/profile' }
+      { icon: <FiShoppingCart className="w-5 h-5" />, title: 'Comprar', href: '/dashboard/buybooks' },
+      { icon: <FiUser className="w-5 h-5" />, title: 'Perfil', href: '/dashboard/profile' },
+      { icon: <FiHelpCircle className="w-5 h-5" />, title: 'Ayuda', href: '/dashboard/help' }
     ];
   }
 

@@ -1,6 +1,7 @@
 export interface LoginCredentials {
   email: string;
   password: string;
+  recaptchaToken?: string;
 }
 
 export interface Student {
@@ -28,6 +29,7 @@ export interface RegisterUserPayload {
   password: string;
   rol: string;
   student?: Student;
+  recaptchaToken?: string;
 }
 
 export interface LoginResponse {

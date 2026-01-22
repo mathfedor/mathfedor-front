@@ -13,6 +13,7 @@ export interface Module {
   price: number;
   status: string;
   image: string;
+  published?: boolean;
   topics: Array<{
     title: string;
     description: string;
@@ -118,6 +119,27 @@ export const moduleService = {
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || 'Error al obtener los módulos');
+    }
+
+    return response.json();
+  },
+
+  async getModuleById(moduleId: string): Promise<Module> {
+    const token = authService.getToken();
+    if (!token) {
+      throw new Error('No se encontró el token de autenticación');
+    }
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/learning/${moduleId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al obtener el módulo');
     }
 
     return response.json();

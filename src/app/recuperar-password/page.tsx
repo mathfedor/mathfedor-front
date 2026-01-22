@@ -2,43 +2,39 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import Footer from "@/components/Footer";
+import { authService } from '@/services/auth.service';
 
 export default function RecoverPasswordPage() {
   const [email, setEmail] = useState('');
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
       setError('Por favor, introduce un email válido');
       return;
     }
-    
+
     setIsLoading(true);
     setError('');
-    
+
     try {
-      const response = await fetch('/api/auth/recover-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Error al procesar la solicitud');
+      let recaptchaToken = '';
+      if (executeRecaptcha) {
+        recaptchaToken = await executeRecaptcha('recover_password');
       }
-      
+
+      await authService.requestPasswordRecovery(email, recaptchaToken);
+
       // Solicitud enviada con éxito
       setSuccess(true);
-      
+
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Ha ocurrido un error al enviar la solicitud');
     } finally {
@@ -56,7 +52,7 @@ export default function RecoverPasswordPage() {
               Introduce tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
             </p>
           </div>
-          
+
           {success ? (
             <div className="rounded-md bg-green-50 p-4">
               <div className="flex">
@@ -138,7 +134,7 @@ export default function RecoverPasswordPage() {
                   {isLoading ? 'Enviando...' : 'Enviar enlace de recuperación'}
                 </button>
               </div>
-              
+
               <div className="text-sm text-center">
                 <Link href="/login" className="font-medium text-orange-600 hover:text-orange-500">
                   Volver a Iniciar sesión
@@ -148,7 +144,7 @@ export default function RecoverPasswordPage() {
           )}
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );

@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 import { Tooltip } from '@/components/ui/tooltip';
 import { User } from '@/types/auth.types';
 import { AlertDialog } from '@/components/ui/alert-dialog';
-import { moduleService } from '@/services/module.service';
+import { Module, moduleService } from '@/services/module.service';
 import { useModuleAccess } from '@/contexts/ModuleAccessContext';
 
 interface Message {
@@ -94,6 +94,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   const [isLoading, setIsLoading] = useState(false);
   const [diagnosticConfigs, setDiagnosticConfigs] = useState<(DiagnosticConfig & { topics: Topic[] })[]>([]);
   const [user, setUser] = useState<User | null>(null);
+  const [currentModule, setCurrentModule] = useState<Module | null>(null);
   const router = useRouter();
   const { hasAccess } = useModuleAccess();
   const totalSteps = diagnosticConfigs[0]?.topics?.length * 2 || 0; // Cada tema tiene 2 pasos: descripción y ejercicios
@@ -275,7 +276,17 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     const fetchDiagnosticConfig = async () => {
       try {
         setIsLoading(true);
-        const configs = await moduleService.findByGroup('Grado11');
+        // Primero obtener el módulo específico por ID
+        const moduleData = await moduleService.getModuleById(resolvedParams.id);
+        setCurrentModule(moduleData);
+
+        // Si el módulo no está publicado, no cargar los ejercicios
+        if (moduleData.published === false) {
+          setIsLoading(false);
+          return;
+        }
+
+        const configs = await moduleService.findByGroup(moduleData.group);
         if (configs && configs.length > 0) {
           setDiagnosticConfigs(configs as unknown as (DiagnosticConfig & { topics: Topic[] })[]);
         }
@@ -292,7 +303,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     };
 
     fetchDiagnosticConfig();
-  }, []);
+  }, [resolvedParams.id]);
 
   const handleLogout = () => {
     authService.logout();
@@ -736,483 +747,510 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         message={alertMessage.message}
       />
       <div className="flex-1">
-        {/* Barra de navegación superior */}
-        <div className="sticky top-0 z-50 h-16 bg-white dark:bg-[#1C1D1F] flex items-center justify-between px-6 text-black dark:text-white shadow-md">
-          <div className="flex items-center">
-            <h1 className="text-lg font-medium">{diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'Módulo'}</h1>
-          </div>
-          <div className="flex items-center gap-3">
-            {process.env.NODE_ENV === 'development' && !showChat && (currentStep % 2) === 0 && (
+        {/* Mostrar mensaje si el módulo no está publicado */}
+        {currentModule && currentModule.published === false ? (
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="text-center max-w-md px-6">
+              <div className="mb-6">
+                <svg className="w-24 h-24 mx-auto text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                </svg>
+              </div>
+              <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
+                Estamos construyendo este módulo
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 mb-8">
+                Este módulo está en desarrollo. Pronto estará disponible con contenido educativo de alta calidad.
+              </p>
               <button
-                onClick={fillRandomAnswers}
-                className="flex items-center gap-1 px-4 py-2 text-sm font-medium bg-gray-200 hover:bg-gray-300 dark:bg-[#282828] dark:hover:bg-[#363636] rounded-md transition-colors"
+                onClick={() => router.push('/dashboard')}
+                className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors font-semibold"
               >
-                <FiShuffle className="w-4 h-4" />
-                Llenar aleatorio
+                Volver al Dashboard
               </button>
-            )}
-            <button
-              onClick={handlePrevious}
-              disabled={currentStep === 1 && !showChat}
-              className={`flex items-center gap-1 px-4 py-2 text-sm font-medium ${currentStep === 1 && !showChat
-                ? 'bg-gray-100 dark:bg-[#1E1E1E] text-gray-500 cursor-not-allowed'
-                : 'bg-gray-200 hover:bg-gray-300 dark:bg-[#282828] dark:hover:bg-[#363636]'
-                } rounded-md transition-colors`}
-            >
-              <FiChevronLeft className="w-4 h-4" />
-              Anterior
-            </button>
-            <Tooltip content="Ver la lista de temas" position="bottom">
-              <button
-                onClick={() => setIsMaterialOpen(!isMaterialOpen)}
-                className="px-4 py-2 text-sm font-medium bg-gray-200 hover:bg-gray-300 dark:bg-[#282828] dark:hover:bg-[#363636] rounded-md transition-colors"
-              >
-                Temas
-              </button>
-            </Tooltip>
-            {!showChat && (
-              <button
-                onClick={handleNext}
-                disabled={currentStep === totalSteps && showChat}
-                className={`flex items-center gap-1 px-4 py-2 text-sm font-medium ${currentStep === totalSteps && showChat
-                  ? 'bg-gray-100 dark:bg-[#1E1E1E] text-gray-500 cursor-not-allowed'
-                  : 'bg-gray-200 hover:bg-gray-300 dark:bg-[#282828] dark:hover:bg-[#363636]'
-                  } rounded-md transition-colors`}
-              >
-                Siguiente
-                <FiChevronRight className="w-4 h-4" />
-              </button>
-            )}
-
-            {/* Menú de usuario */}
-            <div className="relative">
-              <button
-                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="flex items-center gap-2 hover:bg-[#282828] p-1.5 rounded-full transition-colors"
-              >
-                <div className="w-8 h-8 rounded-full bg-gray-300 overflow-hidden relative">
-                  <Image
-                    src={user?.avatar || '/default-avatar.png'}
-                    alt="Avatar"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <FiChevronDown className={`w-4 h-4 transition-transform ${isUserMenuOpen ? 'transform rotate-180' : ''}`} />
-              </button>
-
-              {isUserMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-gray-800">
-                  <button
-                    onClick={() => router.push('/perfil')}
-                    className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-                  >
-                    Mi perfil
-                  </button>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-600"
-                  >
-                    Cerrar sesión
-                  </button>
-                </div>
-              )}
             </div>
           </div>
-        </div>
-
-        {/* Contenido principal */}
-        <div className="h-[calc(100vh-64px)]">
-          {showResults ? (
-            <div className="h-full bg-gray-100 dark:bg-[#1E1F25] p-8">
-              <div className="max-w-4xl mx-auto">
-                <h2 className="text-2xl font-bold text-white mb-6">Resultados del Módulo</h2>
-
-                {/* Tabla de resultados */}
-                <div className="bg-[#282828] rounded-lg shadow-lg overflow-hidden mb-6">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="bg-[#232323] text-left">
-                        <th className="px-6 py-4 text-gray-300 font-medium">Tema</th>
-                        <th className="px-6 py-4 text-gray-300 font-medium">Respuestas Correctas</th>
-                        <th className="px-6 py-4 text-gray-300 font-medium">Total Preguntas</th>
-                        <th className="px-6 py-4 text-gray-300 font-medium">Nota</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-700">
-                      {results.subjects.map((subject, index) => (
-                        <tr key={index} className="hover:bg-[#323232] transition-colors">
-                          <td className="px-6 py-4 text-white">{subject.title}</td>
-                          <td className="px-6 py-4 text-white">{Math.round(subject.points)}</td>
-                          <td className="px-6 py-4 text-white">{subject.maxPoints}</td>
-                          <td className="px-6 py-4">
-                            <span className={`px-3 py-1 rounded-full text-sm ${subject.percentage >= 70 ? 'bg-green-500/20 text-green-400' :
-                                subject.percentage >= 50 ? 'bg-yellow-500/20 text-yellow-400' :
-                                  'bg-red-500/20 text-red-400'
-                              }`}>
-                              {subject.percentage.toFixed(2)}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Resumen general */}
-                <div className="bg-[#282828] rounded-lg p-6 mb-6">
-                  <h3 className="text-xl font-semibold text-white mb-4">Resumen General</h3>
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="bg-[#323232] rounded-lg p-4">
-                      <p className="text-gray-400 text-sm">Total Respuestas Correctas</p>
-                      <p className="text-2xl font-bold text-white">{results.goodAnswers}</p>
-                    </div>
-                    <div className="bg-[#323232] rounded-lg p-4">
-                      <p className="text-gray-400 text-sm">Total Respuestas Incorrectas</p>
-                      <p className="text-2xl font-bold text-white">{results.wrongAnswers}</p>
-                    </div>
-                    <div className="bg-[#323232] rounded-lg p-4">
-                      <p className="text-gray-400 text-sm">Promedio General</p>
-                      <p className="text-2xl font-bold text-white">
-                        {(results.subjects.reduce((acc, sub) => acc + sub.percentage, 0) / results.subjects.length).toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Botón para continuar al chat */}
-                <div className="flex justify-end">
+        ) : (
+          <>
+            {/* Barra de navegación superior */}
+            <div className="sticky top-0 z-50 h-16 bg-white dark:bg-[#1C1D1F] flex items-center justify-between px-6 text-black dark:text-white shadow-md">
+              <div className="flex items-center">
+                <h1 className="text-lg font-medium">{diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'Módulo'}</h1>
+              </div>
+              <div className="flex items-center gap-3">
+                {process.env.NODE_ENV === 'development' && !showChat && (currentStep % 2) === 0 && (
                   <button
-                    onClick={handleContinueToChat}
-                    className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    onClick={fillRandomAnswers}
+                    className="flex items-center gap-1 px-4 py-2 text-sm font-medium bg-gray-200 hover:bg-gray-300 dark:bg-[#282828] dark:hover:bg-[#363636] rounded-md transition-colors"
                   >
-                    Continuar al Asistente
+                    <FiShuffle className="w-4 h-4" />
+                    Llenar aleatorio
                   </button>
-                </div>
-              </div>
-            </div>
-          ) : showChat ? (
-            <div className="h-full flex bg-gray-100 dark:bg-[#1E1F25]">
-              {/* Columna izquierda - Texto explicativo */}
-              <div className="w-[40%] border-r border-gray-300 dark:border-gray-700 p-6 overflow-y-auto">
-                <div className="prose prose-lg max-w-none dark:prose-invert">
-                  <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Asistente de Matemáticas</h2>
-                  <div className="space-y-4 text-black dark:text-gray-200 text-base md:text-lg">
-                    <p>
-                      Bienvenido al asistente de matemáticas. Aquí puedes hacer preguntas sobre:
-                    </p>
-                    <ul className="list-disc pl-4 space-y-2">
-                      <li>Divisores y números primos</li>
-                      <li>Múltiplos y factores</li>
-                      <li>Máximo común divisor (MCD)</li>
-                      <li>Mínimo común múltiplo (MCM)</li>
-                      <li>Ejercicios y problemas matemáticos</li>
-                    </ul>
-                    <p>
-                      El asistente te ayudará a:
-                    </p>
-                    <ul className="list-disc pl-4 space-y-2">
-                      <li>Resolver paso a paso los ejercicios</li>
-                      <li>Explicar conceptos matemáticos</li>
-                      <li>Proporcionar ejemplos adicionales</li>
-                      <li>Verificar tus respuestas</li>
-                    </ul>
-                    <div className="mt-6 p-4 bg-gray-100 dark:bg-[#282828] rounded-lg">
-                      <h3 className="text-xl font-semibold text-black dark:text-white mb-2">Ejemplo de pregunta:</h3>
-                      <p className="text-black dark:text-gray-200 italic text-base md:text-lg">
-                        &quot;¿Puedes ayudarme a encontrar todos los divisores del número 24 y explicarme el proceso paso a paso?&quot;
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                )}
+                <button
+                  onClick={handlePrevious}
+                  disabled={currentStep === 1 && !showChat}
+                  className={`flex items-center gap-1 px-4 py-2 text-sm font-medium ${currentStep === 1 && !showChat
+                    ? 'bg-gray-100 dark:bg-[#1E1E1E] text-gray-500 cursor-not-allowed'
+                    : 'bg-gray-200 hover:bg-gray-300 dark:bg-[#282828] dark:hover:bg-[#363636]'
+                    } rounded-md transition-colors`}
+                >
+                  <FiChevronLeft className="w-4 h-4" />
+                  Anterior
+                </button>
+                <Tooltip content="Ver la lista de temas" position="bottom">
+                  <button
+                    onClick={() => setIsMaterialOpen(!isMaterialOpen)}
+                    className="px-4 py-2 text-sm font-medium bg-gray-200 hover:bg-gray-300 dark:bg-[#282828] dark:hover:bg-[#363636] rounded-md transition-colors"
+                  >
+                    Temas
+                  </button>
+                </Tooltip>
+                {!showChat && (
+                  <button
+                    onClick={handleNext}
+                    disabled={currentStep === totalSteps && showChat}
+                    className={`flex items-center gap-1 px-4 py-2 text-sm font-medium ${currentStep === totalSteps && showChat
+                      ? 'bg-gray-100 dark:bg-[#1E1E1E] text-gray-500 cursor-not-allowed'
+                      : 'bg-gray-200 hover:bg-gray-300 dark:bg-[#282828] dark:hover:bg-[#363636]'
+                      } rounded-md transition-colors`}
+                  >
+                    Siguiente
+                    <FiChevronRight className="w-4 h-4" />
+                  </button>
+                )}
 
-              {/* Columna derecha - Chat */}
-              <div className="w-[60%] flex flex-col">
-                {/* Área de mensajes */}
-                <div className="flex-1 overflow-y-auto p-6">
-                  <div className="max-w-3xl mx-auto space-y-6">
-                    {messages.map((message, index) => (
-                      <div
-                        key={index}
-                        className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                      >
-                        <div
-                          className={`max-w-[70%] rounded-lg p-4 ${message.role === 'user'
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-gray-100 dark:bg-[#282828] text-black dark:text-gray-200'
-                            }`}
-                        >
-                          <p className="whitespace-pre-wrap text-base md:text-lg">{message.content}</p>
-                          <span className="text-xs opacity-70 mt-2 block">
-                            {message.timestamp.toLocaleTimeString()}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                    {isLoading && (
-                      <div className="flex justify-start">
-                        <div className="bg-gray-100 dark:bg-[#282828] text-black dark:text-gray-200 rounded-lg p-4">
-                          <div className="flex space-x-2">
-                            <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
-                            <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-100"></div>
-                            <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-200"></div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Área de entrada de texto */}
-                <div className="border-t border-gray-300 dark:border-gray-700 p-4">
-                  <div className="max-w-3xl mx-auto">
-                    <div className="relative">
-                      <textarea
-                        value={inputMessage}
-                        onChange={(e) => setInputMessage(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                        placeholder="Escribe tu mensaje..."
-                        className="w-full bg-gray-100 dark:bg-[#282828] text-black dark:text-white rounded-lg pl-4 pr-12 py-3 min-h-[50px] max-h-[200px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-lg"
-                        rows={1}
+                {/* Menú de usuario */}
+                <div className="relative">
+                  <button
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="flex items-center gap-2 hover:bg-[#282828] p-1.5 rounded-full transition-colors"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-gray-300 overflow-hidden relative">
+                      <Image
+                        src={user?.avatar || '/default-avatar.png'}
+                        alt="Avatar"
+                        fill
+                        className="object-cover"
                       />
+                    </div>
+                    <FiChevronDown className={`w-4 h-4 transition-transform ${isUserMenuOpen ? 'transform rotate-180' : ''}`} />
+                  </button>
+
+                  {isUserMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-gray-800">
                       <button
-                        onClick={handleSendMessage}
-                        disabled={isLoading || !inputMessage.trim()}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={() => router.push('/perfil')}
+                        className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
                       >
-                        <FiSend className="w-5 h-5" />
+                        Mi perfil
+                      </button>
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-600"
+                      >
+                        Cerrar sesión
                       </button>
                     </div>
-                    <p className="text-xs text-gray-400 mt-2">
-                      Presiona Enter para enviar, Shift + Enter para nueva línea
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="h-full flex">
-              {/* Sección de Resumen */}
-              <div className="w-[75%] bg-gray-100 dark:bg-[#1E1F25] overflow-y-auto">
-                <div className="p-6">
-                  <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">{title}</h2>
-                  <div className="text-black dark:text-gray-200 text-base md:text-lg">
-                    {content}
-                  </div>
-                </div>
-              </div>
-
-              {/* Sección de Comentarios */}
-              <div className="w-[25%] bg-gray-100 dark:bg-[#1E1F25] border-l border-gray-300 dark:border-gray-700 overflow-y-auto">
-                <div className="p-6">
-                  <div className="flex justify-between items-center mb-4">
-                    <div className="flex gap-4">
-                      <button className="text-black dark:text-white font-medium hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base">Todo</button>
-                      <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base">Preguntas</button>
-                      <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base">Aportes</button>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="text-black dark:text-gray-400 text-sm mr-2">Más votados</span>
-                      <FiChevronDown className="text-black dark:text-gray-400 w-4 h-4" />
-                    </div>
-                  </div>
-                  <div className="relative mb-6">
-                    <textarea
-                      placeholder="Escribe tu comentario o pregunta"
-                      className="w-full bg-gray-100 dark:bg-[#282828] text-black dark:text-white rounded-lg p-4 min-h-[100px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-lg"
-                    ></textarea>
-                  </div>
-
-                  {/* Lista de comentarios actualizada según el paso actual */}
-                  <div className="space-y-6">
-                    {questionsByStep[currentStep - 1]?.questions?.map((comment) => (
-                      <div key={comment.id} className="space-y-4">
-                        {/* Comentario principal */}
-                        <div className="flex gap-3">
-                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
-                            {comment.author.avatar}
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="text-black dark:text-white font-semibold">{comment.author.name}</span>
-                              <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
-                              <span className="text-gray-500 dark:text-gray-400 text-sm">{comment.author.role}</span>
-                              <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
-                              <span className="text-gray-500 dark:text-gray-400 text-sm">{comment.author.timeAgo}</span>
-                            </div>
-                            <p className="text-black dark:text-gray-200 text-base md:text-lg">{comment.content}</p>
-                            <div className="flex items-center gap-2 mt-2">
-                              <button className="flex items-center gap-1 text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
-                                <span>❤️</span>
-                                <span>{comment.likes}</span>
-                              </button>
-                              <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
-                                Responder
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Respuestas */}
-                        {comment.replies.length > 0 && (
-                          <div className="relative ml-11 space-y-4">
-                            {comment.replies.map((reply, index) => (
-                              <div key={reply.id} className="relative">
-                                {/* Línea conectora con curva */}
-                                <div className="absolute -left-4 top-4 w-4 h-[calc(100%+16px)] border-l-2 border-b-2 border-gray-300 dark:border-gray-700 rounded-bl-xl"></div>
-
-                                {/* Línea horizontal */}
-                                <div className="absolute -left-4 top-4 w-4 h-[2px] bg-gray-300 dark:bg-gray-700"></div>
-
-                                {/* Contenido de la respuesta */}
-                                <div className="flex gap-3 pl-4">
-                                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-medium">
-                                    {reply.author.avatar}
-                                  </div>
-                                  <div className="flex-1">
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <span className="text-black dark:text-white font-semibold">{reply.author.name}</span>
-                                      <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
-                                      <span className="text-gray-500 dark:text-gray-400 text-sm">{reply.author.role}</span>
-                                      <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
-                                      <span className="text-gray-500 dark:text-gray-400 text-sm">{reply.author.timeAgo}</span>
-                                    </div>
-                                    <p className="text-black dark:text-gray-200 text-base md:text-lg">{reply.content}</p>
-                                    <div className="flex items-center gap-2 mt-2">
-                                      <button className="flex items-center gap-1 text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
-                                        <span>❤️</span>
-                                        <span>{reply.likes}</span>
-                                      </button>
-                                      <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
-                                        Responder
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                {/* Línea final para la última respuesta */}
-                                {index === comment.replies.length - 1 && (
-                                  <div className="absolute -left-4 top-4 h-4 border-l-2 border-gray-300 dark:border-gray-700"></div>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Modal de Material */}
-        {isMaterialOpen && (
-          <div className="fixed inset-0 z-50">
-            {/* Overlay para cerrar el modal al hacer clic fuera */}
-            <div
-              className="fixed inset-0 bg-black bg-opacity-50"
-              onClick={() => setIsMaterialOpen(false)}
-            />
-
-            {/* Modal */}
-            <div className="fixed right-0 top-16 w-[25%] h-[calc(100vh-64px)] bg-white dark:bg-[#1E1F25] shadow-xl overflow-hidden">
-              <div className="p-4 border-b border-gray-300 dark:border-gray-700">
-                <div className="flex justify-between items-center mb-2">
-                  <div>
-                    <h3 className="text-black dark:text-white font-medium mb-1">Progreso del curso</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">19%</span>
-                      <span className="text-sm text-gray-400">
-                        {diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'Cargando...'}
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setIsMaterialOpen(false)}
-                    className="text-gray-600 dark:text-gray-400 hover:text-white"
-                  >
-                    <FiX className="w-5 h-5" />
-                  </button>
-                </div>
-                <div className="h-1 w-full bg-gray-300 dark:bg-gray-700 rounded-full">
-                  <div className="h-full w-[19%] bg-green-500 rounded-full"></div>
-                </div>
-              </div>
-              <div className="overflow-y-auto h-[calc(100%-88px)]">
-                <div className="relative pt-4 pb-4">
-                  {/* Punto inicial */}
-                  <div className="absolute left-[23px] top-0 w-[6px] h-[6px] rounded-full bg-orange-400"></div>
-
-                  {/* Línea vertical principal */}
-                  <div className="absolute left-[25px] top-[6px] w-[2px] h-[calc(100%-12px)] bg-gray-700"></div>
-
-                  {/* Punto final */}
-                  <div className="absolute left-[23px] bottom-0 w-[6px] h-[6px] rounded-full bg-gray-700"></div>
-
-                  {/* Título del módulo */}
-                  <div className="pl-12 mb-4">
-                    <span className="text-gray-600 dark:text-gray-400 text-sm">
-                      {diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'Cargando...'}
-                    </span>
-                  </div>
-
-                  {diagnosticConfigs.length > 0 ? (
-                    diagnosticConfigs[0].topics.map((topic, index) => (
-                      <div key={index} className="group relative flex items-center py-4 px-3 hover:bg-gray-200 dark:hover:bg-[#282828] transition-colors cursor-pointer">
-                        {/* Línea del timeline */}
-                        {index < diagnosticConfigs[0].topics.length - 1 && (
-                          <div
-                            className={`absolute left-[25px] top-[50%] w-[2px] h-[calc(100%)] ${topic.completed ? 'bg-orange-400' : 'bg-gray-700'
-                              }`}
-                          ></div>
-                        )}
-
-                        {/* Círculo numerado */}
-                        <div className="relative z-10">
-                          <div
-                            className={`w-[30px] h-[30px] rounded-full flex items-center justify-center text-white text-sm font-medium ${topic.completed ? 'bg-orange-400' : 'bg-gray-700'
-                              }`}
-                          >
-                            {index + 1}
-                          </div>
-                        </div>
-
-                        {/* Contenido de la clase */}
-                        <div className="flex items-center flex-1 pl-5">
-                          <div className="w-30 h-18 rounded overflow-hidden flex-shrink-0 mr-3">
-                            <Image
-                              src={topic.image ? `/images/${topic.image}` : '/images/default-topic.png'}
-                              alt={topic.title}
-                              width={120}
-                              height={72}
-                              className="object-cover w-full h-full"
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-black dark:text-white text-sm font-medium mb-1 truncate pr-2">{topic.title}</h4>
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs text-gray-600 dark:text-gray-400">{topic.duration}</span>
-                              {topic.completed && (
-                                <span className="text-xs text-orange-400 flex items-center gap-1">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-orange-400"></span>
-                                  Clase vista
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-gray-600 dark:text-gray-400 text-center py-4">Cargando temas...</div>
                   )}
                 </div>
               </div>
             </div>
-          </div>
+
+            {/* Contenido principal */}
+            <div className="h-[calc(100vh-64px)]">
+              {showResults ? (
+                <div className="h-full bg-gray-100 dark:bg-[#1E1F25] p-8">
+                  <div className="max-w-4xl mx-auto">
+                    <h2 className="text-2xl font-bold text-white mb-6">Resultados del Módulo</h2>
+
+                    {/* Tabla de resultados */}
+                    <div className="bg-[#282828] rounded-lg shadow-lg overflow-hidden mb-6">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="bg-[#232323] text-left">
+                            <th className="px-6 py-4 text-gray-300 font-medium">Tema</th>
+                            <th className="px-6 py-4 text-gray-300 font-medium">Respuestas Correctas</th>
+                            <th className="px-6 py-4 text-gray-300 font-medium">Total Preguntas</th>
+                            <th className="px-6 py-4 text-gray-300 font-medium">Nota</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-700">
+                          {results.subjects.map((subject, index) => (
+                            <tr key={index} className="hover:bg-[#323232] transition-colors">
+                              <td className="px-6 py-4 text-white">{subject.title}</td>
+                              <td className="px-6 py-4 text-white">{Math.round(subject.points)}</td>
+                              <td className="px-6 py-4 text-white">{subject.maxPoints}</td>
+                              <td className="px-6 py-4">
+                                <span className={`px-3 py-1 rounded-full text-sm ${subject.percentage >= 70 ? 'bg-green-500/20 text-green-400' :
+                                  subject.percentage >= 50 ? 'bg-yellow-500/20 text-yellow-400' :
+                                    'bg-red-500/20 text-red-400'
+                                  }`}>
+                                  {subject.percentage.toFixed(2)}
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Resumen general */}
+                    <div className="bg-[#282828] rounded-lg p-6 mb-6">
+                      <h3 className="text-xl font-semibold text-white mb-4">Resumen General</h3>
+                      <div className="grid grid-cols-3 gap-4">
+                        <div className="bg-[#323232] rounded-lg p-4">
+                          <p className="text-gray-400 text-sm">Total Respuestas Correctas</p>
+                          <p className="text-2xl font-bold text-white">{results.goodAnswers}</p>
+                        </div>
+                        <div className="bg-[#323232] rounded-lg p-4">
+                          <p className="text-gray-400 text-sm">Total Respuestas Incorrectas</p>
+                          <p className="text-2xl font-bold text-white">{results.wrongAnswers}</p>
+                        </div>
+                        <div className="bg-[#323232] rounded-lg p-4">
+                          <p className="text-gray-400 text-sm">Promedio General</p>
+                          <p className="text-2xl font-bold text-white">
+                            {(results.subjects.reduce((acc, sub) => acc + sub.percentage, 0) / results.subjects.length).toFixed(2)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Botón para continuar al chat */}
+                    <div className="flex justify-end">
+                      <button
+                        onClick={handleContinueToChat}
+                        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        Continuar al Asistente
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : showChat ? (
+                <div className="h-full flex bg-gray-100 dark:bg-[#1E1F25]">
+                  {/* Columna izquierda - Texto explicativo */}
+                  <div className="w-[40%] border-r border-gray-300 dark:border-gray-700 p-6 overflow-y-auto">
+                    <div className="prose prose-lg max-w-none dark:prose-invert">
+                      <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Asistente de Matemáticas</h2>
+                      <div className="space-y-4 text-black dark:text-gray-200 text-base md:text-lg">
+                        <p>
+                          Bienvenido al asistente de matemáticas. Aquí puedes hacer preguntas sobre:
+                        </p>
+                        <ul className="list-disc pl-4 space-y-2">
+                          <li>Divisores y números primos</li>
+                          <li>Múltiplos y factores</li>
+                          <li>Máximo común divisor (MCD)</li>
+                          <li>Mínimo común múltiplo (MCM)</li>
+                          <li>Ejercicios y problemas matemáticos</li>
+                        </ul>
+                        <p>
+                          El asistente te ayudará a:
+                        </p>
+                        <ul className="list-disc pl-4 space-y-2">
+                          <li>Resolver paso a paso los ejercicios</li>
+                          <li>Explicar conceptos matemáticos</li>
+                          <li>Proporcionar ejemplos adicionales</li>
+                          <li>Verificar tus respuestas</li>
+                        </ul>
+                        <div className="mt-6 p-4 bg-gray-100 dark:bg-[#282828] rounded-lg">
+                          <h3 className="text-xl font-semibold text-black dark:text-white mb-2">Ejemplo de pregunta:</h3>
+                          <p className="text-black dark:text-gray-200 italic text-base md:text-lg">
+                            &quot;¿Puedes ayudarme a encontrar todos los divisores del número 24 y explicarme el proceso paso a paso?&quot;
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Columna derecha - Chat */}
+                  <div className="w-[60%] flex flex-col">
+                    {/* Área de mensajes */}
+                    <div className="flex-1 overflow-y-auto p-6">
+                      <div className="max-w-3xl mx-auto space-y-6">
+                        {messages.map((message, index) => (
+                          <div
+                            key={index}
+                            className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                          >
+                            <div
+                              className={`max-w-[70%] rounded-lg p-4 ${message.role === 'user'
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-100 dark:bg-[#282828] text-black dark:text-gray-200'
+                                }`}
+                            >
+                              <p className="whitespace-pre-wrap text-base md:text-lg">{message.content}</p>
+                              <span className="text-xs opacity-70 mt-2 block">
+                                {message.timestamp.toLocaleTimeString()}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                        {isLoading && (
+                          <div className="flex justify-start">
+                            <div className="bg-gray-100 dark:bg-[#282828] text-black dark:text-gray-200 rounded-lg p-4">
+                              <div className="flex space-x-2">
+                                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+                                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-100"></div>
+                                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-200"></div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Área de entrada de texto */}
+                    <div className="border-t border-gray-300 dark:border-gray-700 p-4">
+                      <div className="max-w-3xl mx-auto">
+                        <div className="relative">
+                          <textarea
+                            value={inputMessage}
+                            onChange={(e) => setInputMessage(e.target.value)}
+                            onKeyPress={handleKeyPress}
+                            placeholder="Escribe tu mensaje..."
+                            className="w-full bg-gray-100 dark:bg-[#282828] text-black dark:text-white rounded-lg pl-4 pr-12 py-3 min-h-[50px] max-h-[200px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-lg"
+                            rows={1}
+                          />
+                          <button
+                            onClick={handleSendMessage}
+                            disabled={isLoading || !inputMessage.trim()}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <FiSend className="w-5 h-5" />
+                          </button>
+                        </div>
+                        <p className="text-xs text-gray-400 mt-2">
+                          Presiona Enter para enviar, Shift + Enter para nueva línea
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="h-full flex">
+                  {/* Sección de Resumen */}
+                  <div className="w-[75%] bg-gray-100 dark:bg-[#1E1F25] overflow-y-auto">
+                    <div className="p-6">
+                      <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">{title}</h2>
+                      <div className="text-black dark:text-gray-200 text-base md:text-lg">
+                        {content}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sección de Comentarios */}
+                  <div className="w-[25%] bg-gray-100 dark:bg-[#1E1F25] border-l border-gray-300 dark:border-gray-700 overflow-y-auto">
+                    <div className="p-6">
+                      <div className="flex justify-between items-center mb-4">
+                        <div className="flex gap-4">
+                          <button className="text-black dark:text-white font-medium hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base">Todo</button>
+                          <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base">Preguntas</button>
+                          <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base">Aportes</button>
+                        </div>
+                        <div className="flex items-center">
+                          <span className="text-black dark:text-gray-400 text-sm mr-2">Más votados</span>
+                          <FiChevronDown className="text-black dark:text-gray-400 w-4 h-4" />
+                        </div>
+                      </div>
+                      <div className="relative mb-6">
+                        <textarea
+                          placeholder="Escribe tu comentario o pregunta"
+                          className="w-full bg-gray-100 dark:bg-[#282828] text-black dark:text-white rounded-lg p-4 min-h-[100px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-lg"
+                        ></textarea>
+                      </div>
+
+                      {/* Lista de comentarios actualizada según el paso actual */}
+                      <div className="space-y-6">
+                        {questionsByStep[currentStep - 1]?.questions?.map((comment) => (
+                          <div key={comment.id} className="space-y-4">
+                            {/* Comentario principal */}
+                            <div className="flex gap-3">
+                              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
+                                {comment.author.avatar}
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <span className="text-black dark:text-white font-semibold">{comment.author.name}</span>
+                                  <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                                  <span className="text-gray-500 dark:text-gray-400 text-sm">{comment.author.role}</span>
+                                  <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                                  <span className="text-gray-500 dark:text-gray-400 text-sm">{comment.author.timeAgo}</span>
+                                </div>
+                                <p className="text-black dark:text-gray-200 text-base md:text-lg">{comment.content}</p>
+                                <div className="flex items-center gap-2 mt-2">
+                                  <button className="flex items-center gap-1 text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
+                                    <span>❤️</span>
+                                    <span>{comment.likes}</span>
+                                  </button>
+                                  <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
+                                    Responder
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Respuestas */}
+                            {comment.replies.length > 0 && (
+                              <div className="relative ml-11 space-y-4">
+                                {comment.replies.map((reply, index) => (
+                                  <div key={reply.id} className="relative">
+                                    {/* Línea conectora con curva */}
+                                    <div className="absolute -left-4 top-4 w-4 h-[calc(100%+16px)] border-l-2 border-b-2 border-gray-300 dark:border-gray-700 rounded-bl-xl"></div>
+
+                                    {/* Línea horizontal */}
+                                    <div className="absolute -left-4 top-4 w-4 h-[2px] bg-gray-300 dark:bg-gray-700"></div>
+
+                                    {/* Contenido de la respuesta */}
+                                    <div className="flex gap-3 pl-4">
+                                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-medium">
+                                        {reply.author.avatar}
+                                      </div>
+                                      <div className="flex-1">
+                                        <div className="flex items-center gap-2 mb-1">
+                                          <span className="text-black dark:text-white font-semibold">{reply.author.name}</span>
+                                          <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                                          <span className="text-gray-500 dark:text-gray-400 text-sm">{reply.author.role}</span>
+                                          <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                                          <span className="text-gray-500 dark:text-gray-400 text-sm">{reply.author.timeAgo}</span>
+                                        </div>
+                                        <p className="text-black dark:text-gray-200 text-base md:text-lg">{reply.content}</p>
+                                        <div className="flex items-center gap-2 mt-2">
+                                          <button className="flex items-center gap-1 text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
+                                            <span>❤️</span>
+                                            <span>{reply.likes}</span>
+                                          </button>
+                                          <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
+                                            Responder
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Línea final para la última respuesta */}
+                                    {index === comment.replies.length - 1 && (
+                                      <div className="absolute -left-4 top-4 h-4 border-l-2 border-gray-300 dark:border-gray-700"></div>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Modal de Material */}
+            {isMaterialOpen && (
+              <div className="fixed inset-0 z-50">
+                {/* Overlay para cerrar el modal al hacer clic fuera */}
+                <div
+                  className="fixed inset-0 bg-black bg-opacity-50"
+                  onClick={() => setIsMaterialOpen(false)}
+                />
+
+                {/* Modal */}
+                <div className="fixed right-0 top-16 w-[25%] h-[calc(100vh-64px)] bg-white dark:bg-[#1E1F25] shadow-xl overflow-hidden">
+                  <div className="p-4 border-b border-gray-300 dark:border-gray-700">
+                    <div className="flex justify-between items-center mb-2">
+                      <div>
+                        <h3 className="text-black dark:text-white font-medium mb-1">Progreso del curso</h3>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-gray-600 dark:text-gray-400">19%</span>
+                          <span className="text-sm text-gray-400">
+                            {diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'Cargando...'}
+                          </span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setIsMaterialOpen(false)}
+                        className="text-gray-600 dark:text-gray-400 hover:text-white"
+                      >
+                        <FiX className="w-5 h-5" />
+                      </button>
+                    </div>
+                    <div className="h-1 w-full bg-gray-300 dark:bg-gray-700 rounded-full">
+                      <div className="h-full w-[19%] bg-green-500 rounded-full"></div>
+                    </div>
+                  </div>
+                  <div className="overflow-y-auto h-[calc(100%-88px)]">
+                    <div className="relative pt-4 pb-4">
+                      {/* Punto inicial */}
+                      <div className="absolute left-[23px] top-0 w-[6px] h-[6px] rounded-full bg-orange-400"></div>
+
+                      {/* Línea vertical principal */}
+                      <div className="absolute left-[25px] top-[6px] w-[2px] h-[calc(100%-12px)] bg-gray-700"></div>
+
+                      {/* Punto final */}
+                      <div className="absolute left-[23px] bottom-0 w-[6px] h-[6px] rounded-full bg-gray-700"></div>
+
+                      {/* Título del módulo */}
+                      <div className="pl-12 mb-4">
+                        <span className="text-gray-600 dark:text-gray-400 text-sm">
+                          {diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'Cargando...'}
+                        </span>
+                      </div>
+
+                      {diagnosticConfigs.length > 0 ? (
+                        diagnosticConfigs[0].topics.map((topic, index) => (
+                          <div key={index} className="group relative flex items-center py-4 px-3 hover:bg-gray-200 dark:hover:bg-[#282828] transition-colors cursor-pointer">
+                            {/* Línea del timeline */}
+                            {index < diagnosticConfigs[0].topics.length - 1 && (
+                              <div
+                                className={`absolute left-[25px] top-[50%] w-[2px] h-[calc(100%)] ${topic.completed ? 'bg-orange-400' : 'bg-gray-700'
+                                  }`}
+                              ></div>
+                            )}
+
+                            {/* Círculo numerado */}
+                            <div className="relative z-10">
+                              <div
+                                className={`w-[30px] h-[30px] rounded-full flex items-center justify-center text-white text-sm font-medium ${topic.completed ? 'bg-orange-400' : 'bg-gray-700'
+                                  }`}
+                              >
+                                {index + 1}
+                              </div>
+                            </div>
+
+                            {/* Contenido de la clase */}
+                            <div className="flex items-center flex-1 pl-5">
+                              <div className="w-30 h-18 rounded overflow-hidden flex-shrink-0 mr-3">
+                                <Image
+                                  src={topic.image ? `/images/${topic.image}` : '/images/default-topic.png'}
+                                  alt={topic.title}
+                                  width={120}
+                                  height={72}
+                                  className="object-cover w-full h-full"
+                                />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h4 className="text-black dark:text-white text-sm font-medium mb-1 truncate pr-2">{topic.title}</h4>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs text-gray-600 dark:text-gray-400">{topic.duration}</span>
+                                  {topic.completed && (
+                                    <span className="text-xs text-orange-400 flex items-center gap-1">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-orange-400"></span>
+                                      Clase vista
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-gray-600 dark:text-gray-400 text-center py-4">Cargando temas...</div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

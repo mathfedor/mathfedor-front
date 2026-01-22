@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
 
@@ -49,6 +50,7 @@ function LoginFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const registered = searchParams?.get('registered');
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -61,6 +63,31 @@ function LoginFormContent() {
   const [googleWindow, setGoogleWindow] = useState<Window | null>(null);
   const [googleAuthStatus, setGoogleAuthStatus] = useState<'idle' | 'opening' | 'authenticating' | 'success' | 'error'>('idle');
   const [showHelpModal, setShowHelpModal] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  // Verificar si el usuario ya está autenticado
+  useEffect(() => {
+    const checkExistingAuth = () => {
+      try {
+        if (authService.isAuthenticated()) {
+          // Obtener el parámetro de redirección de la URL
+          const redirectPath = searchParams?.get('redirect');
+
+          // Si hay una ruta de redirección, usarla; de lo contrario, ir al dashboard
+          router.replace(redirectPath || '/dashboard');
+          return;
+        }
+      } catch (error) {
+        console.error('Error checking authentication:', error);
+        // Si hay error verificando la autenticación, limpiar cualquier token corrupto
+        authService.logout();
+      } finally {
+        setIsCheckingAuth(false);
+      }
+    };
+
+    checkExistingAuth();
+  }, [router, searchParams]);
 
   useEffect(() => {
     if (registered === 'true') {
@@ -109,7 +136,7 @@ function LoginFormContent() {
       MySwal.fire({
         icon: "info",
         title: "Estás a un paso de comprar",
-        html:"<b>Si no tienes una cuenta</b> puedes crearla en: <br/> <i>Crea una cuenta nueva</i>.",
+        html: "<b>Si no tienes una cuenta</b> puedes crearla en: <br/> <i>Crea una cuenta nueva</i>.",
         showConfirmButton: false,
         timer: 4000
       });
@@ -150,9 +177,15 @@ function LoginFormContent() {
     setError('');
 
     try {
+      let recaptchaToken = '';
+      if (executeRecaptcha) {
+        recaptchaToken = await executeRecaptcha('login');
+      }
+
       const result = await authService.login({
         email: formData.email,
-        password: formData.password
+        password: formData.password,
+        recaptchaToken
       });
 
       if (!result.ok) {
@@ -185,6 +218,10 @@ function LoginFormContent() {
       [name]: type === 'checkbox' ? checked : value
     }));
   };
+
+  if (isCheckingAuth) {
+    return <LoadingFallback />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

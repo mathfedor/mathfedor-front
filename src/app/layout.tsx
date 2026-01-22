@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import RecaptchaProvider from "@/components/RecaptchaProvider";
 
 export const metadata: Metadata = {
   title: "Matemáticas de Fedor",
@@ -17,8 +18,10 @@ export default function RootLayout({
     <html lang="es">
       <body className="min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">
         <ThemeProvider>
-          <Navbar />
-          <main>{children}</main>
+          <RecaptchaProvider>
+            <Navbar />
+            <main>{children}</main>
+          </RecaptchaProvider>
         </ThemeProvider>
       </body>
     </html>

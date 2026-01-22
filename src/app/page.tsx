@@ -1,8 +1,34 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from "@/components/Footer";
+import { authService } from '@/services/auth.service';
 
 export default function HomePage() {
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    // Only run authentication check on client side
+    if (isClient) {
+      try {
+        if (authService.isAuthenticated()) {
+          router.replace('/dashboard');
+        }
+      } catch (error) {
+        console.error('Error checking authentication:', error);
+        // If there's an error, just continue showing the home page
+      }
+    }
+  }, [router, isClient]);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section con video de fondo y texto superpuesto */}

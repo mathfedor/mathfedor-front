@@ -6,7 +6,7 @@ class AuthService {
   async login(credentials: LoginCredentials): Promise<LoginResponse> {
     try {
       const response = await api.post<LoginResponse>('/auth/login', credentials);
-      
+
       // Si no hay token en la respuesta, consideramos que hubo un error
       if (!response.data.token) {
         throw new Error('Credenciales invalidas');
@@ -40,25 +40,25 @@ class AuthService {
     try {
       console.log('Iniciando social login con provider:', provider);
       console.log('Código recibido:', code ? 'Sí' : 'No');
-      
+
       // Primero, obtener la información del usuario de Google usando el código
       const { googleUserInfo, accessToken } = await this.getGoogleUserInfo(code);
-      
+
       // Preparar los datos que espera el backend
       const userData = {
         email: googleUserInfo.email,
         name: googleUserInfo.name,
         password: accessToken // Usar el token de acceso de Google como "password"
       };
-      
+
       console.log('Datos del usuario de Google:', googleUserInfo);
       console.log('Payload a enviar al backend:', userData);
       console.log('URL de la API:', process.env.NEXT_PUBLIC_API_URL);
-      
+
       const response = await api.post<LoginResponse>('/auth/social-login', userData);
-      
+
       console.log('Respuesta del servidor:', response.data);
-      
+
       // Si no hay token en la respuesta, consideramos que hubo un error
       if (!response.data.token) {
         throw new Error('Error en la autenticación social');
@@ -74,7 +74,7 @@ class AuthService {
       };
     } catch (error: unknown) {
       console.error('Error en social login:', error);
-      
+
       if (error && typeof error === 'object' && 'response' in error) {
         // El servidor respondió con un código de estado fuera del rango 2xx
         const axiosError = error as { response: { data: { message?: string; error?: string } } };
@@ -158,7 +158,7 @@ class AuthService {
       }
 
       const userInfo = await userInfoResponse.json();
-      
+
       const googleUserInfo = {
         email: userInfo.email,
         name: userInfo.name || userInfo.given_name + ' ' + userInfo.family_name
@@ -175,7 +175,7 @@ class AuthService {
     try {
       const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
       }).join(''));
       return JSON.parse(jsonPayload);
@@ -204,6 +204,40 @@ class AuthService {
 
   isAuthenticated(): boolean {
     return !!this.getToken();
+  }
+
+  async validateResetToken(token: string): Promise<boolean> {
+    try {
+      const response = await api.get<boolean>(`/auth/validate-reset-token/${token}`);
+      return response.data;
+    } catch {
+      return false;
+    }
+  }
+
+  async resetPassword(token: string, password: string): Promise<void> {
+    try {
+      await api.post('/auth/reset-password', { token, newPassword: password });
+    } catch (error) {
+      console.error('Error en resetPassword:', error);
+      if (error instanceof AxiosError) {
+        const apiMessage = (error.response?.data as { message?: string } | undefined)?.message;
+        throw new Error(apiMessage || error.message || 'Error al cambiar la contraseña');
+      }
+      throw new Error('Error al cambiar la contraseña');
+    }
+  }
+  async requestPasswordRecovery(email: string, recaptchaToken?: string): Promise<void> {
+    try {
+      await api.post('/auth/forgot-password', { email, recaptchaToken });
+    } catch (error) {
+      console.error('Error en requestPasswordRecovery:', error);
+      if (error instanceof AxiosError) {
+        const apiMessage = (error.response?.data as { message?: string } | undefined)?.message;
+        throw new Error(apiMessage || error.message || 'Error al solicitar recuperación');
+      }
+      throw new Error('Error al solicitar recuperación');
+    }
   }
 }
 

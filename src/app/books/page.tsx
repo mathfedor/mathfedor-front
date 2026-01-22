@@ -523,7 +523,7 @@ export default function BooksPage() {
                 Explorar Módulos
               </button>
               <a
-                href="https://wa.me/573227496445?text=Hola%20amigos%20de%20Fedor"
+                href="https://wa.me/message/DY5UNLUUUA36J1?text=Hola%20amigos%20de%20Fedor"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-orange-500 transition-all"
@@ -536,7 +536,7 @@ export default function BooksPage() {
 
         {/* WhatsApp Floating Button */}
         <a
-          href="https://wa.me/573227496445?text=Hola%20amigos%20de%20Fedor%2C%20quisiera%20información%20sobre%20los%20módulos."
+          href="https://wa.me/message/DY5UNLUUUA36J1?text=Hola%20amigos%20de%20Fedor%2C%20quisiera%20información%20sobre%20los%20módulos."
           target="_blank"
           rel="noopener noreferrer"
           className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-all transform hover:scale-110 z-50"
