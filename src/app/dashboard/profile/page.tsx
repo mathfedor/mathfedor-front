@@ -90,13 +90,13 @@ export default function ProfilePage() {
   const handleSubmitStudent = async (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     // Obtener el usuario del estado o del localStorage como respaldo
     let currentUser: User | null = user;
     if (!currentUser?.id) {
       currentUser = authService.getCurrentUser();
       console.log('Usuario obtenido del localStorage:', currentUser);
-      
+
       if (!currentUser) {
         console.error('No hay usuario disponible en localStorage');
         setSubmitMessage({
@@ -105,11 +105,11 @@ export default function ProfilePage() {
         });
         return;
       }
-      
+
       // Intentar obtener el ID de diferentes formas (id, _id)
       const userWithId = currentUser as User & { _id?: string };
       const userId = currentUser.id || userWithId._id;
-      
+
       if (!userId) {
         console.error('No hay ID de usuario disponible');
         console.error('Usuario completo:', currentUser);
@@ -120,16 +120,16 @@ export default function ProfilePage() {
         });
         return;
       }
-      
+
       // Si el usuario tiene _id pero no id, normalizarlo
       if (!currentUser.id && userWithId._id) {
         currentUser = { ...currentUser, id: userWithId._id };
       }
-      
+
       // Actualizar el estado con el usuario del localStorage
       setUser(currentUser);
     }
-    
+
     // Asegurarse de que tenemos el ID
     if (!currentUser || !currentUser.id) {
       console.error('No se pudo obtener el ID del usuario después de todos los intentos');
@@ -139,7 +139,7 @@ export default function ProfilePage() {
       });
       return;
     }
-    
+
     const userId = currentUser.id;
 
     if (submitting) {
@@ -161,22 +161,33 @@ export default function ProfilePage() {
         email: studentData.email && studentData.email.trim() !== '' ? studentData.email.trim() : null
       };
 
-      const updatedUser = await usersService.updateStudent(userId, dataToSend);
-      
-      // Actualizar el usuario en localStorage
-      localStorage.setItem('user', JSON.stringify(updatedUser));
-      
-      // Actualizar el estado del usuario con la respuesta
-      setUser(updatedUser);
-      
+      const result = await usersService.updateStudent(userId, dataToSend);
+
+      // Obtener el usuario actual para no perder campos como el rol o el id original
+      const currentUserData = authService.getCurrentUser() || user;
+
+      // Asegurarnos de mantener el ID y el rol si el backend no los devuelve o usa _id
+      // Combinamos el usuario actual con la respuesta del servidor
+      const finalUser = {
+        ...currentUserData,
+        ...result,
+        id: result.id || (result as User & { _id?: string })._id || currentUserData?.id
+      } as User;
+
+      // Actualizar el usuario en localStorage con la información completa
+      localStorage.setItem('user', JSON.stringify(finalUser));
+
+      // Actualizar el estado del usuario con la información completa
+      setUser(finalUser);
+
       // Disparar un evento personalizado para notificar a otros componentes del cambio
-      window.dispatchEvent(new CustomEvent('userUpdated', { detail: updatedUser }));
-      
+      window.dispatchEvent(new CustomEvent('userUpdated', { detail: finalUser }));
+
       // Cerrar el formulario después de un pequeño delay para que el usuario vea el mensaje
       setTimeout(() => {
         setShowStudentForm(false);
-      }, 500);
-      
+      }, 2000);
+
       setSubmitMessage({
         type: 'success',
         message: 'Datos del estudiante guardados exitosamente'
@@ -188,7 +199,7 @@ export default function ProfilePage() {
         console.error('Mensaje de error:', error.message);
         console.error('Stack:', error.stack);
       }
-      
+
       setSubmitMessage({
         type: 'error',
         message: error instanceof Error ? error.message : 'Error al guardar los datos del estudiante'
@@ -200,11 +211,11 @@ export default function ProfilePage() {
   };
 
   const hasStudentData = user?.student && (
-    user.student.country || 
-    user.student.department || 
-    user.student.city || 
+    user.student.country ||
+    user.student.department ||
+    user.student.city ||
     user.student.institution ||
-    user.student.name || 
+    user.student.name ||
     user.student.email
   );
 
@@ -223,7 +234,7 @@ export default function ProfilePage() {
               <p className="mb-2"><strong>Nombre:</strong> {user.name}</p>
               <p className="mb-2"><strong>Email:</strong> {user.email}</p>
               <p className="mb-4"><strong>Rol:</strong> {user.role}</p>
-              
+
               <button
                 onClick={() => setShowStudentForm(true)}
                 className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
@@ -235,10 +246,20 @@ export default function ProfilePage() {
             {/* Mensaje de estado */}
             {submitMessage && (
               <div className={`mb-4 p-4 rounded-lg ${submitMessage.type === 'success'
-                  ? 'bg-green-100 text-green-800 border border-green-200 dark:bg-green-900 dark:text-green-200'
-                  : 'bg-red-100 text-red-800 border border-red-200 dark:bg-red-900 dark:text-red-200'
+                ? 'bg-green-100 text-green-800 border border-green-200 dark:bg-green-900 dark:text-green-200'
+                : 'bg-red-100 text-red-800 border border-red-200 dark:bg-red-900 dark:text-red-200'
                 }`}>
-                {submitMessage.message}
+                <div className="flex flex-col gap-2">
+                  <p>{submitMessage.message}</p>
+                  {submitMessage.type === 'success' && (
+                    <button
+                      onClick={() => router.push('/dashboard/downloads')}
+                      className="text-sm font-bold underline hover:no-underline flex items-center gap-1 w-fit"
+                    >
+                      Ir a mis descargas →
+                    </button>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -256,10 +277,20 @@ export default function ProfilePage() {
             {/* Mensaje de estado */}
             {submitMessage && (
               <div className={`mb-4 p-4 rounded-lg ${submitMessage.type === 'success'
-                  ? 'bg-green-100 text-green-800 border border-green-200 dark:bg-green-900 dark:text-green-200'
-                  : 'bg-red-100 text-red-800 border border-red-200 dark:bg-red-900 dark:text-red-200'
+                ? 'bg-green-100 text-green-800 border border-green-200 dark:bg-green-900 dark:text-green-200'
+                : 'bg-red-100 text-red-800 border border-red-200 dark:bg-red-900 dark:text-red-200'
                 }`}>
-                {submitMessage.message}
+                <div className="flex flex-col gap-2">
+                  <p>{submitMessage.message}</p>
+                  {submitMessage.type === 'success' && (
+                    <button
+                      onClick={() => router.push('/dashboard/downloads')}
+                      className="text-sm font-bold underline hover:no-underline flex items-center gap-1 w-fit"
+                    >
+                      Ir a mis descargas →
+                    </button>
+                  )}
+                </div>
               </div>
             )}
 

@@ -193,7 +193,12 @@ class AuthService {
   getCurrentUser(): User | null {
     const userStr = localStorage.getItem('user');
     if (userStr) {
-      return JSON.parse(userStr);
+      const user = JSON.parse(userStr) as User & { _id?: string };
+      // Normalizar id si viene del backend como _id
+      if (user && !user.id && user._id) {
+        user.id = user._id;
+      }
+      return user;
     }
     return null;
   }
