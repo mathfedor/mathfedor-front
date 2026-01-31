@@ -26,6 +26,7 @@ export interface DiagnosticConfig {
   group: string;
   createdBy: string;
   createdAt: string;
+  published?: boolean;
 }
 
 export interface DiagnosticFormData {

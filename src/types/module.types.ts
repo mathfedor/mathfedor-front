@@ -22,6 +22,7 @@ export interface Module {
   price: number;
   status: string;
   image: string;
+  published?: boolean;
   topics: Array<{
     title: string;
     description: string;

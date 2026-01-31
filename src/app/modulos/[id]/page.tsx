@@ -7,6 +7,7 @@ import { moduleService, Module } from '@/services/module.service';
 import { authService } from '@/services/auth.service';
 import Image from 'next/image';
 import Footer from "@/components/Footer";
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function ModuleDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -14,6 +15,7 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
   const [module, setModule] = useState<Module | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showPdf, setShowPdf] = useState(false);
 
   useEffect(() => {
     const fetchModule = async () => {
@@ -89,7 +91,7 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
               </div>
               <div className="md:w-1/2 p-8">
                 <h1 className="text-4xl font-bold mb-4">{module.title}</h1>
-                
+
                 {/* Precio y botón de comprar movidos arriba */}
                 <div className="border-b pb-6 mb-6">
                   <div className="flex justify-between items-center">
@@ -110,16 +112,40 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
 
                 <div className="space-y-4 mb-8">
                   <div className="flex flex-col gap-2">
-                    <span className="font-semibold">Objetivos:</span>
+                    <span className="font-semibold">Estandares básicos de competencia:</span>
                     <ul className="list-disc list-inside space-y-2">
                       {module.tags && module.tags.length > 0 ? (
-                        module.tags.map((tag, index) => (
+                        module.tags.slice(0, 3).map((tag, index) => (
                           <li key={index} className="text-gray-600">{tag}</li>
                         ))
                       ) : (
-                        <li className="text-gray-500">No hay objetivos definidos</li>
+                        <li className="text-gray-500">No hay estandares básicos de competencia definidos</li>
                       )}
                     </ul>
+
+                    {module.tags && module.tags[3] && (
+                      <div className="mt-4">
+                        <button
+                          onClick={() => setShowPdf(!showPdf)}
+                          className="flex items-center gap-2 text-orange-500 font-semibold hover:text-orange-600 transition-colors focus:outline-none group"
+                        >
+                          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-orange-100 group-hover:bg-orange-200 transition-colors">
+                            {showPdf ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                          </span>
+                          Ver más
+                        </button>
+
+                        {showPdf && (
+                          <div className="mt-4 w-full h-[600px] border rounded-lg overflow-hidden shadow-sm">
+                            <iframe
+                              src={module.tags[3].startsWith('/') ? module.tags[3] : `/${module.tags[3]}`}
+                              className="w-full h-full"
+                              title="Estándares básicos de competencia"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
