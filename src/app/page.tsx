@@ -37,7 +37,7 @@ export default function HomePage() {
           <source src="/fedor-descargas.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-blue-600 bg-opacity-60"></div>
-        
+
         {/* Contenido superpuesto */}
         <div className="relative z-10 flex items-center h-full">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -53,8 +53,8 @@ export default function HomePage() {
                   <br />
                   del futuro
                 </h1>
-                <Link 
-                  href="/books" 
+                <Link
+                  href="/books"
                   className="inline-block bg-orange-500 text-white font-bold py-4 px-8 rounded-lg hover:bg-orange-600 transition-colors duration-200 shadow-lg text-lg"
                 >
                   Comprar ahora
@@ -173,10 +173,10 @@ export default function HomePage() {
             Obtén Matemáticas de Fedor con un 50% de descuento por lanzamiento.
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Disponible solo hasta [fecha límite].
+            Disponible solo hasta agotar existencias.
           </p>
-          <Link 
-            href="/books" 
+          <Link
+            href="/books"
             className="inline-block bg-white text-orange-500 font-bold py-4 px-8 rounded-lg hover:bg-gray-100 transition-colors duration-200 shadow-lg text-lg"
           >
             Aprovechar ahora
@@ -202,8 +202,8 @@ export default function HomePage() {
                   <br />
                   y empieza a aprender.
                 </p>
-                <Link 
-                  href="/login" 
+                <Link
+                  href="/login"
                   className="inline-block bg-orange-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-200"
                 >
                   Activar código
@@ -225,8 +225,8 @@ export default function HomePage() {
                   <br />
                   inmediato con descuento especial.
                 </p>
-                <Link 
-                  href="/books" 
+                <Link
+                  href="/books"
                   className="inline-block bg-orange-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-200"
                 >
                   Comprar con descuento

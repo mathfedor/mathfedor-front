@@ -23,10 +23,10 @@ export default function BooksPage() {
             const match = group?.match(/Grado(\d+)/);
             return match ? parseInt(match[1]) : 999; // Si no tiene formato Grado#, va al final
           };
-          
+
           const gradeA = getGradeNumber(a.group || '');
           const gradeB = getGradeNumber(b.group || '');
-          
+
           return gradeA - gradeB;
         });
         setModules(sortedModules);
@@ -80,7 +80,7 @@ export default function BooksPage() {
             priority
           />
           <div className="absolute inset-0 bg-blue-600 bg-opacity-20"></div>
-          
+
           {/* Contenido superpuesto */}
           <div className="relative z-10 flex items-center h-full">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -279,14 +279,14 @@ export default function BooksPage() {
               Obtén Matemáticas de Fedor con un 50% de descuento por lanzamiento.
             </h2>
             <p className="text-xl mb-8 opacity-90">
-              Disponible solo hasta [fecha límite].
+              Disponible solo hasta agotar existencias.
             </p>
-             <button
-                onClick={scrollToModules}
-                className="bg-white text-orange-500 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105"
-              >
-                Aprovechar Ahora
-              </button>
+            <button
+              onClick={scrollToModules}
+              className="bg-white text-orange-500 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105"
+            >
+              Aprovechar Ahora
+            </button>
           </div>
         </section>
 
@@ -299,7 +299,7 @@ export default function BooksPage() {
             <p className="text-center text-gray-600 mb-12 text-lg">
               Historias reales de éxito con el Método Fedor
             </p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* Testimonial Video 1 - Reemplaza con tus URLs de YouTube */}
               <div className="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -393,10 +393,10 @@ export default function BooksPage() {
             <p className="text-center text-gray-600 mb-12 text-lg">
               Elige el módulo perfecto para tus necesidades y compra de forma segura.
             </p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {modules.map((module) => (
-                <div 
+                <div
                   key={module._id}
                   className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl border border-gray-100"
                   onClick={() => handleModuleClick(module._id)}
@@ -443,11 +443,11 @@ export default function BooksPage() {
                 Educación Internacional para Hispanohablantes
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Nuestro método trasciende fronteras, ofreciendo una educación matemática de calidad mundial 
+                Nuestro método trasciende fronteras, ofreciendo una educación matemática de calidad mundial
                 adaptada específicamente para la comunidad hispanohablante
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* Alcance Global */}
               <div className="bg-white rounded-xl p-6 shadow-lg">
@@ -458,7 +458,7 @@ export default function BooksPage() {
                 </div>
                 <h3 className="text-xl font-bold text-center mb-3 text-gray-900">Alcance Global</h3>
                 <p className="text-gray-600 text-center">
-                  Disponible para estudiantes hispanohablantes en todo el mundo, 
+                  Disponible para estudiantes hispanohablantes en todo el mundo,
                   desde España hasta Latinoamérica y Estados Unidos
                 </p>
               </div>
@@ -472,7 +472,7 @@ export default function BooksPage() {
                 </div>
                 <h3 className="text-xl font-bold text-center mb-3 text-gray-900">Estándares Internacionales</h3>
                 <p className="text-gray-600 text-center">
-                  Cumple con los más altos estándares educativos internacionales, 
+                  Cumple con los más altos estándares educativos internacionales,
                   preparando estudiantes para universidades de prestigio mundial
                 </p>
               </div>
@@ -486,7 +486,7 @@ export default function BooksPage() {
                 </div>
                 <h3 className="text-xl font-bold text-center mb-3 text-gray-900">Cultura y Contexto</h3>
                 <p className="text-gray-600 text-center">
-                  Respeta y valora la diversidad cultural hispanohablante, 
+                  Respeta y valora la diversidad cultural hispanohablante,
                   integrando ejemplos y contextos familiares para cada región
                 </p>
               </div>
@@ -494,8 +494,8 @@ export default function BooksPage() {
 
             <div className="text-center mt-12">
               <p className="text-lg text-gray-700 mb-6">
-                <strong>Únete a la revolución educativa que está transformando el aprendizaje de matemáticas 
-                en la comunidad hispanohablante mundial</strong>
+                <strong>Únete a la revolución educativa que está transformando el aprendizaje de matemáticas
+                  en la comunidad hispanohablante mundial</strong>
               </p>
               <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
                 <span className="bg-white px-4 py-2 rounded-full shadow">co Latam</span>
@@ -547,7 +547,7 @@ export default function BooksPage() {
           </svg>
         </a>
       </div>
-      
+
       <Footer />
     </>
   );
