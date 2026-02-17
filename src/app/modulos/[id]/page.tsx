@@ -95,7 +95,22 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
                 {/* Precio y botón de comprar movidos arriba */}
                 <div className="border-b pb-6 mb-6">
                   <div className="flex justify-between items-center">
-                    <span className="text-3xl font-bold text-orange-500">${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
+                    <div className="flex flex-col">
+                      {new Date() < new Date('2026-05-31') ? (
+                        <>
+                          <span className="text-lg text-gray-500 line-through">
+                            ${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                          </span>
+                          <span className="text-3xl font-bold text-orange-500">
+                            ${((module.price || 0) * 0.5).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-3xl font-bold text-orange-500">
+                          ${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        </span>
+                      )}
+                    </div>
                     <button
                       onClick={handleBuyClick}
                       className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors text-lg font-semibold"

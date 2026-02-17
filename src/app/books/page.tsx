@@ -419,9 +419,20 @@ export default function BooksPage() {
                     <h3 className="text-2xl font-bold mb-3 text-gray-900">{module.title}</h3>
                     <div className="flex justify-between items-center">
                       <div>
-                        <span className="text-3xl font-bold text-orange-500">
-                          ${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                        </span>
+                        {new Date() < new Date('2026-05-31') ? (
+                          <div className="flex flex-col">
+                            <span className="text-sm text-gray-500 line-through">
+                              ${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                            </span>
+                            <span className="text-3xl font-bold text-orange-500">
+                              ${((module.price || 0) * 0.5).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="text-3xl font-bold text-orange-500">
+                            ${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                          </span>
+                        )}
                         <span className="text-gray-500 text-sm ml-2">COP</span>
                       </div>
                       <button className="bg-orange-500 text-white py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors font-semibold">

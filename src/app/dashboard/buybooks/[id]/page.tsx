@@ -141,13 +141,20 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
   const calculateFinalPrice = () => {
     if (!module?.price) return 0;
 
-    let finalPrice = module.price;
+    let basePrice = module.price;
+
+    // Aplicar promoción del 50% si la fecha es menor al 31 de mayo de 2026
+    if (new Date() < new Date('2026-05-31')) {
+      basePrice = basePrice * 0.5;
+    }
+
+    let finalPrice = basePrice;
 
     if (couponDiscount) {
       if (couponDiscount.discountType === 'percentage') {
-        finalPrice = module.price * (1 - couponDiscount.discount / 100);
+        finalPrice = basePrice * (1 - couponDiscount.discount / 100);
       } else {
-        finalPrice = Math.max(0, module.price - couponDiscount.discount);
+        finalPrice = Math.max(0, basePrice - couponDiscount.discount);
       }
     }
 
@@ -386,7 +393,7 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
 
                   <div>
                     <h2 className="text-2xl font-bold mb-6">{module.title}</h2>
-                    
+
                     {/* Precio y elementos de pago movidos arriba */}
                     <div className="border-b pb-6 mb-6">
                       {/* Campo de cupón */}
@@ -450,7 +457,8 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
                       <div className="flex justify-between items-center">
                         <div>
                           <div className="flex flex-col">
-                            {couponDiscount && (
+                            {/* Mostrar precio original tachado si hay promo o cupón */}
+                            {(new Date() < new Date('2026-05-31') || couponDiscount) && (
                               <div className="text-lg text-gray-500 line-through mb-1">
                                 ${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                               </div>
