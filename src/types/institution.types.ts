@@ -6,6 +6,7 @@ export interface Location {
 
 export interface Institution {
   id: string;
+  _id?: string;
   name: string;
   type: 'Universidad' | 'Colegio' | 'Escuela' | 'Tecnico';
   location: Location;

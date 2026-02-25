@@ -456,7 +456,6 @@ const DiagnosticoPage = () => {
       return false;
     }
 
-    // Enviar resultados al backend
     try {
       const diagnosticResult = {
         diagnosticId: diagnosticId,

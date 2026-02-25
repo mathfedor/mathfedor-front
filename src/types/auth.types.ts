@@ -15,10 +15,11 @@ export interface Student {
 
 export interface User {
   id: string;
+  _id?: string;
   name: string;
   email: string;
   role: string;
-  lastName: string;
+  lastName?: string;
   avatar?: string;
   student?: Student;
 }
@@ -28,6 +29,17 @@ export interface RegisterUserPayload {
   email: string;
   password: string;
   rol: string;
+  institutionId?: string;
+  student?: Student;
+  recaptchaToken?: string;
+}
+
+export interface RegisterUserWithRolePayload {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  institutionId?: string;
   student?: Student;
   recaptchaToken?: string;
 }

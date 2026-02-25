@@ -2,8 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2';
 import Sidebar from '@/components/Sidebar';
 import { authService } from '@/services/auth.service';
+import { usersService } from '@/services/users.service';
+import { institutionService } from '@/services/institution.service';
+import { Institution } from '@/types/institution.types';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { User } from '@/types/auth.types';
@@ -20,16 +24,18 @@ export default function UsersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [users, setUsers] = useState<UserData[]>([]);
+  const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [editingUser, setEditingUser] = useState<UserData | null>(null);
   const [showUploadForm, setShowUploadForm] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // Estado del formulario de creación
   const [formData, setFormData] = useState({
     name: '',
-    lastName: '',
     email: '',
-    role: 'student',
+    role: 'Student',
+    institutionId: '',
     password: ''
   });
 
@@ -62,67 +68,108 @@ export default function UsersPage() {
     };
 
     checkAuth();
+    loadInstitutions();
   }, [router]);
 
-  const loadUsers = () => {
-    // Simulación de carga de usuarios
-    const mockUsers: UserData[] = [
-      {
-        id: '1',
-        name: 'Juan',
-        lastName: 'Pérez',
-        email: 'juan.perez@example.com',
-        role: 'student',
-        createdAt: '2024-01-15',
-        status: 'active'
-      },
-      {
-        id: '2',
-        name: 'María',
-        lastName: 'García',
-        email: 'maria.garcia@example.com',
-        role: 'teacher',
-        createdAt: '2024-01-10',
-        status: 'active'
-      },
-      {
-        id: '3',
-        name: 'Carlos',
-        lastName: 'López',
-        email: 'carlos.lopez@example.com',
-        role: 'student',
-        createdAt: '2024-01-20',
-        status: 'inactive'
+  const loadInstitutions = async () => {
+    try {
+      const response = await institutionService.getInstitutions('active');
+      if (response.success && response.data) {
+        setInstitutions(response.data);
       }
-    ];
-    setUsers(mockUsers);
+    } catch (error) {
+      console.error('Error al cargar instituciones:', error);
+    }
   };
 
-  const handleCreateUser = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Aquí iría la lógica para crear el usuario
-    console.log('Creando usuario:', formData);
-    
-    // Simulación de creación
-    const newUser: UserData = {
-      id: Date.now().toString(),
-      name: formData.name,
-      lastName: formData.lastName,
-      email: formData.email,
-      role: formData.role,
-      createdAt: new Date().toISOString().split('T')[0],
-      status: 'active'
-    };
-    
-    setUsers([...users, newUser]);
-    setShowCreateForm(false);
+  const loadUsers = async () => {
+    try {
+      const data = await usersService.getUsers();
+      // El backend devuelve createdAt y status? Si no, los mapeamos o ajustamos el tipo
+      setUsers(data as UserData[]);
+    } catch (error) {
+      console.error('Error al cargar usuarios:', error);
+      setError('No se pudieron cargar los usuarios');
+    }
+  };
+
+  const handleEditClick = (userToEdit: UserData) => {
+    setEditingUser(userToEdit);
     setFormData({
-      name: '',
-      lastName: '',
-      email: '',
-      role: 'student',
-      password: ''
+      name: userToEdit.name,
+      email: userToEdit.email,
+      role: userToEdit.role,
+      institutionId: userToEdit.student?.institution || '',
+      password: '' // Opcional en edición
     });
+    setShowCreateForm(true);
+  };
+
+  const handleCreateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const userId = editingUser?._id || editingUser?.id;
+      if (editingUser && userId) {
+        await usersService.updateStudent(userId, {
+          name: formData.name,
+          email: formData.email,
+          institution: formData.institutionId
+        });
+
+        setUsers(users.map(u => (u._id === userId || u.id === userId) ? {
+          ...u,
+          name: formData.name,
+          email: formData.email,
+          role: formData.role,
+          student: { ...u.student, institution: formData.institutionId }
+        } : u));
+
+        Swal.fire({
+          title: '¡Actualizado!',
+          text: 'Usuario actualizado exitosamente',
+          icon: 'success',
+          confirmButtonColor: '#3B82F6',
+        });
+      } else {
+        const newUser = await usersService.createUserRole({
+          name: formData.name,
+          email: formData.email,
+          role: formData.role,
+          password: formData.password,
+          institutionId: formData.institutionId,
+          recaptchaToken: ''
+        });
+
+        setUsers([...users, { ...newUser, status: 'active' } as UserData]);
+        Swal.fire({
+          title: '¡Éxito!',
+          text: 'Usuario creado exitosamente',
+          icon: 'success',
+          confirmButtonColor: '#3B82F6',
+        });
+      }
+
+      setShowCreateForm(false);
+      setEditingUser(null);
+      setFormData({
+        name: '',
+        email: '',
+        role: 'Student',
+        institutionId: '',
+        password: ''
+      });
+    } catch (error) {
+      console.error('Error al procesar usuario:', error);
+      Swal.fire({
+        title: 'Error',
+        text: error instanceof Error ? error.message : 'Error al procesar el usuario',
+        icon: 'error',
+        confirmButtonColor: '#EF4444',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,40 +179,38 @@ export default function UsersPage() {
     }
   };
 
-  const handleBulkUpload = () => {
+  const handleBulkUpload = async () => {
     if (!selectedFile) {
-      alert('Por favor selecciona un archivo');
+      Swal.fire('Error', 'Por favor selecciona un archivo', 'error');
       return;
     }
-    
-    // Aquí iría la lógica para procesar el archivo Excel
-    console.log('Procesando archivo:', selectedFile.name);
-    
-    // Simulación de carga masiva
-    const newUsers: UserData[] = [
-      {
-        id: '4',
-        name: 'Ana',
-        lastName: 'Martínez',
-        email: 'ana.martinez@example.com',
-        role: 'student',
-        createdAt: new Date().toISOString().split('T')[0],
-        status: 'active'
-      },
-      {
-        id: '5',
-        name: 'Luis',
-        lastName: 'Rodríguez',
-        email: 'luis.rodriguez@example.com',
-        role: 'student',
-        createdAt: new Date().toISOString().split('T')[0],
-        status: 'active'
-      }
-    ];
-    
-    setUsers([...users, ...newUsers]);
-    setShowUploadForm(false);
-    setSelectedFile(null);
+
+    try {
+      setLoading(true);
+      await usersService.bulkUploadExcel(selectedFile);
+
+      Swal.fire({
+        title: '¡Éxito!',
+        text: 'Usuarios cargados exitosamente',
+        icon: 'success',
+        confirmButtonColor: '#3B82F6',
+      });
+
+      // Recargar la lista de usuarios para mostrar los nuevos
+      loadUsers();
+      setShowUploadForm(false);
+      setSelectedFile(null);
+    } catch (error) {
+      console.error('Error al cargar usuarios:', error);
+      Swal.fire({
+        title: 'Error',
+        text: error instanceof Error ? error.message : 'Error al cargar el archivo',
+        icon: 'error',
+        confirmButtonColor: '#EF4444',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading) {
@@ -244,12 +289,7 @@ export default function UsersPage() {
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Rol
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Estado
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Fecha de Creación
-                      </th>
+
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Acciones
                       </th>
@@ -257,19 +297,19 @@ export default function UsersPage() {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {users.map((user) => (
-                      <tr key={user.id} className="hover:bg-gray-50">
+                      <tr key={user._id || user.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="flex-shrink-0 h-10 w-10">
                               <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
                                 <span className="text-sm font-medium text-gray-700">
-                                  {user.name.charAt(0)}{user.lastName.charAt(0)}
+                                  {user.name.charAt(0)}
                                 </span>
                               </div>
                             </div>
                             <div className="ml-4">
                               <div className="text-sm font-medium text-gray-900">
-                                {user.name} {user.lastName}
+                                {user.name}
                               </div>
                             </div>
                           </div>
@@ -278,28 +318,22 @@ export default function UsersPage() {
                           {user.email}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                            user.role === 'teacher' 
-                              ? 'bg-purple-100 text-purple-800' 
+                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${user.role.toLowerCase() === 'teacher'
+                            ? 'bg-purple-100 text-purple-800'
+                            : user.role.toLowerCase() === 'academy'
+                              ? 'bg-green-100 text-green-800'
                               : 'bg-blue-100 text-blue-800'
-                          }`}>
-                            {user.role === 'teacher' ? 'Profesor' : 'Estudiante'}
+                            }`}>
+                            {user.role.toLowerCase() === 'teacher' ? 'Profesor' :
+                              user.role.toLowerCase() === 'academy' ? 'Institución' : 'Estudiante'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                            user.status === 'active' 
-                              ? 'bg-green-100 text-green-800' 
-                              : 'bg-red-100 text-red-800'
-                          }`}>
-                            {user.status === 'active' ? 'Activo' : 'Inactivo'}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {user.createdAt}
-                        </td>
+
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <button className="text-indigo-600 hover:text-indigo-900 mr-3">
+                          <button
+                            onClick={() => handleEditClick(user)}
+                            className="text-indigo-600 hover:text-indigo-900 mr-3"
+                          >
                             Editar
                           </button>
                           <button className="text-red-600 hover:text-red-900">
@@ -316,11 +350,13 @@ export default function UsersPage() {
         </div>
       </div>
 
-      {/* Modal para crear usuario */}
+      {/* Modal para crear/editar usuario */}
       {showCreateForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Crear Nuevo Usuario</h2>
+            <h2 className="text-xl font-bold mb-4">
+              {editingUser ? 'Editar Usuario' : 'Crear Nuevo Usuario'}
+            </h2>
             <form onSubmit={handleCreateUser}>
               <div className="mb-4">
                 <Label htmlFor="name">Nombre</Label>
@@ -328,18 +364,7 @@ export default function UsersPage() {
                   type="text"
                   id="name"
                   value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <Label htmlFor="lastName">Apellido</Label>
-                <input
-                  type="text"
-                  id="lastName"
-                  value={formData.lastName}
-                  onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
@@ -350,7 +375,7 @@ export default function UsersPage() {
                   type="email"
                   id="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
@@ -360,7 +385,7 @@ export default function UsersPage() {
                 <select
                   id="role"
                   value={formData.role}
-                  onChange={(e) => setFormData({...formData, role: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="Student">Estudiante</option>
@@ -368,15 +393,34 @@ export default function UsersPage() {
                   <option value="Academy">Academia</option>
                 </select>
               </div>
+              <div className="mb-4">
+                <Label htmlFor="institutionId">Institución</Label>
+                <select
+                  id="institutionId"
+                  value={formData.institutionId}
+                  onChange={(e) => setFormData({ ...formData, institutionId: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  <option value="">Seleccione una institución</option>
+                  {institutions.map((inst) => (
+                    <option key={inst._id || inst.id} value={inst._id || inst.id}>
+                      {inst.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="mb-6">
-                <Label htmlFor="password">Contraseña</Label>
+                <Label htmlFor="password">
+                  {editingUser ? 'Nueva Contraseña (opcional)' : 'Contraseña'}
+                </Label>
                 <input
                   type="password"
                   id="password"
                   value={formData.password}
-                  onChange={(e) => setFormData({...formData, password: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
+                  required={!editingUser}
                 />
               </div>
               <div className="flex gap-3">
@@ -384,11 +428,21 @@ export default function UsersPage() {
                   type="submit"
                   className="bg-blue-500 hover:bg-blue-600 text-white"
                 >
-                  Crear Usuario
+                  {editingUser ? 'Actualizar Usuario' : 'Crear Usuario'}
                 </Button>
                 <Button
                   type="button"
-                  onClick={() => setShowCreateForm(false)}
+                  onClick={() => {
+                    setShowCreateForm(false);
+                    setEditingUser(null);
+                    setFormData({
+                      name: '',
+                      email: '',
+                      role: 'Student',
+                      institutionId: '',
+                      password: ''
+                    });
+                  }}
                   className="bg-gray-500 hover:bg-gray-600 text-white"
                 >
                   Cancelar
@@ -414,7 +468,7 @@ export default function UsersPage() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <p className="text-sm text-gray-500 mt-1">
-                El archivo debe contener columnas: Nombre, Apellido, Email, Rol
+                El archivo debe contener columnas: Nombre completo, Email, Rol
               </p>
             </div>
             <div className="flex gap-3">
