@@ -66,7 +66,7 @@ export const moduleService = {
       formDataToSend.append(`tags[${index}]`, tag);
     });
 
-    // Agregar el archivo Excel
+    // Agregar el archivo
     if (formData.file) {
       if (formData.file.size > 10 * 1024 * 1024) {
         throw new Error('El archivo excede el límite de 10MB');
@@ -74,7 +74,9 @@ export const moduleService = {
       formDataToSend.append('file', formData.file);
     }
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/learning/upload`, {
+    const endpoint = formData.file?.type === 'application/pdf' ? 'upload-eleven' : 'upload';
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/learning/${endpoint}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -110,8 +112,28 @@ export const moduleService = {
 
     return response.json();
   },
+  async getAllLearnings(): Promise<Module[]> {
+    const token = authService.getToken();
+    if (!token) {
+      throw new Error('No se encontró el token de autenticación');
+    }
 
-  async getAllModules(): Promise<Module[]> {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/learning`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al obtener los módulos');
+    }
+
+    return response.json();
+  },
+
+  async getAllModules(): Promise<Module[]> { //Active modules only
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/learning/getlearnings`, {
       method: 'GET'
     });

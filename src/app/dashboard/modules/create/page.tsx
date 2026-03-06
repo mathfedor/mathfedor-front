@@ -142,18 +142,24 @@ export default function CreateModulePage() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
-      file.type === 'application/vnd.ms-excel')) {
-      setFormData((prev: ModuleFormData) => ({
-        ...prev,
-        file
-      }));
-    } else {
-      setModal({
-        isOpen: true,
-        type: 'error',
-        message: 'Por favor, selecciona un archivo Excel válido (.xlsx o .xls)'
-      });
+    if (file) {
+      const allowedTypes = [
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/vnd.ms-excel',
+        'application/pdf'
+      ];
+      if (allowedTypes.includes(file.type)) {
+        setFormData((prev: ModuleFormData) => ({
+          ...prev,
+          file
+        }));
+      } else {
+        setModal({
+          isOpen: true,
+          type: 'error',
+          message: 'Por favor, selecciona un archivo válido (.xlsx, .xls o .pdf)'
+        });
+      }
     }
   };
 
@@ -179,7 +185,41 @@ export default function CreateModulePage() {
         price: Number(formData.price)
       };
 
-      await moduleService.createModule(formDataToSend);
+      const response = await moduleService.createModule(formDataToSend) as { message?: string; status?: string; _id?: string; data?: { status?: string; _id?: string } };
+      const status = response?.data?.status || response?.status;
+      const id = response?.data?._id || response?._id;
+
+      if (status === 'processing' && id) {
+        setModal({
+          isOpen: true,
+          type: 'success',
+          message: response?.message || 'Procesando el documento...'
+        });
+
+        const checkInterval = setInterval(async () => {
+          try {
+            const moduleData = await moduleService.getModuleById(id) as { status?: string; data?: { status?: string } };
+            const currentStatus = moduleData?.data?.status || moduleData?.status;
+
+            if (currentStatus === 'active') {
+              clearInterval(checkInterval);
+              setIsLoading(false);
+              setModal({
+                isOpen: true,
+                type: 'success',
+                message: '¡El contenido fue cargado con éxito!'
+              });
+              setTimeout(() => {
+                router.push('/dashboard/modules');
+              }, 2000);
+            }
+          } catch (error) {
+            console.error('Error al verificar el estado del módulo:', error);
+          }
+        }, 25000);
+
+        return; // Salimos temprano para no quitar el isLoading todavía
+      }
 
       setModal({
         isOpen: true,
@@ -190,6 +230,7 @@ export default function CreateModulePage() {
       setTimeout(() => {
         router.push('/dashboard/modules');
       }, 2000);
+      setIsLoading(false);
     } catch (error) {
       console.error('Error al crear el módulo:', error);
       setModal({
@@ -197,7 +238,6 @@ export default function CreateModulePage() {
         type: 'error',
         message: error instanceof Error ? error.message : 'Error al crear el módulo'
       });
-    } finally {
       setIsLoading(false);
     }
   };
@@ -322,11 +362,16 @@ export default function CreateModulePage() {
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-[#282828] dark:text-white"
                   >
                     <option value="">Selecciona un grupo o módulo</option>
-                    <option value="Modulo1">Modulo 1</option>
-                    <option value="Modulo2">Modulo 2</option>
-                    <option value="Modulo3">Modulo 3</option>
-                    <option value="Modulo4">Modulo 4</option>
-                    <option value="Modulo5">Modulo 5</option>
+                    <option value="Grado1">Grado 1</option>
+                    <option value="Grado2">Grado 2</option>
+                    <option value="Grado3">Grado 3</option>
+                    <option value="Grado4">Grado 4</option>
+                    <option value="Grado5">Grado 5</option>
+                    <option value="Grado6">Grado 6</option>
+                    <option value="Grado7">Grado 7</option>
+                    <option value="Grado8">Grado 8</option>
+                    <option value="Grado9">Grado 9</option>
+                    <option value="Grado10">Grado 10</option>
                     <option value="Grado11">Grado 11</option>
                   </select>
                 </div>
@@ -382,38 +427,68 @@ export default function CreateModulePage() {
                 </div>
               </div>
 
-              {/* Archivo */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Plantilla del Módulo (.xlsx o .xls)
-                </label>
-                <div className="flex items-center gap-4">
-                  <label className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#282828] border border-gray-300 dark:border-gray-600 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-[#363636]">
-                    <FiUpload className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">
-                      {formData.file ? formData.file.name : 'Seleccionar archivo'}
-                    </span>
-                    <input
-                      type="file"
-                      accept=".xlsx,.xls"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
+              {/* Archivos de Contenido */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Archivo Excel */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Plantilla del Módulo (.xlsx o .xls)
                   </label>
-                  {formData.file && (
-                    <button
-                      type="button"
-                      onClick={() => setFormData((prev: ModuleFormData) => ({ ...prev, file: null }))}
-                      className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm"
-                    >
-                      Eliminar
-                    </button>
-                  )}
+                  <div className="flex items-center gap-4">
+                    <label className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#282828] border border-gray-300 dark:border-gray-600 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-[#363636] w-full overflow-hidden">
+                      <FiUpload className="w-5 h-5 text-gray-500 dark:text-gray-400 flex-shrink-0" />
+                      <span className="text-sm text-gray-700 dark:text-gray-300 truncate">
+                        {formData.file && !formData.file.type.includes('pdf') ? formData.file.name : 'Seleccionar Excel'}
+                      </span>
+                      <input
+                        type="file"
+                        accept=".xlsx,.xls"
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
                 </div>
-                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                  Solo se aceptan archivos Excel (.xlsx o .xls)
-                </p>
+
+                {/* Archivo PDF */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Archivo del Módulo (PDF)
+                  </label>
+                  <div className="flex items-center gap-4">
+                    <label className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#282828] border border-gray-300 dark:border-gray-600 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-[#363636] w-full overflow-hidden">
+                      <FiUpload className="w-5 h-5 text-gray-500 dark:text-gray-400 flex-shrink-0" />
+                      <span className="text-sm text-gray-700 dark:text-gray-300 truncate">
+                        {formData.file && formData.file.type.includes('pdf') ? formData.file.name : 'Seleccionar PDF'}
+                      </span>
+                      <input
+                        type="file"
+                        accept=".pdf"
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+                </div>
               </div>
+
+              {formData.file && (
+                <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-md">
+                  <div className="flex items-center gap-2">
+                    <FiCheckCircle className="text-blue-500" />
+                    <span className="text-sm text-blue-700 dark:text-blue-300 font-medium truncate max-w-xs">
+                      Archivo seleccionado: {formData.file.name}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setFormData((prev: ModuleFormData) => ({ ...prev, file: null }))}
+                    className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm font-medium"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              )}
 
               {/* Botón de envío */}
               <div className="pt-4">
