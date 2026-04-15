@@ -9,6 +9,9 @@ export interface Student {
   department?: string | null;
   city?: string | null;
   institution?: string | null;
+  institutionId?: string | null;
+  branchId?: string | null;
+  classroomId?: string | null;
   name?: string | null;
   email?: string | null;
 }
@@ -21,6 +24,7 @@ export interface User {
   role: string;
   lastName?: string;
   avatar?: string;
+  institutionId?: string | null;
   student?: Student;
 }
 

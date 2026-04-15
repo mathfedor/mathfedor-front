@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { use } from 'react';
@@ -47,21 +47,6 @@ interface QuestionStep {
   questions: Question[];
 }
 
-interface InputMultipleExercise {
-  type: 'input_multiple';
-  statement: string;
-  inputs: Array<{
-    input?: string;
-    expectedAnswer: string;
-  }>;
-}
-
-interface InputSingleExercise {
-  type: 'input_single';
-  statement: string;
-  expectedAnswer: string;
-}
-
 interface ExerciseAnswer {
   topicId: string;
   topicTitle: string;
@@ -72,10 +57,23 @@ interface ExerciseAnswer {
   options: string[];  // Opciones mostradas al usuario
 }
 
+interface TopicBlock {
+  type: 'paragraph' | 'math_layout';
+  content?: {
+    text?: string;
+  };
+}
+
+interface Subtopic {
+  title: string;
+  blocks?: TopicBlock[];
+}
+
 interface Topic {
   _id: string;
   title: string;
   description: string;
+  subtopics?: Subtopic[];
   exercises: Array<{
     statement: string;
     options: string[];
@@ -97,7 +95,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   const [currentModule, setCurrentModule] = useState<Module | null>(null);
   const router = useRouter();
   const { hasAccess } = useModuleAccess();
-  const totalSteps = diagnosticConfigs[0]?.topics?.length * 2 || 0; // Cada tema tiene 2 pasos: descripción y ejercicios
+  const totalSteps = diagnosticConfigs[0]?.topics?.length * 2 || 0; // Cada tema tiene 2 pasos: descripciÃ³n y ejercicios
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: string }>({});
   const [results, setResults] = useState<{
     goodAnswers: number;
@@ -125,35 +123,33 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   });
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState({ title: '', message: '' });
-  const [inputAnswers, setInputAnswers] = useState<{ [key: string]: string }>({});
-  const [inputValidation, setInputValidation] = useState<{ [key: string]: boolean }>({});
   const [showResults, setShowResults] = useState(false);
 
   // Array de preguntas y respuestas por paso
   const questionsByStep: QuestionStep[] = [
-    // Paso 1: Verificación de Indexación
+    // Paso 1: VerificaciÃ³n de IndexaciÃ³n
     {
       questions: [
         {
           id: 1,
           author: {
-            name: "Carlos Ramírez",
+            name: "Carlos RamÃ­rez",
             avatar: "C",
             role: "Estudiante",
-            timeAgo: "hace 2 días"
+            timeAgo: "hace 2 dÃ­as"
           },
-          content: "¿Es necesario verificar la indexación si mi sitio es nuevo y aún no tiene mucho contenido?",
+          content: "Â¿Es necesario verificar la indexaciÃ³n si mi sitio es nuevo y aÃºn no tiene mucho contenido?",
           likes: 5,
           replies: [
             {
               id: 2,
               author: {
-                name: "Ana Martínez",
+                name: "Ana MartÃ­nez",
                 avatar: "A",
                 role: "Profesor",
-                timeAgo: "hace 1 día"
+                timeAgo: "hace 1 dÃ­a"
               },
-              content: "¡Sí! Es fundamental verificar la indexación desde el principio. Esto te ayudará a identificar problemas temprano y asegurarte de que Google pueda encontrar tu contenido desde el inicio.",
+              content: "Â¡SÃ­! Es fundamental verificar la indexaciÃ³n desde el principio. Esto te ayudarÃ¡ a identificar problemas temprano y asegurarte de que Google pueda encontrar tu contenido desde el inicio.",
               likes: 8
             }
           ]
@@ -161,12 +157,12 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         {
           id: 3,
           author: {
-            name: "Laura González",
+            name: "Laura GonzÃ¡lez",
             avatar: "L",
             role: "Estudiante",
-            timeAgo: "hace 1 día"
+            timeAgo: "hace 1 dÃ­a"
           },
-          content: "¿Cada cuánto tiempo debo verificar la indexación de mi sitio web?",
+          content: "Â¿Cada cuÃ¡nto tiempo debo verificar la indexaciÃ³n de mi sitio web?",
           likes: 4,
           replies: [
             {
@@ -177,7 +173,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                 role: "Profesor",
                 timeAgo: "hace 12 horas"
               },
-              content: "Se recomienda verificar la indexación al menos una vez por semana si publicas contenido regularmente. Si tu sitio es más estático, una vez al mes puede ser suficiente.",
+              content: "Se recomienda verificar la indexaciÃ³n al menos una vez por semana si publicas contenido regularmente. Si tu sitio es mÃ¡s estÃ¡tico, una vez al mes puede ser suficiente.",
               likes: 6
             }
           ]
@@ -190,23 +186,23 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         {
           id: 5,
           author: {
-            name: "Pedro Sánchez",
+            name: "Pedro SÃ¡nchez",
             avatar: "P",
             role: "Estudiante",
-            timeAgo: "hace 3 días"
+            timeAgo: "hace 3 dÃ­as"
           },
-          content: "¿Qué debo hacer si encuentro URLs importantes que no están siendo indexadas?",
+          content: "Â¿QuÃ© debo hacer si encuentro URLs importantes que no estÃ¡n siendo indexadas?",
           likes: 7,
           replies: [
             {
               id: 6,
               author: {
-                name: "Diana López",
+                name: "Diana LÃ³pez",
                 avatar: "D",
                 role: "Profesor",
-                timeAgo: "hace 2 días"
+                timeAgo: "hace 2 dÃ­as"
               },
-              content: "Primero, verifica que no estén bloqueadas en el robots.txt. Luego, asegúrate de que las URLs sean accesibles y tengan contenido único y valioso. También puedes usar Google Search Console para solicitar la indexación manualmente.",
+              content: "Primero, verifica que no estÃ©n bloqueadas en el robots.txt. Luego, asegÃºrate de que las URLs sean accesibles y tengan contenido Ãºnico y valioso. TambiÃ©n puedes usar Google Search Console para solicitar la indexaciÃ³n manualmente.",
               likes: 12
             }
           ]
@@ -214,23 +210,23 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         {
           id: 7,
           author: {
-            name: "María Jiménez",
+            name: "MarÃ­a JimÃ©nez",
             avatar: "M",
             role: "Estudiante",
-            timeAgo: "hace 1 día"
+            timeAgo: "hace 1 dÃ­a"
           },
-          content: "¿Es normal que algunas páginas tarden en ser indexadas aunque ya estén publicadas?",
+          content: "Â¿Es normal que algunas pÃ¡ginas tarden en ser indexadas aunque ya estÃ©n publicadas?",
           likes: 3,
           replies: [
             {
               id: 8,
               author: {
-                name: "Roberto García",
+                name: "Roberto GarcÃ­a",
                 avatar: "R",
                 role: "Profesor",
                 timeAgo: "hace 10 horas"
               },
-              content: "Sí, es normal. Google tiene su propio ritmo de rastreo e indexación. Las páginas nuevas pueden tardar desde unas horas hasta varias semanas en ser indexadas, dependiendo de varios factores como la autoridad del dominio y la frecuencia de actualización del sitio.",
+              content: "SÃ­, es normal. Google tiene su propio ritmo de rastreo e indexaciÃ³n. Las pÃ¡ginas nuevas pueden tardar desde unas horas hasta varias semanas en ser indexadas, dependiendo de varios factores como la autoridad del dominio y la frecuencia de actualizaciÃ³n del sitio.",
               likes: 5
             }
           ]
@@ -249,10 +245,10 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
         const userData = authService.getCurrentUser();
         if (!userData) {
-          throw new Error('No se encontró información del usuario');
+          throw new Error('No se encontrÃ³ informaciÃ³n del usuario');
         }
 
-        // Verificar acceso al módulo usando el ID resuelto
+        // Verificar acceso al mÃ³dulo usando el ID resuelto
         if (!hasAccess(resolvedParams.id)) {
           router.replace('/dashboard');
           return;
@@ -276,11 +272,11 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     const fetchDiagnosticConfig = async () => {
       try {
         setIsLoading(true);
-        // Primero obtener el módulo específico por ID
+        // Primero obtener el mÃ³dulo especÃ­fico por ID
         const moduleData = await moduleService.getModuleById(resolvedParams.id);
         setCurrentModule(moduleData);
 
-        // Si el módulo no está publicado, no cargar los ejercicios
+        // Si el mÃ³dulo no estÃ¡ publicado, no cargar los ejercicios
         if (moduleData.published === false) {
           setIsLoading(false);
           return;
@@ -291,10 +287,10 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
           setDiagnosticConfigs(configs as unknown as (DiagnosticConfig & { topics: Topic[] })[]);
         }
       } catch (error) {
-        console.error('Error al obtener la configuración del diagnóstico:', error);
+        console.error('Error al obtener la configuraciÃ³n del diagnÃ³stico:', error);
         setAlertMessage({
           title: 'Error',
-          message: 'No se pudo cargar la configuración del diagnóstico.'
+          message: 'No se pudo cargar la configuraciÃ³n del diagnÃ³stico.'
         });
         setIsAlertOpen(true);
       } finally {
@@ -317,16 +313,181 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     }));
   };
 
-  // Función para mapear índice a letra
+  // FunciÃ³n para mapear Ã­ndice a letra
   const indexToLetter = (index: number): string => {
-    return String.fromCharCode(65 + index); // 65 es el código ASCII para 'A'
+    return String.fromCharCode(65 + index); // 65 es el cÃ³digo ASCII para 'A'
   };
 
   const getAverage = (points: number, maxPoints: number): number => {
     return (points / maxPoints) * 5;
   };
 
-  // Función para validar respuestas del tema actual
+  const hasCDUHeader = (text: string): boolean => /(^|\n)\s*C\s+D\s+U\b/i.test(text);
+
+  const splitMathSections = (text: string): string[] => {
+    const normalizedText = text.replace(/\r/g, '').trim();
+    if (!normalizedText) return [];
+
+    const lines = normalizedText.split('\n');
+    const sections: string[] = [];
+    let currentSection: string[] = [];
+
+    lines.forEach((line) => {
+      if (/^\s*C\s+D\s+U\b/i.test(line) && currentSection.length > 0) {
+        sections.push(currentSection.join('\n'));
+        currentSection = [line];
+        return;
+      }
+
+      currentSection.push(line);
+    });
+
+    if (currentSection.length > 0) {
+      sections.push(currentSection.join('\n'));
+    }
+
+    return sections;
+  };
+
+  const parseMathRow = (line: string, columnCount: number) => {
+    let columnText = '';
+    let digitCount = 0;
+    let index = 0;
+
+    while (index < line.length) {
+      const char = line[index];
+      const nextChar = line[index + 1];
+
+      if (/\d/.test(char)) {
+        if (digitCount >= columnCount) {
+          break;
+        }
+
+        if (/[+\-=*/]/.test(nextChar ?? '')) {
+          if (digitCount === 0) {
+            columnText += char;
+            digitCount += 1;
+            index += 1;
+          }
+          break;
+        }
+
+        columnText += char;
+        digitCount += 1;
+        index += 1;
+        continue;
+      }
+
+      if (char === ' ') {
+        columnText += char;
+        index += 1;
+        continue;
+      }
+
+      break;
+    }
+
+    const explanation = line.slice(index).trim();
+    const columns = columnText
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+    return {
+      columns,
+      explanation
+    };
+  };
+
+  const renderMathLayout = (text: string, blockKey: string) => {
+    const sections = splitMathSections(text);
+
+    if (sections.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className="space-y-6">
+        {sections.map((sectionText, sectionIndex) => {
+          const lines = sectionText
+            .split('\n')
+            .map((line) => line.trimEnd())
+            .filter((line) => line.trim().length > 0);
+
+          const headerLine = lines[0] ?? '';
+          const headerMatch = headerLine.match(/^C\s+D\s+U\b\s*(.*)$/i);
+
+          if (!headerMatch) {
+            return (
+              <pre
+                key={`${blockKey}-plain-${sectionIndex}`}
+                className="overflow-x-auto rounded-lg bg-gray-100 dark:bg-[#282828] p-4 font-mono text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap"
+              >
+                {sectionText}
+              </pre>
+            );
+          }
+
+          const headerColumns = ['C', 'D', 'U'];
+          const rows = lines.slice(1).map((line) => parseMathRow(line, headerColumns.length));
+          const lastRowIndex = rows.length - 1;
+
+          return (
+            <div
+              key={`${blockKey}-section-${sectionIndex}`}
+              className="overflow-x-auto rounded-lg bg-gray-100 dark:bg-[#282828] p-4"
+            >
+              <div className="min-w-[520px] space-y-2 font-mono text-sm text-gray-700 dark:text-gray-200">
+                <div className="grid grid-cols-[180px_minmax(0,1fr)] gap-4 items-start">
+                  <div className="flex justify-end gap-6 font-semibold">
+                    {headerColumns.map((column) => (
+                      <span key={column} className="w-4 text-center">
+                        {column}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="whitespace-pre-wrap">{headerMatch[1]?.trim()}</div>
+                </div>
+
+                {rows.map((row, rowIndex) => (
+                  <div key={`${blockKey}-row-${sectionIndex}-${rowIndex}`} className="space-y-2">
+                    {rowIndex === lastRowIndex && rows.length > 1 && (
+                      <div className="grid grid-cols-[180px_minmax(0,1fr)] gap-4 items-start">
+                        <div className="flex justify-end">
+                          <div className="w-[132px] border-t-2 border-gray-400 dark:border-gray-500" />
+                        </div>
+                        <div />
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-[180px_minmax(0,1fr)] gap-4 items-start">
+                      <div className="flex justify-end gap-6">
+                        {headerColumns.map((_, columnIndex) => {
+                          const columnValue = row.columns[row.columns.length - headerColumns.length + columnIndex] ?? '';
+
+                          return (
+                            <span
+                              key={`${blockKey}-col-${sectionIndex}-${rowIndex}-${columnIndex}`}
+                              className="w-4 text-center"
+                            >
+                              {columnValue}
+                            </span>
+                          );
+                        })}
+                      </div>
+                      <div className="whitespace-pre-wrap">{row.explanation}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  // FunciÃ³n para validar respuestas del tema actual
   const validateCurrentTopicAnswers = async () => {
     const currentTopic = diagnosticConfigs[0].topics[Math.floor((currentStep - 1) / 2)];
     const exercises = currentTopic.exercises;
@@ -359,7 +520,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
       };
     });
 
-    // Calcular estadísticas
+    // Calcular estadÃ­sticas
     const correctAnswers = newAnswers.filter(answer => answer.isCorrect).length;
     const wrongAnswers = newAnswers.length - correctAnswers;
 
@@ -393,22 +554,6 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     return true;
   };
 
-  const handleInputChange = (exerciseId: string, inputIndex: number, value: string) => {
-    setInputAnswers(prev => ({
-      ...prev,
-      [`${exerciseId}_${inputIndex}`]: value
-    }));
-  };
-
-  const validateInputAnswers = (exerciseId: string, inputs: InputMultipleExercise['inputs']) => {
-    const newValidation: { [key: string]: boolean } = {};
-    inputs.forEach((input, index) => {
-      const answer = inputAnswers[`${exerciseId}_${index}`] || '';
-      newValidation[`${exerciseId}_${index}`] = answer.toLowerCase() === input.expectedAnswer.toLowerCase();
-    });
-    setInputValidation(newValidation);
-  };
-
   const getCurrentContent = () => {
     if (!diagnosticConfigs.length) return { title: 'Cargando...', content: null };
 
@@ -416,36 +561,6 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     const currentTopicIndex = Math.floor((currentStep - 1) / 2);
     const isExerciseStep = (currentStep % 2) === 0;
     const currentTopic = topics[currentTopicIndex];
-
-    // Procesar descripción con split por '|||' si existe
-    let descriptionParts: string[] = [];
-    if (typeof currentTopic.description === 'string') {
-      descriptionParts = currentTopic.description.split('|||');
-    }
-
-    // Procesar exampleExercises
-    let parsedExamples: (InputMultipleExercise | InputSingleExercise)[][] = [];
-    if (Array.isArray(currentTopic.exampleExercises)) {
-      parsedExamples = currentTopic.exampleExercises.map((ex) => {
-        try {
-          //console.log("exampleExercises EX", ex);
-          const cleanJson = ex.values
-            ?.replace(/\n/g, '')
-            ?.replace(/\r/g, '')
-            ?.replace(/\t/g, '')
-            ?.trim();
-          if (!cleanJson) {
-            return [];
-          }
-          const parsed = JSON.parse(cleanJson);
-          // Mantener todas las posiciones si es array; normalizar a array de ejercicios
-          return Array.isArray(parsed) ? parsed : [parsed];
-        } catch (err) {
-          console.log("[catch] -No cleanJson", err);
-          return [];
-        }
-      });
-    }
 
     if (isExerciseStep) {
       return {
@@ -482,167 +597,61 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
           </div>
         )
       };
-    } else {
-      return {
-        title: currentTopic.title,
-        content: (
-          <div className="prose prose-invert max-w-none">
-            {/* Procesar y mostrar la descripción con los ejercicios intercalados */}
-            {descriptionParts.map((part, partIndex) => (
-              <div key={partIndex} className="mb-6">
-                {/* Procesar fragmentos de texto e imágenes dentro de la parte */}
-                {String(part)
-                  .split(/(\{img_img[^}]+\})/g)
-                  .filter(Boolean)
-                  .map((fragment, fragIdx) => {
-                    if (/^\{img_img[^}]+\}$/.test(fragment)) {
-                      // Es una imagen
-                      const src = fragment.replace('{img_', '').replace('}', '.png');
-                      return (
-                        <span key={fragIdx} className="inline-block align-middle mx-2">
-                          <Image
-                            src={`/${src}`}
-                            alt={src}
-                            width={120}
-                            height={80}
-                            className="object-contain inline rounded shadow"
-                          />
-                        </span>
-                      );
-                    } else {
-                      // Es texto
-                      return (
-                        <span
-                          key={fragIdx}
-                          className="text-gray-700 dark:text-gray-300 whitespace-pre-line align-middle"
-                          dangerouslySetInnerHTML={{ __html: fragment }}
-                        />
-                      );
-                    }
-                  })}
-
-                {/* Si hay un ejercicio de ejemplo correspondiente a esta parte, mostrarlo */}
-                {parsedExamples[partIndex] && parsedExamples[partIndex].length > 0 && (
-                  <div className="mt-2 w-full md:w-1/4 min-w-0 break-words">
-                    {parsedExamples[partIndex].map((example, exIdx) => (
-                      <div key={`example-${partIndex}-${exIdx}`} className="w-full">
-                        {example.type === 'input_multiple' && Array.isArray(example.inputs) && (
-                          <div className="mt-4 bg-white dark:bg-[#282828] rounded-lg p-6">
-                            <div className="flex items-start gap-4">
-                              <span className="text-gray-700 dark:text-gray-300 mb-0 mr-2 whitespace-normal break-words flex-shrink-0" dangerouslySetInnerHTML={{ __html: String(example.statement) }} />
-                              <div className={`flex gap-2 ${example.inputs.length >= 10 ? 'flex-col' : 'flex-wrap items-center'} max-w-full`}>
-                                {example.inputs.map((input, inputIdx) => (
-                                  <div key={inputIdx} className={`flex items-center gap-2 ${example.inputs.length >= 10 ? 'mb-2' : ''}`}>
-                                    {input.input && (
-                                      <span className="text-black dark:text-gray-200 whitespace-pre">{input.input}</span>
-                                    )}
-                                    <input
-                                      type="text"
-                                      value={inputAnswers[`${partIndex}_${inputIdx}`] || ''}
-                                      onChange={(e) => handleInputChange(partIndex.toString(), inputIdx, e.target.value)}
-                                      className={`bg-gray-100 dark:bg-[#1E1E1E] text-black dark:text-white rounded-md px-2 py-1 w-16 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm border ${inputValidation[`${partIndex}_${inputIdx}`] !== undefined
-                                        ? inputValidation[`${partIndex}_${inputIdx}`]
-                                          ? 'border-green-500'
-                                          : 'border-red-500'
-                                        : 'border-gray-300 dark:border-gray-600'
-                                        }`}
-                                      placeholder={`...`}
-                                    />
-                                    {example.inputs.length >= 10 && (
-                                      <span className="text-xs text-gray-500 dark:text-gray-400">#{inputIdx + 1}</span>
-                                    )}
-                                  </div>
-                                ))}
-                              </div>
-                              <button
-                                onClick={() => validateInputAnswers(partIndex.toString(), example.inputs)}
-                                className="ml-4 bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition-colors text-sm flex-shrink-0"
-                              >
-                                Verificar
-                              </button>
-                            </div>
-                            {/* Mensajes de validación debajo de los inputs */}
-                            <div className="flex gap-2 mt-2">
-                              {example.inputs.map((input, inputIdx) => (
-                                inputValidation[`${partIndex}_${inputIdx}`] !== undefined && (
-                                  <span
-                                    key={inputIdx}
-                                    className={`text-xs ${inputValidation[`${partIndex}_${inputIdx}`]
-                                      ? 'text-green-500'
-                                      : 'text-red-500'
-                                      }`}
-                                  >
-                                    {inputValidation[`${partIndex}_${inputIdx}`]
-                                      ? '¡Correcto!'
-                                      : 'Incorrecto'}
-                                  </span>
-                                )
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                        {example.type === 'input_single' && (
-                          <div className="mt-4 bg-white dark:bg-[#282828] rounded-lg p-6">
-                            <div className="flex items-center gap-4">
-                              <span className="text-gray-700 dark:text-gray-300 mb-0 mr-2 whitespace-normal break-words flex-shrink-0" dangerouslySetInnerHTML={{ __html: String(example.statement) }} />
-                              <input
-                                type="text"
-                                value={inputAnswers[`${partIndex}_0`] || ''}
-                                onChange={(e) => handleInputChange(partIndex.toString(), 0, e.target.value)}
-                                className={`bg-gray-100 dark:bg-[#1E1E1E] text-black dark:text-white rounded-md px-3 py-2 w-24 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm border ${inputValidation[`${partIndex}_0`] !== undefined
-                                  ? inputValidation[`${partIndex}_0`]
-                                    ? 'border-green-500'
-                                    : 'border-red-500'
-                                  : 'border-gray-300 dark:border-gray-600'
-                                  }`}
-                                placeholder={`...`}
-                              />
-                              <button
-                                onClick={() => {
-                                  const answer = inputAnswers[`${partIndex}_0`] || '';
-                                  const isValid = answer.toLowerCase() === example.expectedAnswer.toLowerCase();
-                                  setInputValidation(prev => ({
-                                    ...prev,
-                                    [`${partIndex}_0`]: isValid
-                                  }));
-                                }}
-                                className="ml-4 bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition-colors text-sm flex-shrink-0"
-                              >
-                                Verificar
-                              </button>
-                            </div>
-                            {/* Mensaje de validación */}
-                            {inputValidation[`${partIndex}_0`] !== undefined && (
-                              <div className="mt-2">
-                                <span
-                                  className={`text-sm ${inputValidation[`${partIndex}_0`]
-                                    ? 'text-green-500'
-                                    : 'text-red-500'
-                                    }`}
-                                >
-                                  {inputValidation[`${partIndex}_0`]
-                                    ? '¡Correcto!'
-                                    : 'Incorrecto'}
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )
-      };
     }
+
+    return {
+      title: currentTopic.title,
+      content: (
+        <div className="max-w-none space-y-8">
+          {(currentTopic.subtopics ?? []).map((subtopic, subtopicIndex) => (
+            <div key={`${currentTopic._id}-subtopic-${subtopicIndex}`} className="space-y-4">
+              {subtopic.title && (
+                <h3 className="text-xl font-semibold text-black dark:text-white">
+                  {subtopic.title}
+                </h3>
+              )}
+
+              {(subtopic.blocks ?? []).map((block, blockIndex) => {
+                const blockText = block.content?.text?.trim();
+
+                if (!blockText) {
+                  return null;
+                }
+
+                if (block.type === 'math_layout') {
+                  return hasCDUHeader(blockText) ? (
+                    <div key={`${currentTopic._id}-math-${subtopicIndex}-${blockIndex}`}>
+                      {renderMathLayout(blockText, `${currentTopic._id}-${subtopicIndex}-${blockIndex}`)}
+                    </div>
+                  ) : (
+                    <pre
+                      key={`${currentTopic._id}-math-${subtopicIndex}-${blockIndex}`}
+                      className="overflow-x-auto rounded-lg bg-gray-100 dark:bg-[#282828] p-4 font-mono text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap"
+                    >
+                      {blockText}
+                    </pre>
+                  );
+                }
+
+                return (
+                  <p
+                    key={`${currentTopic._id}-paragraph-${subtopicIndex}-${blockIndex}`}
+                    className="text-base leading-7 text-gray-700 dark:text-gray-300 whitespace-pre-line"
+                  >
+                    {blockText}
+                  </p>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      )
+    };
   };
 
   const { title, content } = getCurrentContent();
 
-  // Actualizar la lógica de navegación
+  // Actualizar la lÃ³gica de navegaciÃ³n
   const handleNext = async () => {
     const isExerciseStep = (currentStep % 2) === 0;
 
@@ -674,7 +683,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     if (!token) {
       setAlertMessage({
         title: 'Error',
-        message: 'No se encontró el token de autenticación. Por favor, inicia sesión nuevamente.'
+        message: 'No se encontrÃ³ el token de autenticaciÃ³n. Por favor, inicia sesiÃ³n nuevamente.'
       });
       setIsAlertOpen(true);
       return;
@@ -747,7 +756,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         message={alertMessage.message}
       />
       <div className="flex-1">
-        {/* Mostrar mensaje si el módulo no está publicado */}
+        {/* Mostrar mensaje si el mÃ³dulo no estÃ¡ publicado */}
         {currentModule && currentModule.published === false ? (
           <div className="flex items-center justify-center min-h-screen">
             <div className="text-center max-w-md px-6">
@@ -757,10 +766,10 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                 </svg>
               </div>
               <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
-                Estamos construyendo este módulo
+                Estamos construyendo este mÃ³dulo
               </h2>
               <p className="text-gray-600 dark:text-gray-400 mb-8">
-                Este módulo está en desarrollo. Pronto estará disponible con contenido educativo de alta calidad.
+                Este mÃ³dulo estÃ¡ en desarrollo. Pronto estarÃ¡ disponible con contenido educativo de alta calidad.
               </p>
               <button
                 onClick={() => router.push('/dashboard')}
@@ -772,10 +781,10 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
           </div>
         ) : (
           <>
-            {/* Barra de navegación superior */}
+            {/* Barra de navegaciÃ³n superior */}
             <div className="sticky top-0 z-50 h-16 bg-white dark:bg-[#1C1D1F] flex items-center justify-between px-6 text-black dark:text-white shadow-md">
               <div className="flex items-center">
-                <h1 className="text-lg font-medium">{diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'Módulo'}</h1>
+                <h1 className="text-lg font-medium">{diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'MÃ³dulo'}</h1>
               </div>
               <div className="flex items-center gap-3">
                 {process.env.NODE_ENV === 'development' && !showChat && (currentStep % 2) === 0 && (
@@ -820,7 +829,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                   </button>
                 )}
 
-                {/* Menú de usuario */}
+                {/* MenÃº de usuario */}
                 <div className="relative">
                   <button
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
@@ -849,7 +858,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                         onClick={handleLogout}
                         className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-600"
                       >
-                        Cerrar sesión
+                        Cerrar sesiÃ³n
                       </button>
                     </div>
                   )}
@@ -862,7 +871,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
               {showResults ? (
                 <div className="h-full bg-gray-100 dark:bg-[#1E1F25] p-8">
                   <div className="max-w-4xl mx-auto">
-                    <h2 className="text-2xl font-bold text-white mb-6">Resultados del Módulo</h2>
+                    <h2 className="text-2xl font-bold text-white mb-6">Resultados del MÃ³dulo</h2>
 
                     {/* Tabla de resultados */}
                     <div className="bg-[#282828] rounded-lg shadow-lg overflow-hidden mb-6">
@@ -916,7 +925,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                       </div>
                     </div>
 
-                    {/* Botón para continuar al chat */}
+                    {/* BotÃ³n para continuar al chat */}
                     <div className="flex justify-end">
                       <button
                         onClick={handleContinueToChat}
@@ -932,31 +941,31 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                   {/* Columna izquierda - Texto explicativo */}
                   <div className="w-[40%] border-r border-gray-300 dark:border-gray-700 p-6 overflow-y-auto">
                     <div className="prose prose-lg max-w-none dark:prose-invert">
-                      <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Asistente de Matemáticas</h2>
+                      <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Asistente de MatemÃ¡ticas</h2>
                       <div className="space-y-4 text-black dark:text-gray-200 text-base md:text-lg">
                         <p>
-                          Bienvenido al asistente de matemáticas. Aquí puedes hacer preguntas sobre:
+                          Bienvenido al asistente de matemÃ¡ticas. AquÃ­ puedes hacer preguntas sobre:
                         </p>
                         <ul className="list-disc pl-4 space-y-2">
-                          <li>Divisores y números primos</li>
-                          <li>Múltiplos y factores</li>
-                          <li>Máximo común divisor (MCD)</li>
-                          <li>Mínimo común múltiplo (MCM)</li>
-                          <li>Ejercicios y problemas matemáticos</li>
+                          <li>Divisores y nÃºmeros primos</li>
+                          <li>MÃºltiplos y factores</li>
+                          <li>MÃ¡ximo comÃºn divisor (MCD)</li>
+                          <li>MÃ­nimo comÃºn mÃºltiplo (MCM)</li>
+                          <li>Ejercicios y problemas matemÃ¡ticos</li>
                         </ul>
                         <p>
-                          El asistente te ayudará a:
+                          El asistente te ayudarÃ¡ a:
                         </p>
                         <ul className="list-disc pl-4 space-y-2">
                           <li>Resolver paso a paso los ejercicios</li>
-                          <li>Explicar conceptos matemáticos</li>
+                          <li>Explicar conceptos matemÃ¡ticos</li>
                           <li>Proporcionar ejemplos adicionales</li>
                           <li>Verificar tus respuestas</li>
                         </ul>
                         <div className="mt-6 p-4 bg-gray-100 dark:bg-[#282828] rounded-lg">
                           <h3 className="text-xl font-semibold text-black dark:text-white mb-2">Ejemplo de pregunta:</h3>
                           <p className="text-black dark:text-gray-200 italic text-base md:text-lg">
-                            &quot;¿Puedes ayudarme a encontrar todos los divisores del número 24 y explicarme el proceso paso a paso?&quot;
+                            &quot;Â¿Puedes ayudarme a encontrar todos los divisores del nÃºmero 24 y explicarme el proceso paso a paso?&quot;
                           </p>
                         </div>
                       </div>
@@ -965,7 +974,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
                   {/* Columna derecha - Chat */}
                   <div className="w-[60%] flex flex-col">
-                    {/* Área de mensajes */}
+                    {/* Ãrea de mensajes */}
                     <div className="flex-1 overflow-y-auto p-6">
                       <div className="max-w-3xl mx-auto space-y-6">
                         {messages.map((message, index) => (
@@ -1000,7 +1009,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                       </div>
                     </div>
 
-                    {/* Área de entrada de texto */}
+                    {/* Ãrea de entrada de texto */}
                     <div className="border-t border-gray-300 dark:border-gray-700 p-4">
                       <div className="max-w-3xl mx-auto">
                         <div className="relative">
@@ -1021,7 +1030,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                           </button>
                         </div>
                         <p className="text-xs text-gray-400 mt-2">
-                          Presiona Enter para enviar, Shift + Enter para nueva línea
+                          Presiona Enter para enviar, Shift + Enter para nueva lÃ­nea
                         </p>
                       </div>
                     </div>
@@ -1029,7 +1038,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                 </div>
               ) : (
                 <div className="h-full flex">
-                  {/* Sección de Resumen */}
+                  {/* SecciÃ³n de Resumen */}
                   <div className="w-[75%] bg-gray-100 dark:bg-[#1E1F25] overflow-y-auto">
                     <div className="p-6">
                       <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">{title}</h2>
@@ -1039,7 +1048,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                     </div>
                   </div>
 
-                  {/* Sección de Comentarios */}
+                  {/* SecciÃ³n de Comentarios */}
                   <div className="w-[25%] bg-gray-100 dark:bg-[#1E1F25] border-l border-gray-300 dark:border-gray-700 overflow-y-auto">
                     <div className="p-6">
                       <div className="flex justify-between items-center mb-4">
@@ -1049,7 +1058,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                           <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base">Aportes</button>
                         </div>
                         <div className="flex items-center">
-                          <span className="text-black dark:text-gray-400 text-sm mr-2">Más votados</span>
+                          <span className="text-black dark:text-gray-400 text-sm mr-2">MÃ¡s votados</span>
                           <FiChevronDown className="text-black dark:text-gray-400 w-4 h-4" />
                         </div>
                       </div>
@@ -1060,7 +1069,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                         ></textarea>
                       </div>
 
-                      {/* Lista de comentarios actualizada según el paso actual */}
+                      {/* Lista de comentarios actualizada segÃºn el paso actual */}
                       <div className="space-y-6">
                         {questionsByStep[currentStep - 1]?.questions?.map((comment) => (
                           <div key={comment.id} className="space-y-4">
@@ -1072,15 +1081,15 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
                                   <span className="text-black dark:text-white font-semibold">{comment.author.name}</span>
-                                  <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                                  <span className="text-gray-500 dark:text-gray-400 text-sm">â€¢</span>
                                   <span className="text-gray-500 dark:text-gray-400 text-sm">{comment.author.role}</span>
-                                  <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                                  <span className="text-gray-500 dark:text-gray-400 text-sm">â€¢</span>
                                   <span className="text-gray-500 dark:text-gray-400 text-sm">{comment.author.timeAgo}</span>
                                 </div>
                                 <p className="text-black dark:text-gray-200 text-base md:text-lg">{comment.content}</p>
                                 <div className="flex items-center gap-2 mt-2">
                                   <button className="flex items-center gap-1 text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
-                                    <span>❤️</span>
+                                    <span>â¤ï¸</span>
                                     <span>{comment.likes}</span>
                                   </button>
                                   <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
@@ -1095,10 +1104,10 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                               <div className="relative ml-11 space-y-4">
                                 {comment.replies.map((reply, index) => (
                                   <div key={reply.id} className="relative">
-                                    {/* Línea conectora con curva */}
+                                    {/* LÃ­nea conectora con curva */}
                                     <div className="absolute -left-4 top-4 w-4 h-[calc(100%+16px)] border-l-2 border-b-2 border-gray-300 dark:border-gray-700 rounded-bl-xl"></div>
 
-                                    {/* Línea horizontal */}
+                                    {/* LÃ­nea horizontal */}
                                     <div className="absolute -left-4 top-4 w-4 h-[2px] bg-gray-300 dark:bg-gray-700"></div>
 
                                     {/* Contenido de la respuesta */}
@@ -1109,15 +1118,15 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                                       <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-1">
                                           <span className="text-black dark:text-white font-semibold">{reply.author.name}</span>
-                                          <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                                          <span className="text-gray-500 dark:text-gray-400 text-sm">â€¢</span>
                                           <span className="text-gray-500 dark:text-gray-400 text-sm">{reply.author.role}</span>
-                                          <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                                          <span className="text-gray-500 dark:text-gray-400 text-sm">â€¢</span>
                                           <span className="text-gray-500 dark:text-gray-400 text-sm">{reply.author.timeAgo}</span>
                                         </div>
                                         <p className="text-black dark:text-gray-200 text-base md:text-lg">{reply.content}</p>
                                         <div className="flex items-center gap-2 mt-2">
                                           <button className="flex items-center gap-1 text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
-                                            <span>❤️</span>
+                                            <span>â¤ï¸</span>
                                             <span>{reply.likes}</span>
                                           </button>
                                           <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
@@ -1127,7 +1136,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                                       </div>
                                     </div>
 
-                                    {/* Línea final para la última respuesta */}
+                                    {/* LÃ­nea final para la Ãºltima respuesta */}
                                     {index === comment.replies.length - 1 && (
                                       <div className="absolute -left-4 top-4 h-4 border-l-2 border-gray-300 dark:border-gray-700"></div>
                                     )}
@@ -1182,13 +1191,13 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                       {/* Punto inicial */}
                       <div className="absolute left-[23px] top-0 w-[6px] h-[6px] rounded-full bg-orange-400"></div>
 
-                      {/* Línea vertical principal */}
+                      {/* LÃ­nea vertical principal */}
                       <div className="absolute left-[25px] top-[6px] w-[2px] h-[calc(100%-12px)] bg-gray-700"></div>
 
                       {/* Punto final */}
                       <div className="absolute left-[23px] bottom-0 w-[6px] h-[6px] rounded-full bg-gray-700"></div>
 
-                      {/* Título del módulo */}
+                      {/* TÃ­tulo del mÃ³dulo */}
                       <div className="pl-12 mb-4">
                         <span className="text-gray-600 dark:text-gray-400 text-sm">
                           {diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'Cargando...'}
@@ -1198,7 +1207,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                       {diagnosticConfigs.length > 0 ? (
                         diagnosticConfigs[0].topics.map((topic, index) => (
                           <div key={index} className="group relative flex items-center py-4 px-3 hover:bg-gray-200 dark:hover:bg-[#282828] transition-colors cursor-pointer">
-                            {/* Línea del timeline */}
+                            {/* LÃ­nea del timeline */}
                             {index < diagnosticConfigs[0].topics.length - 1 && (
                               <div
                                 className={`absolute left-[25px] top-[50%] w-[2px] h-[calc(100%)] ${topic.completed ? 'bg-orange-400' : 'bg-gray-700'
@@ -1206,7 +1215,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                               ></div>
                             )}
 
-                            {/* Círculo numerado */}
+                            {/* CÃ­rculo numerado */}
                             <div className="relative z-10">
                               <div
                                 className={`w-[30px] h-[30px] rounded-full flex items-center justify-center text-white text-sm font-medium ${topic.completed ? 'bg-orange-400' : 'bg-gray-700'
@@ -1256,3 +1265,5 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     </div>
   );
 }
+
+

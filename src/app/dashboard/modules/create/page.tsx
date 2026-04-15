@@ -373,6 +373,7 @@ export default function CreateModulePage() {
                     <option value="Grado9">Grado 9</option>
                     <option value="Grado10">Grado 10</option>
                     <option value="Grado11">Grado 11</option>
+                    <option value="Grado12">Grado 12</option>
                   </select>
                 </div>
               </div>

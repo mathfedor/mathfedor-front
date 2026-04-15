@@ -281,6 +281,10 @@ export default function BooksPage() {
             <p className="text-xl mb-8 opacity-90">
               Disponible solo hasta agotar existencias.
             </p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Cada módulo tiene 3 libros para descargar.<br />
+              Primero solo tiene dos.
+            </h2>
             <button
               onClick={scrollToModules}
               className="bg-white text-orange-500 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105"

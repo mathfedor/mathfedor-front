@@ -69,9 +69,12 @@ function ThanksContentInner() {
         }
 
         // Si no contiene "MOD", es una transacción de Wompi, hacer fetch
-        const wompiBaseUrl = process.env.WOMPI_ENVIRONMENT === 'PROD' 
+        const wompiBaseUrl = process.env.NEXT_PUBLIC_WOMPI_ENVIRONMENT === 'PROD' 
           ? 'https://production.wompi.co/v1'
           : 'https://sandbox.wompi.co/v1';
+
+
+          console.log(`Fetching transaction from Wompi: ${wompiBaseUrl}/transactions/${transactionId}`);
 
         const response = await fetch(`${wompiBaseUrl}/transactions/${transactionId}`, {
           headers: {
