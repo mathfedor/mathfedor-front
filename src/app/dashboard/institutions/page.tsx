@@ -39,6 +39,30 @@ const emptyClassroomForm = {
 };
 
 const getEntityId = (value?: { id?: string; _id?: string | undefined } | null) => value?._id || value?.id || '';
+const normalizeRelationId = (
+  value?: string | { id?: string; _id?: string | undefined } | null
+) => {
+  if (!value) return '';
+  if (typeof value === 'string') return value.trim();
+  return getEntityId(value);
+};
+
+const getUserRole = (value?: User | null) => value?.role?.toLowerCase() || '';
+
+const getUserInstitutionId = (value?: User | null) => {
+  if (!value) return '';
+
+  const userWithAltInstitutionId = value as User & {
+    institutionid?: string | { id?: string; _id?: string | undefined } | null;
+    institution?: string | { id?: string; _id?: string | undefined } | null;
+  };
+
+  return (
+    normalizeRelationId(value.institutionId) ||
+    normalizeRelationId(userWithAltInstitutionId.institutionid) ||
+    normalizeRelationId(userWithAltInstitutionId.institution)
+  );
+};
 
 export default function InstitutionsPage() {
   const router = useRouter();
@@ -62,9 +86,45 @@ export default function InstitutionsPage() {
   const [loadingBranches, setLoadingBranches] = useState(false);
   const [loadingClassrooms, setLoadingClassrooms] = useState(false);
 
+  const filterInstitutionsByUser = useCallback((items: Institution[], currentUser?: User | null) => {
+    if (getUserRole(currentUser) !== 'academy') {
+      return items;
+    }
+
+    const academyInstitutionId = getUserInstitutionId(currentUser);
+    console.log('[InstitutionsPage] Academy user institutionId:', academyInstitutionId, currentUser);
+    console.log(
+      '[InstitutionsPage] Active institutions ids:',
+      items.map((institution) => ({
+        id: getEntityId(institution),
+        name: institution.name
+      }))
+    );
+
+    if (!academyInstitutionId) {
+      return [];
+    }
+
+    const filtered = items.filter((institution) => getEntityId(institution) === academyInstitutionId);
+    console.log(
+      '[InstitutionsPage] Filtered institutions for Academy:',
+      filtered.map((institution) => ({
+        id: getEntityId(institution),
+        name: institution.name
+      }))
+    );
+
+    return filtered;
+  }, []);
+
+  const visibleInstitutions = useMemo(
+    () => filterInstitutionsByUser(institutions, user),
+    [filterInstitutionsByUser, institutions, user]
+  );
+
   const selectedInstitution = useMemo(
-    () => institutions.find((institution) => getEntityId(institution) === selectedInstitutionId) || null,
-    [institutions, selectedInstitutionId]
+    () => visibleInstitutions.find((institution) => getEntityId(institution) === selectedInstitutionId) || null,
+    [selectedInstitutionId, visibleInstitutions]
   );
 
   const currentBranches = branchesByInstitution[selectedInstitutionId] || [];
@@ -98,7 +158,8 @@ export default function InstitutionsPage() {
 
     const response = await institutionService.getTeachersByInstitution(institutionId);
     if (response.success && response.data) {
-      const teachers = response.data;
+      const teachers = response.data.filter((teacher) => teacher.role === 'Teacher');
+
       setTeachersByInstitution((prev) => ({
         ...prev,
         [institutionId]: teachers.map((teacher) => ({
@@ -109,7 +170,7 @@ export default function InstitutionsPage() {
     }
   }, []);
 
-  const loadInstitutions = useCallback(async () => {
+  const loadInstitutions = useCallback(async (currentUser?: User | null) => {
     setLoading(true);
     setError(null);
 
@@ -126,16 +187,20 @@ export default function InstitutionsPage() {
       id: getEntityId(institution)
     }));
 
-    setInstitutions(normalizedInstitutions);
+    const filteredInstitutions = filterInstitutionsByUser(normalizedInstitutions, currentUser);
 
-    if (normalizedInstitutions.length > 0) {
-      const nextInstitutionId = selectedInstitutionId || getEntityId(normalizedInstitutions[0]);
+    setInstitutions(filteredInstitutions);
+
+    if (filteredInstitutions.length > 0) {
+      const nextInstitutionId = selectedInstitutionId || getEntityId(filteredInstitutions[0]);
       setSelectedInstitutionId(nextInstitutionId);
       await Promise.all([loadBranches(nextInstitutionId), loadTeachers(nextInstitutionId)]);
+    } else {
+      setSelectedInstitutionId('');
     }
 
     setLoading(false);
-  }, [loadBranches, loadTeachers, selectedInstitutionId]);
+  }, [filterInstitutionsByUser, loadBranches, loadTeachers, selectedInstitutionId]);
 
   useEffect(() => {
     const currentUser = authService.getCurrentUser();
@@ -145,14 +210,14 @@ export default function InstitutionsPage() {
       return;
     }
 
-    if (currentUser.role !== 'Admin') {
-      setError('No tienes permisos para acceder a esta pÃ¡gina');
+    if (getUserRole(currentUser) !== 'admin' && getUserRole(currentUser) !== 'academy') {
+      setError('No tienes permisos para acceder a esta página');
       setLoading(false);
       return;
     }
 
     setUser(currentUser);
-    void loadInstitutions();
+    void loadInstitutions(currentUser);
   }, [loadInstitutions, router]);
 
   const loadClassrooms = async (branchId: string) => {
@@ -191,7 +256,16 @@ export default function InstitutionsPage() {
     setSaving(true);
     setMessage(null);
 
-    const payload: CreateInstitutionData = { ...institutionForm };
+    const payload: CreateInstitutionData = {
+      name: institutionForm.name,
+      type: institutionForm.type,
+      email: institutionForm.email,
+      location: {
+        city: institutionForm.city,
+        region: institutionForm.region,
+        address: institutionForm.address
+      }
+    };
     const response = await institutionService.createInstitution(payload);
 
     if (response.success && response.data) {
@@ -331,7 +405,7 @@ export default function InstitutionsPage() {
   }
 
   if (error || !user) {
-    return <div className="p-8 text-red-600">{error || 'No se pudo cargar la pÃ¡gina.'}</div>;
+    return <div className="p-8 text-red-600">{error || 'No se pudo cargar la página.'}</div>;
   }
 
   return (
@@ -341,18 +415,18 @@ export default function InstitutionsPage() {
 
         <div className="flex-1 bg-[#F9F9F9]">
           <div className="p-8 space-y-8">
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex items-end justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">GestiÃ³n de Instituciones</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Gestión de Instituciones</h1>
                 <p className="mt-1 text-sm text-gray-500">
-                  Administra instituciones, sedes, salones y la asignaciÃ³n de profesores.
+                  Administra instituciones, sedes, salones y la asignación de profesores.
                 </p>
               </div>
               <Button
                 onClick={() => setShowCreateInstitutionForm((prev) => !prev)}
-                className="bg-blue-500 hover:bg-blue-600 text-white"
+                className="mt-14 self-end bg-blue-500 hover:bg-blue-600 text-white"
               >
-                {showCreateInstitutionForm ? 'Cerrar formulario' : 'Crear instituciÃ³n'}
+                {showCreateInstitutionForm ? 'Cerrar formulario' : 'Crear institución'}
               </Button>
             </div>
 
@@ -390,7 +464,7 @@ export default function InstitutionsPage() {
                       <option value="Universidad">Universidad</option>
                       <option value="Colegio">Colegio</option>
                       <option value="Escuela">Escuela</option>
-                      <option value="Tecnico">TÃ©cnico</option>
+                      <option value="Tecnico">Técnico</option>
                     </select>
                   </div>
                   <div>
@@ -404,7 +478,7 @@ export default function InstitutionsPage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="institution-region">RegiÃ³n</Label>
+                    <Label htmlFor="institution-region">Región</Label>
                     <input
                       id="institution-region"
                       value={institutionForm.region}
@@ -414,7 +488,7 @@ export default function InstitutionsPage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="institution-address">DirecciÃ³n</Label>
+                    <Label htmlFor="institution-address">Dirección</Label>
                     <input
                       id="institution-address"
                       value={institutionForm.address}
@@ -436,7 +510,7 @@ export default function InstitutionsPage() {
                   </div>
                 </div>
                 <Button type="submit" disabled={saving} className="bg-blue-500 hover:bg-blue-600 text-white">
-                  {saving ? 'Guardando...' : 'Guardar instituciÃ³n'}
+                  {saving ? 'Guardando...' : 'Guardar institución'}
                 </Button>
               </form>
             )}
@@ -445,15 +519,15 @@ export default function InstitutionsPage() {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">InstituciÃ³n</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Institución</th>
                     <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Tipo</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">UbicaciÃ³n</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Ubicación</th>
                     <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Email</th>
                     <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Acciones</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {institutions.map((institution) => {
+                  {visibleInstitutions.map((institution) => {
                     const institutionId = getEntityId(institution);
                     const isSelected = selectedInstitutionId === institutionId;
 
@@ -490,7 +564,7 @@ export default function InstitutionsPage() {
                 <section className="rounded-xl bg-white p-6 shadow-sm space-y-6">
                   <div>
                     <h2 className="text-xl font-semibold text-gray-900">Sedes de {selectedInstitution.name}</h2>
-                    <p className="text-sm text-gray-500">Crea y organiza las sedes asociadas a la instituciÃ³n seleccionada.</p>
+                    <p className="text-sm text-gray-500">Crea y organiza las sedes asociadas a la institución seleccionada.</p>
                   </div>
 
                   <form onSubmit={handleBranchSubmit} className="grid gap-4 md:grid-cols-[1fr_1fr_auto] md:items-end">
@@ -505,7 +579,7 @@ export default function InstitutionsPage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="branch-address">DirecciÃ³n</Label>
+                      <Label htmlFor="branch-address">Dirección</Label>
                       <input
                         id="branch-address"
                         value={branchForm.address}
@@ -536,7 +610,7 @@ export default function InstitutionsPage() {
                   <div className="space-y-3">
                     {loadingBranches && <p className="text-sm text-gray-500">Cargando sedes...</p>}
                     {!loadingBranches && currentBranches.length === 0 && (
-                      <p className="text-sm text-gray-500">Esta instituciÃ³n aÃºn no tiene sedes registradas.</p>
+                      <p className="text-sm text-gray-500">Esta institución aún no tiene sedes registradas.</p>
                     )}
 
                     {currentBranches.map((branch) => {
@@ -598,7 +672,7 @@ export default function InstitutionsPage() {
                       <form onSubmit={(e) => void handleClassroomSubmit(e, selectedBranchId)} className="grid gap-4">
                         <div className="grid gap-4 md:grid-cols-3">
                           <div>
-                            <Label htmlFor="classroom-name">Nombre del salÃ³n</Label>
+                            <Label htmlFor="classroom-name">Nombre del salón</Label>
                             <input
                               id="classroom-name"
                               value={(classroomFormByBranch[selectedBranchId] || emptyClassroomForm).name}
@@ -608,7 +682,7 @@ export default function InstitutionsPage() {
                             />
                           </div>
                           <div>
-                            <Label htmlFor="classroom-code">CÃ³digo</Label>
+                            <Label htmlFor="classroom-code">Código</Label>
                             <input
                               id="classroom-code"
                               value={(classroomFormByBranch[selectedBranchId] || emptyClassroomForm).code}
@@ -631,7 +705,7 @@ export default function InstitutionsPage() {
                         </div>
 
                         <div>
-                          <Label htmlFor="classroom-teachers">Profesores del salÃ³n</Label>
+                          <Label htmlFor="classroom-teachers">Profesores del salón</Label>
                           <select
                             id="classroom-teachers"
                             multiple
@@ -655,7 +729,7 @@ export default function InstitutionsPage() {
 
                         <div className="flex gap-2">
                           <Button type="submit" disabled={saving} className="bg-blue-500 hover:bg-blue-600 text-white">
-                            {editingClassroomId ? 'Actualizar salÃ³n' : 'Crear salÃ³n'}
+                            {editingClassroomId ? 'Actualizar salón' : 'Crear salón'}
                           </Button>
                           {editingClassroomId && (
                             <Button
@@ -678,7 +752,7 @@ export default function InstitutionsPage() {
                       <div className="space-y-3">
                         {loadingClassrooms && <p className="text-sm text-gray-500">Cargando salones...</p>}
                         {!loadingClassrooms && currentClassrooms.length === 0 && (
-                          <p className="text-sm text-gray-500">Esta sede aÃºn no tiene salones registrados.</p>
+                          <p className="text-sm text-gray-500">Esta sede aún no tiene salones registrados.</p>
                         )}
 
                         {currentClassrooms.map((classroom) => {
@@ -690,7 +764,7 @@ export default function InstitutionsPage() {
                               <div className="flex flex-wrap items-start justify-between gap-3">
                                 <div>
                                   <h3 className="font-semibold text-gray-900">{classroom.name}</h3>
-                                  <p className="text-sm text-gray-600">CÃ³digo: {classroom.code}</p>
+                                  <p className="text-sm text-gray-600">Código: {classroom.code}</p>
                                   <p className="text-sm text-gray-600">
                                     Capacidad: {classroom.capacity ?? 'No definida'}
                                   </p>
@@ -727,7 +801,7 @@ export default function InstitutionsPage() {
                                   ))}
                                 </select>
                                 <p className="mt-2 text-xs text-gray-500">
-                                  MantÃ©n presionada la tecla Ctrl o Cmd para seleccionar varios profesores.
+                                  Mantén presionada la tecla Ctrl o Cmd para seleccionar varios profesores.
                                 </p>
                               </div>
                             </div>

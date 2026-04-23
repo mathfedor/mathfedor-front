@@ -1,5 +1,17 @@
 import api from './api.config';
 import { RegisterUserPayload, RegisterUserWithRolePayload, User, Student } from '@/types/auth.types';
+import { authService } from './auth.service';
+
+const getAuthHeaders = () => {
+  const token = authService.getToken();
+  if (!token) {
+    throw new Error('No hay token de autenticación');
+  }
+
+  return {
+    Authorization: `Bearer ${token}`
+  };
+};
 
 class UsersService {
   async createUser(user: RegisterUserPayload): Promise<User> {
@@ -13,76 +25,51 @@ class UsersService {
   }
 
   async getUsers(params?: Record<string, string>): Promise<User[]> {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('No hay token de autenticación');
-    }
-
     const response = await api.get<User[]>('/users', {
       params,
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: getAuthHeaders()
+    });
+
+    return response.data;
+  }
+
+  async getMyStudents(): Promise<User[]> {
+    const response = await api.get<User[]>('/users/my-students', {
+      headers: getAuthHeaders()
     });
 
     return response.data;
   }
 
   async updateUser(user: User): Promise<User> {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('No hay token de autenticación');
-    }
-
     const response = await api.put<User>('/users', user, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: getAuthHeaders()
     });
 
     return response.data;
   }
 
   async deleteUser(id: string): Promise<void> {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('No hay token de autenticación');
-    }
-
     await api.delete<void>(`/users/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: getAuthHeaders()
     });
   }
 
   async updateStudent(id: string, studentData: Partial<Student>): Promise<User> {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('No hay token de autenticación');
-    }
-
     const response = await api.patch<User>(`/users/${id}/student`, studentData, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: getAuthHeaders()
     });
 
     return response.data;
   }
 
   async bulkUploadExcel(file: File): Promise<unknown> {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('No hay token de autenticación');
-    }
-
     const formData = new FormData();
     formData.append('file', file);
 
     const response = await api.post('/users/bulk-upload-excel', formData, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        ...getAuthHeaders(),
         'Content-Type': 'multipart/form-data'
       }
     });

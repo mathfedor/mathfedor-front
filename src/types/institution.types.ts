@@ -47,9 +47,7 @@ export interface Institution {
 export interface CreateInstitutionData {
   name: string;
   type: Institution['type'];
-  city: string;
-  region: string;
-  address: string;
+  location: Location;
   email: string;
 }
 

@@ -46,6 +46,11 @@ const roleMenuItems: Record<string, MenuItem[]> = {
   teacher: [
     { icon: <FiUser className="w-5 h-5" />, title: 'Estudiantes', href: '/dashboard/estudiantes' }
   ],
+  academy: [
+    { icon: <FiUser className="w-5 h-5" />, title: 'Estudiantes', href: '/dashboard/estudiantes' },
+    { icon: <FiGlobe className="w-5 h-5" />, title: 'Instituciones', href: '/dashboard/institutions' },
+    { icon: <FiUsers className="w-5 h-5" />, title: 'Usuarios', href: '/dashboard/users' }
+  ],
   admin: [
     { icon: <FiPlusCircle className="w-5 h-5" />, title: 'Crear Diagnóstico', href: '/dashboard/diagnosis' },
     { icon: <FiBook className="w-5 h-5" />, title: 'Crear Módulo', href: '/dashboard/modules/create' },

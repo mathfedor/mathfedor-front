@@ -193,10 +193,30 @@ class AuthService {
   getCurrentUser(): User | null {
     const userStr = localStorage.getItem('user');
     if (userStr) {
-      const user = JSON.parse(userStr) as User & { _id?: string };
+      type EntityRef = string | { id?: string; _id?: string } | null | undefined;
+      const user = JSON.parse(userStr) as User & {
+        _id?: string;
+        institutionid?: EntityRef;
+        institutionId?: EntityRef;
+      };
+
+      const normalizeEntityRef = (value: EntityRef) => {
+        if (!value) return '';
+        if (typeof value === 'string') return value;
+        return value._id || value.id || '';
+      };
+
       // Normalizar id si viene del backend como _id
       if (user && !user.id && user._id) {
         user.id = user._id;
+      }
+      if (user) {
+        const normalizedInstitutionId =
+          normalizeEntityRef(user.institutionId) || normalizeEntityRef(user.institutionid);
+
+        if (normalizedInstitutionId) {
+          user.institutionId = normalizedInstitutionId;
+        }
       }
       return user;
     }
