@@ -12,7 +12,7 @@ export default function BooksPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isBenefitsModalOpen, setIsBenefitsModalOpen] = useState(false);
-  const [selectedModule, setSelectedModule] = useState<Module | null>(null);
+  const [, setSelectedModule] = useState<Module | null>(null);
   const [isFichaModalOpen, setIsFichaModalOpen] = useState(false);
 
   useEffect(() => {
