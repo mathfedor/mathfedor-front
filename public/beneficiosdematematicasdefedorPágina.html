@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método Fedor - Estética Pixar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Afacad+Flux:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --color-lime: #dcfd8b;
+            --color-purple: #bc84ee;
+            --color-orange: #ff823a;
+            --color-dark: #1e293b;
+            --color-text: #475569;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: #e2e8f0;
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1fr;
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px 0;
+            place-items: center;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #fff;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            font-family: 'Afacad Flux', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--color-lime) 0%, rgba(220, 253, 139, 0) 70%);
+            top: -250px;
+            right: -250px;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Comfortaa', cursive;
+            margin: 0;
+            color: var(--color-dark);
+        }
+
+        .slide-title {
+            font-size: 48px;
+            margin-bottom: 30px;
+            padding: 60px 60px 0 60px;
+            text-align: left;
+            width: 100%;
+            z-index: 1;
+        }
+
+        p, li {
+            font-size: 22px;
+            line-height: 1.5;
+            color: var(--color-text);
+        }
+
+        .content-area {
+            flex-grow: 1;
+            padding: 0 60px 60px 60px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .title-layout {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+        }
+        .title-layout h1 { font-size: 96px; color: var(--color-dark); }
+        .title-layout h1 span { color: var(--color-purple); }
+        .title-layout .subtitle { font-size: 28px; max-width: 800px; margin-top: 20px; }
+
+        .image-right-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .image-wrapper {
+            border-radius: 40px;
+            overflow: hidden;
+            height: 500px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 8px solid #fff;
+        }
+        .image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+
+        .icon-tiles { display: flex; gap: 25px; }
+        .icon-tile {
+            flex: 1;
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            border: 2px solid #f1f5f9;
+        }
+        .icon-tile i { font-size: 50px; margin-bottom: 25px; color: var(--color-purple); }
+
+        .section-title-layout {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--color-purple);
+            color: white;
+        }
+        .section-title-layout h2 { font-size: 72px; color: #fff; text-align: center; }
+        .section-title-layout hr { width: 120px; height: 8px; background: var(--color-lime); border: none; margin: 40px 0; border-radius: 4px; }
+
+        .tiled-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        .text-tile {
+            background-color: #f8fafc;
+            border-radius: 20px;
+            padding: 30px;
+            border-left: 10px solid var(--color-purple);
+        }
+        .text-tile h3 { font-size: 24px; margin-bottom: 12px; color: var(--color-orange); }
+
+        .bleed-image-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: stretch;
+            padding: 0 !important;
+        }
+        .bleed-image-layout .content-side { padding: 80px 60px; display: flex; flex-direction: column; justify-content: center; }
+        .bleed-image-layout .image-side img { width: 100%; height: 720px; object-fit: cover; }
+
+        .number-large { font-size: 150px; font-weight: 700; color: var(--color-orange); font-family: 'Comfortaa'; line-height: 1; margin-top: 20px; }
+
+        .quote-layout { text-align: center; padding: 60px 100px; }
+        .quote-layout blockquote { font-size: 40px; font-family: 'Comfortaa'; color: var(--color-dark); margin-bottom: 30px; line-height: 1.4; }
+        .quote-layout cite { font-size: 24px; color: var(--color-purple); font-weight: 600; font-style: normal; }
+
+        .bar-chart { width: 100%; margin-top: 30px; }
+        .bar { display: flex; align-items: center; margin-bottom: 30px; }
+        .bar-label { width: 300px; font-weight: 600; font-size: 22px; text-align: right; margin-right: 30px; }
+        .bar-track { flex-grow: 1; height: 60px; background: #f1f5f9; border-radius: 30px; overflow: hidden; }
+        .bar-fill { height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 25px; color: #fff; font-weight: 700; border-radius: 30px; }
+
+        .full-bg {
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .overlay-box {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 50px 80px;
+            border-radius: 30px;
+            max-width: 800px;
+        }
+
+        .qa-layout { text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .contact-card {
+            background: white;
+            border: 3px solid var(--color-purple);
+            padding: 20px 40px;
+            border-radius: 50px;
+            margin: 10px;
+            font-size: 26px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: fit-content;
+        }
+        .contact-card i { color: var(--color-purple); }
+    </style>
+</head>
+<body>
+
+    <!-- 1: PORTADA -->
+    <div class="slide-container" id="slide1">
+        <div class="title-layout">
+            <h1>Método <span>Fedor</span></h1>
+            <p class="subtitle">Una experiencia emocionante donde las matemáticas se viven como una aventura al estilo Pixar.</p>
+        </div>
+    </div>
+
+    <!-- 2: ESTUDIANTES -->
+    <div class="slide-container" id="slide2">
+        <h2 class="slide-title">Estudiantes: Aventura Inmersiva</h2>
+        <div class="content-area">
+            <div class="image-right-layout">
+                <div>
+                    <p>Transformamos las lecciones en viajes interactivos mediante:</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 30px;">
+                        <li style="margin-bottom: 20px;"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--color-orange); margin-right: 15px;"></i> <strong>Narrativas visuales:</strong> Portales dimensionales y escenarios Pixar.</li>
+                        <li style="margin-bottom: 20px;"><i class="fa-solid fa-face-smile-beam" style="color:var(--color-orange); margin-right: 15px;"></i> <strong>Motivación constante:</strong> Estética cercana a los gustos de los niños.</li>
+                        <li><i class="fa-solid fa-graduation-cap" style="color:var(--color-orange); margin-right: 15px;"></i> <strong>Autonomía:</strong> Avanzar al propio ritmo fortalece la autoestima.</li>
+                    </ul>
+                </div>
+                <div class="image-wrapper">
+                    <img src="https://media.easy-peasy.ai/d092d3ec-ffd2-40d5-9d1e-ac9d274d38b9/a45e19c6-7b66-4337-ad4a-3c06a2488d6f_medium.webp" alt="[Imagen de Estudiantes]">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3: DESARROLLO INTEGRAL -->
+    <div class="slide-container" id="slide3">
+        <h2 class="slide-title">Desarrollo Integral</h2>
+        <div class="content-area">
+            <div class="icon-tiles">
+                <div class="icon-tile">
+                    <i class="fa-solid fa-brain"></i>
+                    <h3>Pensamiento Lógico</h3>
+                    <p>Resolución de acertijos y análisis de situaciones en entornos digitales amigables.</p>
+                </div>
+                <div class="icon-tile">
+                    <i class="fa-solid fa-laptop-code"></i>
+                    <h3>Habilidades Digitales</h3>
+                    <p>Competencias tecnológicas esenciales para el siglo XXI y el futuro profesional.</p>
+                </div>
+                <div class="icon-tile">
+                    <i class="fa-solid fa-book-open-reader"></i>
+                    <h3>Comprensión Lectora</h3>
+                    <p>Resolver problemas digitales fortalece la lectura comprensiva e interpretación.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4: BENEFICIOS INSTITUCIONES -->
+    <div class="slide-container" id="slide4">
+        <div class="section-title-layout">
+            <hr>
+            <h2>Beneficios para las Instituciones</h2>
+        </div>
+    </div>
+
+    <!-- 5: EXCELENCIA -->
+    <div class="slide-container" id="slide5">
+        <h2 class="slide-title">Excelencia y Resultados</h2>
+        <div class="content-area">
+            <div class="tiled-grid">
+                <div class="text-tile">
+                    <h3>Excelencia Académica</h3>
+                    <p>Mejora sustancial en los promedios de las pruebas Saber y en los índices de desempeño institucional.</p>
+                </div>
+                <div class="text-tile">
+                    <h3>Recursos de Alto Impacto</h3>
+                    <p>Material visual atractivo y dinámico que facilita la explicación de temas complejos al estilo Pixar.</p>
+                </div>
+                <div class="text-tile">
+                    <h3>Optimización Docente</h3>
+                    <p>Contenidos y evaluaciones organizados digitalmente, reduciendo la carga administrativa manual.</p>
+                </div>
+                <div class="text-tile">
+                    <h3>Estandarización</h3>
+                    <p>Garantiza el cumplimiento de estándares oficiales asegurando una formación sólida y homogénea.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6: LIDERAZGO -->
+    <div class="slide-container bleed-image-layout" id="slide6">
+        <div class="content-side">
+            <h2 class="slide-title" style="padding: 0; margin-bottom: 25px;">Liderazgo Educativo</h2>
+            <p style="margin-bottom: 30px;">Implementar el Método Fedor posiciona a la institución a la vanguardia tecnológica y pedagógica.</p>
+            <div style="text-align: center;">
+                <div class="number-large">100%</div>
+                <p style="font-weight: 600; color: var(--color-purple); font-size: 26px;">Alineación con estándares oficiales</p>
+            </div>
+        </div>
+        <div class="image-side">
+            <img src="https://media.easy-peasy.ai/7d04f666-5e38-4935-af84-93b7333bb178/9daec0b7-9083-4c78-0929-08324248b36a_medium.webp" alt="[Imagen de Campus]">
+        </div>
+    </div>
+
+    <!-- 7: BENEFICIOS PADRES -->
+    <div class="slide-container" id="slide7">
+        <div class="section-title-layout">
+            <hr>
+            <h2>Beneficios para los Padres</h2>
+        </div>
+    </div>
+
+    <!-- 8: ACOMPAÑAMIENTO -->
+    <div class="slide-container" id="slide8">
+        <h2 class="slide-title">Acompañamiento Sencillo</h2>
+        <div class="content-area">
+            <div class="image-right-layout">
+                <div>
+                    <p>Integramos a la familia sin generar estrés mediante:</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 25px;">
+                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-eye" style="color:var(--color-purple); margin-right: 15px;"></i> <strong>Transparencia total:</strong> Avances en tiempo real.</li>
+                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-users" style="color:var(--color-purple); margin-right: 15px;"></i> <strong>Conexión generacional:</strong> Lenguaje compartido.</li>
+                        <li><i class="fa-solid fa-shield-check" style="color:var(--color-purple); margin-right: 15px;"></i> <strong>Tranquilidad:</strong> Método innovador y oficial.</li>
+                    </ul>
+                </div>
+                <div class="image-wrapper">
+                    <img src="https://media.easy-peasy.ai/8f1a81bd-6968-42bb-a89f-572d92e20b8a/987d9ab2-0965-4e47-bf77-408d51c52988.png" alt="[Imagen de Familia]">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9: ECONOMÍA -->
+    <div class="slide-container" id="slide9">
+        <div class="content-area">
+            <div class="quote-layout">
+                <blockquote>"Al usar libros digitales Fedor, se reducen drásticamente los gastos en textos impresos y materiales adicionales, permitiendo que el estudiante avance con autonomía."</blockquote>
+                <cite>Un respiro para la economía familiar</cite>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10: BENEFICIOS DOCENTES -->
+    <div class="slide-container" id="slide10">
+        <div class="section-title-layout">
+            <hr>
+            <h2>Beneficios para los Docentes</h2>
+        </div>
+    </div>
+
+    <!-- 11: ASISTENTE PEDAGÓGICO -->
+    <div class="slide-container" id="slide11">
+        <h2 class="slide-title">Asistente Pedagógico Experto</h2>
+        <div class="content-area">
+            <div class="image-right-layout">
+                <div>
+                    <p>Potenciamos la labor del docente:</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 25px;">
+                        <li style="margin-bottom: 20px;"><i class="fa-solid fa-bolt" style="color:var(--color-orange); margin-right: 15px;"></i> <strong>Recursos Dinámicos:</strong> Estética Pixar de alto impacto.</li>
+                        <li style="margin-bottom: 20px;"><i class="fa-solid fa-list-check" style="color:var(--color-orange); margin-right: 15px;"></i> <strong>Optimización:</strong> Evaluaciones automatizadas.</li>
+                        <li><i class="fa-solid fa-display" style="color:var(--color-orange); margin-right: 15px;"></i> <strong>Versatilidad:</strong> Aula física, virtual o híbrida.</li>
+                    </ul>
+                </div>
+                <div class="image-wrapper">
+                    <img src="https://media.easy-peasy.ai/03161798-d57c-48ca-b8bf-1ca22575c0ef/1a8458b4-129b-4e7f-a8bd-f94199d7e32b_medium.webp" alt="[Imagen de Docente]">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12: SOSTENIBILIDAD -->
+    <div class="slide-container" id="slide12">
+        <h2 class="slide-title">Un Futuro Sostenible</h2>
+        <div class="content-area">
+            <p>Impacto de las emisiones de CO2 en materiales educativos:</p>
+            <div class="bar-chart">
+                <div class="bar">
+                    <div class="bar-label">Libros Impresos</div>
+                    <div class="bar-track"><div class="bar-fill" style="width: 93%; background: #64748b;">93%</div></div>
+                </div>
+                <div class="bar">
+                    <div class="bar-label">Método Fedor Pixar</div>
+                    <div class="bar-track"><div class="bar-fill" style="width: 7%; background: var(--color-lime); color: var(--color-dark);">7%</div></div>
+                </div>
+            </div>
+            <p style="text-align: center; font-style: italic; margin-top: 40px; color: #64748b;">Cada libro digital Fedor es un paso real hacia la sostenibilidad ambiental.</p>
+        </div>
+    </div>
+
+    <!-- 13: NATURALEZA -->
+    <div class="slide-container full-bg" id="slide13" style="background-image: url('https://images.stockcake.com/public/b/5/b/b5bc1b8a-894e-4a79-a4f4-368098944352/nature-meets-technology-stockcake.jpg');">
+        <div class="overlay-box">
+            <h2 style="font-size: 60px; margin-bottom: 30px;">Menos Papel, Más Vida</h2>
+            <div style="display: flex; justify-content: space-around; font-weight: 700;">
+                <div><i class="fa-solid fa-droplet" style="color: #3b82f6; display: block; font-size: 40px; margin-bottom: 10px;"></i> Menos Agua</div>
+                <div><i class="fa-solid fa-pen-nib" style="color: #4b5563; display: block; font-size: 40px; margin-bottom: 10px;"></i> Menos Tinta</div>
+                <div><i class="fa-solid fa-bolt" style="color: #f59e0b; display: block; font-size: 40px; margin-bottom: 10px;"></i> Menos Energía</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 14: CONTACTOS (ACTUALIZADO) -->
+    <div class="slide-container" id="slide14">
+        <div class="qa-layout">
+            <h2>¿Preguntas?</h2>
+            <p style="font-size: 28px; margin-bottom: 40px;">Únete a la aventura de aprender matemáticas.</p>
+            <div class="contact-card"><i class="fa-brands fa-whatsapp"></i> WhatsApp: +57 310 7199897</div>
+            <div class="contact-card"><i class="fa-solid fa-globe"></i> Web: www.matematicasdefedor.com</div>
+            <div class="contact-card" style="border-color: var(--color-orange);"><i class="fa-solid fa-location-dot" style="color: var(--color-orange);"></i> Cali, Valle del Cauca, Colombia</div>
+        </div>
+    </div>
+
+</body>
+</html>

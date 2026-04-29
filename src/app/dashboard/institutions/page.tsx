@@ -465,6 +465,7 @@ export default function InstitutionsPage() {
                       <option value="Colegio">Colegio</option>
                       <option value="Escuela">Escuela</option>
                       <option value="Tecnico">Técnico</option>
+                      <option value="Fundacion">Fundación</option>
                     </select>
                   </div>
                   <div>
