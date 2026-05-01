@@ -6,6 +6,18 @@ import Footer from "@/components/Footer";
 import { Module, moduleService } from '@/services/module.service';
 import Image from 'next/image';
 
+const moduleBooksImages: Record<string, { src: string; alt: string }> = {
+  Grado1: { src: '/fedor-modulo-1-libros.png', alt: 'Libros del módulo 1' },
+  Grado2: { src: '/fedor-modulo-2-libros.png', alt: 'Libros del módulo 2' },
+  Grado3: { src: '/fedor-modulo-3-libros.png', alt: 'Libros del módulo 3' },
+  Grado4: { src: '/fedor-modulo-4-libros.png', alt: 'Libros del módulo 4' },
+  Grado5: { src: '/fedor-modulo-5-libros.png', alt: 'Libros del módulo 5' },
+  Grado6: { src: '/fedor-modulo-6-libros.png', alt: 'Libros del módulo 6' },
+  Grado7: { src: '/fedor-modulo-7-libros.png', alt: 'Libros del módulo 7' },
+  Grado10: { src: '/fedor-modulo-10-libros.png', alt: 'Libros del módulo 10' },
+  Grado11: { src: '/fedor-modulo-11-libros.png', alt: 'Libros del módulo 11' },
+};
+
 export default function BooksPage() {
   const router = useRouter();
   const [modules, setModules] = useState<Module[]>([]);
@@ -203,14 +215,14 @@ export default function BooksPage() {
                 </p>
               </div>
 
-              {/* �?xito Pre-Universitario */}
+              {/* Éxito Pre-Universitario */}
               <div className="flex flex-col items-center">
                 <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
                   <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-900">�?xito Pre-Universitario</h3>
+                <h3 className="text-xl font-bold mb-3 text-gray-900">Éxito Pre-Universitario</h3>
                 <p className="text-gray-600">
                   Ingresa con confianza
                   <br />
@@ -539,11 +551,11 @@ export default function BooksPage() {
                   </div>
                   <div className="p-6">
                     <h3 className="text-2xl font-bold mb-3 text-gray-900">{module.title}</h3>
-                    {(module.group === 'Grado1' || module.group === 'Grado2') && (
+                    {module.group && moduleBooksImages[module.group] && (
                       <div className="mb-4 flex justify-center">
                         <Image
-                          src={module.group === 'Grado1' ? '/fedor-modulo-1-libros.png' : '/fedor-modulo-2-libros.png'}
-                          alt={module.group === 'Grado1' ? 'Libros del módulo 1' : 'Libros del módulo 2'}
+                          src={moduleBooksImages[module.group].src}
+                          alt={moduleBooksImages[module.group].alt}
                           width={220}
                           height={90}
                           className="h-auto w-auto max-w-full object-contain"
@@ -644,13 +656,13 @@ export default function BooksPage() {
 
             <div className="text-center mt-12">
               <p className="text-lg text-gray-700 mb-6">
-                <strong>�snete a la revolución educativa que está transformando el aprendizaje de matemáticas
+                <strong>Únete a la revolución educativa que está transformando el aprendizaje de matemáticas
                   en la comunidad hispanohablante mundial</strong>
               </p>
               <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-                <span className="bg-white px-4 py-2 rounded-full shadow">co Latam</span>
-                <span className="bg-white px-4 py-2 rounded-full shadow">�Y?��Y?� España</span>
-                <span className="bg-white px-4 py-2 rounded-full shadow">�YOZ Y más países</span>
+                <span className="bg-white px-4 py-2 rounded-full shadow">Latam</span>
+                <span className="bg-white px-4 py-2 rounded-full shadow">España</span>
+                <span className="bg-white px-4 py-2 rounded-full shadow">Y más países</span>
               </div>
             </div>
           </div>
@@ -663,7 +675,7 @@ export default function BooksPage() {
               ¿Listo para transformar tu aprendizaje?
             </h2>
             <p className="text-xl mb-8">
-              �snete a miles de estudiantes que ya están alcanzando sus metas académicas
+              Únete a miles de estudiantes que ya están alcanzando sus metas académicas
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button

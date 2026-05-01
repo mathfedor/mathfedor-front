@@ -7,7 +7,28 @@ import { moduleService, Module } from '@/services/module.service';
 import { authService } from '@/services/auth.service';
 import Image from 'next/image';
 import Footer from "@/components/Footer";
-import { ChevronDown, ChevronUp } from 'lucide-react';
+
+const primaryStandardsPdf = '/PrimariaPENSAMINETOSEST%C3%81NDARESCOMPETENCIASDBAYNIVELESDEDESEMPE%C3%91O.pdf';
+const secondaryStandardsPdf = '/BachilleratoPENSAMINETOSEST%C3%81NDARESCOMPETENCIASDBAYNIVELESDEDESEMPE%C3%91O.pdf';
+
+const getGradeNumber = (group?: string) => {
+  const match = group?.match(/Grado(\d+)/);
+  return match ? parseInt(match[1], 10) : null;
+};
+
+const getStandardsPdfByGroup = (group?: string) => {
+  const gradeNumber = getGradeNumber(group);
+
+  if (gradeNumber && gradeNumber >= 1 && gradeNumber <= 5) {
+    return primaryStandardsPdf;
+  }
+
+  if (gradeNumber && gradeNumber >= 6 && gradeNumber <= 12) {
+    return secondaryStandardsPdf;
+  }
+
+  return null;
+};
 
 export default function ModuleDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -21,14 +42,15 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
     const fetchModule = async () => {
       try {
         const modules = await moduleService.getAllModules();
-        const foundModule = modules.find(m => m._id === id);
+        const foundModule = modules.find((m) => m._id === id);
+
         if (foundModule) {
           setModule(foundModule);
         } else {
-          setError('Módulo no encontrado');
+          setError('Modulo no encontrado');
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error al cargar el módulo');
+        setError(err instanceof Error ? err.message : 'Error al cargar el modulo');
       } finally {
         setIsLoading(false);
       }
@@ -39,11 +61,10 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
 
   const handleBuyClick = () => {
     const isAuthenticated = authService.isAuthenticated();
+
     if (!isAuthenticated) {
-      // Redirigir al login con el parámetro de redirección
       router.push(`/login?redirect=/dashboard/buybooks/${id}`);
     } else {
-      // Si está autenticado, redirigir directamente a la página de compra
       router.push(`/dashboard/buybooks/${id}`);
     }
   };
@@ -61,11 +82,13 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-red-500 text-center">
           <p className="text-xl font-semibold">Error</p>
-          <p>{error || 'Módulo no encontrado'}</p>
+          <p>{error || 'Modulo no encontrado'}</p>
         </div>
       </div>
     );
   }
+
+  const standardsPdf = getStandardsPdfByGroup(module.group);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -84,7 +107,7 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
                     />
                   ) : (
                     <div className="h-full bg-orange-100 flex items-center justify-center">
-                      <span className="text-8xl text-orange-500">📚</span>
+                      <span className="text-8xl text-orange-500">Libro</span>
                     </div>
                   )}
                 </div>
@@ -92,7 +115,6 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
               <div className="md:w-1/2 p-8">
                 <h1 className="text-4xl font-bold mb-4">{module.title}</h1>
 
-                {/* Precio y botón de comprar movidos arriba */}
                 <div className="border-b pb-6 mb-6">
                   <div className="flex justify-between items-center">
                     <div className="flex flex-col">
@@ -127,35 +149,40 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
 
                 <div className="space-y-4 mb-8">
                   <div className="flex flex-col gap-2">
-                    <span className="font-semibold">Estandares básicos de competencia:</span>
+                    <span className="font-semibold">Estandares basicos de competencia:</span>
                     <ul className="list-disc list-inside space-y-2">
                       {module.tags && module.tags.length > 0 ? (
                         module.tags.slice(0, 3).map((tag, index) => (
                           <li key={index} className="text-gray-600">{tag}</li>
                         ))
                       ) : (
-                        <li className="text-gray-500">No hay estandares básicos de competencia definidos</li>
+                        <li className="text-gray-500">No hay estandares basicos de competencia definidos</li>
                       )}
                     </ul>
 
-                    {module.tags && module.tags[3] && (
+                    {standardsPdf && (
                       <div className="mt-4">
                         <button
-                          onClick={() => setShowPdf(!showPdf)}
-                          className="flex items-center gap-2 text-orange-500 font-semibold hover:text-orange-600 transition-colors focus:outline-none group"
+                          type="button"
+                          onClick={() => setShowPdf((current) => !current)}
+                          className="inline-flex rounded-lg transition-transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
+                          aria-label={showPdf ? 'Ocultar PDF de estandares y competencias' : 'Mostrar PDF de estandares y competencias'}
                         >
-                          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-orange-100 group-hover:bg-orange-200 transition-colors">
-                            {showPdf ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                          </span>
-                          Ver más
+                          <Image
+                            src="/estandares-competencias.png"
+                            alt="Estandares y competencias"
+                            width={260}
+                            height={72}
+                            className="h-auto w-auto max-w-full object-contain"
+                          />
                         </button>
 
                         {showPdf && (
-                          <div className="mt-4 w-full h-[600px] border rounded-lg overflow-hidden shadow-sm">
+                          <div className="mt-4 w-full h-[600px] overflow-hidden rounded-lg border shadow-sm">
                             <iframe
-                              src={module.tags[3].startsWith('/') ? module.tags[3] : `/${module.tags[3]}`}
-                              className="w-full h-full"
-                              title="Estándares básicos de competencia"
+                              src={standardsPdf}
+                              className="h-full w-full"
+                              title="Estandares y competencias"
                             />
                           </div>
                         )}
@@ -172,4 +199,4 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
       <Footer />
     </div>
   );
-} 
+}
