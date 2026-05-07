@@ -324,6 +324,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     return (points / maxPoints) * 5;
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getTopicSymbol = (topicTitle: string): string | null => {
     const normalizedTitle = topicTitle.toLowerCase();
 
@@ -335,6 +336,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     return null;
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getHtmlHeadingSymbol = (headingText: string): string | null => {
     const normalizedText = headingText.replace(/<[^>]*>/g, '').trim().toLowerCase();
 

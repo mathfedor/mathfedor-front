@@ -4,7 +4,7 @@ import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart, FiTag, FiHelpCircle } from 'react-icons/fi';
-import { useState, useEffect } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 import { Tooltip } from '@/components/ui/tooltip';
 import { authService } from '@/services/auth.service';
 import { User } from '@/types/auth.types';
@@ -82,9 +82,9 @@ export default function Sidebar() {
     return pathname === href || pathname?.startsWith(`${href}/`);
   };
 
-  const isSubmenuActive = (submenu?: SubMenuItem[]) => {
+  const isSubmenuActive = useCallback((submenu?: SubMenuItem[]) => {
     return submenu?.some(subItem => pathname === subItem.href || pathname?.startsWith(`${subItem.href}/`)) ?? false;
-  };
+  }, [pathname]);
 
   useEffect(() => {
     setIsClient(true);
@@ -136,14 +136,15 @@ export default function Sidebar() {
   };
 
   // Combinamos las opciones base con las opciones específicas del rol
-  let menuItems = [
+  const menuItems = useMemo(() => {
+    let items = [
     ...baseMenuItems,
     ...(isClient && user && user.role ? roleMenuItems[user.role.toLowerCase() as keyof typeof roleMenuItems] || [] : [])
   ];
 
   if (user) {
-    menuItems = [
-      ...menuItems,
+    items = [
+      ...items,
       { icon: <FiShoppingCart className="w-5 h-5" />, title: 'Comprar', href: '/dashboard/buybooks' },
       { icon: <FiUser className="w-5 h-5" />, title: 'Perfil', href: '/dashboard/profile' },
       { icon: <FiHelpCircle className="w-5 h-5" />, title: 'Ayuda', href: '/dashboard/help' }
@@ -152,7 +153,7 @@ export default function Sidebar() {
 
   // Si el usuario es estudiante, actualizamos el submenu de módulos
   if (user?.role?.toLowerCase() === 'student') {
-    menuItems = menuItems.map(item => {
+    items = items.map(item => {
       if (item.title === 'Mis Módulos') {
         return {
           ...item,
@@ -172,13 +173,16 @@ export default function Sidebar() {
     });
   }
 
+    return items;
+  }, [hasAccess, isClient, modules, user]);
+
   useEffect(() => {
     const activeSubmenu = menuItems.find(item => isSubmenuActive(item.submenu));
 
     if (activeSubmenu) {
       setOpenSubmenu(activeSubmenu.title);
     }
-  }, [pathname, modules, user]);
+  }, [isSubmenuActive, menuItems]);
 
   // Si no estamos en el cliente, mostramos solo las opciones base
   if (!isClient) {
