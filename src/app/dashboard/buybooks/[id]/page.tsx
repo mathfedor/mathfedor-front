@@ -12,6 +12,21 @@ import crypto from 'crypto';
 import { purchaseService, PurchaseTransaction } from '@/services/purchase.service';
 import { couponService } from '@/services/coupon.service';
 
+const getGradeNumber = (group?: string) => {
+  const match = group?.match(/Grado(\d+)/);
+  return match ? parseInt(match[1], 10) : null;
+};
+
+const getStandardsPdfByGroup = (group?: string) => {
+  const gradeNumber = getGradeNumber(group);
+
+  if (gradeNumber && gradeNumber >= 1 && gradeNumber <= 11) {
+    return `/Estandares-${gradeNumber}.pdf`;
+  }
+
+  return null;
+};
+
 // Interfaces para los tipos de Wompi
 interface WompiPaymentMethod {
   type?: string;
@@ -65,6 +80,7 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
   const [couponError, setCouponError] = useState<string | null>(null);
   const [couponDiscount, setCouponDiscount] = useState<{ discount: number; discountType: 'percentage' | 'fixed' } | null>(null);
   const [validatingCoupon, setValidatingCoupon] = useState(false);
+  const [showPdf, setShowPdf] = useState(false);
 
   useEffect(() => {
     const checkAuthAndFetchModule = async () => {
@@ -357,6 +373,8 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
     );
   }
 
+  const standardsPdf = getStandardsPdfByGroup(module.group);
+
   return (
     <div className="min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">
       <Script
@@ -486,6 +504,35 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
                       className="text-gray-600 mb-6 whitespace-pre-line prose prose-lg max-w-none"
                       dangerouslySetInnerHTML={{ __html: module.description.replace(/\n/g, '<br/>') }}
                     />
+
+                    {standardsPdf && (
+                      <div className="mt-4">
+                        <button
+                          type="button"
+                          onClick={() => setShowPdf((current) => !current)}
+                          className="inline-flex rounded-lg transition-transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
+                          aria-label={showPdf ? 'Ocultar PDF de estandares y competencias' : 'Mostrar PDF de estandares y competencias'}
+                        >
+                          <Image
+                            src="/estandares-competencias.png"
+                            alt="Estandares y competencias"
+                            width={260}
+                            height={72}
+                            className="h-auto w-auto max-w-full object-contain"
+                          />
+                        </button>
+
+                        {showPdf && (
+                          <div className="mt-4 w-full h-[600px] overflow-hidden rounded-lg border shadow-sm">
+                            <iframe
+                              src={standardsPdf}
+                              className="h-full w-full"
+                              title="Estandares y competencias"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

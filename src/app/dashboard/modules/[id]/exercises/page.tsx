@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { use } from 'react';
@@ -6,7 +6,7 @@ import Sidebar from '@/components/Sidebar';
 import { DiagnosticConfig } from '@/types/diagnostic.types';
 import { authService } from '@/services/auth.service';
 import { chatService } from '@/services/chat.service';
-import { FiChevronLeft, FiChevronRight, FiChevronDown, FiX, FiSend, FiShuffle } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiChevronDown, FiX, FiSend, FiShuffle, FiPlus, FiMic } from 'react-icons/fi';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Tooltip } from '@/components/ui/tooltip';
@@ -86,6 +86,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   const [currentStep, setCurrentStep] = useState(1);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMaterialOpen, setIsMaterialOpen] = useState(false);
+  const [commentsTab, setCommentsTab] = useState<'help' | 'contributions'>('contributions');
   const [showChat, setShowChat] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
@@ -95,7 +96,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   const [currentModule, setCurrentModule] = useState<Module | null>(null);
   const router = useRouter();
   const { hasAccess } = useModuleAccess();
-  const totalSteps = diagnosticConfigs[0]?.topics?.length * 2 || 0; // Cada tema tiene 2 pasos: descripciÃ³n y ejercicios
+  const totalSteps = diagnosticConfigs[0]?.topics?.length * 2 || 0; // Cada tema tiene 2 pasos: descripción y ejercicios
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: string }>({});
   const [results, setResults] = useState<{
     goodAnswers: number;
@@ -127,29 +128,29 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
   // Array de preguntas y respuestas por paso
   const questionsByStep: QuestionStep[] = [
-    // Paso 1: VerificaciÃ³n de IndexaciÃ³n
+    // Paso 1: Verificación de Indexación
     {
       questions: [
         {
           id: 1,
           author: {
-            name: "Carlos RamÃ­rez",
+            name: "Carlos Ramírez",
             avatar: "C",
             role: "Estudiante",
-            timeAgo: "hace 2 dÃ­as"
+            timeAgo: "hace 2 días"
           },
-          content: "Â¿Es necesario verificar la indexaciÃ³n si mi sitio es nuevo y aÃºn no tiene mucho contenido?",
+          content: "¿Es necesario verificar la indexación si mi sitio es nuevo y aún no tiene mucho contenido?",
           likes: 5,
           replies: [
             {
               id: 2,
               author: {
-                name: "Ana MartÃ­nez",
+                name: "Ana Martínez",
                 avatar: "A",
                 role: "Profesor",
-                timeAgo: "hace 1 dÃ­a"
+                timeAgo: "hace 1 día"
               },
-              content: "Â¡SÃ­! Es fundamental verificar la indexaciÃ³n desde el principio. Esto te ayudarÃ¡ a identificar problemas temprano y asegurarte de que Google pueda encontrar tu contenido desde el inicio.",
+              content: "¡Sí! Es fundamental verificar la indexación desde el principio. Esto te ayudará a identificar problemas temprano y asegurarte de que Google pueda encontrar tu contenido desde el inicio.",
               likes: 8
             }
           ]
@@ -157,12 +158,12 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         {
           id: 3,
           author: {
-            name: "Laura GonzÃ¡lez",
+            name: "Laura González",
             avatar: "L",
             role: "Estudiante",
-            timeAgo: "hace 1 dÃ­a"
+            timeAgo: "hace 1 día"
           },
-          content: "Â¿Cada cuÃ¡nto tiempo debo verificar la indexaciÃ³n de mi sitio web?",
+          content: "¿Cada cuánto tiempo debo verificar la indexación de mi sitio web?",
           likes: 4,
           replies: [
             {
@@ -173,7 +174,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                 role: "Profesor",
                 timeAgo: "hace 12 horas"
               },
-              content: "Se recomienda verificar la indexaciÃ³n al menos una vez por semana si publicas contenido regularmente. Si tu sitio es mÃ¡s estÃ¡tico, una vez al mes puede ser suficiente.",
+              content: "Se recomienda verificar la indexación al menos una vez por semana si publicas contenido regularmente. Si tu sitio es más estático, una vez al mes puede ser suficiente.",
               likes: 6
             }
           ]
@@ -186,23 +187,23 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         {
           id: 5,
           author: {
-            name: "Pedro SÃ¡nchez",
+            name: "Pedro Sánchez",
             avatar: "P",
             role: "Estudiante",
-            timeAgo: "hace 3 dÃ­as"
+            timeAgo: "hace 3 días"
           },
-          content: "Â¿QuÃ© debo hacer si encuentro URLs importantes que no estÃ¡n siendo indexadas?",
+          content: "¿Qué debo hacer si encuentro URLs importantes que no están siendo indexadas?",
           likes: 7,
           replies: [
             {
               id: 6,
               author: {
-                name: "Diana LÃ³pez",
+                name: "Diana López",
                 avatar: "D",
                 role: "Profesor",
-                timeAgo: "hace 2 dÃ­as"
+                timeAgo: "hace 2 días"
               },
-              content: "Primero, verifica que no estÃ©n bloqueadas en el robots.txt. Luego, asegÃºrate de que las URLs sean accesibles y tengan contenido Ãºnico y valioso. TambiÃ©n puedes usar Google Search Console para solicitar la indexaciÃ³n manualmente.",
+              content: "Primero, verifica que no estén bloqueadas en el robots.txt. Luego, asegúrate de que las URLs sean accesibles y tengan contenido único y valioso. También puedes usar Google Search Console para solicitar la indexación manualmente.",
               likes: 12
             }
           ]
@@ -210,23 +211,23 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         {
           id: 7,
           author: {
-            name: "MarÃ­a JimÃ©nez",
+            name: "María Jiménez",
             avatar: "M",
             role: "Estudiante",
-            timeAgo: "hace 1 dÃ­a"
+            timeAgo: "hace 1 día"
           },
-          content: "Â¿Es normal que algunas pÃ¡ginas tarden en ser indexadas aunque ya estÃ©n publicadas?",
+          content: "¿Es normal que algunas páginas tarden en ser indexadas aunque ya estén publicadas?",
           likes: 3,
           replies: [
             {
               id: 8,
               author: {
-                name: "Roberto GarcÃ­a",
+                name: "Roberto García",
                 avatar: "R",
                 role: "Profesor",
                 timeAgo: "hace 10 horas"
               },
-              content: "SÃ­, es normal. Google tiene su propio ritmo de rastreo e indexaciÃ³n. Las pÃ¡ginas nuevas pueden tardar desde unas horas hasta varias semanas en ser indexadas, dependiendo de varios factores como la autoridad del dominio y la frecuencia de actualizaciÃ³n del sitio.",
+              content: "Sí, es normal. Google tiene su propio ritmo de rastreo e indexación. Las páginas nuevas pueden tardar desde unas horas hasta varias semanas en ser indexadas, dependiendo de varios factores como la autoridad del dominio y la frecuencia de actualización del sitio.",
               likes: 5
             }
           ]
@@ -245,10 +246,10 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
         const userData = authService.getCurrentUser();
         if (!userData) {
-          throw new Error('No se encontrÃ³ informaciÃ³n del usuario');
+          throw new Error('No se encontró información del usuario');
         }
 
-        // Verificar acceso al mÃ³dulo usando el ID resuelto
+        // Verificar acceso al módulo usando el ID resuelto
         if (!hasAccess(resolvedParams.id)) {
           router.replace('/dashboard');
           return;
@@ -272,11 +273,11 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     const fetchDiagnosticConfig = async () => {
       try {
         setIsLoading(true);
-        // Primero obtener el mÃ³dulo especÃ­fico por ID
+        // Primero obtener el módulo específico por ID
         const moduleData = await moduleService.getModuleById(resolvedParams.id);
         setCurrentModule(moduleData);
 
-        // Si el mÃ³dulo no estÃ¡ publicado, no cargar los ejercicios
+        // Si el módulo no está publicado, no cargar los ejercicios
         if (moduleData.published === false) {
           setIsLoading(false);
           return;
@@ -287,10 +288,10 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
           setDiagnosticConfigs(configs as unknown as (DiagnosticConfig & { topics: Topic[] })[]);
         }
       } catch (error) {
-        console.error('Error al obtener la configuraciÃ³n del diagnÃ³stico:', error);
+        console.error('Error al obtener la configuración del diagnóstico:', error);
         setAlertMessage({
           title: 'Error',
-          message: 'No se pudo cargar la configuraciÃ³n del diagnÃ³stico.'
+          message: 'No se pudo cargar la configuración del diagnóstico.'
         });
         setIsAlertOpen(true);
       } finally {
@@ -313,9 +314,9 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     }));
   };
 
-  // FunciÃ³n para mapear Ã­ndice a letra
+  // Función para mapear índice a letra
   const indexToLetter = (index: number): string => {
-    return String.fromCharCode(65 + index); // 65 es el cÃ³digo ASCII para 'A'
+    return String.fromCharCode(65 + index); // 65 es el código ASCII para 'A'
   };
 
   const getAverage = (points: number, maxPoints: number): number => {
@@ -487,7 +488,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     );
   };
 
-  // FunciÃ³n para validar respuestas del tema actual
+  // Función para validar respuestas del tema actual
   const validateCurrentTopicAnswers = async () => {
     const currentTopic = diagnosticConfigs[0].topics[Math.floor((currentStep - 1) / 2)];
     const exercises = currentTopic.exercises;
@@ -520,7 +521,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
       };
     });
 
-    // Calcular estadÃ­sticas
+    // Calcular estadísticas
     const correctAnswers = newAnswers.filter(answer => answer.isCorrect).length;
     const wrongAnswers = newAnswers.length - correctAnswers;
 
@@ -650,8 +651,10 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   };
 
   const { title, content } = getCurrentContent();
+  const isCurrentExerciseStep = (currentStep % 2) === 0;
+  const activeCommentsTab = isCurrentExerciseStep ? 'contributions' : commentsTab;
 
-  // Actualizar la lÃ³gica de navegaciÃ³n
+  // Actualizar la lógica de navegación
   const handleNext = async () => {
     const isExerciseStep = (currentStep % 2) === 0;
 
@@ -683,7 +686,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     if (!token) {
       setAlertMessage({
         title: 'Error',
-        message: 'No se encontrÃ³ el token de autenticaciÃ³n. Por favor, inicia sesiÃ³n nuevamente.'
+        message: 'No se encontró el token de autenticación. Por favor, inicia sesión nuevamente.'
       });
       setIsAlertOpen(true);
       return;
@@ -746,6 +749,14 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     setShowChat(true);
   };
 
+  const handleTopicSelect = (topicIndex: number) => {
+    setCurrentStep(topicIndex * 2 + 1);
+    setSelectedAnswers({});
+    setShowResults(false);
+    setShowChat(false);
+    setIsMaterialOpen(false);
+  };
+
   return (
     <div className="flex min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">
       <Sidebar />
@@ -756,7 +767,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         message={alertMessage.message}
       />
       <div className="flex-1">
-        {/* Mostrar mensaje si el mÃ³dulo no estÃ¡ publicado */}
+        {/* Mostrar mensaje si el módulo no está publicado */}
         {currentModule && currentModule.published === false ? (
           <div className="flex items-center justify-center min-h-screen">
             <div className="text-center max-w-md px-6">
@@ -766,10 +777,10 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                 </svg>
               </div>
               <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
-                Estamos construyendo este mÃ³dulo
+                Estamos construyendo este módulo
               </h2>
               <p className="text-gray-600 dark:text-gray-400 mb-8">
-                Este mÃ³dulo estÃ¡ en desarrollo. Pronto estarÃ¡ disponible con contenido educativo de alta calidad.
+                Este módulo está en desarrollo. Pronto estará disponible con contenido educativo de alta calidad.
               </p>
               <button
                 onClick={() => router.push('/dashboard')}
@@ -781,10 +792,10 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
           </div>
         ) : (
           <>
-            {/* Barra de navegaciÃ³n superior */}
+            {/* Barra de navegación superior */}
             <div className="sticky top-0 z-50 h-16 bg-white dark:bg-[#1C1D1F] flex items-center justify-between px-6 text-black dark:text-white shadow-md">
               <div className="flex items-center">
-                <h1 className="text-lg font-medium">{diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'MÃ³dulo'}</h1>
+                <h1 className="text-lg font-medium">{diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'Módulo'}</h1>
               </div>
               <div className="flex items-center gap-3">
                 {process.env.NODE_ENV === 'development' && !showChat && (currentStep % 2) === 0 && (
@@ -829,7 +840,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                   </button>
                 )}
 
-                {/* MenÃº de usuario */}
+                {/* Menú de usuario */}
                 <div className="relative">
                   <button
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
@@ -858,7 +869,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                         onClick={handleLogout}
                         className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-600"
                       >
-                        Cerrar sesiÃ³n
+                        Cerrar sesión
                       </button>
                     </div>
                   )}
@@ -871,7 +882,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
               {showResults ? (
                 <div className="h-full bg-gray-100 dark:bg-[#1E1F25] p-8">
                   <div className="max-w-4xl mx-auto">
-                    <h2 className="text-2xl font-bold text-white mb-6">Resultados del MÃ³dulo</h2>
+                    <h2 className="text-2xl font-bold text-white mb-6">Resultados del Módulo</h2>
 
                     {/* Tabla de resultados */}
                     <div className="bg-[#282828] rounded-lg shadow-lg overflow-hidden mb-6">
@@ -925,7 +936,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                       </div>
                     </div>
 
-                    {/* BotÃ³n para continuar al chat */}
+                    {/* Botón para continuar al chat */}
                     <div className="flex justify-end">
                       <button
                         onClick={handleContinueToChat}
@@ -941,31 +952,31 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                   {/* Columna izquierda - Texto explicativo */}
                   <div className="w-[40%] border-r border-gray-300 dark:border-gray-700 p-6 overflow-y-auto">
                     <div className="prose prose-lg max-w-none dark:prose-invert">
-                      <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Asistente de MatemÃ¡ticas</h2>
+                      <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Asistente de Matemáticas</h2>
                       <div className="space-y-4 text-black dark:text-gray-200 text-base md:text-lg">
                         <p>
-                          Bienvenido al asistente de matemÃ¡ticas. AquÃ­ puedes hacer preguntas sobre:
+                          Bienvenido al asistente de matemáticas. Aquí puedes hacer preguntas sobre:
                         </p>
                         <ul className="list-disc pl-4 space-y-2">
-                          <li>Divisores y nÃºmeros primos</li>
-                          <li>MÃºltiplos y factores</li>
-                          <li>MÃ¡ximo comÃºn divisor (MCD)</li>
-                          <li>MÃ­nimo comÃºn mÃºltiplo (MCM)</li>
-                          <li>Ejercicios y problemas matemÃ¡ticos</li>
+                          <li>Divisores y números primos</li>
+                          <li>Múltiplos y factores</li>
+                          <li>Máximo común divisor (MCD)</li>
+                          <li>Mínimo común múltiplo (MCM)</li>
+                          <li>Ejercicios y problemas matemáticos</li>
                         </ul>
                         <p>
-                          El asistente te ayudarÃ¡ a:
+                          El asistente te ayudará a:
                         </p>
                         <ul className="list-disc pl-4 space-y-2">
                           <li>Resolver paso a paso los ejercicios</li>
-                          <li>Explicar conceptos matemÃ¡ticos</li>
+                          <li>Explicar conceptos matemáticos</li>
                           <li>Proporcionar ejemplos adicionales</li>
                           <li>Verificar tus respuestas</li>
                         </ul>
                         <div className="mt-6 p-4 bg-gray-100 dark:bg-[#282828] rounded-lg">
                           <h3 className="text-xl font-semibold text-black dark:text-white mb-2">Ejemplo de pregunta:</h3>
                           <p className="text-black dark:text-gray-200 italic text-base md:text-lg">
-                            &quot;Â¿Puedes ayudarme a encontrar todos los divisores del nÃºmero 24 y explicarme el proceso paso a paso?&quot;
+                            &quot;¿Puedes ayudarme a encontrar todos los divisores del número 24 y explicarme el proceso paso a paso?&quot;
                           </p>
                         </div>
                       </div>
@@ -974,7 +985,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
                   {/* Columna derecha - Chat */}
                   <div className="w-[60%] flex flex-col">
-                    {/* Ãrea de mensajes */}
+                    {/* Área de mensajes */}
                     <div className="flex-1 overflow-y-auto p-6">
                       <div className="max-w-3xl mx-auto space-y-6">
                         {messages.map((message, index) => (
@@ -1009,7 +1020,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                       </div>
                     </div>
 
-                    {/* Ãrea de entrada de texto */}
+                    {/* Área de entrada de texto */}
                     <div className="border-t border-gray-300 dark:border-gray-700 p-4">
                       <div className="max-w-3xl mx-auto">
                         <div className="relative">
@@ -1030,16 +1041,16 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                           </button>
                         </div>
                         <p className="text-xs text-gray-400 mt-2">
-                          Presiona Enter para enviar, Shift + Enter para nueva lÃ­nea
+                          Presiona Enter para enviar, Shift + Enter para nueva línea
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="h-full flex">
-                  {/* SecciÃ³n de Resumen */}
-                  <div className="w-[75%] bg-gray-100 dark:bg-[#1E1F25] overflow-y-auto">
+                <div className="flex h-full flex-col overflow-hidden lg:flex-row">
+                  {/* Sección de Resumen */}
+                  <div className="h-[55%] bg-gray-100 dark:bg-[#1E1F25] overflow-y-auto lg:h-full lg:w-[64%] 2xl:w-[70%]">
                     <div className="p-6">
                       <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">{title}</h2>
                       <div className="text-black dark:text-gray-200 text-base md:text-lg">
@@ -1048,105 +1059,201 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                     </div>
                   </div>
 
-                  {/* SecciÃ³n de Comentarios */}
-                  <div className="w-[25%] bg-gray-100 dark:bg-[#1E1F25] border-l border-gray-300 dark:border-gray-700 overflow-y-auto">
-                    <div className="p-6">
-                      <div className="flex justify-between items-center mb-4">
-                        <div className="flex gap-4">
-                          <button className="text-black dark:text-white font-medium hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base">Todo</button>
-                          <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base">Preguntas</button>
-                          <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base">Aportes</button>
+                  {/* Sección de Comentarios */}
+                  <div className="h-[45%] bg-gray-100 dark:bg-[#1E1F25] border-t border-gray-300 dark:border-gray-700 overflow-hidden lg:h-full lg:w-[36%] lg:border-l lg:border-t-0 2xl:w-[30%]">
+                    <div className="flex h-full flex-col p-4 sm:p-6">
+                      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                        <div className="flex flex-wrap gap-4">
+                          {!isCurrentExerciseStep && (
+                            <button
+                              onClick={() => setCommentsTab('help')}
+                              className={`${activeCommentsTab === 'help'
+                                ? 'text-black dark:text-white font-medium'
+                                : 'text-black dark:text-gray-400'
+                                } hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base`}
+                            >
+                              Ayuda
+                            </button>
+                          )}
+                          <button
+                            onClick={() => setCommentsTab('contributions')}
+                            className={`${activeCommentsTab === 'contributions'
+                              ? 'text-black dark:text-white font-medium'
+                              : 'text-black dark:text-gray-400'
+                              } hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-base`}
+                          >
+                            Aportes
+                          </button>
                         </div>
-                        <div className="flex items-center">
-                          <span className="text-black dark:text-gray-400 text-sm mr-2">MÃ¡s votados</span>
-                          <FiChevronDown className="text-black dark:text-gray-400 w-4 h-4" />
-                        </div>
-                      </div>
-                      <div className="relative mb-6">
-                        <textarea
-                          placeholder="Escribe tu comentario o pregunta"
-                          className="w-full bg-gray-100 dark:bg-[#282828] text-black dark:text-white rounded-lg p-4 min-h-[100px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-lg"
-                        ></textarea>
-                      </div>
-
-                      {/* Lista de comentarios actualizada segÃºn el paso actual */}
-                      <div className="space-y-6">
-                        {questionsByStep[currentStep - 1]?.questions?.map((comment) => (
-                          <div key={comment.id} className="space-y-4">
-                            {/* Comentario principal */}
-                            <div className="flex gap-3">
-                              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
-                                {comment.author.avatar}
-                              </div>
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                  <span className="text-black dark:text-white font-semibold">{comment.author.name}</span>
-                                  <span className="text-gray-500 dark:text-gray-400 text-sm">â€¢</span>
-                                  <span className="text-gray-500 dark:text-gray-400 text-sm">{comment.author.role}</span>
-                                  <span className="text-gray-500 dark:text-gray-400 text-sm">â€¢</span>
-                                  <span className="text-gray-500 dark:text-gray-400 text-sm">{comment.author.timeAgo}</span>
-                                </div>
-                                <p className="text-black dark:text-gray-200 text-base md:text-lg">{comment.content}</p>
-                                <div className="flex items-center gap-2 mt-2">
-                                  <button className="flex items-center gap-1 text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
-                                    <span>â¤ï¸</span>
-                                    <span>{comment.likes}</span>
-                                  </button>
-                                  <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
-                                    Responder
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Respuestas */}
-                            {comment.replies.length > 0 && (
-                              <div className="relative ml-11 space-y-4">
-                                {comment.replies.map((reply, index) => (
-                                  <div key={reply.id} className="relative">
-                                    {/* LÃ­nea conectora con curva */}
-                                    <div className="absolute -left-4 top-4 w-4 h-[calc(100%+16px)] border-l-2 border-b-2 border-gray-300 dark:border-gray-700 rounded-bl-xl"></div>
-
-                                    {/* LÃ­nea horizontal */}
-                                    <div className="absolute -left-4 top-4 w-4 h-[2px] bg-gray-300 dark:bg-gray-700"></div>
-
-                                    {/* Contenido de la respuesta */}
-                                    <div className="flex gap-3 pl-4">
-                                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-medium">
-                                        {reply.author.avatar}
-                                      </div>
-                                      <div className="flex-1">
-                                        <div className="flex items-center gap-2 mb-1">
-                                          <span className="text-black dark:text-white font-semibold">{reply.author.name}</span>
-                                          <span className="text-gray-500 dark:text-gray-400 text-sm">â€¢</span>
-                                          <span className="text-gray-500 dark:text-gray-400 text-sm">{reply.author.role}</span>
-                                          <span className="text-gray-500 dark:text-gray-400 text-sm">â€¢</span>
-                                          <span className="text-gray-500 dark:text-gray-400 text-sm">{reply.author.timeAgo}</span>
-                                        </div>
-                                        <p className="text-black dark:text-gray-200 text-base md:text-lg">{reply.content}</p>
-                                        <div className="flex items-center gap-2 mt-2">
-                                          <button className="flex items-center gap-1 text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
-                                            <span>â¤ï¸</span>
-                                            <span>{reply.likes}</span>
-                                          </button>
-                                          <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
-                                            Responder
-                                          </button>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    {/* LÃ­nea final para la Ãºltima respuesta */}
-                                    {index === comment.replies.length - 1 && (
-                                      <div className="absolute -left-4 top-4 h-4 border-l-2 border-gray-300 dark:border-gray-700"></div>
-                                    )}
-                                  </div>
-                                ))}
-                              </div>
-                            )}
+                        {activeCommentsTab === 'contributions' && (
+                          <div className="flex items-center">
+                            <span className="text-black dark:text-gray-400 text-sm mr-2">Más votados</span>
+                            <FiChevronDown className="text-black dark:text-gray-400 w-4 h-4" />
                           </div>
-                        ))}
+                        )}
                       </div>
+                      {activeCommentsTab === 'help' ? (
+                        <div className="flex min-h-0 flex-1 flex-col">
+                          <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+                            <div className="space-y-4">
+                              {messages.length === 0 && (
+                                <div className="rounded-lg bg-white dark:bg-[#282828] p-4 text-sm text-gray-600 dark:text-gray-300">
+                                  Escribe tu consulta y el asistente te ayudará con el tema actual.
+                                </div>
+                              )}
+                              {messages.map((message, index) => (
+                                <div
+                                  key={index}
+                                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                                >
+                                  <div
+                                    className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${message.role === 'user'
+                                      ? 'bg-white dark:bg-[#282828] text-black dark:text-white'
+                                      : 'bg-blue-600 text-white'
+                                      }`}
+                                  >
+                                    <p className="whitespace-pre-wrap">{message.content}</p>
+                                    <span className="mt-2 block text-[11px] opacity-60">
+                                      {message.timestamp.toLocaleTimeString()}
+                                    </span>
+                                  </div>
+                                </div>
+                              ))}
+                              {isLoading && (
+                                <div className="flex justify-start">
+                                  <div className="rounded-2xl bg-white dark:bg-[#282828] p-4">
+                                    <div className="flex space-x-2">
+                                      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-500"></div>
+                                      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-500 delay-100"></div>
+                                      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-500 delay-200"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="mb-16 mt-4 rounded-full border border-gray-300 bg-white px-3 py-2 shadow-sm dark:border-gray-700 dark:bg-[#282828] sm:mb-20 lg:mb-16">
+                            <div className="flex min-w-0 items-center gap-2">
+                              <button
+                                type="button"
+                                className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-[#363636]"
+                              >
+                                <FiPlus className="h-5 w-5" />
+                              </button>
+                              <textarea
+                                value={inputMessage}
+                                onChange={(e) => setInputMessage(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                                placeholder="Pregunta lo que quieras"
+                                className="min-w-0 max-h-24 min-h-[32px] flex-1 resize-none bg-transparent py-1 text-sm text-black placeholder-gray-500 focus:outline-none dark:text-white"
+                                rows={1}
+                              />
+                              <button
+                                type="button"
+                                className="hidden h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-[#363636] sm:flex"
+                              >
+                                <FiMic className="h-4 w-4" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={handleSendMessage}
+                                disabled={isLoading || !inputMessage.trim()}
+                                className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-black text-white transition-colors hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+                              >
+                                <FiSend className="h-4 w-4" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+                          <div className="relative mb-6">
+                            <textarea
+                              placeholder="Escribe tu comentario o pregunta"
+                              className="w-full bg-gray-100 dark:bg-[#282828] text-black dark:text-white rounded-lg p-4 min-h-[100px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-lg"
+                            ></textarea>
+                          </div>
+
+                          {/* Lista de comentarios actualizada según el paso actual */}
+                          <div className="space-y-6">
+                            {questionsByStep[currentStep - 1]?.questions?.map((comment) => (
+                              <div key={comment.id} className="space-y-4">
+                                {/* Comentario principal */}
+                                <div className="flex gap-3">
+                                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
+                                    {comment.author.avatar}
+                                  </div>
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-2 mb-1">
+                                      <span className="text-black dark:text-white font-semibold">{comment.author.name}</span>
+                                      <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                                      <span className="text-gray-500 dark:text-gray-400 text-sm">{comment.author.role}</span>
+                                      <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                                      <span className="text-gray-500 dark:text-gray-400 text-sm">{comment.author.timeAgo}</span>
+                                    </div>
+                                    <p className="text-black dark:text-gray-200 text-base md:text-lg">{comment.content}</p>
+                                    <div className="flex items-center gap-2 mt-2">
+                                      <button className="flex items-center gap-1 text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
+                                        <span>❤️</span>
+                                        <span>{comment.likes}</span>
+                                      </button>
+                                      <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
+                                        Responder
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Respuestas */}
+                                {comment.replies.length > 0 && (
+                                  <div className="relative ml-11 space-y-4">
+                                    {comment.replies.map((reply, index) => (
+                                      <div key={reply.id} className="relative">
+                                        {/* Línea conectora con curva */}
+                                        <div className="absolute -left-4 top-4 w-4 h-[calc(100%+16px)] border-l-2 border-b-2 border-gray-300 dark:border-gray-700 rounded-bl-xl"></div>
+
+                                        {/* Línea horizontal */}
+                                        <div className="absolute -left-4 top-4 w-4 h-[2px] bg-gray-300 dark:bg-gray-700"></div>
+
+                                        {/* Contenido de la respuesta */}
+                                        <div className="flex gap-3 pl-4">
+                                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-medium">
+                                            {reply.author.avatar}
+                                          </div>
+                                          <div className="flex-1">
+                                            <div className="flex items-center gap-2 mb-1">
+                                              <span className="text-black dark:text-white font-semibold">{reply.author.name}</span>
+                                              <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                                              <span className="text-gray-500 dark:text-gray-400 text-sm">{reply.author.role}</span>
+                                              <span className="text-gray-500 dark:text-gray-400 text-sm">•</span>
+                                              <span className="text-gray-500 dark:text-gray-400 text-sm">{reply.author.timeAgo}</span>
+                                            </div>
+                                            <p className="text-black dark:text-gray-200 text-base md:text-lg">{reply.content}</p>
+                                            <div className="flex items-center gap-2 mt-2">
+                                              <button className="flex items-center gap-1 text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
+                                                <span>❤️</span>
+                                                <span>{reply.likes}</span>
+                                              </button>
+                                              <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
+                                                Responder
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        {/* Línea final para la última respuesta */}
+                                        {index === comment.replies.length - 1 && (
+                                          <div className="absolute -left-4 top-4 h-4 border-l-2 border-gray-300 dark:border-gray-700"></div>
+                                        )}
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1191,13 +1298,13 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                       {/* Punto inicial */}
                       <div className="absolute left-[23px] top-0 w-[6px] h-[6px] rounded-full bg-orange-400"></div>
 
-                      {/* LÃ­nea vertical principal */}
+                      {/* Línea vertical principal */}
                       <div className="absolute left-[25px] top-[6px] w-[2px] h-[calc(100%-12px)] bg-gray-700"></div>
 
                       {/* Punto final */}
                       <div className="absolute left-[23px] bottom-0 w-[6px] h-[6px] rounded-full bg-gray-700"></div>
 
-                      {/* TÃ­tulo del mÃ³dulo */}
+                      {/* Título del módulo */}
                       <div className="pl-12 mb-4">
                         <span className="text-gray-600 dark:text-gray-400 text-sm">
                           {diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'Cargando...'}
@@ -1205,9 +1312,21 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                       </div>
 
                       {diagnosticConfigs.length > 0 ? (
-                        diagnosticConfigs[0].topics.map((topic, index) => (
-                          <div key={index} className="group relative flex items-center py-4 px-3 hover:bg-gray-200 dark:hover:bg-[#282828] transition-colors cursor-pointer">
-                            {/* LÃ­nea del timeline */}
+                        diagnosticConfigs[0].topics.map((topic, index) => {
+                          const isActiveTopic = Math.floor((currentStep - 1) / 2) === index;
+
+                          return (
+                          <button
+                            key={index}
+                            type="button"
+                            onClick={() => handleTopicSelect(index)}
+                            className={`group relative flex w-full items-center py-4 px-3 text-left transition-colors cursor-pointer ${
+                              isActiveTopic
+                                ? 'bg-gray-200 dark:bg-[#282828]'
+                                : 'hover:bg-gray-200 dark:hover:bg-[#282828]'
+                            }`}
+                          >
+                            {/* Línea del timeline */}
                             {index < diagnosticConfigs[0].topics.length - 1 && (
                               <div
                                 className={`absolute left-[25px] top-[50%] w-[2px] h-[calc(100%)] ${topic.completed ? 'bg-orange-400' : 'bg-gray-700'
@@ -1215,7 +1334,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                               ></div>
                             )}
 
-                            {/* CÃ­rculo numerado */}
+                            {/* Círculo numerado */}
                             <div className="relative z-10">
                               <div
                                 className={`w-[30px] h-[30px] rounded-full flex items-center justify-center text-white text-sm font-medium ${topic.completed ? 'bg-orange-400' : 'bg-gray-700'
@@ -1227,12 +1346,12 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
                             {/* Contenido de la clase */}
                             <div className="flex items-center flex-1 pl-5">
-                              <div className="w-30 h-18 rounded overflow-hidden flex-shrink-0 mr-3">
+                              <div className="w-12 h-7 rounded overflow-hidden flex-shrink-0 mr-3">
                                 <Image
-                                  src={topic.image ? `/images/${topic.image}` : '/images/default-topic.png'}
+                                  src="/logo_casco.png"
                                   alt={topic.title}
-                                  width={120}
-                                  height={72}
+                                  width={48}
+                                  height={28}
                                   className="object-cover w-full h-full"
                                 />
                               </div>
@@ -1249,8 +1368,9 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        ))
+                          </button>
+                          );
+                        })
                       ) : (
                         <div className="text-gray-600 dark:text-gray-400 text-center py-4">Cargando temas...</div>
                       )}

@@ -8,9 +8,6 @@ import { authService } from '@/services/auth.service';
 import Image from 'next/image';
 import Footer from "@/components/Footer";
 
-const primaryStandardsPdf = '/PrimariaPENSAMINETOSEST%C3%81NDARESCOMPETENCIASDBAYNIVELESDEDESEMPE%C3%91O.pdf';
-const secondaryStandardsPdf = '/BachilleratoPENSAMINETOSEST%C3%81NDARESCOMPETENCIASDBAYNIVELESDEDESEMPE%C3%91O.pdf';
-
 const getGradeNumber = (group?: string) => {
   const match = group?.match(/Grado(\d+)/);
   return match ? parseInt(match[1], 10) : null;
@@ -19,12 +16,8 @@ const getGradeNumber = (group?: string) => {
 const getStandardsPdfByGroup = (group?: string) => {
   const gradeNumber = getGradeNumber(group);
 
-  if (gradeNumber && gradeNumber >= 1 && gradeNumber <= 5) {
-    return primaryStandardsPdf;
-  }
-
-  if (gradeNumber && gradeNumber >= 6 && gradeNumber <= 12) {
-    return secondaryStandardsPdf;
+  if (gradeNumber && gradeNumber >= 1 && gradeNumber <= 11) {
+    return `/Estandares-${gradeNumber}.pdf`;
   }
 
   return null;
