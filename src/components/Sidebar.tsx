@@ -71,6 +71,20 @@ export default function Sidebar() {
   const { theme, toggleTheme } = useTheme();
   const { hasAccess } = useModuleAccess();
   const [modules, setModules] = useState<Module[]>([]);
+  const isModuleDetailPage = /^\/dashboard\/modules\/(?!create(?:\/|$))[^/]+(?:\/.*)?$/.test(pathname ?? '');
+  const isExpanded = pathname?.startsWith('/dashboard') && !isModuleDetailPage;
+
+  const isItemActive = (href: string) => {
+    if (href === '/dashboard') {
+      return pathname === href;
+    }
+
+    return pathname === href || pathname?.startsWith(`${href}/`);
+  };
+
+  const isSubmenuActive = (submenu?: SubMenuItem[]) => {
+    return submenu?.some(subItem => pathname === subItem.href || pathname?.startsWith(`${subItem.href}/`)) ?? false;
+  };
 
   useEffect(() => {
     setIsClient(true);
@@ -158,6 +172,14 @@ export default function Sidebar() {
     });
   }
 
+  useEffect(() => {
+    const activeSubmenu = menuItems.find(item => isSubmenuActive(item.submenu));
+
+    if (activeSubmenu) {
+      setOpenSubmenu(activeSubmenu.title);
+    }
+  }, [pathname, modules, user]);
+
   // Si no estamos en el cliente, mostramos solo las opciones base
   if (!isClient) {
     return (
@@ -179,7 +201,7 @@ export default function Sidebar() {
   }
 
   return (
-    <div className={`${pathname === '/dashboard' ? 'w-64' : 'w-16'} bg-white dark:bg-[#1C1D1F] text-black dark:text-white min-h-screen flex flex-col transition-all duration-300`}>
+    <div className={`${isExpanded ? 'w-52' : 'w-16'} bg-white dark:bg-[#1C1D1F] text-black dark:text-white min-h-screen flex flex-col border-r border-gray-100 dark:border-gray-800 transition-all duration-300`}>
       <div className="p-4 flex flex-col gap-4">
         <div className="flex items-center justify-center mt-16">
           <Image
@@ -187,7 +209,7 @@ export default function Sidebar() {
             alt="Logo"
             width={150}
             height={50}
-            className={`${pathname === '/dashboard' ? 'w-36' : 'w-8'} h-auto transition-all duration-300`}
+            className={`${isExpanded ? 'w-32' : 'w-8'} h-auto transition-all duration-300`}
             priority
           />
         </div>
@@ -207,7 +229,7 @@ export default function Sidebar() {
 
       <nav className="flex-1">
         {menuItems.map((item, index) => (
-          <div key={index}>
+          <div key={index} className="px-3">
             <Tooltip content={item.title} position="right">
               <button
                 onClick={() => {
@@ -217,17 +239,17 @@ export default function Sidebar() {
                     handleNavigation(item.href);
                   }
                 }}
-                className={`w-full flex items-center ${pathname === '/dashboard' ? 'justify-start' : 'justify-center'} px-4 py-3 text-sm relative ${pathname === item.href
-                  ? 'bg-gray-200 dark:bg-[#282828] border-l-4 border-blue-500'
-                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-[#282828] hover:text-black dark:hover:text-white'
+                className={`w-full flex items-center ${isExpanded ? 'justify-start' : 'justify-center'} px-3 py-3 text-sm relative rounded-r-lg rounded-l-md transition-colors ${isItemActive(item.href) || isSubmenuActive(item.submenu)
+                  ? 'bg-orange-50 text-orange-600 dark:bg-orange-500/15 dark:text-orange-400 border-l-4 border-orange-500 font-semibold'
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-500/10 dark:hover:text-orange-400'
                   }`}
               >
                 <span className="min-w-[20px]">{item.icon}</span>
-                {pathname === '/dashboard' && (
+                {isExpanded && (
                   <span className="ml-3 whitespace-nowrap">{item.title}</span>
                 )}
                 {item.submenu && (
-                  <span className={`${pathname === '/dashboard' ? 'ml-auto' : 'absolute right-2'}`}>
+                  <span className={`${isExpanded ? 'ml-auto' : 'absolute right-2'}`}>
                     {openSubmenu === item.title ? (
                       <FiChevronDown className="w-4 h-4" />
                     ) : (
@@ -239,17 +261,17 @@ export default function Sidebar() {
             </Tooltip>
 
             {item.submenu && openSubmenu === item.title && (
-              <div className="flex flex-col pl-8">
+              <div className={`${isExpanded ? 'flex' : 'hidden'} flex-col pl-7 py-1`}>
                 {item.submenu.map((subItem, subIndex) => (
                   <Tooltip key={subIndex} content={subItem.title} position="right">
                     <button
                       onClick={() => handleNavigation(subItem.href)}
-                      className={`w-full flex items-center justify-start px-4 py-2 text-sm ${pathname === subItem.href
-                        ? 'bg-gray-200 dark:bg-[#282828] text-black dark:text-white'
-                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-[#282828] hover:text-black dark:hover:text-white'
+                      className={`w-full flex items-center justify-start rounded-lg px-3 py-2 text-sm transition-colors ${pathname === subItem.href || pathname?.startsWith(`${subItem.href}/`)
+                        ? 'bg-orange-50 text-orange-600 dark:bg-orange-500/15 dark:text-orange-400 font-semibold'
+                        : 'text-gray-600 dark:text-gray-400 hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-500/10 dark:hover:text-orange-400'
                         }`}
                     >
-                      <span className="text-sm">{subItem.title}</span>
+                      <span className="truncate text-sm">{subItem.title}</span>
                     </button>
                   </Tooltip>
                 ))}

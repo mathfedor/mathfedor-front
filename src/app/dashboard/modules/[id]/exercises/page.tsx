@@ -6,7 +6,7 @@ import Sidebar from '@/components/Sidebar';
 import { DiagnosticConfig } from '@/types/diagnostic.types';
 import { authService } from '@/services/auth.service';
 import { chatService } from '@/services/chat.service';
-import { FiChevronLeft, FiChevronRight, FiChevronDown, FiX, FiSend, FiShuffle, FiPlus, FiMic } from 'react-icons/fi';
+import { FiArrowRight, FiBookOpen, FiChevronLeft, FiChevronRight, FiChevronDown, FiX, FiSend, FiShuffle, FiPlus, FiMic } from 'react-icons/fi';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Tooltip } from '@/components/ui/tooltip';
@@ -125,6 +125,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState({ title: '', message: '' });
   const [showResults, setShowResults] = useState(false);
+  const [isSupportPanelOpen, setIsSupportPanelOpen] = useState(true);
 
   // Array de preguntas y respuestas por paso
   const questionsByStep: QuestionStep[] = [
@@ -323,6 +324,74 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     return (points / maxPoints) * 5;
   };
 
+  const getTopicSymbol = (topicTitle: string): string | null => {
+    const normalizedTitle = topicTitle.toLowerCase();
+
+    if (normalizedTitle.includes('adición') || normalizedTitle.includes('adicion')) return '+';
+    if (normalizedTitle.includes('sustracción') || normalizedTitle.includes('sustraccion')) return '-';
+    if (normalizedTitle.includes('multiplicación') || normalizedTitle.includes('multiplicacion')) return 'x';
+    if (normalizedTitle.includes('división') || normalizedTitle.includes('division')) return '÷';
+
+    return null;
+  };
+
+  const getHtmlHeadingSymbol = (headingText: string): string | null => {
+    const normalizedText = headingText.replace(/<[^>]*>/g, '').trim().toLowerCase();
+
+    if (normalizedText === 'adiciÃ³n' || normalizedText === 'adicion') return '+';
+    if (normalizedText === 'sustracciÃ³n' || normalizedText === 'sustraccion') return '-';
+    if (normalizedText === 'multiplicaciÃ³n' || normalizedText === 'multiplicacion') return 'x';
+    if (normalizedText === 'divisiÃ³n' || normalizedText === 'division') return '/';
+
+    return null;
+  };
+
+  const getOperationSymbol = (value: string, exact = false): string | null => {
+    const normalizedValue = value
+      .replace(/<[^>]*>/g, '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .toLowerCase();
+    const matches = exact
+      ? (target: string) => normalizedValue === target
+      : (target: string) => normalizedValue.includes(target);
+
+    if (matches('adicion') || normalizedValue.includes('adici')) return '+';
+    if (matches('sustraccion') || normalizedValue.includes('sustracci')) return '-';
+    if (matches('multiplicacion') || normalizedValue.includes('multiplicaci')) return 'x';
+    if (matches('division') || normalizedValue.includes('divisi')) return '/';
+
+    return null;
+  };
+
+  const getPlainTextLength = (html: string) => {
+    return html.replace(/<[^>]*>/g, '').trim().length;
+  };
+
+  const formatRichHtml = (html: string) => {
+    return html.replace(/<h3([^>]*)>([\s\S]*?)<\/h3>/gi, (_match, attributes, content) => {
+      const symbol = getOperationSymbol(content, true);
+      const symbolHtml = symbol
+        ? `<span class="mr-3 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-orange-500 text-xl font-bold leading-none text-white shadow-sm">${symbol}</span>`
+        : '';
+
+      return `<h3${attributes} class="mb-4 flex items-center text-2xl font-bold text-gray-900 dark:text-white">${symbolHtml}<span>${content}</span></h3>`;
+    });
+  };
+
+  const renderTopicIcon = (topicTitle: string, className = 'h-8 w-8') => {
+    const symbol = getOperationSymbol(topicTitle);
+
+    if (symbol) {
+      return <span className="text-3xl font-bold leading-none">{symbol}</span>;
+    }
+
+    return <FiBookOpen className={className} />;
+  };
+
+  const imageBackMarker = '{img_back}';
+
   const hasCDUHeader = (text: string): boolean => /(^|\n)\s*C\s+D\s+U\b/i.test(text);
 
   const splitMathSections = (text: string): string[] => {
@@ -400,7 +469,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     };
   };
 
-  const renderMathLayout = (text: string, blockKey: string) => {
+  const renderMathLayout = (text: string, blockKey: string, showSubtractionImage = false) => {
     const sections = splitMathSections(text);
 
     if (sections.length === 0) {
@@ -420,66 +489,113 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
           if (!headerMatch) {
             return (
-              <pre
+              <div
                 key={`${blockKey}-plain-${sectionIndex}`}
-                className="overflow-x-auto rounded-lg bg-gray-100 dark:bg-[#282828] p-4 font-mono text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap"
-              >
-                {sectionText}
-              </pre>
+                className="overflow-x-auto rounded-lg bg-gray-100 dark:bg-[#282828] p-4 font-mono text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap [&_h3]:mb-4 [&_h3]:text-2xl [&_h3]:font-bold [&_h3]:text-gray-900 [&_h3]:dark:text-white [&_h4]:mb-3 [&_h4]:mt-6 [&_h4]:text-xl [&_h4]:font-bold [&_h4]:text-orange-600 [&_h4]:dark:text-orange-400"
+                dangerouslySetInnerHTML={{ __html: formatRichHtml(sectionText) }}
+              />
             );
           }
 
           const headerColumns = ['C', 'D', 'U'];
           const rows = lines.slice(1).map((line) => parseMathRow(line, headerColumns.length));
           const lastRowIndex = rows.length - 1;
+          const highlightedExplanationIndex = rows.reduce((lastIndex, row, rowIndex) => (
+            row.explanation ? rowIndex : lastIndex
+          ), -1);
+
+          const shouldShowSubtractionImage = showSubtractionImage && sectionIndex === 0;
 
           return (
             <div
               key={`${blockKey}-section-${sectionIndex}`}
-              className="overflow-x-auto rounded-lg bg-gray-100 dark:bg-[#282828] p-4"
+              className="overflow-x-auto rounded-xl border border-orange-100 bg-white p-5 shadow-sm dark:border-orange-500/20 dark:bg-[#242424]"
             >
-              <div className="min-w-[520px] space-y-2 font-mono text-sm text-gray-700 dark:text-gray-200">
-                <div className="grid grid-cols-[180px_minmax(0,1fr)] gap-4 items-start">
-                  <div className="flex justify-end gap-6 font-semibold">
-                    {headerColumns.map((column) => (
-                      <span key={column} className="w-4 text-center">
-                        {column}
-                      </span>
-                    ))}
+              <div className={`${shouldShowSubtractionImage ? 'flex min-w-[560px] flex-col gap-6 lg:min-w-0 lg:flex-row lg:items-center lg:justify-between' : 'min-w-[560px]'} text-sm text-gray-700 dark:text-gray-200`}>
+                <div className="min-w-[560px] flex-1 space-y-3 lg:min-w-0">
+                  <div className="grid grid-cols-[180px_minmax(0,1fr)] gap-6 items-start">
+                    <div className="flex justify-end gap-7 rounded-t-lg bg-orange-50 px-4 py-3 font-mono font-bold text-orange-600 dark:bg-orange-500/10 dark:text-orange-400">
+                      {headerColumns.map((column) => (
+                        <span key={column} className="w-4 text-center">
+                          {column}
+                        </span>
+                      ))}
+                    </div>
+                    <div
+                      className="whitespace-pre-wrap pt-2 font-medium text-gray-800 dark:text-gray-100 [&_h3]:mb-4 [&_h3]:text-2xl [&_h3]:font-bold [&_h3]:text-gray-900 [&_h3]:dark:text-white [&_h4]:mb-3 [&_h4]:mt-6 [&_h4]:text-xl [&_h4]:font-bold [&_h4]:text-orange-600 [&_h4]:dark:text-orange-400"
+                      dangerouslySetInnerHTML={{ __html: formatRichHtml(headerMatch[1]?.trim() ?? '') }}
+                    />
                   </div>
-                  <div className="whitespace-pre-wrap">{headerMatch[1]?.trim()}</div>
+
+                  {rows.map((row, rowIndex) => (
+                    <div key={`${blockKey}-row-${sectionIndex}-${rowIndex}`} className="space-y-2">
+                      {(() => {
+                        const shouldHighlightExplanation = Boolean(
+                          row.explanation &&
+                          rowIndex === highlightedExplanationIndex &&
+                          getPlainTextLength(row.explanation) >= 13
+                        );
+
+                        return (
+                          <>
+                            {rowIndex === lastRowIndex && rows.length > 1 && (
+                              <div className="grid grid-cols-[180px_minmax(0,1fr)] gap-6 items-start">
+                                <div className="flex justify-end">
+                                  <div className="w-[142px] border-t-2 border-gray-400 dark:border-gray-500" />
+                                </div>
+                                <div />
+                              </div>
+                            )}
+
+                            <div className="grid grid-cols-[180px_minmax(0,1fr)] gap-6 items-start">
+                              <div className={`flex justify-end gap-7 px-4 font-mono ${rowIndex === lastRowIndex ? 'font-bold text-orange-600 dark:text-orange-400' : ''}`}>
+                                {headerColumns.map((_, columnIndex) => {
+                                  const columnValue = row.columns[row.columns.length - headerColumns.length + columnIndex] ?? '';
+
+                                  return (
+                                    <span
+                                      key={`${blockKey}-col-${sectionIndex}-${rowIndex}-${columnIndex}`}
+                                      className="w-4 text-center"
+                                    >
+                                      {columnValue}
+                                    </span>
+                                  );
+                                })}
+                              </div>
+                              <div className="flex gap-3 whitespace-pre-wrap leading-6">
+                                {row.explanation && !shouldHighlightExplanation && (
+                                  <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-orange-100 text-xs font-bold text-orange-600 dark:bg-orange-500/20 dark:text-orange-300">
+                                    {rowIndex + 1}
+                                  </span>
+                                )}
+                                {row.explanation && shouldHighlightExplanation ? (
+                                  <div className="ml-auto flex max-w-[360px] items-center gap-4 rounded-xl bg-orange-50 px-5 py-3 font-semibold text-gray-800 shadow-sm dark:bg-orange-500/10 dark:text-gray-100">
+                                    <FiArrowRight className="h-5 w-5 flex-shrink-0 text-orange-500" />
+                                    <span dangerouslySetInnerHTML={{ __html: formatRichHtml(row.explanation) }} />
+                                  </div>
+                                ) : (
+                                  <span dangerouslySetInnerHTML={{ __html: formatRichHtml(row.explanation) }} />
+                                )}
+                              </div>
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  ))}
                 </div>
 
-                {rows.map((row, rowIndex) => (
-                  <div key={`${blockKey}-row-${sectionIndex}-${rowIndex}`} className="space-y-2">
-                    {rowIndex === lastRowIndex && rows.length > 1 && (
-                      <div className="grid grid-cols-[180px_minmax(0,1fr)] gap-4 items-start">
-                        <div className="flex justify-end">
-                          <div className="w-[132px] border-t-2 border-gray-400 dark:border-gray-500" />
-                        </div>
-                        <div />
-                      </div>
-                    )}
-
-                    <div className="grid grid-cols-[180px_minmax(0,1fr)] gap-4 items-start">
-                      <div className="flex justify-end gap-6">
-                        {headerColumns.map((_, columnIndex) => {
-                          const columnValue = row.columns[row.columns.length - headerColumns.length + columnIndex] ?? '';
-
-                          return (
-                            <span
-                              key={`${blockKey}-col-${sectionIndex}-${rowIndex}-${columnIndex}`}
-                              className="w-4 text-center"
-                            >
-                              {columnValue}
-                            </span>
-                          );
-                        })}
-                      </div>
-                      <div className="whitespace-pre-wrap">{row.explanation}</div>
-                    </div>
+                {shouldShowSubtractionImage && (
+                  <div className="mx-auto w-44 flex-shrink-0 lg:w-56 xl:w-64">
+                    <Image
+                      src="/sustraccion-imagen-1.svg"
+                      alt="Ejemplo visual de sustracción"
+                      width={260}
+                      height={210}
+                      className="h-auto w-full"
+                    />
                   </div>
-                ))}
+                )}
               </div>
             </div>
           );
@@ -569,12 +685,20 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         content: (
           <div className="space-y-6">
             {currentTopic.exercises.map((exercise, index) => (
-              <div key={index} className="bg-white dark:bg-[#282828] border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-black dark:text-white font-medium mb-4">Ejercicio {index + 1}</h3>
-                <p className="text-black dark:text-gray-200 mb-4">{exercise.statement}</p>
+              <div key={index} className="rounded-xl border border-orange-100 bg-white p-6 shadow-sm dark:border-orange-500/20 dark:bg-[#282828]">
+                <h3 className="mb-4 flex items-center gap-3 text-lg font-bold text-gray-900 dark:text-white">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-100 text-sm text-orange-600 dark:bg-orange-500/20 dark:text-orange-300">
+                    {index + 1}
+                  </span>
+                  Ejercicio {index + 1}
+                </h3>
+                <p
+                  className="mb-5 leading-7 text-gray-700 dark:text-gray-200"
+                  dangerouslySetInnerHTML={{ __html: formatRichHtml(exercise.statement) }}
+                />
                 <div className="space-y-3">
                   {exercise.options.map((option, optIndex) => (
-                    <div key={optIndex} className="flex items-center space-x-3">
+                    <div key={optIndex} className="flex items-center space-x-3 rounded-lg border border-gray-100 bg-orange-50/30 px-4 py-3 dark:border-gray-700 dark:bg-orange-500/5">
                       <input
                         type="radio"
                         name={`exercise-${index}`}
@@ -582,13 +706,13 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                         value={option}
                         checked={selectedAnswers[index] === optIndex.toString()}
                         onChange={() => handleAnswerSelect(index, optIndex)}
-                        className="text-blue-500 focus:ring-blue-500"
+                        className="text-orange-500 focus:ring-orange-500"
                       />
                       <label
                         htmlFor={`option-${index}-${optIndex}`}
                         className="text-black dark:text-gray-200"
                       >
-                        {option}
+                        <span dangerouslySetInnerHTML={{ __html: formatRichHtml(option) }} />
                       </label>
                     </div>
                   ))}
@@ -605,45 +729,63 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
       content: (
         <div className="max-w-none space-y-8">
           {(currentTopic.subtopics ?? []).map((subtopic, subtopicIndex) => (
-            <div key={`${currentTopic._id}-subtopic-${subtopicIndex}`} className="space-y-4">
+            <section key={`${currentTopic._id}-subtopic-${subtopicIndex}`} className="space-y-4">
               {subtopic.title && (
-                <h3 className="text-xl font-semibold text-black dark:text-white">
-                  {subtopic.title}
+                <h3 className="flex items-center gap-3 text-xl font-bold text-gray-900 dark:text-white">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-900 text-white shadow-sm dark:bg-white dark:text-gray-900">
+                    <FiBookOpen className="h-5 w-5" />
+                  </span>
+                  <span dangerouslySetInnerHTML={{ __html: formatRichHtml(subtopic.title) }} />
                 </h3>
               )}
 
               {(subtopic.blocks ?? []).map((block, blockIndex) => {
-                const blockText = block.content?.text?.trim();
+                const rawBlockText = block.content?.text?.trim();
+                const hasImageBackMarker = rawBlockText?.includes(imageBackMarker) ?? false;
+                const blockText = rawBlockText?.split(imageBackMarker).join('').trim();
 
                 if (!blockText) {
                   return null;
                 }
 
                 if (block.type === 'math_layout') {
-                  return hasCDUHeader(blockText) ? (
+                  const hasCurrentCDUHeader = hasCDUHeader(blockText);
+                  const hasPreviousCDUBlock = (currentTopic.subtopics ?? []).some((previousSubtopic, previousSubtopicIndex) => {
+                    if (previousSubtopicIndex > subtopicIndex) return false;
+
+                    const blocksToCheck = previousSubtopicIndex === subtopicIndex
+                      ? (previousSubtopic.blocks ?? []).slice(0, blockIndex)
+                      : (previousSubtopic.blocks ?? []);
+
+                    return blocksToCheck.some((previousBlock) => (
+                      previousBlock.type === 'math_layout' &&
+                      hasCDUHeader(previousBlock.content?.text?.trim() ?? '')
+                    ));
+                  });
+                  const shouldShowSubtractionImage = hasImageBackMarker && hasCurrentCDUHeader && !hasPreviousCDUBlock;
+
+                  return hasCurrentCDUHeader ? (
                     <div key={`${currentTopic._id}-math-${subtopicIndex}-${blockIndex}`}>
-                      {renderMathLayout(blockText, `${currentTopic._id}-${subtopicIndex}-${blockIndex}`)}
+                      {renderMathLayout(blockText, `${currentTopic._id}-${subtopicIndex}-${blockIndex}`, shouldShowSubtractionImage)}
                     </div>
                   ) : (
-                    <pre
+                    <div
                       key={`${currentTopic._id}-math-${subtopicIndex}-${blockIndex}`}
-                      className="overflow-x-auto rounded-lg bg-gray-100 dark:bg-[#282828] p-4 font-mono text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap"
-                    >
-                      {blockText}
-                    </pre>
+                      className="overflow-x-auto rounded-xl border border-orange-100 bg-white p-4 font-mono text-sm text-gray-700 shadow-sm dark:border-orange-500/20 dark:bg-[#282828] dark:text-gray-200 whitespace-pre-wrap [&_h3]:mb-4 [&_h3]:text-2xl [&_h3]:font-bold [&_h3]:text-gray-900 [&_h3]:dark:text-white [&_h4]:mb-3 [&_h4]:mt-6 [&_h4]:text-xl [&_h4]:font-bold [&_h4]:text-orange-600 [&_h4]:dark:text-orange-400"
+                      dangerouslySetInnerHTML={{ __html: formatRichHtml(blockText) }}
+                    />
                   );
                 }
 
                 return (
-                  <p
+                  <div
                     key={`${currentTopic._id}-paragraph-${subtopicIndex}-${blockIndex}`}
-                    className="text-base leading-7 text-gray-700 dark:text-gray-300 whitespace-pre-line"
-                  >
-                    {blockText}
-                  </p>
+                    className="max-w-4xl text-base leading-7 text-gray-700 dark:text-gray-300 whitespace-pre-line [&_h3]:mb-4 [&_h3]:text-2xl [&_h3]:font-bold [&_h3]:text-gray-900 [&_h3]:dark:text-white [&_h4]:mb-3 [&_h4]:mt-6 [&_h4]:text-xl [&_h4]:font-bold [&_h4]:text-orange-600 [&_h4]:dark:text-orange-400"
+                    dangerouslySetInnerHTML={{ __html: formatRichHtml(blockText) }}
+                  />
                 );
               })}
-            </div>
+            </section>
           ))}
         </div>
       )
@@ -703,7 +845,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     setIsLoading(true);
 
     try {
-      const response = await chatService.sendChatMessages([userMessage], token);
+      const response = await chatService.sendChatMessages([userMessage], token, currentModule?.group);
 
       const assistantMessage: Message = {
         role: 'assistant',
@@ -793,9 +935,9 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         ) : (
           <>
             {/* Barra de navegación superior */}
-            <div className="sticky top-0 z-50 h-16 bg-white dark:bg-[#1C1D1F] flex items-center justify-between px-6 text-black dark:text-white shadow-md">
+            <div className="sticky top-0 z-50 h-16 bg-white/95 dark:bg-[#1C1D1F]/95 flex items-center justify-between px-6 text-black dark:text-white shadow-sm backdrop-blur">
               <div className="flex items-center">
-                <h1 className="text-lg font-medium">{diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'Módulo'}</h1>
+                <h1 className="text-lg font-bold text-gray-900 dark:text-white">{diagnosticConfigs.length > 0 ? diagnosticConfigs[0].title : 'Módulo'}</h1>
               </div>
               <div className="flex items-center gap-3">
                 {process.env.NODE_ENV === 'development' && !showChat && (currentStep % 2) === 0 && (
@@ -821,7 +963,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                 <Tooltip content="Ver la lista de temas" position="bottom">
                   <button
                     onClick={() => setIsMaterialOpen(!isMaterialOpen)}
-                    className="px-4 py-2 text-sm font-medium bg-gray-200 hover:bg-gray-300 dark:bg-[#282828] dark:hover:bg-[#363636] rounded-md transition-colors"
+                    className="px-4 py-2 text-sm font-medium bg-orange-50 text-orange-600 hover:bg-orange-100 dark:bg-orange-500/15 dark:text-orange-300 dark:hover:bg-orange-500/25 rounded-md transition-colors"
                   >
                     Temas
                   </button>
@@ -832,7 +974,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                     disabled={currentStep === totalSteps && showChat}
                     className={`flex items-center gap-1 px-4 py-2 text-sm font-medium ${currentStep === totalSteps && showChat
                       ? 'bg-gray-100 dark:bg-[#1E1E1E] text-gray-500 cursor-not-allowed'
-                      : 'bg-gray-200 hover:bg-gray-300 dark:bg-[#282828] dark:hover:bg-[#363636]'
+                      : 'bg-orange-500 text-white hover:bg-orange-600'
                       } rounded-md transition-colors`}
                   >
                     Siguiente
@@ -1050,9 +1192,21 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
               ) : (
                 <div className="flex h-full flex-col overflow-hidden lg:flex-row">
                   {/* Sección de Resumen */}
-                  <div className="h-[55%] bg-gray-100 dark:bg-[#1E1F25] overflow-y-auto lg:h-full lg:w-[64%] 2xl:w-[70%]">
-                    <div className="p-6">
-                      <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">{title}</h2>
+                  <div className={`bg-[#fbfbfb] dark:bg-[#1E1F25] overflow-y-auto ${isSupportPanelOpen ? 'h-[55%] lg:h-full lg:w-[64%] 2xl:w-[70%]' : 'h-full lg:w-[calc(100%-4rem)]'}`}>
+                    <div className="mx-auto max-w-5xl p-6 lg:p-8">
+                      <div className="mb-8 flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+                        <div className="flex items-start gap-5">
+                          <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-orange-500 text-white shadow-lg shadow-orange-500/20">
+                            {renderTopicIcon(title)}
+                          </div>
+                          <div>
+                            <h2 className="text-3xl font-extrabold leading-tight text-gray-900 dark:text-white">{title}</h2>
+                            <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-600 dark:text-gray-400">
+                              Aprende con ejemplos guiados y resuelve cada paso con el metodo Fedor.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                       <div className="text-black dark:text-gray-200 text-base md:text-lg">
                         {content}
                       </div>
@@ -1060,7 +1214,21 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                   </div>
 
                   {/* Sección de Comentarios */}
-                  <div className="h-[45%] bg-gray-100 dark:bg-[#1E1F25] border-t border-gray-300 dark:border-gray-700 overflow-hidden lg:h-full lg:w-[36%] lg:border-l lg:border-t-0 2xl:w-[30%]">
+                  <div className={`bg-white dark:bg-[#1E1F25] border-t border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 lg:h-full lg:border-l lg:border-t-0 ${isSupportPanelOpen ? 'h-[45%] lg:w-[36%] 2xl:w-[30%]' : 'h-auto lg:w-16'}`}>
+                    {!isSupportPanelOpen ? (
+                      <div className="flex h-full items-center justify-center p-3 lg:p-2">
+                        <button
+                          type="button"
+                          onClick={() => setIsSupportPanelOpen(true)}
+                          aria-expanded={isSupportPanelOpen}
+                          className="flex w-full items-center justify-center gap-2 rounded-lg bg-orange-50 px-3 py-2 text-sm font-semibold text-orange-600 transition-colors hover:bg-orange-100 dark:bg-orange-500/15 dark:text-orange-300 dark:hover:bg-orange-500/25 lg:h-full lg:flex-col lg:px-2"
+                        >
+                          <FiChevronLeft className="hidden h-5 w-5 lg:block" />
+                          <FiChevronDown className="h-5 w-5 lg:hidden" />
+                          <span className="lg:[writing-mode:vertical-rl] lg:rotate-180">Ayuda y aportes</span>
+                        </button>
+                      </div>
+                    ) : (
                     <div className="flex h-full flex-col p-4 sm:p-6">
                       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                         <div className="flex flex-wrap gap-4">
@@ -1091,6 +1259,16 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                             <FiChevronDown className="text-black dark:text-gray-400 w-4 h-4" />
                           </div>
                         )}
+                        <button
+                          type="button"
+                          onClick={() => setIsSupportPanelOpen(false)}
+                          aria-expanded={isSupportPanelOpen}
+                          className="ml-auto flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-[#282828] dark:hover:text-white"
+                          aria-label="Cerrar panel de ayuda y aportes"
+                        >
+                          <FiChevronRight className="hidden h-5 w-5 lg:block" />
+                          <FiChevronDown className="h-5 w-5 rotate-180 lg:hidden" />
+                        </button>
                       </div>
                       {activeCommentsTab === 'help' ? (
                         <div className="flex min-h-0 flex-1 flex-col">
@@ -1255,6 +1433,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                         </div>
                       )}
                     </div>
+                    )}
                   </div>
                 </div>
               )}
