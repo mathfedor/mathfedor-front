@@ -7,7 +7,7 @@ import Sidebar from '@/components/Sidebar';
 import { authService } from '@/services/auth.service';
 import { usersService } from '@/services/users.service';
 import { institutionService } from '@/services/institution.service';
-import { Institution } from '@/types/institution.types';
+import { Branch, Classroom, Institution } from '@/types/institution.types';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { User } from '@/types/auth.types';
@@ -24,6 +24,8 @@ const emptyForm = {
   email: '',
   role: 'Student',
   institutionId: '',
+  branchId: '',
+  classroomId: '',
   password: ''
 };
 
@@ -34,6 +36,8 @@ export default function UsersPage() {
   const [error, setError] = useState<string | null>(null);
   const [users, setUsers] = useState<UserData[]>([]);
   const [institutions, setInstitutions] = useState<Institution[]>([]);
+  const [branches, setBranches] = useState<Branch[]>([]);
+  const [classrooms, setClassrooms] = useState<Classroom[]>([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingUser, setEditingUser] = useState<UserData | null>(null);
   const [showUploadForm, setShowUploadForm] = useState(false);
@@ -86,6 +90,8 @@ export default function UsersPage() {
     setFormData(emptyForm);
     setEditingUser(null);
     setShowCreateForm(false);
+    setBranches([]);
+    setClassrooms([]);
   };
 
   const handleEditClick = (userToEdit: UserData) => {
@@ -95,16 +101,84 @@ export default function UsersPage() {
       email: userToEdit.email,
       role: userToEdit.role,
       institutionId: userToEdit.institutionId || '',
+      branchId: userToEdit.student?.branchId || '',
+      classroomId: userToEdit.student?.classroomId || '',
       password: ''
     });
+    if (userToEdit.institutionId) {
+      void loadBranches(userToEdit.institutionId, userToEdit.student?.branchId || '');
+    }
+    if (userToEdit.student?.branchId) {
+      void loadClassrooms(userToEdit.student.branchId);
+    }
     setShowCreateForm(true);
+  };
+
+  const loadBranches = async (institutionId: string, selectedBranchId = '') => {
+    if (!institutionId) {
+      setBranches([]);
+      setClassrooms([]);
+      return;
+    }
+
+    const response = await institutionService.getBranches(institutionId);
+    if (response.success && response.data) {
+      setBranches(response.data.map((branch) => ({ ...branch, id: getEntityId(branch) })));
+      if (!selectedBranchId) {
+        setClassrooms([]);
+      }
+    }
+  };
+
+  const loadClassrooms = async (branchId: string) => {
+    if (!branchId) {
+      setClassrooms([]);
+      return;
+    }
+
+    const response = await institutionService.getClassrooms(branchId);
+    if (response.success && response.data) {
+      setClassrooms(response.data.map((classroom) => ({ ...classroom, id: getEntityId(classroom) })));
+    }
+  };
+
+  const handleInstitutionChange = (institutionId: string) => {
+    setFormData((prev) => ({ ...prev, institutionId, branchId: '', classroomId: '' }));
+    void loadBranches(institutionId);
+  };
+
+  const handleBranchChange = (branchId: string) => {
+    setFormData((prev) => ({ ...prev, branchId, classroomId: '' }));
+    void loadClassrooms(branchId);
   };
 
   const handleCreateOrUpdateUser = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
+      if (formData.role === 'Student' && formData.institutionId && !formData.classroomId) {
+        Swal.fire({
+          title: 'Salón requerido',
+          text: 'Selecciona el salón del estudiante antes de guardar.',
+          icon: 'warning',
+          confirmButtonColor: '#F97316'
+        });
+        return;
+      }
+
       setLoading(true);
+      const selectedInstitution = institutions.find((institution) => getEntityId(institution) === formData.institutionId);
+      const studentPayload = formData.role === 'Student'
+        ? {
+            ...(editingUser?.student || {}),
+            institution: selectedInstitution?.name || editingUser?.student?.institution || '',
+            institutionId: formData.institutionId || undefined,
+            branchId: formData.branchId || undefined,
+            classroomId: formData.classroomId || undefined,
+            name: formData.name,
+            email: formData.email
+          }
+        : undefined;
 
       if (editingUser) {
         const updatedUser = await usersService.updateUser({
@@ -112,7 +186,8 @@ export default function UsersPage() {
           name: formData.name,
           email: formData.email,
           role: formData.role,
-          institutionId: formData.institutionId || undefined
+          institutionId: formData.institutionId || undefined,
+          student: studentPayload
         });
 
         setUsers((prev) =>
@@ -132,6 +207,7 @@ export default function UsersPage() {
           role: formData.role,
           password: formData.password,
           institutionId: formData.institutionId || undefined,
+          student: studentPayload,
           recaptchaToken: ''
         });
 
@@ -310,7 +386,7 @@ export default function UsersPage() {
                 <select
                   id="role"
                   value={formData.role}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, role: e.target.value }))}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, role: e.target.value, branchId: '', classroomId: '' }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 >
                   <option value="Student">Estudiante</option>
@@ -324,7 +400,7 @@ export default function UsersPage() {
                 <select
                   id="institutionId"
                   value={formData.institutionId}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, institutionId: e.target.value }))}
+                  onChange={(e) => handleInstitutionChange(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 >
                   <option value="">Sin institución</option>
@@ -335,6 +411,45 @@ export default function UsersPage() {
                   ))}
                 </select>
               </div>
+              {formData.role === 'Student' && formData.institutionId && (
+                <>
+                  <div className="mb-4">
+                    <Label htmlFor="branchId">Sede</Label>
+                    <select
+                      id="branchId"
+                      value={formData.branchId}
+                      onChange={(e) => handleBranchChange(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      required
+                    >
+                      <option value="">Selecciona una sede</option>
+                      {branches.map((branch) => (
+                        <option key={getEntityId(branch)} value={getEntityId(branch)}>
+                          {branch.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="mb-4">
+                    <Label htmlFor="classroomId">Salón</Label>
+                    <select
+                      id="classroomId"
+                      value={formData.classroomId}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, classroomId: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      disabled={!formData.branchId}
+                      required
+                    >
+                      <option value="">Selecciona un salón</option>
+                      {classrooms.map((classroom) => (
+                        <option key={getEntityId(classroom)} value={getEntityId(classroom)}>
+                          {classroom.name} - {classroom.code}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </>
+              )}
               <div className="mb-6">
                 <Label htmlFor="password">{editingUser ? 'Nueva contraseña (opcional)' : 'Contraseña'}</Label>
                 <input

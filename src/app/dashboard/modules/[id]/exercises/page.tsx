@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { use } from 'react';
 import Sidebar from '@/components/Sidebar';
 import { DiagnosticConfig } from '@/types/diagnostic.types';
@@ -14,6 +14,7 @@ import { User } from '@/types/auth.types';
 import { AlertDialog } from '@/components/ui/alert-dialog';
 import { Module, moduleService } from '@/services/module.service';
 import { useModuleAccess } from '@/contexts/ModuleAccessContext';
+import { learningResultsService } from '@/services/learning-results.service';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -110,6 +111,11 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
       N2: string;
       N3: string;
       N4: string;
+      answers: Array<{
+        exerciseId: string;
+        selectedAnswer: string;
+        isCorrect: boolean;
+      }>;
     }>;
     answers: Array<{
       exerciseId: string;
@@ -126,6 +132,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   const [alertMessage, setAlertMessage] = useState({ title: '', message: '' });
   const [showResults, setShowResults] = useState(false);
   const [isSupportPanelOpen, setIsSupportPanelOpen] = useState(true);
+  const lastSubmittedSubjectCountRef = useRef(0);
 
   // Array de preguntas y respuestas por paso
   const questionsByStep: QuestionStep[] = [
@@ -322,6 +329,74 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
   const getAverage = (points: number, maxPoints: number): number => {
     return (points / maxPoints) * 5;
+  };
+
+  const getRating = (goodAnswers: number, wrongAnswers: number) => {
+    const totalAnswers = goodAnswers + wrongAnswers;
+    const percentage = totalAnswers > 0 ? (goodAnswers / totalAnswers) * 100 : 0;
+
+    return percentage >= 70 ? 'Todo está muy bien' : 'Necesita mejorar';
+  };
+
+  const getTeacherPayload = () => {
+    const userWithTeacher = user as (User & {
+      teacher?: { name?: string; userId?: string; id?: string; _id?: string };
+      teacherId?: string;
+      teacherName?: string;
+    }) | null;
+
+    return {
+      name: userWithTeacher?.teacher?.name || userWithTeacher?.teacherName || 'Profesor asignado',
+      userId: userWithTeacher?.teacher?.userId || userWithTeacher?.teacher?.id || userWithTeacher?.teacher?._id || userWithTeacher?.teacherId || currentModule?.createdBy || 'pending-teacher'
+    };
+  };
+
+  const submitLearningResult = async (compiledResults: typeof results) => {
+    if (!user || !currentModule || compiledResults.subjects.length <= lastSubmittedSubjectCountRef.current) {
+      return;
+    }
+
+    const submittedSubjectCount = compiledResults.subjects.length;
+    lastSubmittedSubjectCountRef.current = submittedSubjectCount;
+
+    try {
+      await learningResultsService.submitResult({
+        learningId: resolvedParams.id,
+        moduleId: resolvedParams.id,
+        module: {
+          id: currentModule._id,
+          title: currentModule.title,
+          group: currentModule.group
+        },
+        student: {
+          name: user.name,
+          userId: user.id || user._id || '',
+          lastName: user.lastName || '',
+          email: user.email,
+          institutionId: user.institutionId || user.student?.institutionId || null,
+          branchId: user.student?.branchId || null,
+          classroomId: user.student?.classroomId || null
+        },
+        teacher: getTeacherPayload(),
+        institutionId: user.institutionId || user.student?.institutionId || null,
+        branchId: user.student?.branchId || null,
+        classroomId: user.student?.classroomId || null,
+        group: currentModule.group,
+        goodAnswers: compiledResults.goodAnswers,
+        wrongAnswers: compiledResults.wrongAnswers,
+        rating: getRating(compiledResults.goodAnswers, compiledResults.wrongAnswers),
+        subjects: compiledResults.subjects,
+        answers: compiledResults.answers
+      });
+    } catch (error) {
+      lastSubmittedSubjectCountRef.current = Math.max(0, submittedSubjectCount - 1);
+      console.error('Error al guardar resultados del módulo:', error);
+      setAlertMessage({
+        title: 'Resultados no guardados',
+        message: 'No se pudieron guardar las respuestas de este bloque. Intenta continuar nuevamente.'
+      });
+      setIsAlertOpen(true);
+    }
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -625,14 +700,16 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     // Procesar cada respuesta
     const newAnswers: ExerciseAnswer[] = exercises.map((exercise, index) => {
       const userSelectedIndex = selectedAnswers[index];
-      const userAnswer = indexToLetter(parseInt(userSelectedIndex));
-      const isCorrect = userAnswer === exercise.correctAnswer;
+      const selectedLetter = indexToLetter(parseInt(userSelectedIndex));
+      const selectedOption = exercise.options[parseInt(userSelectedIndex)] || selectedLetter;
+      const selectedAnswer = `${selectedLetter.toLowerCase()}. ${selectedOption}`;
+      const isCorrect = selectedLetter === exercise.correctAnswer;
 
       return {
         topicId: currentTopic._id,
         topicTitle: currentTopic.title,
-        exerciseId: `${currentTopic._id}_ex${index + 1}`,
-        userAnswer,
+        exerciseId: `${currentTopic.title.replace(/\s+/g, '_').toUpperCase()}_ex${index + 1}`,
+        userAnswer: selectedAnswer,
         correctAnswer: exercise.correctAnswer,
         isCorrect,
         options: exercise.options
@@ -643,9 +720,8 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     const correctAnswers = newAnswers.filter(answer => answer.isCorrect).length;
     const wrongAnswers = newAnswers.length - correctAnswers;
 
-    // Calcular puntos usando getAverage
     const points = (correctAnswers / exercises.length) * 10;
-    const percentage = getAverage(points, 10);
+    const percentage = (correctAnswers / exercises.length) * 100;
 
     const newSubject = {
       title: currentTopic.title,
@@ -655,20 +731,35 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
       N1: '0%',
       N2: '0%',
       N3: '0%',
-      N4: '0%'
-    };
-
-    setResults(prev => ({
-      ...prev,
-      goodAnswers: prev.goodAnswers + correctAnswers,
-      wrongAnswers: prev.wrongAnswers + wrongAnswers,
-      subjects: [...prev.subjects, newSubject],
-      answers: [...prev.answers, ...newAnswers.map(answer => ({
+      N4: '0%',
+      answers: newAnswers.map(answer => ({
         exerciseId: answer.exerciseId,
         selectedAnswer: answer.userAnswer,
         isCorrect: answer.isCorrect
-      }))]
-    }));
+      }))
+    };
+
+    let nextResults: typeof results | null = null;
+
+    setResults(prev => {
+      nextResults = {
+        ...prev,
+        goodAnswers: prev.goodAnswers + correctAnswers,
+        wrongAnswers: prev.wrongAnswers + wrongAnswers,
+        subjects: [...prev.subjects, newSubject],
+        answers: [...prev.answers, ...newAnswers.map(answer => ({
+          exerciseId: answer.exerciseId,
+          selectedAnswer: answer.userAnswer,
+          isCorrect: answer.isCorrect
+        }))]
+      };
+
+      return nextResults;
+    });
+
+    if (nextResults) {
+      await submitLearningResult(nextResults);
+    }
 
     return true;
   };
@@ -809,6 +900,9 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
+      if (isExerciseStep) {
+        setSelectedAnswers({});
+      }
     } else {
       setShowResults(true);
     }

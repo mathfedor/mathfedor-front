@@ -308,7 +308,6 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
       // Abrir el widget
       checkout.open(async (result: WompiCheckoutResult) => {
         const transaction = result.transaction;
-        console.log("Transaction:", transaction);
         try {
           // Validar que la transacción tenga los datos necesarios
           if (!transaction || !transaction.id) {

@@ -44,10 +44,12 @@ const roleMenuItems: Record<string, MenuItem[]> = {
     { icon: <FiCode className="w-5 h-5" />, title: 'Simulador', href: '/dashboard/simulator' }
   ],
   teacher: [
-    { icon: <FiUser className="w-5 h-5" />, title: 'Estudiantes', href: '/dashboard/estudiantes' }
+    { icon: <FiUser className="w-5 h-5" />, title: 'Estudiantes', href: '/dashboard/estudiantes' },
+    { icon: <FiBarChart className="w-5 h-5" />, title: 'Resultados', href: '/dashboard/results' }
   ],
   academy: [
     { icon: <FiUser className="w-5 h-5" />, title: 'Estudiantes', href: '/dashboard/estudiantes' },
+    { icon: <FiBarChart className="w-5 h-5" />, title: 'Resultados', href: '/dashboard/results' },
     { icon: <FiGlobe className="w-5 h-5" />, title: 'Instituciones', href: '/dashboard/institutions' },
     { icon: <FiUsers className="w-5 h-5" />, title: 'Usuarios', href: '/dashboard/users' }
   ],
@@ -58,6 +60,7 @@ const roleMenuItems: Record<string, MenuItem[]> = {
     { icon: <FiMonitor className="w-5 h-5" />, title: 'Crear Simulacro', href: '/dashboard/adminsimulation' },
     { icon: <FiGlobe className="w-5 h-5" />, title: 'Instituciones', href: '/dashboard/institutions' },
     { icon: <FiUsers className="w-5 h-5" />, title: 'Usuarios', href: '/dashboard/users' },
+    { icon: <FiBarChart className="w-5 h-5" />, title: 'Resultados', href: '/dashboard/results' },
     { icon: <FiTag className="w-5 h-5" />, title: 'Cupones', href: '/dashboard/coupons' }
   ]
 };
