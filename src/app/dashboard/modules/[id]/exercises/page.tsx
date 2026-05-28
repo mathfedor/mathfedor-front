@@ -327,10 +327,6 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     return String.fromCharCode(65 + index); // 65 es el código ASCII para 'A'
   };
 
-  const getAverage = (points: number, maxPoints: number): number => {
-    return (points / maxPoints) * 5;
-  };
-
   const getRating = (goodAnswers: number, wrongAnswers: number) => {
     const totalAnswers = goodAnswers + wrongAnswers;
     const percentage = totalAnswers > 0 ? (goodAnswers / totalAnswers) * 100 : 0;

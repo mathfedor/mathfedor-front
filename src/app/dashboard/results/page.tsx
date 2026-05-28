@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 import { FiArrowLeft, FiBarChart2, FiDownload, FiUsers } from 'react-icons/fi';
@@ -113,7 +113,7 @@ const buildClassroomSummary = (results: LearningResult[]) => {
   };
 };
 
-export default function ResultsPage() {
+function ResultsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const resultId = searchParams.get('resultId');
@@ -347,5 +347,22 @@ export default function ResultsPage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function ResultsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex bg-white dark:bg-[#1C1D1F]">
+          <Sidebar />
+          <main className="flex-1 bg-[#F9F9F9] p-8">
+            <div className="flex h-full items-center justify-center text-gray-600">Cargando informe...</div>
+          </main>
+        </div>
+      }
+    >
+      <ResultsPageContent />
+    </Suspense>
   );
 }
