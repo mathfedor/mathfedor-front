@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { use } from 'react';
 import Sidebar from '@/components/Sidebar';
 import { DiagnosticConfig } from '@/types/diagnostic.types';
@@ -14,7 +14,8 @@ import { User } from '@/types/auth.types';
 import { AlertDialog } from '@/components/ui/alert-dialog';
 import { Module, moduleService } from '@/services/module.service';
 import { useModuleAccess } from '@/contexts/ModuleAccessContext';
-import { learningResultsService } from '@/services/learning-results.service';
+import { LearningResult, learningResultsService } from '@/services/learning-results.service';
+import { LearningComment, LearningReply, learningCommentsService } from '@/services/learning-comments.service';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -30,22 +31,18 @@ interface Author {
 }
 
 interface Reply {
-  id: number;
+  id: number | string;
   author: Author;
   content: string;
   likes: number;
 }
 
 interface Question {
-  id: number;
+  id: number | string;
   author: Author;
   content: string;
   likes: number;
   replies: Reply[];
-}
-
-interface QuestionStep {
-  questions: Question[];
 }
 
 interface ExerciseAnswer {
@@ -74,6 +71,9 @@ interface Topic {
   _id: string;
   title: string;
   description: string;
+  image?: string;
+  completed?: boolean;
+  duration?: string;
   subtopics?: Subtopic[];
   exercises: Array<{
     statement: string;
@@ -81,6 +81,54 @@ interface Topic {
     correctAnswer: string;
   }>;
 }
+
+type ModuleResultsState = {
+  goodAnswers: number;
+  wrongAnswers: number;
+  subjects: Array<{
+    title: string;
+    points: number;
+    maxPoints: number;
+    percentage: number;
+    N1: string;
+    N2: string;
+    N3: string;
+    N4: string;
+    answers: Array<{
+      exerciseId: string;
+      selectedAnswer: string;
+      isCorrect: boolean;
+    }>;
+  }>;
+  answers: Array<{
+    exerciseId: string;
+    selectedAnswer: string;
+    isCorrect: boolean;
+  }>;
+};
+
+type ModuleDiagnosticConfig = Omit<DiagnosticConfig, 'topics'> & { topics: Topic[] };
+
+const emptyResults: ModuleResultsState = {
+  goodAnswers: 0,
+  wrongAnswers: 0,
+  subjects: [],
+  answers: []
+};
+
+const normalizeText = (value: string) => value
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .trim()
+  .toLowerCase();
+
+const isInformationalTopic = (topic?: Topic) => (
+  normalizeText(topic?.title || '').includes('problemas resueltos')
+);
+
+const topicHasExercises = (topic?: Topic) => (
+  Boolean(topic?.exercises?.length) && !isInformationalTopic(topic)
+);
 
 export default function ModuleExercisesPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -92,157 +140,59 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [diagnosticConfigs, setDiagnosticConfigs] = useState<(DiagnosticConfig & { topics: Topic[] })[]>([]);
+  const [diagnosticConfigs, setDiagnosticConfigs] = useState<ModuleDiagnosticConfig[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [currentModule, setCurrentModule] = useState<Module | null>(null);
   const router = useRouter();
   const { hasAccess } = useModuleAccess();
-  const totalSteps = diagnosticConfigs[0]?.topics?.length * 2 || 0; // Cada tema tiene 2 pasos: descripción y ejercicios
+  const totalSteps = diagnosticConfigs[0]?.topics?.reduce((total, topic) => total + (topicHasExercises(topic) ? 2 : 1), 0) || 0;
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: string }>({});
-  const [results, setResults] = useState<{
-    goodAnswers: number;
-    wrongAnswers: number;
-    subjects: Array<{
-      title: string;
-      points: number;
-      maxPoints: number;
-      percentage: number;
-      N1: string;
-      N2: string;
-      N3: string;
-      N4: string;
-      answers: Array<{
-        exerciseId: string;
-        selectedAnswer: string;
-        isCorrect: boolean;
-      }>;
-    }>;
-    answers: Array<{
-      exerciseId: string;
-      selectedAnswer: string;
-      isCorrect: boolean;
-    }>;
-  }>({
-    goodAnswers: 0,
-    wrongAnswers: 0,
-    subjects: [],
-    answers: []
-  });
+  const [results, setResults] = useState<ModuleResultsState>(emptyResults);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState({ title: '', message: '' });
   const [showResults, setShowResults] = useState(false);
   const [isSupportPanelOpen, setIsSupportPanelOpen] = useState(true);
   const lastSubmittedSubjectCountRef = useRef(0);
+  const [commentsByTopic, setCommentsByTopic] = useState<Record<string, Question[]>>({});
+  const [loadingComments, setLoadingComments] = useState(false);
+  const [contributionText, setContributionText] = useState('');
+  const [replyInputs, setReplyInputs] = useState<Record<string, string>>({});
+  const [replyingTo, setReplyingTo] = useState<string | number | null>(null);
+  const fireworkEffects = useMemo(() => {
+    const colors = ['#FDE68A', '#F97316', '#EF4444', '#38BDF8', '#818CF8', '#34D399', '#F472B6'];
+    const bursts = [
+      { id: 0, left: 10, travel: 32, delay: 0.05, sparks: 42 },
+      { id: 1, left: 25, travel: 70, delay: 0.18, sparks: 50 },
+      { id: 2, left: 50, travel: 58, delay: 0.34, sparks: 58 },
+      { id: 3, left: 72, travel: 66, delay: 0.5, sparks: 48 },
+      { id: 4, left: 88, travel: 42, delay: 0.68, sparks: 44 },
+      { id: 5, left: 38, travel: 46, delay: 0.84, sparks: 38 },
+      { id: 6, left: 62, travel: 80, delay: 1.02, sparks: 40 }
+    ];
 
-  // Array de preguntas y respuestas por paso
-  const questionsByStep: QuestionStep[] = [
-    // Paso 1: Verificación de Indexación
-    {
-      questions: [
-        {
-          id: 1,
-          author: {
-            name: "Carlos Ramírez",
-            avatar: "C",
-            role: "Estudiante",
-            timeAgo: "hace 2 días"
-          },
-          content: "¿Es necesario verificar la indexación si mi sitio es nuevo y aún no tiene mucho contenido?",
-          likes: 5,
-          replies: [
-            {
-              id: 2,
-              author: {
-                name: "Ana Martínez",
-                avatar: "A",
-                role: "Profesor",
-                timeAgo: "hace 1 día"
-              },
-              content: "¡Sí! Es fundamental verificar la indexación desde el principio. Esto te ayudará a identificar problemas temprano y asegurarte de que Google pueda encontrar tu contenido desde el inicio.",
-              likes: 8
-            }
-          ]
-        },
-        {
-          id: 3,
-          author: {
-            name: "Laura González",
-            avatar: "L",
-            role: "Estudiante",
-            timeAgo: "hace 1 día"
-          },
-          content: "¿Cada cuánto tiempo debo verificar la indexación de mi sitio web?",
-          likes: 4,
-          replies: [
-            {
-              id: 4,
-              author: {
-                name: "Miguel Torres",
-                avatar: "M",
-                role: "Profesor",
-                timeAgo: "hace 12 horas"
-              },
-              content: "Se recomienda verificar la indexación al menos una vez por semana si publicas contenido regularmente. Si tu sitio es más estático, una vez al mes puede ser suficiente.",
-              likes: 6
-            }
-          ]
-        }
-      ]
-    },
-    // Paso 2: URLs no Indexables
-    {
-      questions: [
-        {
-          id: 5,
-          author: {
-            name: "Pedro Sánchez",
-            avatar: "P",
-            role: "Estudiante",
-            timeAgo: "hace 3 días"
-          },
-          content: "¿Qué debo hacer si encuentro URLs importantes que no están siendo indexadas?",
-          likes: 7,
-          replies: [
-            {
-              id: 6,
-              author: {
-                name: "Diana López",
-                avatar: "D",
-                role: "Profesor",
-                timeAgo: "hace 2 días"
-              },
-              content: "Primero, verifica que no estén bloqueadas en el robots.txt. Luego, asegúrate de que las URLs sean accesibles y tengan contenido único y valioso. También puedes usar Google Search Console para solicitar la indexación manualmente.",
-              likes: 12
-            }
-          ]
-        },
-        {
-          id: 7,
-          author: {
-            name: "María Jiménez",
-            avatar: "M",
-            role: "Estudiante",
-            timeAgo: "hace 1 día"
-          },
-          content: "¿Es normal que algunas páginas tarden en ser indexadas aunque ya estén publicadas?",
-          likes: 3,
-          replies: [
-            {
-              id: 8,
-              author: {
-                name: "Roberto García",
-                avatar: "R",
-                role: "Profesor",
-                timeAgo: "hace 10 horas"
-              },
-              content: "Sí, es normal. Google tiene su propio ritmo de rastreo e indexación. Las páginas nuevas pueden tardar desde unas horas hasta varias semanas en ser indexadas, dependiendo de varios factores como la autoridad del dominio y la frecuencia de actualización del sitio.",
-              likes: 5
-            }
-          ]
-        }
-      ]
-    }
-  ];
+    const sparks = bursts.flatMap((burst) => (
+      Array.from({ length: burst.sparks }, (_, sparkIndex) => {
+        const angle = ((Math.PI * 2) / burst.sparks) * sparkIndex + (Math.random() * 0.22 - 0.11);
+        const distance = Math.random() * 330 + 170;
+
+        return {
+          id: `${burst.id}-${sparkIndex}`,
+          left: burst.left + (Math.random() * 3 - 1.5),
+          travel: burst.travel,
+          angle: (angle * 180) / Math.PI,
+          length: Math.random() * 72 + 38,
+          thickness: Math.random() * 2 + 1.5,
+          duration: Math.random() * 1.35 + 1.85,
+          delay: burst.delay + 0.72 + Math.random() * 0.18,
+          burstX: Math.cos(angle) * distance,
+          burstY: Math.sin(angle) * distance,
+          color: colors[(burst.id + sparkIndex) % colors.length]
+        };
+      })
+    ));
+
+    return { bursts, sparks };
+  }, []);
 
   useEffect(() => {
     const checkAuthAndAccess = async () => {
@@ -279,6 +229,8 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
   useEffect(() => {
     const fetchDiagnosticConfig = async () => {
+      if (!user) return;
+
       try {
         setIsLoading(true);
         // Primero obtener el módulo específico por ID
@@ -291,10 +243,13 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
           return;
         }
 
-        const configs = await moduleService.findByGroup(moduleData.group);
-        if (configs && configs.length > 0) {
-          setDiagnosticConfigs(configs as unknown as (DiagnosticConfig & { topics: Topic[] })[]);
-        }
+        const studentId = user.id || user._id || user.email || '';
+        const savedResult = studentId
+          ? await learningResultsService.getStudentResultByModule(resolvedParams.id, studentId)
+          : null;
+        const currentConfig = moduleData as unknown as ModuleDiagnosticConfig;
+
+        setDiagnosticConfigs(applySavedLearningResult([currentConfig], savedResult));
       } catch (error) {
         console.error('Error al obtener la configuración del diagnóstico:', error);
         setAlertMessage({
@@ -308,7 +263,25 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     };
 
     fetchDiagnosticConfig();
-  }, [resolvedParams.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resolvedParams.id, user]);
+
+  useEffect(() => {
+    if (diagnosticConfigs[0]?.topics?.length) {
+      void loadTopicComments();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStep, diagnosticConfigs, resolvedParams.id]);
+
+  useEffect(() => {
+    if (!diagnosticConfigs[0]?.topics?.length || currentStep % 2 !== 0) return;
+
+    const topic = getCurrentTopic();
+    if (topic) {
+      setSelectedAnswers(getSelectedAnswersForTopic(topic));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStep, diagnosticConfigs]);
 
   const handleLogout = () => {
     authService.logout();
@@ -334,6 +307,84 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     return percentage >= 70 ? 'Todo está muy bien' : 'Necesita mejorar';
   };
 
+  const getExerciseId = (topic: Topic, exerciseIndex: number) => (
+    `${topic.title.replace(/\s+/g, '_').toUpperCase()}_ex${exerciseIndex + 1}`
+  );
+
+  const buildResultsFromSubjects = (subjects: ModuleResultsState['subjects']): ModuleResultsState => {
+    const answers = subjects.flatMap((subject) => subject.answers || []);
+    const goodAnswers = answers.filter((answer) => answer.isCorrect).length;
+    const wrongAnswers = answers.length - goodAnswers;
+
+    return {
+      goodAnswers,
+      wrongAnswers,
+      subjects,
+      answers
+    };
+  };
+
+  const getSelectedAnswersForTopic = (topic: Topic, sourceResults = results) => {
+    const selectedByExercise: { [key: string]: string } = {};
+
+    topic.exercises.forEach((exercise, index) => {
+      const savedAnswer = sourceResults.answers.find((answer) => answer.exerciseId === getExerciseId(topic, index));
+      if (!savedAnswer) return;
+
+      const selectedPrefix = savedAnswer.selectedAnswer.match(/^\s*([a-z])/i)?.[1];
+      const selectedIndex = selectedPrefix
+        ? selectedPrefix.toUpperCase().charCodeAt(0) - 65
+        : exercise.options.findIndex((option) => savedAnswer.selectedAnswer.includes(option));
+
+      if (selectedIndex >= 0) {
+        selectedByExercise[index] = selectedIndex.toString();
+      }
+    });
+
+    return selectedByExercise;
+  };
+
+  const applySavedLearningResult = (
+    configs: ModuleDiagnosticConfig[],
+    savedResult: LearningResult | null
+  ) => {
+    if (!savedResult) {
+      setResults(emptyResults);
+      lastSubmittedSubjectCountRef.current = 0;
+      return configs;
+    }
+
+    const savedSubjects = (savedResult.subjects || []).map((subject) => {
+      const topicPrefix = subject.title.replace(/\s+/g, '_').toUpperCase();
+
+      return {
+        title: subject.title,
+        points: Number(subject.points || 0),
+        maxPoints: Number(subject.maxPoints || 0),
+        percentage: Number(subject.percentage || 0),
+        N1: subject.N1 || '0%',
+        N2: subject.N2 || '0%',
+        N3: subject.N3 || '0%',
+        N4: subject.N4 || '0%',
+        answers: subject.answers?.length
+          ? subject.answers
+          : (savedResult.answers || []).filter((answer) => answer.exerciseId.startsWith(topicPrefix))
+      };
+    });
+    const restoredResults = buildResultsFromSubjects(savedSubjects);
+
+    setResults(restoredResults);
+    lastSubmittedSubjectCountRef.current = savedSubjects.length;
+
+    return configs.map((config) => ({
+      ...config,
+      topics: config.topics.map((topic) => ({
+        ...topic,
+        completed: savedSubjects.some((subject) => subject.title === topic.title)
+      }))
+    }));
+  };
+
   const getTeacherPayload = () => {
     const userWithTeacher = user as (User & {
       teacher?: { name?: string; userId?: string; id?: string; _id?: string };
@@ -347,13 +398,12 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     };
   };
 
-  const submitLearningResult = async (compiledResults: typeof results) => {
-    if (!user || !currentModule || compiledResults.subjects.length <= lastSubmittedSubjectCountRef.current) {
+  const submitLearningResult = async (compiledResults: ModuleResultsState) => {
+    if (!user || !currentModule) {
       return;
     }
 
     const submittedSubjectCount = compiledResults.subjects.length;
-    lastSubmittedSubjectCountRef.current = submittedSubjectCount;
 
     try {
       await learningResultsService.submitResult({
@@ -384,6 +434,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         subjects: compiledResults.subjects,
         answers: compiledResults.answers
       });
+      lastSubmittedSubjectCountRef.current = submittedSubjectCount;
     } catch (error) {
       lastSubmittedSubjectCountRef.current = Math.max(0, submittedSubjectCount - 1);
       console.error('Error al guardar resultados del módulo:', error);
@@ -464,6 +515,216 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   };
 
   const imageBackMarker = '{img_back}';
+
+  const getRelativeTime = (createdAt?: string) => {
+    if (!createdAt) return 'ahora';
+
+    const diffMinutes = Math.max(1, Math.floor((Date.now() - new Date(createdAt).getTime()) / 60000));
+    if (diffMinutes < 60) return `hace ${diffMinutes} min`;
+
+    const diffHours = Math.floor(diffMinutes / 60);
+    if (diffHours < 24) return `hace ${diffHours} h`;
+
+    const diffDays = Math.floor(diffHours / 24);
+    return `hace ${diffDays} día${diffDays === 1 ? '' : 's'}`;
+  };
+
+  const getAuthorPayload = () => ({
+    name: user?.name || 'Usuario',
+    userId: user?.id || user?._id || '',
+    role: user?.role || 'Student',
+    avatar: (user?.name || 'U').charAt(0).toUpperCase()
+  });
+
+  const mapReplyToQuestionReply = (reply: LearningReply): Reply => ({
+    id: reply._id || reply.id || `${Date.now()}`,
+    author: {
+      name: reply.author?.name || 'Usuario',
+      avatar: reply.author?.avatar || reply.author?.name?.charAt(0).toUpperCase() || 'U',
+      role: reply.author?.role || 'Estudiante',
+      timeAgo: getRelativeTime(reply.createdAt)
+    },
+    content: reply.content,
+    likes: reply.likes || 0
+  });
+
+  const mapCommentToQuestion = (comment: LearningComment): Question => ({
+    id: comment._id || comment.id || `${Date.now()}`,
+    author: {
+      name: comment.author?.name || 'Usuario',
+      avatar: comment.author?.avatar || comment.author?.name?.charAt(0).toUpperCase() || 'U',
+      role: comment.author?.role || 'Estudiante',
+      timeAgo: getRelativeTime(comment.createdAt)
+    },
+    content: comment.content,
+    likes: comment.likes || 0,
+    replies: (comment.replies || []).map(mapReplyToQuestionReply)
+  });
+
+  const getStepMeta = (step = currentStep) => {
+    const topics = diagnosticConfigs[0]?.topics || [];
+    let cursor = 1;
+
+    for (let index = 0; index < topics.length; index += 1) {
+      const topic = topics[index];
+      if (step === cursor) {
+        return { topic, topicIndex: index, isExerciseStep: false };
+      }
+
+      cursor += 1;
+
+      if (topicHasExercises(topic)) {
+        if (step === cursor) {
+          return { topic, topicIndex: index, isExerciseStep: true };
+        }
+
+        cursor += 1;
+      }
+    }
+
+    return { topic: undefined, topicIndex: -1, isExerciseStep: false };
+  };
+
+  const getCurrentTopic = () => getStepMeta().topic;
+
+  const getTopicId = (topic?: Topic) => {
+    if (!topic) return '';
+
+    return topic._id || topic.title
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .replace(/\s+/g, '_')
+      .toUpperCase();
+  };
+
+  const getFallbackQuestions = (topicId: string) => {
+    if (commentsByTopic[topicId]) {
+      return commentsByTopic[topicId];
+    }
+
+    return [];
+  };
+
+  const loadTopicComments = async () => {
+    const topic = getCurrentTopic();
+    if (!topic) return;
+    const topicId = getTopicId(topic);
+
+    setLoadingComments(true);
+    try {
+      const comments = await learningCommentsService.getComments(resolvedParams.id, topicId);
+      setCommentsByTopic((prev) => ({
+        ...prev,
+        [topicId]: comments.map(mapCommentToQuestion)
+      }));
+    } catch (error) {
+      console.error('Error al cargar aportes:', error);
+      setCommentsByTopic((prev) => ({
+        ...prev,
+        [topicId]: prev[topicId] || []
+      }));
+    } finally {
+      setLoadingComments(false);
+    }
+  };
+
+  const handleCreateContribution = async () => {
+    const topic = getCurrentTopic();
+    const content = contributionText.trim();
+
+    if (!topic || !content || !user) return;
+    const topicId = getTopicId(topic);
+
+    const optimisticComment: Question = {
+      id: `local-${Date.now()}`,
+      author: {
+        name: user.name,
+        avatar: user.name.charAt(0).toUpperCase(),
+        role: user.role,
+        timeAgo: 'ahora'
+      },
+      content,
+      likes: 0,
+      replies: []
+    };
+
+    setContributionText('');
+    setCommentsByTopic((prev) => ({
+      ...prev,
+      [topicId]: [optimisticComment, ...(prev[topicId] || [])]
+    }));
+
+    try {
+      const createdComment = await learningCommentsService.createComment({
+        learningId: resolvedParams.id,
+        topicId,
+        content,
+        author: getAuthorPayload()
+      });
+
+      setCommentsByTopic((prev) => ({
+        ...prev,
+        [topicId]: (prev[topicId] || []).map((comment) =>
+          comment.id === optimisticComment.id ? mapCommentToQuestion(createdComment) : comment
+        )
+      }));
+    } catch (error) {
+      console.error('Error al crear aporte:', error);
+    }
+  };
+
+  const handleCreateReply = async (commentId: string | number) => {
+    const topic = getCurrentTopic();
+    const content = replyInputs[String(commentId)]?.trim();
+
+    if (!topic || !content || !user) return;
+    const topicId = getTopicId(topic);
+
+    const optimisticReply: Reply = {
+      id: `local-reply-${Date.now()}`,
+      author: {
+        name: user.name,
+        avatar: user.name.charAt(0).toUpperCase(),
+        role: user.role,
+        timeAgo: 'ahora'
+      },
+      content,
+      likes: 0
+    };
+
+    setReplyInputs((prev) => ({ ...prev, [String(commentId)]: '' }));
+    setReplyingTo(null);
+    setCommentsByTopic((prev) => ({
+      ...prev,
+      [topicId]: (prev[topicId] || []).map((comment) =>
+        comment.id === commentId ? { ...comment, replies: [...comment.replies, optimisticReply] } : comment
+      )
+    }));
+
+    try {
+      const createdReply = await learningCommentsService.createReply(String(commentId), {
+        content,
+        author: getAuthorPayload()
+      });
+
+      setCommentsByTopic((prev) => ({
+        ...prev,
+        [topicId]: (prev[topicId] || []).map((comment) =>
+          comment.id === commentId
+            ? {
+                ...comment,
+                replies: comment.replies.map((reply) =>
+                  reply.id === optimisticReply.id ? mapReplyToQuestionReply(createdReply) : reply
+                )
+              }
+            : comment
+        )
+      }));
+    } catch (error) {
+      console.error('Error al crear respuesta:', error);
+    }
+  };
 
   const hasCDUHeader = (text: string): boolean => /(^|\n)\s*C\s+D\s+U\b/i.test(text);
 
@@ -678,6 +939,109 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   };
 
   // Función para validar respuestas del tema actual
+  const hasHeadingMarkup = (text: string) => /<h[1-6][\s>]/i.test(text);
+
+  const renderDesignedParagraphBlock = (text: string, blockKey: string, variantOffset = 0) => {
+    if (hasHeadingMarkup(text)) {
+      return (
+        <div
+          key={blockKey}
+          className="max-w-4xl text-base leading-7 text-gray-700 dark:text-gray-300 whitespace-pre-line [&_h3]:mb-4 [&_h3]:text-2xl [&_h3]:font-bold [&_h3]:text-gray-900 [&_h3]:dark:text-white [&_h4]:mb-3 [&_h4]:mt-6 [&_h4]:text-xl [&_h4]:font-bold [&_h4]:text-orange-600 [&_h4]:dark:text-orange-400"
+          dangerouslySetInnerHTML={{ __html: formatRichHtml(text) }}
+        />
+      );
+    }
+
+    const paragraphs = text
+      .replace(/\r/g, '')
+      .split(/\n\s*\n/)
+      .map((paragraph) => paragraph.trim())
+      .filter(Boolean);
+
+    const sectionStyles = [
+      {
+        shell: 'border-orange-100 bg-orange-50/80 dark:border-orange-500/20 dark:bg-orange-500/10',
+        accent: 'bg-orange-500',
+        icon: 'bg-orange-500 text-white',
+        marker: 'bg-orange-500',
+        text: 'text-gray-800 dark:text-gray-100'
+      },
+      {
+        shell: 'border-violet-100 bg-violet-50/80 dark:border-violet-500/20 dark:bg-violet-500/10',
+        accent: 'bg-violet-500',
+        icon: 'bg-violet-500 text-white',
+        marker: 'bg-violet-500',
+        text: 'text-violet-950 dark:text-violet-50'
+      },
+      {
+        shell: 'border-gray-100 bg-white dark:border-gray-700 dark:bg-[#242424]',
+        accent: 'bg-gray-900 dark:bg-white',
+        icon: 'bg-gray-900 text-white dark:bg-white dark:text-gray-900',
+        marker: 'bg-orange-500',
+        text: 'text-gray-800 dark:text-gray-100'
+      }
+    ];
+    const sectionStyle = sectionStyles[variantOffset % sectionStyles.length];
+    const highlightParagraph = paragraphs[0];
+    const supportingParagraphs = paragraphs.slice(1);
+
+    return (
+      <section
+        key={blockKey}
+        className={`max-w-5xl overflow-hidden rounded-xl border shadow-sm ${sectionStyle.shell}`}
+      >
+        <div className={`h-1.5 w-full ${sectionStyle.accent}`} />
+        <div className="p-5 sm:p-6">
+          <div className="flex gap-4">
+            <div className={`mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${sectionStyle.icon}`}>
+              <FiBookOpen className="h-5 w-5" />
+            </div>
+            <div className={`min-w-0 flex-1 text-base leading-7 ${sectionStyle.text}`}>
+              <p className="text-lg font-semibold leading-8" dangerouslySetInnerHTML={{ __html: formatRichHtml(highlightParagraph) }} />
+
+              {supportingParagraphs.length > 0 && (
+                <div className="mt-5 grid gap-3 md:grid-cols-2">
+                  {supportingParagraphs.map((paragraph, paragraphIndex) => {
+                    const lines = paragraph.split('\n').map((line) => line.trim()).filter(Boolean);
+                    const shouldRenderLines = lines.length > 1;
+
+                    return (
+                      <div
+                        key={`${blockKey}-support-${paragraphIndex}`}
+                        className="rounded-lg border border-white/70 bg-white/75 p-4 shadow-sm dark:border-white/10 dark:bg-black/10"
+                      >
+                        {shouldRenderLines ? (
+                          <div className="space-y-2">
+                            {lines.map((line, lineIndex) => (
+                              <div key={`${blockKey}-${paragraphIndex}-${lineIndex}`} className="flex gap-3">
+                                <span className={`mt-3 h-2 w-2 flex-shrink-0 rounded-full ${sectionStyle.marker}`} />
+                                <span dangerouslySetInnerHTML={{ __html: formatRichHtml(line) }} />
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p dangerouslySetInnerHTML={{ __html: formatRichHtml(paragraph) }} />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {paragraphs.length === 1 && (
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <div className="h-2 rounded-full bg-orange-200 dark:bg-orange-500/30" />
+              <div className="h-2 rounded-full bg-white dark:bg-white/20" />
+              <div className="h-2 rounded-full bg-violet-200 dark:bg-violet-500/30" />
+            </div>
+          )}
+        </div>
+      </section>
+    );
+  };
+
   const validateCurrentTopicAnswers = async () => {
     const currentTopic = diagnosticConfigs[0].topics[Math.floor((currentStep - 1) / 2)];
     const exercises = currentTopic.exercises;
@@ -704,7 +1068,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
       return {
         topicId: currentTopic._id,
         topicTitle: currentTopic.title,
-        exerciseId: `${currentTopic.title.replace(/\s+/g, '_').toUpperCase()}_ex${index + 1}`,
+        exerciseId: getExerciseId(currentTopic, index),
         userAnswer: selectedAnswer,
         correctAnswer: exercise.correctAnswer,
         isCorrect,
@@ -714,8 +1078,6 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
 
     // Calcular estadísticas
     const correctAnswers = newAnswers.filter(answer => answer.isCorrect).length;
-    const wrongAnswers = newAnswers.length - correctAnswers;
-
     const points = (correctAnswers / exercises.length) * 10;
     const percentage = (correctAnswers / exercises.length) * 100;
 
@@ -735,27 +1097,19 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
       }))
     };
 
-    let nextResults: typeof results | null = null;
+    const subjectsWithoutCurrent = results.subjects.filter((subject) => subject.title !== currentTopic.title);
+    const nextResults = buildResultsFromSubjects([...subjectsWithoutCurrent, newSubject]);
 
-    setResults(prev => {
-      nextResults = {
-        ...prev,
-        goodAnswers: prev.goodAnswers + correctAnswers,
-        wrongAnswers: prev.wrongAnswers + wrongAnswers,
-        subjects: [...prev.subjects, newSubject],
-        answers: [...prev.answers, ...newAnswers.map(answer => ({
-          exerciseId: answer.exerciseId,
-          selectedAnswer: answer.userAnswer,
-          isCorrect: answer.isCorrect
-        }))]
-      };
+    setResults(nextResults);
 
-      return nextResults;
-    });
+    setDiagnosticConfigs((prevConfigs) => prevConfigs.map((config) => ({
+      ...config,
+      topics: config.topics.map((topic) => (
+        topic.title === currentTopic.title ? { ...topic, completed: true } : topic
+      ))
+    })));
 
-    if (nextResults) {
-      await submitLearningResult(nextResults);
-    }
+    await submitLearningResult(nextResults);
 
     return true;
   };
@@ -813,6 +1167,17 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
       };
     }
 
+    const designedParagraphBlocks = (currentTopic.subtopics ?? []).flatMap((subtopic) =>
+      (subtopic.blocks ?? []).filter((block) => {
+        const rawBlockText = block.content?.text?.trim();
+        const blockText = rawBlockText?.split(imageBackMarker).join('').trim();
+
+        return block.type !== 'math_layout' && Boolean(blockText) && !hasHeadingMarkup(blockText || '');
+      })
+    );
+    const totalDesignedParagraphBlocks = designedParagraphBlocks.length;
+    let designedParagraphIndex = 0;
+
     return {
       title: currentTopic.title,
       content: (
@@ -866,12 +1231,18 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                   );
                 }
 
-                return (
-                  <div
-                    key={`${currentTopic._id}-paragraph-${subtopicIndex}-${blockIndex}`}
-                    className="max-w-4xl text-base leading-7 text-gray-700 dark:text-gray-300 whitespace-pre-line [&_h3]:mb-4 [&_h3]:text-2xl [&_h3]:font-bold [&_h3]:text-gray-900 [&_h3]:dark:text-white [&_h4]:mb-3 [&_h4]:mt-6 [&_h4]:text-xl [&_h4]:font-bold [&_h4]:text-orange-600 [&_h4]:dark:text-orange-400"
-                    dangerouslySetInnerHTML={{ __html: formatRichHtml(blockText) }}
-                  />
+                const zoneIndex = hasHeadingMarkup(blockText) || totalDesignedParagraphBlocks === 0
+                  ? 2
+                  : Math.min(2, Math.floor((designedParagraphIndex * 3) / totalDesignedParagraphBlocks));
+
+                if (!hasHeadingMarkup(blockText)) {
+                  designedParagraphIndex += 1;
+                }
+
+                return renderDesignedParagraphBlock(
+                  blockText,
+                  `${currentTopic._id}-paragraph-${subtopicIndex}-${blockIndex}`,
+                  zoneIndex
                 );
               })}
             </section>
@@ -884,6 +1255,26 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   const { title, content } = getCurrentContent();
   const isCurrentExerciseStep = (currentStep % 2) === 0;
   const activeCommentsTab = isCurrentExerciseStep ? 'contributions' : commentsTab;
+  const currentTopicForComments = getCurrentTopic();
+  const currentTopicIdForComments = getTopicId(currentTopicForComments);
+  const displayedComments = currentTopicIdForComments ? getFallbackQuestions(currentTopicIdForComments) : [];
+
+  const getAverage = () => {
+    if (results.subjects.length === 0) return 0;
+
+    const sum = results.subjects.reduce((acc, subject) => acc + subject.points, 0);
+    const sumMax = results.subjects.reduce((acc, subject) => acc + subject.maxPoints, 0);
+
+    if (sumMax === 0) return 0;
+
+    return ((sum / sumMax) * 5).toFixed(1);
+  };
+
+  const getSubjectGrade = (subject: ModuleResultsState['subjects'][number]) => {
+    if (subject.maxPoints === 0) return 0;
+
+    return (subject.points / subject.maxPoints) * 5;
+  };
 
   // Actualizar la lógica de navegación
   const handleNext = async () => {
@@ -1114,9 +1505,146 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
             {/* Contenido principal */}
             <div className="h-[calc(100vh-64px)]">
               {showResults ? (
-                <div className="h-full bg-gray-100 dark:bg-[#1E1F25] p-8">
+                <div className="relative h-full bg-gray-100 dark:bg-[#1E1F25] p-8">
+                  <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden" aria-hidden="true">
+                    {fireworkEffects.bursts.map((burst) => (
+                      <span
+                        key={`rocket-${burst.id}`}
+                        className="module-firework-rocket absolute top-[100vh] h-8 w-2 -translate-x-1/2 rounded-full bg-amber-200 shadow-[0_0_20px_rgba(251,191,36,0.95)]"
+                        style={{
+                          left: `${burst.left}%`,
+                          animationDelay: `${burst.delay}s`,
+                          ['--firework-travel' as string]: `-${burst.travel}vh`
+                        }}
+                      />
+                    ))}
+                    {fireworkEffects.bursts.map((burst) => (
+                      <span
+                        key={`trail-${burst.id}`}
+                        className="module-firework-trail absolute top-[100vh] h-28 w-1 -translate-x-1/2 rounded-full bg-gradient-to-b from-yellow-100 via-orange-400 to-transparent opacity-80"
+                        style={{
+                          left: `${burst.left}%`,
+                          animationDelay: `${burst.delay}s`,
+                          ['--firework-travel' as string]: `-${Math.max(16, burst.travel - 12)}vh`
+                        }}
+                      />
+                    ))}
+                    {fireworkEffects.bursts.map((burst) => (
+                      <span
+                        key={`flash-${burst.id}`}
+                        className="module-firework-flash absolute top-[100vh] h-24 w-24 -translate-x-1/2 rounded-full bg-white"
+                        style={{
+                          left: `${burst.left}%`,
+                          animationDelay: `${burst.delay + 0.74}s`,
+                          ['--firework-travel' as string]: `-${burst.travel}vh`
+                        }}
+                      />
+                    ))}
+                    {fireworkEffects.sparks.map((spark) => (
+                      <span
+                        key={spark.id}
+                        className="module-firework-spark absolute inline-block rounded-full"
+                        style={{
+                          left: `${spark.left}%`,
+                          top: '100vh',
+                          width: `${spark.length}px`,
+                          height: `${spark.thickness}px`,
+                          backgroundColor: spark.color,
+                          backgroundImage: `linear-gradient(90deg, ${spark.color}, rgba(255,255,255,0.95), transparent)`,
+                          boxShadow: `0 0 12px ${spark.color}, 0 0 28px ${spark.color}`,
+                          animation: `module-firework-spark ${spark.duration}s cubic-bezier(0.16, 0.72, 0.26, 1) ${spark.delay}s forwards`,
+                          ['--firework-burst-x' as string]: `${spark.burstX}px`,
+                          ['--firework-burst-y' as string]: `${spark.burstY}px`,
+                          ['--firework-travel' as string]: `-${spark.travel}vh`,
+                          ['--firework-angle' as string]: `${spark.angle}deg`
+                        }}
+                      />
+                    ))}
+                    <style>{`
+                      .module-firework-rocket {
+                        animation: module-firework-rocket 0.95s cubic-bezier(0.18, 0.72, 0.2, 1) forwards;
+                      }
+
+                      .module-firework-trail {
+                        animation: module-firework-trail 0.95s cubic-bezier(0.18, 0.72, 0.2, 1) forwards;
+                      }
+
+                      .module-firework-flash {
+                        animation: module-firework-flash 0.95s ease-out forwards;
+                        filter: blur(1px);
+                        opacity: 0;
+                      }
+
+                      @keyframes module-firework-rocket {
+                        0% {
+                          transform: translate3d(-50%, 0, 0) scaleY(1);
+                          opacity: 1;
+                        }
+                        82% {
+                          transform: translate3d(-50%, var(--firework-travel), 0) scaleY(1);
+                          opacity: 1;
+                        }
+                        to {
+                          transform: translate3d(-50%, var(--firework-travel), 0) scale(2.4);
+                          opacity: 0;
+                        }
+                      }
+
+                      @keyframes module-firework-trail {
+                        0% {
+                          transform: translate3d(-50%, 0, 0) scaleY(0.4);
+                          opacity: 0.9;
+                        }
+                        75% {
+                          transform: translate3d(-50%, var(--firework-travel), 0) scaleY(1.15);
+                          opacity: 0.65;
+                        }
+                        to {
+                          transform: translate3d(-50%, var(--firework-travel), 0) scaleY(0.1);
+                          opacity: 0;
+                        }
+                      }
+
+                      @keyframes module-firework-flash {
+                        0% {
+                          transform: translate3d(-50%, var(--firework-travel), 0) scale(0.1);
+                          opacity: 0;
+                          box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+                        }
+                        18% {
+                          transform: translate3d(-50%, var(--firework-travel), 0) scale(1.25);
+                          opacity: 0.95;
+                          box-shadow: 0 0 34px rgba(255, 255, 255, 0.98), 0 0 90px rgba(56, 189, 248, 0.7), 0 0 140px rgba(249, 115, 22, 0.55);
+                        }
+                        to {
+                          transform: translate3d(-50%, var(--firework-travel), 0) scale(4.8);
+                          opacity: 0;
+                          box-shadow: 0 0 120px rgba(255, 255, 255, 0.8), 0 0 220px rgba(56, 189, 248, 0.45);
+                        }
+                      }
+
+                      @keyframes module-firework-spark {
+                        0% {
+                          transform: translate3d(0, 0, 0) rotate(var(--firework-angle)) scaleX(0.05);
+                          opacity: 0;
+                        }
+                        36% {
+                          transform: translate3d(0, var(--firework-travel), 0) rotate(var(--firework-angle)) scaleX(0.05);
+                          opacity: 0;
+                        }
+                        42% {
+                          transform: translate3d(0, var(--firework-travel), 0) rotate(var(--firework-angle)) scaleX(0.35);
+                          opacity: 1;
+                        }
+                        to {
+                          transform: translate3d(var(--firework-burst-x), calc(var(--firework-travel) + var(--firework-burst-y)), 0) rotate(var(--firework-angle)) scaleX(1);
+                          opacity: 0;
+                        }
+                      }
+                    `}</style>
+                  </div>
                   <div className="max-w-4xl mx-auto">
-                    <h2 className="text-2xl font-bold text-white mb-6">Resultados del Módulo</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Resultados del Módulo</h2>
 
                     {/* Tabla de resultados */}
                     <div className="bg-[#282828] rounded-lg shadow-lg overflow-hidden mb-6">
@@ -1130,21 +1658,25 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-700">
-                          {results.subjects.map((subject, index) => (
-                            <tr key={index} className="hover:bg-[#323232] transition-colors">
-                              <td className="px-6 py-4 text-white">{subject.title}</td>
-                              <td className="px-6 py-4 text-white">{Math.round(subject.points)}</td>
-                              <td className="px-6 py-4 text-white">{subject.maxPoints}</td>
-                              <td className="px-6 py-4">
-                                <span className={`px-3 py-1 rounded-full text-sm ${subject.percentage >= 70 ? 'bg-green-500/20 text-green-400' :
-                                  subject.percentage >= 50 ? 'bg-yellow-500/20 text-yellow-400' :
-                                    'bg-red-500/20 text-red-400'
-                                  }`}>
-                                  {subject.percentage.toFixed(2)}
-                                </span>
-                              </td>
-                            </tr>
-                          ))}
+                          {results.subjects.map((subject, index) => {
+                            const subjectGrade = getSubjectGrade(subject);
+
+                            return (
+                              <tr key={index} className="hover:bg-[#323232] transition-colors">
+                                <td className="px-6 py-4 text-white">{subject.title}</td>
+                                <td className="px-6 py-4 text-white">{Math.round(subject.points)}</td>
+                                <td className="px-6 py-4 text-white">{subject.maxPoints}</td>
+                                <td className="px-6 py-4">
+                                  <span className={`px-3 py-1 rounded-full text-sm ${subjectGrade >= 3.5 ? 'bg-green-500/20 text-green-400' :
+                                    subjectGrade >= 2.5 ? 'bg-yellow-500/20 text-yellow-400' :
+                                      'bg-red-500/20 text-red-400'
+                                    }`}>
+                                    {subjectGrade.toFixed(1)}
+                                  </span>
+                                </td>
+                              </tr>
+                            );
+                          })}
                         </tbody>
                       </table>
                     </div>
@@ -1163,9 +1695,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                         </div>
                         <div className="bg-[#323232] rounded-lg p-4">
                           <p className="text-gray-400 text-sm">Promedio General</p>
-                          <p className="text-2xl font-bold text-white">
-                            {(results.subjects.reduce((acc, sub) => acc + sub.percentage, 0) / results.subjects.length).toFixed(2)}
-                          </p>
+                          <p className="text-2xl font-bold text-white">{getAverage()}</p>
                         </div>
                       </div>
                     </div>
@@ -1439,14 +1969,29 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                         <div className="min-h-0 flex-1 overflow-y-auto pr-1">
                           <div className="relative mb-6">
                             <textarea
+                              value={contributionText}
+                              onChange={(e) => setContributionText(e.target.value)}
                               placeholder="Escribe tu comentario o pregunta"
                               className="w-full bg-gray-100 dark:bg-[#282828] text-black dark:text-white rounded-lg p-4 min-h-[100px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-lg"
                             ></textarea>
+                            <div className="mt-3 flex justify-end">
+                              <button
+                                type="button"
+                                onClick={handleCreateContribution}
+                                disabled={!contributionText.trim() || !currentTopicForComments}
+                                className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50"
+                              >
+                                Publicar aporte
+                              </button>
+                            </div>
                           </div>
 
                           {/* Lista de comentarios actualizada según el paso actual */}
                           <div className="space-y-6">
-                            {questionsByStep[currentStep - 1]?.questions?.map((comment) => (
+                            {loadingComments && (
+                              <p className="text-sm text-gray-500 dark:text-gray-400">Cargando aportes...</p>
+                            )}
+                            {displayedComments.map((comment) => (
                               <div key={comment.id} className="space-y-4">
                                 {/* Comentario principal */}
                                 <div className="flex gap-3">
@@ -1467,10 +2012,42 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
                                         <span>❤️</span>
                                         <span>{comment.likes}</span>
                                       </button>
-                                      <button className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white">
+                                      <button
+                                        type="button"
+                                        onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
+                                        className="text-black dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
+                                      >
                                         Responder
                                       </button>
                                     </div>
+                                    {replyingTo === comment.id && (
+                                      <div className="mt-3 space-y-2">
+                                        <textarea
+                                          value={replyInputs[String(comment.id)] || ''}
+                                          onChange={(e) => setReplyInputs((prev) => ({ ...prev, [String(comment.id)]: e.target.value }))}
+                                          placeholder="Escribe tu respuesta"
+                                          className="w-full rounded-lg bg-gray-100 p-3 text-sm text-black resize-none focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-[#282828] dark:text-white"
+                                          rows={2}
+                                        />
+                                        <div className="flex justify-end gap-2">
+                                          <button
+                                            type="button"
+                                            onClick={() => setReplyingTo(null)}
+                                            className="rounded-md px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-[#282828]"
+                                          >
+                                            Cancelar
+                                          </button>
+                                          <button
+                                            type="button"
+                                            onClick={() => handleCreateReply(comment.id)}
+                                            disabled={!replyInputs[String(comment.id)]?.trim()}
+                                            className="rounded-md bg-orange-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50"
+                                          >
+                                            Responder
+                                          </button>
+                                        </div>
+                                      </div>
+                                    )}
                                   </div>
                                 </div>
 

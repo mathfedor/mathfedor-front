@@ -158,7 +158,10 @@ export default function InstitutionsPage() {
 
     const response = await institutionService.getTeachersByInstitution(institutionId);
     if (response.success && response.data) {
-      const teachers = response.data.filter((teacher) => teacher.role === 'Teacher');
+      const teachers = response.data.filter((teacher) => (
+        teacher.role === 'Teacher' &&
+        normalizeRelationId(teacher.institutionId) === institutionId
+      ));
 
       setTeachersByInstitution((prev) => ({
         ...prev,
@@ -630,6 +633,7 @@ export default function InstitutionsPage() {
                                 type="button"
                                 onClick={() => {
                                   setSelectedBranchId(branchId);
+                                  void loadTeachers(selectedInstitutionId);
                                   void loadClassrooms(branchId);
                                 }}
                                 className="bg-slate-700 hover:bg-slate-800 text-white"
@@ -820,4 +824,3 @@ export default function InstitutionsPage() {
     </div>
   );
 }
-

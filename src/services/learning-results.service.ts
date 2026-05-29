@@ -214,14 +214,36 @@ class LearningResultsService {
       const response = await api.post<LearningResult>('/learning/results', result);
       return response.data;
     } catch (error) {
-      console.warn('Usando mock para guardar resultado de learning:', error);
-      return {
-        ...result,
-        id: `mock-result-${Date.now()}`,
-        _id: `mock-result-${Date.now()}`,
-        createdAt: new Date().toISOString()
-      };
+      throw new Error(getErrorMessage(error, 'No se pudo guardar el resultado de learning'));
     }
+  }
+
+  async getStudentResultByModule(moduleId: string, studentId: string): Promise<LearningResult | null> {
+    try {
+      const response = await api.get<LearningResult | LearningResult[]>('/learning/results', {
+        params: {
+          moduleId,
+          learningId: moduleId,
+          studentId,
+          userId: studentId
+        }
+      });
+
+      const results = Array.isArray(response.data) ? response.data : [response.data];
+      return this.findLatestStudentModuleResult(results, moduleId, studentId);
+    } catch (error) {
+      console.warn('No se pudo cargar resultado previo de learning:', error);
+      return null;
+    }
+  }
+
+  private findLatestStudentModuleResult(results: LearningResult[], moduleId: string, studentId: string) {
+    return results
+      .filter((result) =>
+        (result.moduleId === moduleId || result.learningId === moduleId || result.module?.id === moduleId) &&
+        (result.student.userId === studentId || result.student.email === studentId)
+      )
+      .sort((first, second) => new Date(second.createdAt || 0).getTime() - new Date(first.createdAt || 0).getTime())[0] || null;
   }
 
   async getTeacherResults(): Promise<LearningResult[]> {

@@ -8,6 +8,7 @@ import { authService } from '@/services/auth.service';
 import { usersService } from '@/services/users.service';
 import { User } from '@/types/auth.types';
 import { learningResultsService, LearningResult } from '@/services/learning-results.service';
+import { institutionService } from '@/services/institution.service';
 
 interface StudentRow extends User {
   id: string;
@@ -55,10 +56,15 @@ const getStudentNote = (result?: LearningResult) => {
     return 'Sin resultados';
   }
 
-  const averagePoints = result.subjects.reduce((sum, subject) => sum + Number(subject.points || 0), 0) / result.subjects.length;
+  const { points, maxPoints } = getResultTotals(result);
+  const grade = maxPoints > 0 ? Math.min(5, (points / maxPoints) * 5) : 0;
 
-  return `${averagePoints.toFixed(2)} / 10`;
+  return `${grade.toFixed(1)} / 5`;
 };
+
+const getSubjectGrade = (points: number, maxPoints: number) => (
+  maxPoints > 0 ? Math.min(5, (points / maxPoints) * 5) : 0
+);
 
 const sortResultsByDate = (results: LearningResult[]) =>
   [...results].sort((first, second) => new Date(second.createdAt || 0).getTime() - new Date(first.createdAt || 0).getTime());
@@ -72,6 +78,30 @@ const findLatestResultForStudent = (student: User, results: LearningResult[]) =>
     result.student.email?.toLowerCase() === normalizedEmail ||
     result.student.name.toLowerCase() === student.name.toLowerCase()
   );
+};
+
+const getStudentClassroomId = (student: User) => student.student?.classroomId || '';
+const getStudentBranchId = (student: User) => student.student?.branchId || '';
+
+const buildClassroomNameMap = async (students: User[]) => {
+  const branchIds = Array.from(new Set(students.map(getStudentBranchId).filter(Boolean)));
+  const classroomEntries = await Promise.all(
+    branchIds.map(async (branchId) => {
+      const response = await institutionService.getClassrooms(branchId);
+
+      return response.data || [];
+    })
+  );
+
+  return classroomEntries.flat().reduce<Record<string, string>>((classroomsById, classroom) => {
+    const classroomId = classroom._id || classroom.id;
+
+    if (classroomId) {
+      classroomsById[classroomId] = classroom.name;
+    }
+
+    return classroomsById;
+  }, {});
 };
 
 const escapeExcelCell = (value: string | number) => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;');
@@ -113,13 +143,18 @@ const buildStudentReportRows = (student: StudentRow) => {
     ['Rating', getRatingMessage(result)],
     [],
     ['Tema', 'Puntos', 'Máximo', 'Porcentaje', 'Nota por tópico'],
-    ...(result?.subjects.map((subject) => [
-      subject.title,
-      Number(subject.points || 0).toFixed(2),
-      Number(subject.maxPoints || 0).toFixed(2),
-      `${Number(subject.percentage || 0).toFixed(2)}%`,
-      Number(subject.percentage || 0) >= 70 ? 'Fortaleza' : 'Reforzar'
-    ]) || [])
+    ...(result?.subjects.map((subject) => {
+      const points = Number(subject.points || 0);
+      const maxPoints = Number(subject.maxPoints || 0);
+
+      return [
+        subject.title,
+        points.toFixed(2),
+        maxPoints.toFixed(2),
+        `${Number(subject.percentage || 0).toFixed(2)}%`,
+        `${getSubjectGrade(points, maxPoints).toFixed(1)} / 5`
+      ];
+    }) || [])
   ];
 };
 
@@ -208,13 +243,15 @@ export default function EstudiantesPage() {
         data = buildStudentsFromResults(resultsData);
       }
 
+      const classroomNamesById = await buildClassroomNameMap(data);
+
       setStudents(
         data.map((student) => ({
           ...student,
           id: getEntityId(student),
           status: 'active',
           institutionName: normalizeText(student.student?.institution || student.institutionId),
-          classroomName: normalizeText(student.student?.classroomId),
+          classroomName: normalizeText(classroomNamesById[getStudentClassroomId(student)] || getStudentClassroomId(student)),
           result: findLatestResultForStudent(student, resultsData)
         }))
       );
