@@ -1,0 +1,576 @@
+[
+ {
+  "loc": "U6/T1/N1/#2",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 4m y ancho = 3m. ¿Cuál es s"
+ },
+ {
+  "loc": "U6/T1/N1/#2",
+  "tipo": "opciones",
+  "de": "[\"14m\",\"7m\",\"12m\",\"12m\"]",
+  "a": "[\"14m\",\"7m\",\"12m\",\"8m\"]",
+  "ans": "14m"
+ },
+ {
+  "loc": "U6/T1/N1/#6",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 8m y ancho = 4m. ¿Cuál es s"
+ },
+ {
+  "loc": "U6/T1/N1/#7",
+  "tipo": "figura",
+  "de": "rectangulo",
+  "a": "cuadrado",
+  "q": "Un cuadrado tiene 4 lados iguales. Cada lado mide 12m. "
+ },
+ {
+  "loc": "U6/T1/N1/#8",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 4m y ancho = 2m. ¿Cuál es s"
+ },
+ {
+  "loc": "U6/T1/N1/#10",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 7m y ancho = 5m. ¿Cuál es s"
+ },
+ {
+  "loc": "U6/T1/N2/#2",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 6m y ancho = 2m. ¿Cuál es s"
+ },
+ {
+  "loc": "U6/T1/N2/#4",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 4m y ancho = 4m. ¿Cuál es s"
+ },
+ {
+  "loc": "U6/T1/N2/#4",
+  "tipo": "opciones",
+  "de": "[\"16m\",\"8m\",\"16m\",\"14m\"]",
+  "a": "[\"16m\",\"8m\",\"14m\",\"12m\"]",
+  "ans": "16m"
+ },
+ {
+  "loc": "U6/T1/N2/#5",
+  "tipo": "figura",
+  "de": "rectangulo",
+  "a": "cuadrado",
+  "q": "Un cuadrado tiene 4 lados iguales. Cada lado mide 7m. ¿"
+ },
+ {
+  "loc": "U6/T1/N2/#10",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 5m y ancho = 6m. ¿Cuál es s"
+ },
+ {
+  "loc": "U6/T1/N3/#2",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 12m y ancho = 6m. ¿Cuál es "
+ },
+ {
+  "loc": "U6/T1/N3/#4",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 10m y ancho = 2m. ¿Cuál es "
+ },
+ {
+  "loc": "U6/T1/N3/#8",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 6m y ancho = 3m. ¿Cuál es s"
+ },
+ {
+  "loc": "U6/T1/N3/#8",
+  "tipo": "opciones",
+  "de": "[\"18m\",\"9m\",\"18m\",\"16m\"]",
+  "a": "[\"18m\",\"9m\",\"16m\",\"12m\"]",
+  "ans": "18m"
+ },
+ {
+  "loc": "U6/T1/N3/#9",
+  "tipo": "figura",
+  "de": "rectangulo",
+  "a": "cuadrado",
+  "q": "Un cuadrado tiene 4 lados iguales. Cada lado mide 8m. ¿"
+ },
+ {
+  "loc": "U6/T1/N3/#10",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 10m y ancho = 3m. ¿Cuál es "
+ },
+ {
+  "loc": "U6/T1/N4/#2",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 12m y ancho = 3m. ¿Cuál es "
+ },
+ {
+  "loc": "U6/T1/N4/#4",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 10m y ancho = 3m. ¿Cuál es "
+ },
+ {
+  "loc": "U6/T1/N4/#6",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 8m y ancho = 5m. ¿Cuál es s"
+ },
+ {
+  "loc": "U6/T1/N4/#7",
+  "tipo": "figura",
+  "de": "rectangulo",
+  "a": "cuadrado",
+  "q": "Un cuadrado tiene 4 lados iguales. Cada lado mide 8m. ¿"
+ },
+ {
+  "loc": "U6/T1/N5/#2",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 6m y ancho = 3m. ¿Cuál es s"
+ },
+ {
+  "loc": "U6/T1/N5/#2",
+  "tipo": "opciones",
+  "de": "[\"18m\",\"9m\",\"18m\",\"16m\"]",
+  "a": "[\"18m\",\"9m\",\"16m\",\"12m\"]",
+  "ans": "18m"
+ },
+ {
+  "loc": "U6/T1/N5/#4",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 7m y ancho = 4m. ¿Cuál es s"
+ },
+ {
+  "loc": "U6/T1/N5/#6",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 4m y ancho = 3m. ¿Cuál es s"
+ },
+ {
+  "loc": "U6/T1/N5/#6",
+  "tipo": "opciones",
+  "de": "[\"14m\",\"7m\",\"12m\",\"12m\"]",
+  "a": "[\"14m\",\"7m\",\"12m\",\"8m\"]",
+  "ans": "14m"
+ },
+ {
+  "loc": "U6/T1/N5/#10",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo tiene largo = 6m y ancho = 3m. ¿Cuál es s"
+ },
+ {
+  "loc": "U6/T1/N5/#10",
+  "tipo": "opciones",
+  "de": "[\"18m\",\"9m\",\"18m\",\"16m\"]",
+  "a": "[\"18m\",\"9m\",\"16m\",\"12m\"]",
+  "ans": "18m"
+ },
+ {
+  "loc": "U6/T2/N1/#4",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 8m de largo por 5m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N1/#6",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 5m de largo por 5m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N1/#8",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 10m de largo por 4m de ancho. ¿Cuál "
+ },
+ {
+  "loc": "U6/T2/N1/#10",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 8m de largo por 6m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N2/#2",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 8m de largo por 4m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N2/#3",
+  "tipo": "figura",
+  "de": "rectangulo",
+  "a": "cuadrado",
+  "q": "Un cuadrado tiene lado = 8m. ¿Cuál es su área? (A = lad"
+ },
+ {
+  "loc": "U6/T2/N2/#4",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 8m de largo por 3m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N2/#8",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 5m de largo por 3m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N2/#10",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 8m de largo por 6m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N3/#2",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 6m de largo por 4m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N3/#6",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 6m de largo por 6m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N3/#8",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 6m de largo por 3m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N3/#10",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 10m de largo por 6m de ancho. ¿Cuál "
+ },
+ {
+  "loc": "U6/T2/N4/#2",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 4m de largo por 5m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N4/#4",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 10m de largo por 5m de ancho. ¿Cuál "
+ },
+ {
+  "loc": "U6/T2/N4/#5",
+  "tipo": "figura",
+  "de": "rectangulo",
+  "a": "cuadrado",
+  "q": "Un cuadrado tiene lado = 6m. ¿Cuál es su área? (A = lad"
+ },
+ {
+  "loc": "U6/T2/N4/#6",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 8m de largo por 5m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N4/#10",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 5m de largo por 2m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N5/#2",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 8m de largo por 3m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N5/#4",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 6m de largo por 6m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N5/#8",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 5m de largo por 6m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T2/N5/#10",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "rectangulo",
+  "q": "Un rectángulo mide 6m de largo por 6m de ancho. ¿Cuál e"
+ },
+ {
+  "loc": "U6/T3/N1/#5",
+  "tipo": "figura",
+  "de": "prisma",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 3cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N1/#6",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 3cm, ancho = 2cm y "
+ },
+ {
+  "loc": "U6/T3/N1/#7",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 5cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N1/#8",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 3cm, ancho = 2cm y "
+ },
+ {
+  "loc": "U6/T3/N1/#9",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 5cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N1/#10",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 3cm, ancho = 4cm y "
+ },
+ {
+  "loc": "U6/T3/N2/#5",
+  "tipo": "figura",
+  "de": "prisma",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 4cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N2/#6",
+  "tipo": "figura",
+  "de": "cubo",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 6cm, ancho = 2cm y "
+ },
+ {
+  "loc": "U6/T3/N2/#8",
+  "tipo": "figura",
+  "de": "cubo",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 4cm, ancho = 2cm y "
+ },
+ {
+  "loc": "U6/T3/N2/#9",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 4cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N2/#10",
+  "tipo": "figura",
+  "de": "cubo",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 3cm, ancho = 4cm y "
+ },
+ {
+  "loc": "U6/T3/N3/#1",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 2cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N3/#2",
+  "tipo": "figura",
+  "de": "cubo",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 4cm, ancho = 3cm y "
+ },
+ {
+  "loc": "U6/T3/N3/#3",
+  "tipo": "figura",
+  "de": "prisma",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 4cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N3/#4",
+  "tipo": "figura",
+  "de": "cubo",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 6cm, ancho = 4cm y "
+ },
+ {
+  "loc": "U6/T3/N3/#5",
+  "tipo": "figura",
+  "de": "prisma",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 4cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N3/#7",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 3cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N3/#8",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 3cm, ancho = 4cm y "
+ },
+ {
+  "loc": "U6/T3/N3/#9",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 5cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N3/#10",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 5cm, ancho = 4cm y "
+ },
+ {
+  "loc": "U6/T3/N4/#1",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 4cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N4/#2",
+  "tipo": "figura",
+  "de": "cubo",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 3cm, ancho = 2cm y "
+ },
+ {
+  "loc": "U6/T3/N4/#3",
+  "tipo": "figura",
+  "de": "prisma",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 3cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N4/#4",
+  "tipo": "figura",
+  "de": "cubo",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 5cm, ancho = 2cm y "
+ },
+ {
+  "loc": "U6/T3/N4/#5",
+  "tipo": "figura",
+  "de": "prisma",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 5cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N4/#8",
+  "tipo": "figura",
+  "de": "cubo",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 5cm, ancho = 4cm y "
+ },
+ {
+  "loc": "U6/T3/N4/#10",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 6cm, ancho = 2cm y "
+ },
+ {
+  "loc": "U6/T3/N5/#2",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 6cm, ancho = 4cm y "
+ },
+ {
+  "loc": "U6/T3/N5/#7",
+  "tipo": "figura",
+  "de": "prisma",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 2cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N5/#8",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 6cm, ancho = 3cm y "
+ },
+ {
+  "loc": "U6/T3/N5/#9",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "cubo",
+  "q": "Un cubo tiene arista = 2cm. ¿Cuál es su volumen? (V = l"
+ },
+ {
+  "loc": "U6/T3/N5/#10",
+  "tipo": "figura",
+  "de": "cuadrado",
+  "a": "prisma",
+  "q": "Un prisma rectangular tiene largo = 6cm, ancho = 2cm y "
+ }
+]

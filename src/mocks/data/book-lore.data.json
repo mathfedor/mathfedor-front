@@ -1,0 +1,32 @@
+{
+ "LORE_CHAPTERS": [
+  {
+   "id": 1,
+   "emoji": "🌙",
+   "title": "El despegue de la Luna",
+   "threshold": 0,
+   "text": "Fedor, el pequeño astronauta, deja la Luna y comienza su gran viaje. Lleva su bandera y mucha valentía. ¡Mercurio lo espera!"
+  },
+  {
+   "id": 2,
+   "emoji": "🌟",
+   "title": "La primera victoria",
+   "threshold": 0.2,
+   "text": "Has resuelto bloques de matemáticas y la nave avanza. Los planetas brillan más fuerte cada vez que aciertas. ¡Sigue así!"
+  },
+  {
+   "id": 3,
+   "emoji": "🚀",
+   "title": "En medio del cosmos",
+   "threshold": 0.5,
+   "text": "Vas por la mitad del viaje. Los cometas te acompañan y las estrellas cantan tu nombre. Negoran el dragón está orgulloso."
+  },
+  {
+   "id": 4,
+   "emoji": "🏆",
+   "title": "¡Llegando a Plutón!",
+   "threshold": 0.75,
+   "text": "Plutón ya se ve a lo lejos. Sólo unos bloques más y serás un Maestro Galáctico. ¡Tú puedes lograrlo!"
+  }
+ ]
+}

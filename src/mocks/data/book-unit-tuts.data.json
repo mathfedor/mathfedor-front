@@ -1,0 +1,48 @@
+{
+ "UNIT_TUTS": [
+  {
+   "icon": "➕",
+   "title": "¡Unidad 1 — Adición y Números!",
+   "text": "Aprenderás a sumar, contar y dominar la centena con el Método Fedor.",
+   "steps": [
+    "Conteo del 1 al 5, 10 y 20 con objetos visuales",
+    "Suma con grupos de elementos animados",
+    "Decena y recta numérica interactiva",
+    "¡Llega a la centena: suma hasta 100!"
+   ]
+  },
+  {
+   "icon": "➖",
+   "title": "¡Unidad 2 — Sustracción!",
+   "text": "La Tienda de Math abre y cierra. Tú calculas cuánto se vendió.",
+   "steps": [
+    "Tienda: abre con X, cierra con Y → diferencia",
+    "Minuendo − Sustraendo = Diferencia",
+    "Edificio de pisos — recta numérica",
+    "División exacta: residuo siempre 0"
+   ]
+  },
+  {
+   "icon": "✖️",
+   "title": "¡Unidad 3 — Multiplicación!",
+   "text": "Jack recibe regalos cada día de colegio. ¡Grupos iguales!",
+   "steps": [
+    "Multiplicar = sumar el mismo número varias veces",
+    "2×3 = 3+3 = 6 (dos grupos de tres)",
+    "Propiedad conmutativa: 2×3 = 3×2",
+    "¡La Tabla Mágica del 1 al 10!"
+   ]
+  },
+  {
+   "icon": "➗",
+   "title": "¡Unidad 4 — División!",
+   "text": "Dividir es repartir en partes iguales. ¡Chocolatinas para todos!",
+   "steps": [
+    "Items (izquierda) ÷ Personas (derecha) = Cociente",
+    "El divisor siempre son personas o grupos",
+    "División exacta: residuo = 0",
+    "División inexacta: sobran algunos items"
+   ]
+  }
+ ]
+}
