@@ -83,13 +83,10 @@ export default function UnitScreen() {
                 {topic.levels.map((level, li) => {
                   const key = levelKey(unit.index, ti, li);
                   const score = progress.scores[key];
-                  const prevDone = li === 0 || progress.scores[levelKey(unit.index, ti, li - 1)];
-                  const locked = !prevDone && !score;
                   return (
                     <button
                       key={key}
                       className="level-chip"
-                      disabled={locked}
                       onClick={() => openLesson({ unitIndex: unit.index, topicIndex: ti, levelIndex: li })}
                       style={{
                         background: score ? '#DCF5EE' : level.bg,
@@ -99,11 +96,10 @@ export default function UnitScreen() {
                         padding: '8px 12px',
                         fontWeight: 800,
                         fontSize: 12,
-                        cursor: locked ? 'not-allowed' : 'pointer',
-                        opacity: locked ? 0.45 : 1,
+                        cursor: 'pointer',
                       }}
                     >
-                      {locked ? '🔒 ' : score ? '✅ ' : ''}
+                      {score ? '✅ ' : ''}
                       {level.short}
                       {score ? ` · ${score.pct}%` : ''}
                     </button>

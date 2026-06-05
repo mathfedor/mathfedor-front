@@ -1,122 +1,132 @@
 'use client';
 
+import Starfield from './Starfield';
 import type { LevelExample } from '@/types/book.types';
 
 interface Props {
   examples: LevelExample[];
-  levelLabel: string;
+  levelIndex: number;
   topicTitle: string;
-  topicIcon: string;
+  conceptText: string;
   onStart: () => void;
 }
 
-/**
- * Panel de ejemplos resueltos que se muestra antes de la práctica.
- * Réplica de `showExamplesPanel` del HTML: cada tarjeta muestra icono,
- * enunciado, visual (HTML/emoji), grupos o recta numérica y la explicación.
- */
-export default function ExamplesPanel({ examples, levelLabel, topicTitle, topicIcon, onStart }: Props) {
+const LEVEL_META = [
+  { grad: 'linear-gradient(155deg,#0A3D28,#16876A,#0E5240)', headerTxt: '🟢 Nivel Básico', sub: 'Construye las bases del concepto', accent: '#24C496' },
+  { grad: 'linear-gradient(155deg,#6A3200,#E8650A,#BA5500)', headerTxt: '🟡 Nivel Medio', sub: 'Desarrolla el pensamiento matemático', accent: '#FF8C2A' },
+  { grad: 'linear-gradient(155deg,#5A0A28,#C94B22,#8B1A00)', headerTxt: '🔴 Nivel Avanzado', sub: 'Domina la operación con precisión', accent: '#FF6B6B' },
+  { grad: 'linear-gradient(155deg,#7A3200,#C25400,#FF8C2A)', headerTxt: '🟠 Nivel Experto', sub: 'Reta tus límites con problemas difíciles', accent: '#FF8C2A' },
+  { grad: 'linear-gradient(155deg,#3D0A60,#6A1B9A,#9B5CFF)', headerTxt: '🟣 Nivel Pruebas SABER', sub: 'Prepárate para las pruebas oficiales', accent: '#9B5CFF' },
+];
+
+const CHARS = [
+  { e: '🧑‍🚀', n: 'Math' },
+  { e: '👩‍🚀', n: 'Sumy' },
+  { e: '👦', n: 'Jack' },
+];
+
+/** Panel de ejemplos resueltos — réplica fiel de `showExamplesPanel` del HTML. */
+export default function ExamplesPanel({ examples, levelIndex, topicTitle, conceptText, onStart }: Props) {
+  const lm = LEVEL_META[levelIndex] ?? LEVEL_META[0];
+
   return (
-    <div className="examples-panel">
-      <div className="ex-panel-head">
-        <div className="ex-panel-kicker">{topicIcon} {topicTitle}</div>
-        <div className="ex-panel-title">📚 Aprende con ejemplos</div>
-        <div className="ex-panel-sub">{levelLabel} · Mira cómo se resuelve, luego practica</div>
+    <div className=" exp2" style={{ background: lm.grad, borderRadius: 22, overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,.3)', marginBottom: '1rem', position: 'relative' }}>
+      <Starfield count={22} />
+
+      {/* HEADER */}
+      <div style={{ padding: '1.5rem 1.25rem 1rem', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'inline-block', fontSize: 10, fontWeight: 900, color: 'rgba(245,197,24,.85)', textTransform: 'uppercase', letterSpacing: '.12em', marginBottom: 8 }}>
+          📚 Aprende con ejemplos
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
+          <div>
+            <div style={{ fontFamily: "'Baloo 2',sans-serif", fontSize: 22, fontWeight: 900, color: '#fff', marginBottom: 2 }}>{lm.headerTxt}</div>
+            <div style={{ fontSize: 12, color: 'rgba(255,255,255,.65)' }}>{lm.sub} · {topicTitle}</div>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,.5)', fontWeight: 700 }}>EJERCICIOS</div>
+            <div style={{ fontSize: 22, fontWeight: 900, color: '#FF8C2A', fontFamily: "'Baloo 2',sans-serif" }}>{examples.length}</div>
+          </div>
+        </div>
       </div>
 
-      {examples.length === 0 ? (
-        <div className="ex-panel-empty">Este nivel va directo a la práctica. ¡Tú puedes! 💪</div>
-      ) : (
-        <div className="ex-cards">
-          {examples.map((ex, i) => (
-            <ExampleCard key={i} ex={ex} index={i} total={examples.length} />
-          ))}
-        </div>
-      )}
+      {/* CHARACTERS */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 20, padding: '0 1.25rem .75rem', position: 'relative', zIndex: 1 }}>
+        {CHARS.map((ch, i) => (
+          <div key={ch.n} style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 40, animation: `float ${3 + i * 0.4}s ease-in-out infinite` }}>{ch.e}</div>
+            <div style={{ fontSize: 11, fontWeight: 800, color: 'rgba(255,255,255,.7)', marginTop: 4 }}>{ch.n}</div>
+          </div>
+        ))}
+      </div>
 
-      <button className="btn-launch" style={{ marginTop: '1rem' }} onClick={onStart}>
-        ✏️ ¡Empezar la práctica!
-      </button>
+      {/* CONCEPT */}
+      <div style={{ margin: '0 1.25rem .75rem', padding: '.85rem 1rem', background: 'rgba(255,255,255,.1)', borderRadius: 14, borderLeft: `4px solid ${lm.accent}`, position: 'relative', zIndex: 1 }}>
+        <div style={{ fontSize: 13, color: 'rgba(255,255,255,.9)', fontWeight: 700, lineHeight: 1.6 }}>{conceptText || 'Aplica el método paso a paso.'}</div>
+      </div>
+
+      {/* EXAMPLE CARDS */}
+      <div style={{ padding: '0 1.25rem .5rem', position: 'relative', zIndex: 1 }}>
+        <div style={{ fontSize: 11, fontWeight: 900, color: 'rgba(255,255,255,.6)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: '.65rem' }}>
+          ✨ {examples.length} ejemplos resueltos
+        </div>
+        {examples.map((e, i) => (
+          <ExampleCard key={i} ex={e} />
+        ))}
+      </div>
+
+      {/* START BUTTON */}
+      <div style={{ padding: '.75rem 1.25rem 1.5rem', position: 'relative', zIndex: 1 }}>
+        <button
+          onClick={onStart}
+          style={{ width: '100%', padding: 14, fontSize: 16, fontWeight: 900, background: 'linear-gradient(135deg,#F5C518,#FF8C2A)', color: '#2A0F60', border: 'none', borderRadius: 16, cursor: 'pointer', fontFamily: "'Nunito',sans-serif", boxShadow: '0 8px 24px rgba(245,197,24,.4)' }}
+        >
+          🎮 ¡Empezar {examples.length} ejercicios!
+        </button>
+      </div>
     </div>
   );
 }
 
-function ExampleCard({ ex, index, total }: { ex: LevelExample; index: number; total: number }) {
+function ExampleCard({ ex }: { ex: LevelExample }) {
   return (
-    <div className="example-card">
-      <div className="example-card-top">
-        <span className="example-icon">{ex.icon}</span>
-        <span className="example-step">Ejemplo {index + 1}/{total}</span>
+    <div style={{ background: 'rgba(255,255,255,.12)', border: '1px solid rgba(255,255,255,.2)', borderRadius: 16, padding: '1rem', marginBottom: '.65rem', position: 'relative' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: ex.vis || ex.nl ? '.5rem' : 0, flexWrap: 'wrap' }}>
+        <div style={{ width: 32, height: 32, borderRadius: 10, background: 'rgba(255,255,255,.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>{ex.icon}</div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'rgba(255,255,255,.9)', lineHeight: 1.45, wordWrap: 'break-word' }}>{ex.q}</div>
+        </div>
+        <div style={{ fontSize: 20, fontWeight: 900, color: '#FFE066', background: 'rgba(245,197,24,.2)', border: '1px solid rgba(245,197,24,.4)', padding: '4px 12px', borderRadius: 10, flexShrink: 0 }}>{ex.a}</div>
       </div>
 
-      <div className="example-q">{ex.q}</div>
-
-      {ex.vis && <div className="example-vis" dangerouslySetInnerHTML={{ __html: ex.vis }} />}
-      {ex.groups && <GroupsVisual groups={ex.groups} />}
+      {ex.vis && <div className="ex2-vis" dangerouslySetInnerHTML={{ __html: ex.vis }} />}
       {ex.nl && <NumberLine min={ex.nl.min} max={ex.nl.max} ans={ex.nl.ans} />}
 
-      {ex.explain && <div className="example-explain" dangerouslySetInnerHTML={{ __html: ex.explain }} />}
-
-      <div className="example-answer">Respuesta: <strong>{ex.a}</strong></div>
+      {ex.explain && (
+        <div
+          style={{ fontSize: 14, color: '#1A0A3C', marginTop: '.7rem', padding: '.85rem 1rem', background: '#FFF8DC', borderRadius: 10, border: '2px solid rgba(245,197,24,.5)', lineHeight: 1.6 }}
+          dangerouslySetInnerHTML={{ __html: ex.explain }}
+        />
+      )}
     </div>
   );
 }
 
-/* ── Visual de grupos (multiplicación / división) ─────────────── */
-function GroupsVisual({ groups }: { groups: Record<string, unknown> }) {
-  const num = (v: unknown, d = 0) => (typeof v === 'number' ? v : d);
-  const str = (v: unknown, d = '') => (typeof v === 'string' ? v : d);
-  const a = num(groups.a);
-  const b = num(groups.b);
-  const op = str(groups.op, '+');
-  const e = str(groups.e, '🔵');
-  const e2 = str(groups.e2, op === '÷' ? '🙍' : e);
-  const r = groups.r;
-
-  if (op === '÷') {
-    return (
-      <div className="example-groups">
-        <div className="eg-items">{Array.from({ length: a }, (_, i) => <span key={i}>{e}</span>)}</div>
-        <span className="eg-op">÷</span>
-        <div className="eg-people">{Array.from({ length: b }, (_, i) => <span key={i}>{e2}</span>)}</div>
-        <span className="eg-res">= {String(r ?? '')}</span>
-      </div>
-    );
-  }
-  if (op === '×') {
-    return (
-      <div className="example-groups eg-mul">
-        <div className="eg-grid">
-          {Array.from({ length: b }, (_, rr) => (
-            <div className="eg-row" key={rr}>{Array.from({ length: a }, (_, cc) => <span key={cc}>{e}</span>)}</div>
-          ))}
-        </div>
-        <div className="eg-caption">{b} grupos de {a} = {String(r ?? a * b)}</div>
-      </div>
-    );
-  }
-  // suma
-  return (
-    <div className="example-groups">
-      <div className="eg-items">{Array.from({ length: a }, (_, i) => <span key={i}>{e}</span>)}</div>
-      <span className="eg-op">+</span>
-      <div className="eg-items">{Array.from({ length: b }, (_, i) => <span key={i}>{e2}</span>)}</div>
-      <span className="eg-res">= {String(r ?? a + b)}</span>
-    </div>
-  );
-}
-
-/* ── Recta numérica ───────────────────────────────────────────── */
 function NumberLine({ min, max, ans }: { min: number; max: number; ans: number }) {
   const ticks = Array.from({ length: max - min + 1 }, (_, i) => min + i);
   return (
-    <div className="example-numline">
-      {ticks.map((t) => (
-        <div key={t} className={`nl-tick${t === ans ? ' nl-active' : ''}`}>
-          <span className="nl-dot" />
-          <span className="nl-num">{t}</span>
-        </div>
-      ))}
+    <div style={{ overflowX: 'auto', margin: '.5rem 0', padding: '.65rem', background: 'rgba(0,0,0,.2)', borderRadius: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+        {ticks.map((n, i) => (
+          <div key={n} style={{ display: 'flex', alignItems: 'flex-end' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, minWidth: 28 }}>
+              <span style={{ fontSize: 11, fontWeight: 900, color: 'rgba(255,255,255,.85)' }}>{n}</span>
+              <div style={{ width: 18, height: 18, borderRadius: '50%', background: n === ans ? '#FF8C2A' : 'rgba(255,255,255,.15)', border: `2px solid ${n === ans ? '#FFE066' : 'rgba(255,255,255,.3)'}` }} />
+            </div>
+            {i < ticks.length - 1 && <div style={{ height: 2, background: 'rgba(255,255,255,.2)', flex: 1, minWidth: 10, marginBottom: 10 }} />}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

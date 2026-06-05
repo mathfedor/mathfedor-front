@@ -1253,3 +1253,8 @@ button, .fedor-book .av-btn, .fedor-book .unit-card, .fedor-book .tc {
 .fedor-book .shelf-emoji{font-size:30px}
 .fedor-book .shelf-name{font-size:10px;font-weight:900;color:var(--text);line-height:1.15;margin-top:3px}
 .fedor-book .shelf-desc{font-size:8px;color:var(--muted);font-weight:700;margin-top:2px;line-height:1.2}
+
+/* ── Visuales dentro de las tarjetas de ejemplo (HTML original) ── */
+.fedor-book .ex2-vis{margin:.5rem 0;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px}
+.fedor-book .ex2-vis svg,.fedor-book .ex2-vis img{max-width:100%;height:auto}
+.fedor-book .exp2 .ex2-vis>div{max-width:100%}

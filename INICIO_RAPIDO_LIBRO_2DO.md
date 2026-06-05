@@ -1,42 +1,49 @@
-# Inicio rápido — Libro "Matemáticas de Fedor 2°"
+# Matemáticas de Fedor 2° — Integración
 
-Guía de despliegue del módulo migrado.
+El libro digital **original** (entregado por ti) se sirve **íntegro, sin modificar**, dentro de
+tu app Next.js. Se preserva el **100 %**: todos los niveles, gamificación, video de despegue,
+mascota, laboratorios, botones, ejemplos y ejercicios — porque es tu archivo exacto.
 
-## 1. Probar en local
+## Cómo funciona
+- Tu libro vive en: `public/libro-fedor-2/index.html` (autocontenido, 2.6 MB).
+- La ruta `src/app/dashboard/libro-2do/page.tsx` lo muestra en un **iframe** a pantalla completa
+  bajo el navbar, con estado de carga y botón de pantalla completa.
+- Acceso desde el menú: **"⭐ Matemáticas de Fedor 2°"** (`src/components/Sidebar.tsx`).
+
+## Probar
 ```bash
 npm install
 npm run dev
+# abre /dashboard/libro-2do
 ```
-Abre **http://localhost:3000/dashboard/libro-2do** (o usa el enlace
-**"⭐ Matemáticas de Fedor 2°"** en el menú lateral).
 
-## 2. Verificación final del compilador (compuerta antes de subir)
+## Subir
 ```bash
 npm run build
+git add -A
+git commit -m "feat: libro Matematicas de Fedor 2 (original integrado)"
+git push
 ```
-Debe pasar sin errores. Si React Three Fiber reportara tipos JSX (poco probable, R3F v9
-soporta React 19), es un arreglo conocido de 1 línea — ver `MIGRACION_LIBRO_2DO.md`.
 
-## 3. Variables de entorno
-- `NEXT_PUBLIC_API_URL` — ya la usa tu app (no cambia).
-- `NEXT_PUBLIC_BOOK_API=true` — **opcional**, solo cuando el backend `/books/*` esté listo.
-  Sin esta variable, el libro funciona con datos mock (ideal para lanzar ya).
+## Lo único necesario (mantener)
+```
+public/libro-fedor-2/index.html
+src/app/dashboard/libro-2do/page.tsx
+src/components/Sidebar.tsx   (enlace al menú)
+```
 
-## 4. Subir
+## Limpieza opcional (recomendada para un repo pristino)
+La primera re-implementación en React ya **no se usa** (la ruta sirve tu original). Para dejar
+el repo limpio y sin ningún riesgo en el build, bórrala en tu máquina:
 ```bash
-git push        # o despliega como siempre (Vercel / tu servidor)
+rm -rf src/components/book
+rm -f  src/app/dashboard/libro-2do/book.css
+rm -f  src/services/book-*.ts src/services/gamification.service.ts \
+       src/services/missions.service.ts src/services/daily-challenge.service.ts
+rm -f  src/types/book.types.ts src/types/book-progress.types.ts src/types/gamification.types.ts
+rm -rf src/mocks/book-curriculum.mock.ts src/mocks/book-examples.mock.ts \
+       src/mocks/book-lore.mock.ts src/mocks/book-unit-tuts.mock.ts src/mocks/data
+# documentos de la versión anterior (opcional):
+rm -f  MIGRACION_LIBRO_2DO.md API_CONTRATOS_BACKEND.md REVISION_MATEMATICA.md correcciones-matematicas.json
 ```
-
-## Qué incluye
-- Ruta: `src/app/dashboard/libro-2do/`
-- Módulo: `src/components/book/` (40 componentes, 13 pantallas)
-- Servicios backend-ready: `src/services/book-*.ts`, `gamification`, `missions`, `daily-challenge`
-- Datos: `src/mocks/data/` (940 ejercicios · 910 ejemplos · lore · tutoriales)
-- PWA: `public/manifest.webmanifest` + `public/sw.js`
-- Enlace en `src/components/Sidebar.tsx`
-
-## Documentos de referencia
-- `MIGRACION_LIBRO_2DO.md` — arquitectura, modelo Mongo, estado
-- `API_CONTRATOS_BACKEND.md` — contratos de los endpoints `/books/*`
-- `REVISION_MATEMATICA.md` — auditoría matemática
-- `src/components/book/README.md` — guía del módulo
+> No afecta al libro en vivo: este sigue funcionando porque se sirve desde `public/`.

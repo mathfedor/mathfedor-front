@@ -79,9 +79,9 @@ export default function LessonScreen() {
         <div className="back-row" onClick={() => goScreen(meta.backTarget)}>← Volver a temas</div>
         <ExamplesPanel
           examples={examples}
-          levelLabel={meta.levelLabel}
+          levelIndex={currentLevel.levelIndex}
           topicTitle={meta.topicTitle}
-          topicIcon={meta.headerIcon}
+          conceptText={book.units[currentLevel.unitIndex]?.std ?? ''}
           onStart={() => setPhase('exercises')}
         />
       </div>

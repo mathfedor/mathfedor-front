@@ -171,10 +171,10 @@ function feedback(
   inputVal: string,
   seqVals: Record<number, string>
 ): string {
-  if (ex.type === 'mcq') return selected === ex.ans ? '✅ ¡Correcto!' : `❌ La respuesta es ${ex.ans}`;
+  if (ex.type === 'mcq') return selected === ex.ans ? `✅ ¡Correcto! +${ex.pts} pts` : `❌ La respuesta es: ${ex.ans}`;
   if (ex.type === 'input')
-    return inputVal.trim().toLowerCase() === ex.ans.trim().toLowerCase() ? '✅ ¡Correcto!' : `❌ La respuesta es ${ex.ans}`;
+    return inputVal.trim().toLowerCase() === ex.ans.trim().toLowerCase() ? `✅ ¡Correcto! +${ex.pts} pts` : `❌ La respuesta es: ${ex.ans}`;
   const blanks = ex.items.map((it, i) => ({ it, i })).filter(({ it }) => it.t === 'b');
   const ok = blanks.every(({ it, i }) => (seqVals[i] ?? '').trim() === (it.a ?? ''));
-  return ok ? '✅ ¡Secuencia correcta!' : '❌ Revisa la secuencia';
+  return ok ? `✅ ¡Secuencia correcta! +${ex.pts} pts` : '❌ Revisa la secuencia';
 }
