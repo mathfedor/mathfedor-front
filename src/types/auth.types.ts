@@ -14,6 +14,25 @@ export interface Student {
   classroomId?: string | null;
   name?: string | null;
   email?: string | null;
+  legalRepresentativeDeclarationAccepted?: boolean | null;
+  legalRepresentativeDeclarationAcceptedAt?: string | null;
+  minorDataTreatmentAccepted?: boolean | null;
+  minorDataTreatmentAcceptedAt?: string | null;
+  minorDataTreatmentDocumentVersion?: string | null;
+  guardianName?: string | null;
+  guardianEmail?: string | null;
+  guardianDocument?: string | null;
+  guardianRelationship?: string | null;
+}
+
+export interface LegalConsentEvidence {
+  termsAndPrivacyAccepted?: boolean;
+  termsVersion?: string;
+  privacyPolicyVersion?: string;
+  commercialCommunicationsAccepted?: boolean;
+  commercialCommunicationsAcceptedAt?: string | null;
+  legalRepresentativeDeclarationAccepted?: boolean;
+  legalRepresentativeDeclarationAcceptedAt?: string | null;
 }
 
 export interface User {
@@ -36,6 +55,7 @@ export interface RegisterUserPayload {
   institutionId?: string;
   student?: Student;
   recaptchaToken?: string;
+  legalConsents?: LegalConsentEvidence;
 }
 
 export interface RegisterUserWithRolePayload {

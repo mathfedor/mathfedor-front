@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { type MouseEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -302,8 +302,7 @@ export default function BooksPage() {
         <section className="py-16 bg-orange-500 text-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              ¡Oferta exclusiva! <br />
-              Obtén Matemáticas de Fedor con un 50% de descuento por lanzamiento.
+              ¡Oferta exclusiva!
             </h2>
             <p className="text-xl mb-8 opacity-90">
               Disponible solo hasta agotar existencias.

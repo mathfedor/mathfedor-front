@@ -74,6 +74,8 @@ export default function LessonScreen() {
 
   // Fase de ejemplos: se muestra antes de la práctica (salvo reto diario).
   if (phase === 'examples') {
+    if (!book || !currentLevel) return null;
+
     return (
       <div className="screen active" id="screen-lesson">
         <div className="back-row" onClick={() => goScreen(meta.backTarget)}>← Volver a temas</div>

@@ -1258,3 +1258,104 @@ button, .fedor-book .av-btn, .fedor-book .unit-card, .fedor-book .tc {
 .fedor-book .ex2-vis{margin:.5rem 0;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px}
 .fedor-book .ex2-vis svg,.fedor-book .ex2-vis img{max-width:100%;height:auto}
 .fedor-book .exp2 .ex2-vis>div{max-width:100%}
+
+/* Accesos rapidos flotantes */
+.fedor-book .book-quick-actions{
+  position:fixed;
+  right:14px;
+  top:112px;
+  z-index:640;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:12px;
+  pointer-events:none;
+}
+.fedor-book .bqa-item{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:0;
+  min-height:58px;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  font-family:'Baloo 2','Nunito',sans-serif;
+  pointer-events:auto;
+  filter:drop-shadow(0 10px 18px rgba(20,8,48,.32));
+}
+.fedor-book .bqa-label{
+  min-width:174px;
+  max-width:min(64vw,236px);
+  min-height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  margin-right:-12px;
+  padding:8px 20px 8px 14px;
+  border:2px solid #FFD66B;
+  border-right:0;
+  border-radius:18px 0 0 18px;
+  background:#181A4A;
+  color:#FFD66B;
+  font-size:13px;
+  font-weight:900;
+  line-height:1.05;
+  text-align:left;
+  white-space:normal;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),0 8px 18px rgba(20,8,48,.24);
+}
+.fedor-book .bqa-orb{
+  position:relative;
+  width:58px;
+  height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  border:2px solid rgba(255,255,255,.18);
+  box-shadow:0 12px 24px rgba(20,8,48,.28),0 0 0 5px rgba(255,255,255,.06);
+  transition:transform .16s ease,filter .16s ease;
+}
+.fedor-book .bqa-item:hover .bqa-orb,
+.fedor-book .bqa-item:focus-visible .bqa-orb{transform:scale(1.07);filter:brightness(1.08)}
+.fedor-book .bqa-item:focus-visible{outline:0}
+.fedor-book .bqa-item:focus-visible .bqa-label{box-shadow:0 0 0 3px rgba(255,214,107,.35),0 8px 18px rgba(20,8,48,.24)}
+.fedor-book .bqa-icon{font-size:25px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.22))}
+.fedor-book .bqa-item.orange .bqa-orb{background:linear-gradient(135deg,#FF375F,#FF9F22)}
+.fedor-book .bqa-item.teal .bqa-orb{background:linear-gradient(135deg,#24C496,#16876A)}
+.fedor-book .bqa-item.purple .bqa-orb{background:linear-gradient(135deg,#7B2FBE,#3D1468)}
+.fedor-book .bqa-item.amber .bqa-orb{background:linear-gradient(135deg,#FFB52A,#FF7B22)}
+.fedor-book .bqa-item.violet .bqa-orb{background:linear-gradient(135deg,#9B5CE5,#6C28B4)}
+.fedor-book .bqa-badge{
+  position:absolute;
+  top:-7px;
+  right:-6px;
+  min-width:24px;
+  height:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 6px;
+  border-radius:999px;
+  background:#FF1D4E;
+  color:#fff;
+  border:2px solid #fff;
+  font-family:'Nunito',sans-serif;
+  font-size:13px;
+  font-weight:900;
+  line-height:1;
+  box-shadow:0 4px 10px rgba(255,29,78,.35);
+}
+@media(max-width:560px){
+  .fedor-book .book-quick-actions{right:8px;top:96px;gap:10px}
+  .fedor-book .bqa-item{min-height:52px}
+  .fedor-book .bqa-label{min-width:154px;max-width:calc(100vw - 76px);min-height:32px;padding:7px 17px 7px 12px;font-size:11px;border-radius:16px 0 0 16px}
+  .fedor-book .bqa-orb{width:52px;height:52px}
+  .fedor-book .bqa-icon{font-size:22px}
+}
+@media(max-width:380px){
+  .fedor-book .bqa-label{min-width:132px;font-size:10px}
+  .fedor-book .bqa-orb{width:48px;height:48px}
+}

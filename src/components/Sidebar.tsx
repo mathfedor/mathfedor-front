@@ -62,7 +62,8 @@ const roleMenuItems: Record<string, MenuItem[]> = {
     { icon: <FiGlobe className="w-5 h-5" />, title: 'Instituciones', href: '/dashboard/institutions' },
     { icon: <FiUsers className="w-5 h-5" />, title: 'Usuarios', href: '/dashboard/users' },
     { icon: <FiBarChart className="w-5 h-5" />, title: 'Resultados', href: '/dashboard/results' },
-    { icon: <FiTag className="w-5 h-5" />, title: 'Cupones', href: '/dashboard/coupons' }
+    { icon: <FiTag className="w-5 h-5" />, title: 'Cupones', href: '/dashboard/coupons' },
+    { icon: <FiFileText className="w-5 h-5" />, title: 'Documentos Legales', href: '/dashboard/legal' }
   ]
 };
 

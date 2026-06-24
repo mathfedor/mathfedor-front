@@ -12,6 +12,10 @@ import { DEPARTMENTS } from "@/constants/departments";
 
 const getEntityId = (value?: { id?: string; _id?: string | undefined } | null) => value?._id || value?.id || '';
 
+const LEGAL_DOCUMENT_VERSIONS = {
+  minorDataTreatment: '1.0'
+};
+
 export default function ProfilePage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -27,7 +31,15 @@ export default function ProfilePage() {
     branchId: '',
     classroomId: '',
     name: '',
-    email: ''
+    email: '',
+    guardianName: '',
+    guardianEmail: '',
+    guardianDocument: '',
+    guardianRelationship: ''
+  });
+  const [studentConsents, setStudentConsents] = useState({
+    legalRepresentativeDeclarationAccepted: false,
+    minorDataTreatmentAccepted: false
   });
   const [availableCities, setAvailableCities] = useState<string[]>([]);
   const [institutions, setInstitutions] = useState<Institution[]>([]);
@@ -85,10 +97,18 @@ export default function ProfilePage() {
       branchId: currentUser.student?.branchId || '',
       classroomId: currentUser.student?.classroomId || '',
       name: currentUser.student?.name || '',
-      email: currentUser.student?.email || ''
+      email: currentUser.student?.email || '',
+      guardianName: currentUser.student?.guardianName || currentUser.name || '',
+      guardianEmail: currentUser.student?.guardianEmail || currentUser.email || '',
+      guardianDocument: currentUser.student?.guardianDocument || '',
+      guardianRelationship: currentUser.student?.guardianRelationship || ''
     };
 
     setStudentData(nextStudentData);
+    setStudentConsents({
+      legalRepresentativeDeclarationAccepted: Boolean(currentUser.student?.legalRepresentativeDeclarationAccepted),
+      minorDataTreatmentAccepted: Boolean(currentUser.student?.minorDataTreatmentAccepted)
+    });
 
     if (nextStudentData.department && DEPARTMENTS[nextStudentData.department]) {
       setAvailableCities(DEPARTMENTS[nextStudentData.department]);
@@ -155,6 +175,14 @@ export default function ProfilePage() {
       return;
     }
 
+    if (!studentConsents.legalRepresentativeDeclarationAccepted || !studentConsents.minorDataTreatmentAccepted) {
+      setSubmitMessage({
+        type: 'error',
+        message: 'Debes declarar que eres representante legal y autorizar el tratamiento de datos del menor.'
+      });
+      return;
+    }
+
     setSubmitting(true);
     setSubmitMessage(null);
 
@@ -164,7 +192,16 @@ export default function ProfilePage() {
         department: studentData.department?.trim() || null,
         city: studentData.city?.trim() || null,
         name: studentData.name?.trim() || null,
-        email: studentData.email?.trim() || null
+        email: studentData.email?.trim() || null,
+        legalRepresentativeDeclarationAccepted: studentConsents.legalRepresentativeDeclarationAccepted,
+        legalRepresentativeDeclarationAcceptedAt: currentUser.student?.legalRepresentativeDeclarationAcceptedAt || new Date().toISOString(),
+        minorDataTreatmentAccepted: studentConsents.minorDataTreatmentAccepted,
+        minorDataTreatmentAcceptedAt: currentUser.student?.minorDataTreatmentAcceptedAt || new Date().toISOString(),
+        minorDataTreatmentDocumentVersion: LEGAL_DOCUMENT_VERSIONS.minorDataTreatment,
+        guardianName: studentData.guardianName?.trim() || null,
+        guardianEmail: studentData.guardianEmail?.trim() || null,
+        guardianDocument: studentData.guardianDocument?.trim() || null,
+        guardianRelationship: studentData.guardianRelationship || null
       };
 
       const payload: Partial<Student> = currentUser.institutionId
@@ -223,7 +260,9 @@ export default function ProfilePage() {
       user.student.branchId ||
       user.student.classroomId ||
       user.student.name ||
-      user.student.email
+      user.student.email ||
+      user.student.guardianDocument ||
+      user.student.guardianRelationship
     )
   );
 
@@ -267,7 +306,7 @@ export default function ProfilePage() {
 
       {showStudentForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-[#282828] rounded-lg p-6 w-full max-w-md shadow-xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-[#282828] rounded-lg p-6 w-full max-w-4xl shadow-xl max-h-[90vh] overflow-y-auto">
             <h2 className="text-xl font-bold mb-4 dark:text-white">
               {hasStudentData ? 'Editar datos del estudiante' : 'Agregar datos del estudiante'}
             </h2>
@@ -283,162 +322,275 @@ export default function ProfilePage() {
             )}
 
             <form onSubmit={handleSubmitStudent}>
-              <div className="mb-4">
-                <label htmlFor="country" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  País
-                </label>
-                <select
-                  id="country"
-                  value={studentData.country || 'Colombia'}
-                  onChange={(e) => setStudentData((prev) => ({ ...prev, country: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
-                  required
-                  disabled={submitting}
-                >
-                  <option value="Colombia">Colombia</option>
-                </select>
-              </div>
-
-              <div className="mb-4">
-                <label htmlFor="department" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Departamento
-                </label>
-                <select
-                  id="department"
-                  value={studentData.department || ''}
-                  onChange={(e) => handleDepartmentChange(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
-                  required
-                  disabled={submitting}
-                >
-                  <option value="">Seleccione un departamento</option>
-                  {Object.keys(DEPARTMENTS).map((department) => (
-                    <option key={department} value={department}>{department}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="mb-4">
-                <label htmlFor="city" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Ciudad
-                </label>
-                <select
-                  id="city"
-                  value={studentData.city || ''}
-                  onChange={(e) => setStudentData((prev) => ({ ...prev, city: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
-                  required
-                  disabled={submitting || !studentData.department}
-                >
-                  <option value="">Seleccione una ciudad</option>
-                  {availableCities.map((city) => (
-                    <option key={city} value={city}>{city}</option>
-                  ))}
-                </select>
-              </div>
-
-              {belongsToInstitution ? (
-                <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {/* Columna 1: Datos del Estudiante */}
+                <div>
+                  <h3 className="text-lg font-bold mb-4 border-b pb-2 text-gray-800 dark:text-gray-200">
+                    Datos del Estudiante
+                  </h3>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Institución
+                    <label htmlFor="country" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      País
+                    </label>
+                    <select
+                      id="country"
+                      value={studentData.country || 'Colombia'}
+                      onChange={(e) => setStudentData((prev) => ({ ...prev, country: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
+                      required
+                      disabled={submitting}
+                    >
+                      <option value="Colombia">Colombia</option>
+                    </select>
+                  </div>
+
+                  <div className="mb-4">
+                    <label htmlFor="department" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Departamento
+                    </label>
+                    <select
+                      id="department"
+                      value={studentData.department || ''}
+                      onChange={(e) => handleDepartmentChange(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
+                      required
+                      disabled={submitting}
+                    >
+                      <option value="">Seleccione un departamento</option>
+                      {Object.keys(DEPARTMENTS).map((department) => (
+                        <option key={department} value={department}>{department}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="mb-4">
+                    <label htmlFor="city" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Ciudad
+                    </label>
+                    <select
+                      id="city"
+                      value={studentData.city || ''}
+                      onChange={(e) => setStudentData((prev) => ({ ...prev, city: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
+                      required
+                      disabled={submitting || !studentData.department}
+                    >
+                      <option value="">Seleccione una ciudad</option>
+                      {availableCities.map((city) => (
+                        <option key={city} value={city}>{city}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {belongsToInstitution ? (
+                    <>
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Institución
+                        </label>
+                        <input
+                          value={institutionName}
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-[#1C1D1F]"
+                          disabled
+                        />
+                      </div>
+
+                      <div className="mb-4">
+                        <label htmlFor="branchId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Sede
+                        </label>
+                        <select
+                          id="branchId"
+                          value={studentData.branchId || ''}
+                          onChange={(e) => void handleBranchChange(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
+                          disabled={submitting}
+                        >
+                          <option value="">Seleccione una sede</option>
+                          {branches.map((branch) => (
+                            <option key={getEntityId(branch)} value={getEntityId(branch)}>
+                              {branch.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="mb-4">
+                        <label htmlFor="classroomId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Salón
+                        </label>
+                        <select
+                          id="classroomId"
+                          value={studentData.classroomId || ''}
+                          onChange={(e) => setStudentData((prev) => ({ ...prev, classroomId: e.target.value }))}
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
+                          disabled={submitting || !studentData.branchId}
+                        >
+                          <option value="">Seleccione un salón</option>
+                          {classrooms.map((classroom) => (
+                            <option key={getEntityId(classroom)} value={getEntityId(classroom)}>
+                              {classroom.name} - {classroom.code}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="mb-4">
+                      <label htmlFor="institution" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Institución
+                      </label>
+                      <input
+                        id="institution"
+                        value={studentData.institution || ''}
+                        onChange={(e) => setStudentData((prev) => ({ ...prev, institution: e.target.value }))}
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
+                        disabled={submitting}
+                      />
+                    </div>
+                  )}
+
+                  <div className="mb-4">
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Nombre completo del estudiante
                     </label>
                     <input
-                      value={institutionName}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-[#1C1D1F]"
+                      id="name"
+                      value={studentData.name || ''}
+                      onChange={(e) => setStudentData((prev) => ({ ...prev, name: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
+                      required
+                      disabled={submitting}
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Email del estudiante
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      value={studentData.email || ''}
+                      onChange={(e) => setStudentData((prev) => ({ ...prev, email: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
+                      required
+                      disabled={submitting}
+                    />
+                  </div>
+                </div>
+
+                {/* Columna 2: Datos del Acudiente */}
+                <div>
+                  <h3 className="text-lg font-bold mb-4 border-b pb-2 text-gray-800 dark:text-gray-200">
+                    Datos del Acudiente
+                  </h3>
+                  <div className="mb-4">
+                    <label htmlFor="guardianName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Nombre completo
+                    </label>
+                    <input
+                      id="guardianName"
+                      value={studentData.guardianName || ''}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-[#1C1D1F] text-gray-500 dark:text-gray-400"
                       disabled
                     />
                   </div>
 
                   <div className="mb-4">
-                    <label htmlFor="branchId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Sede
+                    <label htmlFor="guardianEmail" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Email
                     </label>
-                    <select
-                      id="branchId"
-                      value={studentData.branchId || ''}
-                      onChange={(e) => void handleBranchChange(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
-                      disabled={submitting}
-                    >
-                      <option value="">Seleccione una sede</option>
-                      {branches.map((branch) => (
-                        <option key={getEntityId(branch)} value={getEntityId(branch)}>
-                          {branch.name}
-                        </option>
-                      ))}
-                    </select>
+                    <input
+                      id="guardianEmail"
+                      type="email"
+                      value={studentData.guardianEmail || ''}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-[#1C1D1F] text-gray-500 dark:text-gray-400"
+                      disabled
+                    />
                   </div>
 
                   <div className="mb-4">
-                    <label htmlFor="classroomId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Salón
+                    <label htmlFor="guardianDocument" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Documento de identidad
+                    </label>
+                    <input
+                      id="guardianDocument"
+                      type="text"
+                      value={studentData.guardianDocument || ''}
+                      onChange={(e) => setStudentData((prev) => ({ ...prev, guardianDocument: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
+                      required
+                      disabled={submitting}
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label htmlFor="guardianRelationship" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Parentesco con el estudiante
                     </label>
                     <select
-                      id="classroomId"
-                      value={studentData.classroomId || ''}
-                      onChange={(e) => setStudentData((prev) => ({ ...prev, classroomId: e.target.value }))}
+                      id="guardianRelationship"
+                      value={studentData.guardianRelationship || ''}
+                      onChange={(e) => setStudentData((prev) => ({ ...prev, guardianRelationship: e.target.value }))}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
-                      disabled={submitting || !studentData.branchId}
+                      required
+                      disabled={submitting}
                     >
-                      <option value="">Seleccione un salón</option>
-                      {classrooms.map((classroom) => (
-                        <option key={getEntityId(classroom)} value={getEntityId(classroom)}>
-                          {classroom.name} - {classroom.code}
-                        </option>
-                      ))}
+                      <option value="">Seleccione parentesco</option>
+                      <option value="padre">Padre</option>
+                      <option value="madre">Madre</option>
+                      <option value="tutor legal">Tutor legal</option>
                     </select>
                   </div>
-                </>
-              ) : (
-                <div className="mb-4">
-                  <label htmlFor="institution" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Institución
-                  </label>
-                  <input
-                    id="institution"
-                    value={studentData.institution || ''}
-                    onChange={(e) => setStudentData((prev) => ({ ...prev, institution: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
-                    disabled={submitting}
-                  />
                 </div>
-              )}
-
-              <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Nombre completo
-                </label>
-                <input
-                  id="name"
-                  value={studentData.name || ''}
-                  onChange={(e) => setStudentData((prev) => ({ ...prev, name: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
-                  required
-                  disabled={submitting}
-                />
               </div>
 
-              <div className="mb-6">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Email
+              <div className="mb-6 space-y-4 rounded-md border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700 dark:border-gray-700 dark:bg-[#1C1D1F] dark:text-gray-200">
+                <label className="flex gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={studentConsents.legalRepresentativeDeclarationAccepted}
+                    onChange={(e) => setStudentConsents((prev) => ({
+                      ...prev,
+                      legalRepresentativeDeclarationAccepted: e.target.checked
+                    }))}
+                    className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                    disabled={submitting}
+                    required
+                  />
+                  <span>
+                    Soy mayor de edad y padre, madre, tutor o representante legal del menor.
+                  </span>
                 </label>
-                <input
-                  id="email"
-                  type="email"
-                  value={studentData.email || ''}
-                  onChange={(e) => setStudentData((prev) => ({ ...prev, email: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1C1D1F]"
-                  required
-                  disabled={submitting}
-                />
+
+                <label className="flex gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={studentConsents.minorDataTreatmentAccepted}
+                    onChange={(e) => setStudentConsents((prev) => ({
+                      ...prev,
+                      minorDataTreatmentAccepted: e.target.checked
+                    }))}
+                    className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                    disabled={submitting}
+                    required
+                  />
+                  <span>
+                    Autorizo el tratamiento de los datos personales del menor según la <a href="/legal/autorizacion-datos-menor" target="_blank" className="text-blue-600 hover:underline">política de tratamiento de datos de menores</a>.
+                  </span>
+                </label>
               </div>
 
               <div className="flex gap-3">
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium disabled:bg-gray-400"
-                  disabled={submitting}
+                  className={`flex-1 px-4 py-2 text-white rounded-lg transition-colors font-medium ${
+                    submitting || !studentConsents.legalRepresentativeDeclarationAccepted || !studentConsents.minorDataTreatmentAccepted
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-blue-500 hover:bg-blue-600'
+                  }`}
+                  disabled={submitting || !studentConsents.legalRepresentativeDeclarationAccepted || !studentConsents.minorDataTreatmentAccepted}
                 >
                   {submitting ? 'Guardando...' : 'Guardar'}
                 </button>

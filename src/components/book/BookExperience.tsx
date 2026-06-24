@@ -1,7 +1,9 @@
 'use client';
 
+import { useMemo } from 'react';
 import type { ComponentType } from 'react';
 import { BookProvider, useBook, type BookScreen } from './context/BookContext';
+import { evaluateMissions } from '@/services/missions.service';
 import SetupScreen from './screens/SetupScreen';
 import HomeScreen from './screens/HomeScreen';
 import GalaxyMapScreen from './screens/GalaxyMapScreen';
@@ -52,6 +54,7 @@ function BookShell() {
       <div className="app">
         <BookRouter />
       </div>
+      <FloatingQuickActions />
       <InstallPrompt />
     </div>
   );
@@ -98,5 +101,79 @@ function BottomNav() {
         </button>
       ))}
     </nav>
+  );
+}
+
+function FloatingQuickActions() {
+  const { book, progress, screen, goScreen, openGameShortcut } = useBook();
+  const hidden = screen === 'setup' || screen === 'lesson' || screen === 'galaxy';
+
+  const claimableMissions = useMemo(() => {
+    if (!book || !progress) return 0;
+    return evaluateMissions(book, progress).filter((m) => m.claimable).length;
+  }, [book, progress]);
+
+  if (hidden || !progress) return null;
+
+  const openMissions = () => {
+    goScreen('profile');
+    window.setTimeout(() => {
+      document.getElementById('book-missions')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  };
+
+  const actions = [
+    {
+      label: 'Tablas de Multiplicar',
+      icon: '🔢',
+      tone: 'orange',
+      onClick: () => openGameShortcut('tablas'),
+    },
+    {
+      label: 'Laboratorio Estadística',
+      icon: '🧪',
+      tone: 'teal',
+      onClick: () => openGameShortcut('stats'),
+    },
+    {
+      label: 'Historia de Fedor',
+      icon: '📖',
+      tone: 'purple',
+      onClick: () => goScreen('diary'),
+    },
+    {
+      label: 'Misiones Diarias',
+      icon: '🎯',
+      tone: 'amber',
+      badge: claimableMissions,
+      onClick: openMissions,
+    },
+    {
+      label: 'Juegos',
+      icon: '🎮',
+      tone: 'violet',
+      onClick: () => goScreen('games'),
+    },
+  ];
+
+  return (
+    <div className="book-quick-actions" aria-label="Accesos rápidos del libro">
+      {actions.map((action) => (
+        <button
+          key={action.label}
+          type="button"
+          className={`bqa-item ${action.tone}`}
+          onClick={action.onClick}
+          title={action.label}
+          aria-label={action.label}
+        >
+          <span className="bqa-label">{action.label}</span>
+          <span className="bqa-orb">
+            <span className="bqa-icon">{action.icon}</span>
+            {Boolean(action.badge) && <span className="bqa-badge">{action.badge}</span>}
+          </span>
+        </button>
+      ))}
+    </div>
   );
 }

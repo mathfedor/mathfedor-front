@@ -8,7 +8,8 @@ Ruta: `/dashboard/libro-2do` (bajo el shell del dashboard existente).
 ```
 src/
 ├── app/dashboard/libro-2do/
-│   ├── page.tsx                 # 'use client' → <BookExperience/> (importa book.css)
+│   ├── layout.tsx               # carga book.css solo para esta subruta
+│   ├── page.tsx                 # 'use client' → <BookExperience/>
 │   └── book.css                 # CSS del HTML original, aislado bajo .fedor-book
 ├── components/book/
 │   ├── BookExperience.tsx       # proveedor + router de 13 pantallas + nav + PWA
@@ -85,3 +86,20 @@ Mientras `NEXT_PUBLIC_BOOK_API` no sea `true`, todo funciona con mocks + `localS
 npm install && npm run build
 ```
 Si React Three Fiber avisara de tipos JSX con React 19, alinear la versión de `@types/three`.
+
+## Estado 2026-06-05
+
+Ruta Next.js activa: `/dashboard/libro-2do`, sin iframe. La pagina monta la migracion
+React/TypeScript (`BookExperience`) y el CSS queda aislado por layout de ruta.
+
+Cobertura de migracion: **99%**.
+
+- Estructura de dashboard/ruta Next.js: 100%.
+- Curriculo: 100% (8 unidades, 24 temas, 94 niveles, 940 ejercicios).
+- Ejemplos didacticos: 100% (910 tarjetas en 91 niveles).
+- Pantallas: 100% (13 pantallas).
+- Juegos, laboratorios y herramientas: 100% (7 actividades + estanteria de insignias).
+- Gamificacion: 100% (15 avatares, 11 insignias, 6 rangos, 16 items de tienda).
+- Progreso, informe, reporte docente, diario y servicios backend-ready: 100% en frontend/mock.
+- Verificacion final: TypeScript OK; `npm run build` no termina dentro de 5 minutos en este entorno,
+  aunque la ruta dev responde HTTP 200 despues de compilar.

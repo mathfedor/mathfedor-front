@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useBook } from '../context/BookContext';
 import DragDivisionGame from '../shared/DragDivisionGame';
 import NumberMiniGame from '../games/NumberMiniGame';
@@ -34,8 +34,15 @@ const CARDS: GameCard[] = [
 
 /** Hub de mini-juegos y laboratorios. */
 export default function GamesScreen() {
-  const { progress, goScreen, grantReward } = useBook();
+  const { progress, goScreen, grantReward, gameShortcut, clearGameShortcut } = useBook();
   const [active, setActive] = useState<GameId>(null);
+
+  useEffect(() => {
+    if (!gameShortcut) return;
+    setActive(gameShortcut);
+    clearGameShortcut();
+  }, [gameShortcut, clearGameShortcut]);
+
   if (!progress) return null;
 
   const reward = (coins: number) => grantReward(0, coins);

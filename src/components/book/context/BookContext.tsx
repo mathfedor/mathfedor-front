@@ -51,6 +51,8 @@ export type BookScreen =
   | 'examen'
   | 'espacial';
 
+export type BookGameShortcut = 'tablas' | 'stats';
+
 interface BookContextValue {
   loading: boolean;
   book: Book | null;
@@ -59,6 +61,9 @@ interface BookContextValue {
 
   screen: BookScreen;
   goScreen: (s: BookScreen) => void;
+  gameShortcut: BookGameShortcut | null;
+  openGameShortcut: (shortcut: BookGameShortcut) => void;
+  clearGameShortcut: () => void;
 
   currentUnit: number;
   currentTopic: number;
@@ -119,6 +124,7 @@ export function BookProvider({ children }: { children: ReactNode }) {
   const [progress, setProgress] = useState<BookProgress | null>(null);
 
   const [screen, setScreen] = useState<BookScreen>('setup');
+  const [gameShortcut, setGameShortcut] = useState<BookGameShortcut | null>(null);
   const [currentUnit, setCurrentUnit] = useState(0);
   const [currentTopic, setCurrentTopic] = useState(0);
   const [currentLevel, setCurrentLevel] = useState<LevelRef | null>(null);
@@ -211,6 +217,18 @@ export function BookProvider({ children }: { children: ReactNode }) {
       if (root) root.classList.toggle('in-lesson', s === 'lesson');
     }
   }, []);
+
+  const clearGameShortcut = useCallback(() => {
+    setGameShortcut(null);
+  }, []);
+
+  const openGameShortcut = useCallback(
+    (shortcut: BookGameShortcut) => {
+      setGameShortcut(shortcut);
+      goScreen('games');
+    },
+    [goScreen]
+  );
 
   const openUnit = useCallback(
     (unitIndex: number) => {
@@ -423,6 +441,9 @@ export function BookProvider({ children }: { children: ReactNode }) {
       progress,
       screen,
       goScreen,
+      gameShortcut,
+      openGameShortcut,
+      clearGameShortcut,
       currentUnit,
       currentTopic,
       currentLevel,
@@ -456,6 +477,9 @@ export function BookProvider({ children }: { children: ReactNode }) {
       progress,
       screen,
       goScreen,
+      gameShortcut,
+      openGameShortcut,
+      clearGameShortcut,
       currentUnit,
       currentTopic,
       currentLevel,

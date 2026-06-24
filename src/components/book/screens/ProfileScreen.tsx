@@ -61,7 +61,7 @@ export default function ProfileScreen() {
         })}
       </div>
 
-      <div className="sec-title" style={{ marginTop: '1.25rem' }}>🎯 Misiones</div>
+      <div className="sec-title" id="book-missions" style={{ marginTop: '1.25rem' }}>🎯 Misiones</div>
       <div style={{ display: 'grid', gap: 8 }}>
         {missions.map(({ mission, current, done, claimed, claimable }) => (
           <div key={mission.id} className="mission-row">

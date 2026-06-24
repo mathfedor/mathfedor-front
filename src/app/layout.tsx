@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import RecaptchaProvider from "@/components/RecaptchaProvider";
+import CookieConsentBanner from "@/components/CookieConsentBanner";
 
 export const metadata: Metadata = {
   title: "Matemáticas de Fedor",
@@ -21,6 +22,7 @@ export default function RootLayout({
           <RecaptchaProvider>
             <Navbar />
             <main>{children}</main>
+            <CookieConsentBanner />
           </RecaptchaProvider>
         </ThemeProvider>
       </body>
