@@ -9,7 +9,7 @@ const AVATARS = ['🧑‍🚀', '👩‍🚀', '🦁', '🐯', '🦊', '🐸', '
 
 /** Pantalla de bienvenida y captura de datos del estudiante. */
 export default function SetupScreen() {
-  const { startStudent } = useBook();
+  const { book, startStudent, goScreen } = useBook();
   const [avatar, setAvatar] = useState('🧑‍🚀');
   const [form, setForm] = useState<Omit<BookStudent, 'avatar'>>({
     name: '',
@@ -56,7 +56,11 @@ export default function SetupScreen() {
             ¡Bienvenido a<br />
             <em>Matemáticas de Fedor!</em>
           </div>
-          <div className="setup-sub">El mejor libro interactivo de matemáticas para 2° grado</div>
+          <div className="setup-sub">
+            {book?.slug === 'libro-1ro'
+              ? 'El mejor libro interactivo de matemáticas para 1° grado'
+              : 'El mejor libro interactivo de matemáticas para 2° grado'}
+          </div>
           <div className="setup-badges">
             <span className="s-badge sb-purple">🎮 Gamificado</span>
             <span className="s-badge sb-teal">✅ MEN Colombia</span>
@@ -80,8 +84,16 @@ export default function SetupScreen() {
           >
             <span style={{ fontSize: 22 }}>💡</span>
             <div style={{ fontSize: 12, fontWeight: 700, color: '#7A3200' }}>
-              Este libro es el <strong>complemento digital</strong> del método Fedor para 2° de primaria.
-              Aprenderás Adición, Sustracción, Multiplicación y División.
+              {book?.slug === 'libro-1ro' ? (
+                <>
+                  Este libro es el <strong>complemento digital</strong> del método Fedor. Úsalo junto al libro en Excel para una experiencia completa.
+                </>
+              ) : (
+                <>
+                  Este libro es el <strong>complemento digital</strong> del método Fedor para 2° de primaria.
+                  Aprenderás Adición, Sustracción, Multiplicación y División.
+                </>
+              )}
             </div>
           </div>
 
@@ -123,6 +135,39 @@ export default function SetupScreen() {
           <div className="launch-note">Tus avances se guardan en este dispositivo</div>
         </div>
       </div>
+
+      {book?.slug === 'libro-1ro' && (
+        <div style={{ marginTop: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '0 1rem 2rem' }}>
+          <div
+            className="feat-btn"
+            onClick={() => goScreen('estandares')}
+            style={{ background: 'linear-gradient(135deg,#fff,#F0FDF9)', margin: 0 }}
+          >
+            <div className="feat-icon" style={{ background: '#fff', fontSize: '26px', border: '1.5px solid #C5BFEE', boxShadow: 'none' }}>
+              🇨🇴
+            </div>
+            <div className="feat-info">
+              <div className="feat-name">Estándares MEN</div>
+              <div className="feat-sub" style={{ fontSize: '11px', color: 'rgba(20,60,100,.65)' }}>Programa de 1° Colombia</div>
+            </div>
+          </div>
+
+          <div
+            className="feat-btn"
+            onClick={() => goScreen('problemas')}
+            style={{ background: 'linear-gradient(135deg,#fff,#E8FAF1)', margin: 0 }}
+          >
+            <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#0E5240,#34D399)', color: '#fff' }}>
+              🛒
+            </div>
+            <div className="feat-info" style={{ textAlign: 'left' }}>
+              <div className="feat-name">Problemas Cotidianos</div>
+              <div className="feat-meta">Conteo de monedas + compras + 4 operaciones</div>
+            </div>
+            <div className="feat-arrow">→</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

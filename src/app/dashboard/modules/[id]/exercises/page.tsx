@@ -16,6 +16,8 @@ import { Module, moduleService } from '@/services/module.service';
 import { useModuleAccess } from '@/contexts/ModuleAccessContext';
 import { LearningResult, learningResultsService } from '@/services/learning-results.service';
 import { LearningComment, LearningReply, learningCommentsService } from '@/services/learning-comments.service';
+import BookExperience from '@/components/book/BookExperience';
+import '@/app/dashboard/libro-2do/book.css';
 
 type FireworkStyle = CSSProperties & Record<`--${string}`, string>;
 
@@ -4397,6 +4399,33 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     setShowChat(false);
     setIsMaterialOpen(false);
   };
+
+  const isBookModule = useMemo(() => {
+    if (!currentModule) return false;
+    return currentModule.group === 'Grado1' || currentModule.group === 'Grado2';
+  }, [currentModule]);
+
+  const bookSlug = useMemo(() => {
+    if (!currentModule) return '';
+    return currentModule.group === 'Grado1' ? 'libro-1ro' : 'matematicas-fedor-2';
+  }, [currentModule]);
+
+  if (isBookModule) {
+    return (
+      <div className="flex min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">
+        <Sidebar />
+        <AlertDialog
+          isOpen={isAlertOpen}
+          onClose={() => setIsAlertOpen(false)}
+          title={alertMessage.title}
+          message={alertMessage.message}
+        />
+        <div className="flex-1 overflow-y-auto">
+          <BookExperience slug={bookSlug} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">

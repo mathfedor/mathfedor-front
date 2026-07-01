@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart, FiTag, FiHelpCircle, FiStar } from 'react-icons/fi';
+import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart, FiTag, FiHelpCircle } from 'react-icons/fi';
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import { Tooltip } from '@/components/ui/tooltip';
 import { authService } from '@/services/auth.service';
@@ -27,8 +27,7 @@ interface MenuItem {
 
 // Definimos las opciones de menú base (visibles para todos)
 const baseMenuItems: MenuItem[] = [
-  { icon: <FiHome className="w-5 h-5" />, title: 'Inicio', href: '/dashboard' },
-  { icon: <FiStar className="w-5 h-5" />, title: 'Matemáticas de Fedor 2°', href: '/dashboard/libro-2do' }
+  { icon: <FiHome className="w-5 h-5" />, title: 'Inicio', href: '/dashboard' }
 ];
 
 // Opciones específicas para cada rol

@@ -49,7 +49,9 @@ export type BookScreen =
   | 'games'
   | 'diary'
   | 'examen'
-  | 'espacial';
+  | 'espacial'
+  | 'estandares'
+  | 'problemas';
 
 export type BookGameShortcut = 'tablas' | 'stats';
 
@@ -117,7 +119,7 @@ interface ResultReward {
 
 const BookContext = createContext<BookContextValue | null>(null);
 
-export function BookProvider({ children }: { children: ReactNode }) {
+export function BookProvider({ children, slug }: { children: ReactNode; slug: string }) {
   const [loading, setLoading] = useState(true);
   const [book, setBook] = useState<Book | null>(null);
   const [catalog, setCatalog] = useState<GamificationCatalog | null>(null);
@@ -185,9 +187,9 @@ export function BookProvider({ children }: { children: ReactNode }) {
     let active = true;
     (async () => {
       const [b, c, p] = await Promise.all([
-        bookService.getBook(),
-        bookService.getGamificationCatalog(),
-        bookProgressService.getProgress(),
+        bookService.getBook(slug),
+        bookService.getGamificationCatalog(slug),
+        bookProgressService.getProgress(slug),
       ]);
       if (!active) return;
       setBook(b);
@@ -208,7 +210,7 @@ export function BookProvider({ children }: { children: ReactNode }) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [slug]);
 
   const goScreen = useCallback((s: BookScreen) => {
     setScreen(s);
@@ -263,11 +265,11 @@ export function BookProvider({ children }: { children: ReactNode }) {
 
   const startStudent = useCallback(
     (student: BookStudent) => {
-      const fresh = bookProgressService.createProgress(student);
+      const fresh = bookProgressService.createProgress(student, slug);
       setProgress(fresh);
       goScreen('home');
     },
-    [goScreen]
+    [goScreen, slug]
   );
 
   const finishLesson = useCallback(
@@ -428,10 +430,10 @@ export function BookProvider({ children }: { children: ReactNode }) {
   );
 
   const resetAll = useCallback(() => {
-    bookProgressService.reset();
+    bookProgressService.reset(slug);
     setProgress(null);
     goScreen('setup');
-  }, [goScreen]);
+  }, [goScreen, slug]);
 
   const value = useMemo<BookContextValue>(
     () => ({

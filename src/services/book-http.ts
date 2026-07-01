@@ -6,7 +6,7 @@
 
 import { authService } from './auth.service';
 
-export const BOOK_API_URL = process.env.NEXT_PUBLIC_API_URL;
+export const BOOK_API_URL = `${process.env.NEXT_PUBLIC_API_URL}/learning`;
 export const BOOK_SLUG = 'matematicas-fedor-2';
 
 /** ¿Operar contra el backend real? Requiere URL y flag explícito. */

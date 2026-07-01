@@ -18,7 +18,8 @@ export default function UnitTutorialOverlay({ tut, onClose }: { tut: UnitTutoria
             </div>
           ))}
         </div>
-        <button className="btn-launch" onClick={onClose}>🚀 ¡Vamos!</button>
+        <button className="btn-launch" onClick={onClose}>¡Empezar Aventura! 🚀</button>
+        <button className="utut-skip" onClick={onClose}>Omitir tutorial</button>
       </div>
     </div>
   );

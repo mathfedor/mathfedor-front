@@ -3,5 +3,5 @@
 import BookExperience from '@/components/book/BookExperience';
 
 export default function Libro2doPage() {
-  return <BookExperience />;
+  return <BookExperience slug="matematicas-fedor-2" />;
 }

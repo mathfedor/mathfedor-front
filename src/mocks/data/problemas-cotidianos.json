@@ -1,0 +1,1844 @@
+[
+  {
+    "level": 1,
+    "header": "Nivel 1 — Conteo y Compras ($100 a $1.000)",
+    "guide": {
+      "title": "🛒 ★ Ejemplo Guía",
+      "sections": [
+        {
+          "label": "📝 Enunciado",
+          "content": "Quieres comprar una manzana que cuesta $450. Si pagas con un billete de $1000, ¿cuánto dinero te deben devolver?"
+        },
+        {
+          "label": "➗ Operación",
+          "content": "Sustracción (1000 − 450)"
+        },
+        {
+          "label": "🎨 Representación gráfica",
+          "content": "Escena Pixar 3D: mostrador brillante. Producto: 1 manzana roja con etiqueta \"$450\". Dinero: 1 billete azul-dorado \"$1000\" entregándose en la caja. Solución visual: 1 moneda dorada \"$500\" + 1 moneda plateada \"$50\" como vuelto.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$50</text></svg></div>"
+        },
+        {
+          "label": "✅ Respuesta",
+          "content": "<strong>$550</strong><div class=\"pcg-calc\">(1000 − 450 = 550)</div>"
+        }
+      ]
+    },
+    "cards": [
+      {
+        "title": "🍎 Ejercicio 1",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras una manzana $300 y un pan $200. ¿Cuánto pagas en total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (300+200)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 manzana roja \"$300\" + 1 pan dorado \"$200\" sobre mostrador Pixar 3D."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$500</strong><div class=\"pcg-calc\">(300+200=500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🥛 Ejercicio 2",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes 1 billete de $500 y 2 monedas de $100. ¿Cuánto dinero tienes?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (500+100+100)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 billete azul-dorado \"$500\" + 2 monedas doradas brillantes \"$100\" cada una.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$500</text></svg><svg viewBox=\"0 0 68 26\" width=\"68\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text><circle cx=\"38\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"38\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$700</strong><div class=\"pcg-calc\">(500+200=700)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍫 Ejercicio 3",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras un chocolate que cuesta $400 con un billete de $1.000. ¿Cuánto te devuelven?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Sustracción (1000−400)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 chocolate brillante \"$400\" + 1 billete plateado \"$1.000\". Vuelto: 1 moneda \"$500\" + 1 moneda \"$100\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$600</strong><div class=\"pcg-calc\">(1000−400=600)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍬 Ejercicio 4",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes $800 y gastas $250 en dulces. ¿Cuánto te queda?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Sustracción (800−250)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Dulces vibrantes con etiqueta \"$250\" + 1 billete plateado \"$500\" + 3 monedas doradas \"$100\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$500</text></svg><svg viewBox=\"0 0 92 26\" width=\"92\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text><circle cx=\"38\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"38\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text><circle cx=\"62\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"62\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$550</strong><div class=\"pcg-calc\">(800−250=550)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍭 Ejercicio 5",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras 4 paletas a $150 cada una. ¿Cuánto pagas?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (4×150)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "4 paletas Pixar coloridas con etiqueta \"$150 c/u\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$600</strong><div class=\"pcg-calc\">(4×150=600)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🪙 Ejercicio 6",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes 5 monedas de $200. ¿Cuánto dinero tienes?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (5×200)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "5 monedas doradas brillantes en fila perfecta."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.000</strong><div class=\"pcg-calc\">(5×200=1000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍪 Ejercicio 7",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Repartes $600 entre 3 amigos en partes iguales. ¿Cuánto recibe cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (600÷3)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "3 amigos sonrientes Pixar con 1 billete plateado \"$200\" cada uno.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$200</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$200</strong><div class=\"pcg-calc\">(600÷3=200)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🥖 Ejercicio 8",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras 2 panes iguales por $400 en total. ¿Cuánto cuesta cada pan?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (400÷2)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "2 panes idénticos dorados + 2 monedas \"$200\" sobre el mostrador.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 68 26\" width=\"68\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text><circle cx=\"38\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"38\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$200</strong><div class=\"pcg-calc\">(400÷2=200)</div>"
+          }
+        ]
+      },
+      {
+        "title": "💰 Ejercicio 9",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Cuenta tu dinero: 3 billetes de $200 y 4 monedas de $100."
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (3×200 + 4×100)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "3 billetes azul-dorados \"$200\" + 4 monedas doradas \"$100\" en composición Pixar.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 100 26\" width=\"100\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$200</text><rect x=\"35\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"48\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$200</text><rect x=\"65\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"78\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$200</text></svg><svg viewBox=\"0 0 116 26\" width=\"116\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text><circle cx=\"38\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"38\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text><circle cx=\"62\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"62\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text><circle cx=\"86\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"86\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.000</strong><div class=\"pcg-calc\">(600+400=1000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🛒 Ejercicio 10",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras leche $300 y huevos $400. Pagas con $1.000. ¿Cuánto te dan de vuelto?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma + Sustracción (300+400; 1000−700)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 cartón de leche \"$300\" + 1 caja huevos \"$400\" + 1 billete \"$1.000\". Vuelto: 1 moneda \"$200\" + 1 moneda \"$100\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$300</strong><div class=\"pcg-calc\">(1000−700=300)</div></div>"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "level": 2,
+    "header": "Nivel 2 — Conteo y Compras ($100 a $2.000)",
+    "guide": {
+      "title": "📚 ★ Ejemplo Guía",
+      "sections": [
+        {
+          "label": "📝 Enunciado",
+          "content": "Compras un cuaderno que cuesta $1.200 y pagas con 2 billetes de $1000. ¿Cuánto te dan de vuelto?"
+        },
+        {
+          "label": "➗ Operación",
+          "content": "Suma + Sustracción (1000+1000 = 2000; 2000 − 1200)"
+        },
+        {
+          "label": "🎨 Representación gráfica",
+          "content": "Escena Pixar 3D: librería pulida y amable. Producto: 1 cuaderno con etiqueta \"$1.200\". Dinero: 2 billetes azul-dorados \"$1000\" cada uno. Vuelto: 1 billete plateado \"$500\" + 1 moneda dorada \"$200\" + 1 moneda \"$100\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 70 26\" width=\"70\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text><rect x=\"35\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"48\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text></svg></div>"
+        },
+        {
+          "label": "✅ Respuesta",
+          "content": "<strong>$800</strong><div class=\"pcg-calc\">(2000 − 1200 = 800)</div>"
+        }
+      ]
+    },
+    "cards": [
+      {
+        "title": "📓 Ejercicio 1",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes 2 billetes de $1.000. ¿Cuánto dinero tienes?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (1000+1000)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "2 billetes azul-dorados \"$1.000\" alineados con resplandor Pixar.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 70 26\" width=\"70\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text><rect x=\"35\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"48\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$2.000</strong><div class=\"pcg-calc\">(1000+1000=2000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🧁 Ejercicio 2",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Pagas $1.500 con un billete de $2.000. ¿Cuánto te devuelven?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Sustracción (2000−1500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 cupcake brillante \"$1.500\" + 1 billete plateado \"$2.000\". Vuelto: 1 billete \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$500</strong><div class=\"pcg-calc\">(2000−1500=500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🎈 Ejercicio 3",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras 4 globos a $400 cada uno. ¿Cuánto pagas en total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (4×400)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "4 globos vibrantes Pixar elevándose con etiqueta \"$400 c/u\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.600</strong><div class=\"pcg-calc\">(4×400=1600)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍦 Ejercicio 4",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Repartes $1.800 entre 6 niños en partes iguales. ¿Cuánto recibe cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (1800÷6)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "6 niños sonrientes Pixar 3D, cada uno con 1 billete \"$300\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$300</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$300</strong><div class=\"pcg-calc\">(1800÷6=300)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🛍️ Ejercicio 5",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras dulce $700 y juguete $800. ¿Total a pagar?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (700+800)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 bolsa dulces \"$700\" + 1 juguete brillante \"$800\" sobre mostrador."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.500</strong><div class=\"pcg-calc\">(700+800=1500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🪙 Ejercicio 6",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes 3 billetes de $500 y 2 monedas de $200. ¿Cuánto tienes en total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (3×500 + 2×200)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "3 billetes \"$500\" + 2 monedas doradas \"$200\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 100 26\" width=\"100\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$500</text><rect x=\"35\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"48\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$500</text><rect x=\"65\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"78\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$500</text></svg><svg viewBox=\"0 0 68 26\" width=\"68\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text><circle cx=\"38\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"38\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.900</strong><div class=\"pcg-calc\">(1500+400=1900)</div>"
+          }
+        ]
+      },
+      {
+        "title": "📦 Ejercicio 7",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras una caja que cuesta $1.200, pagas con $2.000. ¿Vuelto?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Sustracción (2000−1200)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 caja Pixar dorada \"$1.200\" + 1 billete \"$2.000\". Vuelto: 1 billete \"$500\" + 1 moneda \"$200\" + 1 moneda \"$100\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$800</strong><div class=\"pcg-calc\">(2000−1200=800)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🧸 Ejercicio 8",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes 4 monedas de $500. ¿Cuánto dinero tienes?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (4×500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "4 monedas doradas grandes brillantes en círculo."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$2.000</strong><div class=\"pcg-calc\">(4×500=2000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍕 Ejercicio 9",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Reparten 8 porciones de pizza por $1.600. ¿Cuánto cuesta cada porción?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (1600÷8)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 pizza Pixar 3D dividida en 8 porciones, cada una con etiqueta \"$200\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$200</strong><div class=\"pcg-calc\">(1600÷8=200)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🎟️ Ejercicio 10",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras 5 boletos a $300 cada uno. Pagas con $2.000. ¿Cuánto te devuelven?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación + Sustracción (5×300=1500; 2000−1500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "5 boletos brillantes \"$300 c/u\" + 1 billete \"$2.000\". Vuelto: 1 billete \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$500</strong><div class=\"pcg-calc\">(2000−1500=500)</div></div>"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "level": 3,
+    "header": "Nivel 3 — Conteo y Compras ($100 a $5.000)",
+    "guide": {
+      "title": "🎒 ★ Ejemplo Guía",
+      "sections": [
+        {
+          "label": "📝 Enunciado",
+          "content": "Tienes 3 billetes de $1.000 y compras un libro que cuesta $2.500. ¿Cuánto dinero te queda?"
+        },
+        {
+          "label": "➗ Operación",
+          "content": "Suma + Sustracción (3×1000 = 3000; 3000 − 2500)"
+        },
+        {
+          "label": "🎨 Representación gráfica",
+          "content": "Escena Pixar 3D: tienda escolar mágica. Producto: 1 libro elegante \"$2.500\". Dinero: 3 billetes azul-dorados \"$1.000\" en fila brillante. Resto visual: 1 moneda dorada brillante \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 100 26\" width=\"100\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text><rect x=\"35\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"48\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text><rect x=\"65\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"78\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg></div>"
+        },
+        {
+          "label": "✅ Respuesta",
+          "content": "<strong>$500</strong><div class=\"pcg-calc\">(3000 − 2500 = 500)</div>"
+        }
+      ]
+    },
+    "cards": [
+      {
+        "title": "📕 Ejercicio 1",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes 5 billetes de $1.000. ¿Cuánto dinero tienes?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (5×1000)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "5 billetes azul-dorados \"$1.000\" en fila perfecta.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 160 26\" width=\"160\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text><rect x=\"35\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"48\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text><rect x=\"65\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"78\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text><rect x=\"95\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"108\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text><rect x=\"125\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"138\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$5.000</strong><div class=\"pcg-calc\">(5×1000=5000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🥪 Ejercicio 2",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras un sandwich de $2.500 con un billete de $5.000. ¿Cuánto te devuelven?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Sustracción (5000−2500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 sandwich Pixar \"$2.500\" + 1 billete plateado \"$5.000\". Vuelto: 1 billete azul-dorado \"$2.000\" + 1 moneda dorada \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$5,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$2.500</strong><div class=\"pcg-calc\">(5000−2500=2500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍔 Ejercicio 3",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras 3 hamburguesas a $1.200 cada una. ¿Cuánto pagas?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (3×1200)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "3 hamburguesas brillantes Pixar \"$1.200 c/u\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$3.600</strong><div class=\"pcg-calc\">(3×1200=3600)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍎 Ejercicio 4",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Repartes $4.500 entre 5 amigos en partes iguales. ¿Cuánto recibe cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (4500÷5)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "5 amigos felices Pixar con 1 billete \"$900\" cada uno.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$900</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$900</strong><div class=\"pcg-calc\">(4500÷5=900)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🎁 Ejercicio 5",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras 2 regalos: uno de $1.500 y otro de $2.300. ¿Total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (1500+2300)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "2 cajas regalo Pixar 3D: una dorada \"$1.500\" y otra plateada \"$2.300\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$3.800</strong><div class=\"pcg-calc\">(1500+2300=3800)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🖼️ Ejercicio 6",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras un cuadro de $3.500, pagas con $5.000. ¿Vuelto?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Sustracción (5000−3500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 cuadro elegante \"$3.500\" + 1 billete \"$5.000\". Vuelto: 1 billete azul-dorado \"$1.000\" + 1 billete \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$5,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.500</strong><div class=\"pcg-calc\">(5000−3500=1500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🥤 Ejercicio 7",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras 4 bebidas a $750 cada una. ¿Total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (4×750)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "4 vasos vibrantes Pixar \"$750 c/u\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$3.000</strong><div class=\"pcg-calc\">(4×750=3000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🎨 Ejercicio 8",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Reparten $3.600 entre 6 estudiantes para materiales. ¿Cuánto cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (3600÷6)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "6 estudiantes con paletas de arte Pixar y \"$600\" cada uno."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$600</strong><div class=\"pcg-calc\">(3600÷6=600)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🧴 Ejercicio 9",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras shampoo $1.800 y jabón $700. Pagas con $3.000. ¿Vuelto?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma + Sustracción (1800+700=2500; 3000−2500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 shampoo \"$1.800\" + 1 jabón \"$700\" + 1 billete \"$3.000\". Vuelto: 1 moneda \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$3,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$500</strong><div class=\"pcg-calc\">(3000−2500=500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🎯 Ejercicio 10",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes 3 billetes de $1.500. ¿Cuánto en total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (3×1500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "3 billetes plateados Pixar \"$1.500\" cada uno.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 100 26\" width=\"100\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,500</text><rect x=\"35\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"48\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,500</text><rect x=\"65\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"78\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$4.500</strong><div class=\"pcg-calc\">(3×1500=4500)</div></div>"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "level": 4,
+    "header": "Nivel 4 — Conteo y Compras ($100 a $10.000)",
+    "guide": {
+      "title": "🎮 ★ Ejemplo Guía",
+      "sections": [
+        {
+          "label": "📝 Enunciado",
+          "content": "Quieres comprar un juguete que cuesta $7.500. Si llevas 1 billete de $10.000, ¿cuánto te devuelven de vuelto?"
+        },
+        {
+          "label": "➗ Operación",
+          "content": "Sustracción (10000 − 7500)"
+        },
+        {
+          "label": "🎨 Representación gráfica",
+          "content": "Escena Pixar 3D: juguetería deslumbrante con iluminación cálida. Producto: 1 robot juguete brillante con etiqueta \"$7.500\". Dinero: 1 billete plateado \"$10.000\" en mano del cliente. Vuelto: 1 billete azul-dorado \"$2.000\" + 1 moneda dorada \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$10,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg></div>"
+        },
+        {
+          "label": "✅ Respuesta",
+          "content": "<strong>$2.500</strong><div class=\"pcg-calc\">(10000 − 7500 = 2500)</div>"
+        }
+      ]
+    },
+    "cards": [
+      {
+        "title": "👟 Ejercicio 1",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras unos tenis de $7.500 con un billete de $10.000. ¿Cuánto te devuelven?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Sustracción (10000−7500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 par de tenis Pixar \"$7.500\" + 1 billete plateado \"$10.000\". Vuelto: 1 billete \"$2.000\" + 1 moneda \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$10,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$2.500</strong><div class=\"pcg-calc\">(10000−7500=2500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🎒 Ejercicio 2",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras mochila $4.500 y cuadernos $3.500. ¿Total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (4500+3500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 mochila brillante \"$4.500\" + 1 paquete cuadernos \"$3.500\" Pixar 3D."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$8.000</strong><div class=\"pcg-calc\">(4500+3500=8000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "💄 Ejercicio 3",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras 4 productos iguales a $1.800 cada uno. ¿Total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (4×1800)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "4 productos cosméticos Pixar \"$1.800 c/u\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$7.200</strong><div class=\"pcg-calc\">(4×1800=7200)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍕 Ejercicio 4",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Repartes $9.000 entre 3 hermanos por igual. ¿Cuánto cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (9000÷3)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "3 hermanos felices con 1 billete \"$3.000\" cada uno.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$3,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$3.000</strong><div class=\"pcg-calc\">(9000÷3=3000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🛒 Ejercicio 5",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes 5 billetes de $2.000. ¿Cuánto tienes?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (5×2000)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "5 billetes azul-dorados \"$2.000\" alineados con resplandor Pixar.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 160 26\" width=\"160\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text><rect x=\"35\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"48\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text><rect x=\"65\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"78\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text><rect x=\"95\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"108\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text><rect x=\"125\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"138\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$10.000</strong><div class=\"pcg-calc\">(5×2000=10000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🎂 Ejercicio 6",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras un pastel de $6.800 con $10.000. ¿Vuelto?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Sustracción (10000−6800)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 pastel decorado Pixar \"$6.800\" + 1 billete \"$10.000\". Vuelto: 1 billete \"$2.000\" + 1 billete \"$1.000\" + 1 moneda \"$200\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$10,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$3.200</strong><div class=\"pcg-calc\">(10000−6800=3200)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🎮 Ejercicio 7",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras 5 juegos a $1.800 cada uno. ¿Total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (5×1800)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "5 cajas de juegos Pixar brillantes \"$1.800 c/u\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$9.000</strong><div class=\"pcg-calc\">(5×1800=9000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "📺 Ejercicio 8",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras un electrónico de $8.500 con 1 billete de $10.000. ¿Vuelto?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Sustracción (10000−8500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 TV/aparato Pixar \"$8.500\" + 1 billete \"$10.000\". Vuelto: 1 billete \"$1.000\" + 1 moneda \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$10,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.500</strong><div class=\"pcg-calc\">(10000−8500=1500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🪑 Ejercicio 9",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Reparten $8.000 entre 4 amigos para una compra. ¿Cuánto cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (8000÷4)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "4 amigos felices Pixar con 1 billete \"$2.000\" cada uno.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$2.000</strong><div class=\"pcg-calc\">(8000÷4=2000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🛍️ Ejercicio 10",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras bolso $5.500 y pañuelo $1.500. Pagas con $8.000. ¿Vuelto?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma + Sustracción (5500+1500=7000; 8000−7000)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 bolso \"$5.500\" + 1 pañuelo \"$1.500\" + 1 billete \"$8.000\". Vuelto: 1 billete \"$1.000\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$8,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.000</strong><div class=\"pcg-calc\">(8000−7000=1000)</div></div>"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "level": 5,
+    "header": "Nivel 5 — Evaluación Final ($100 a $10.000)",
+    "guide": {
+      "title": "💎 ★ Ejemplo Guía",
+      "sections": [
+        {
+          "label": "📝 Enunciado",
+          "content": "Tienes 4 billetes de $2.000 y compras un regalo que cuesta $6.500. ¿Cuánto dinero te queda al final?"
+        },
+        {
+          "label": "➗ Operación",
+          "content": "Multiplicación + Sustracción (4×2000 = 8000; 8000 − 6500)"
+        },
+        {
+          "label": "🎨 Representación gráfica",
+          "content": "Escena Pixar 3D: tienda de regalos premium con brillo Pixar. Producto: 1 caja de regalo dorada con lazo \"$6.500\". Dinero: 4 billetes azul-dorados \"$2.000\" alineados perfectamente. Vuelto: 1 billete plateado \"$1.000\" + 1 moneda dorada \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 130 26\" width=\"130\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text><rect x=\"35\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"48\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text><rect x=\"65\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"78\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text><rect x=\"95\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"108\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg></div>"
+        },
+        {
+          "label": "✅ Respuesta",
+          "content": "<strong>$1.500</strong><div class=\"pcg-calc\">(8000 − 6500 = 1500)</div>"
+        }
+      ]
+    },
+    "cards": [
+      {
+        "title": "🍞 Ejercicio 1",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras pan $400 y galletas $600. ¿Total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (400+600)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 pan dorado \"$400\" + 1 paquete galletas \"$600\" Pixar."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.000</strong><div class=\"pcg-calc\">(400+600=1000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🧀 Ejercicio 2",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes 2 billetes de $2.000 y 1 billete de $1.000. ¿Cuánto?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (2000+2000+1000)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "2 billetes \"$2.000\" + 1 billete \"$1.000\" en composición Pixar.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 70 26\" width=\"70\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text><rect x=\"35\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"48\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$5.000</strong><div class=\"pcg-calc\">(5000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍝 Ejercicio 3",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras pasta $3.500 + salsa $1.500. ¿Total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (3500+1500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 paquete pasta Pixar \"$3.500\" + 1 frasco salsa \"$1.500\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$5.000</strong><div class=\"pcg-calc\">(5000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍷 Ejercicio 4",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Cuentas: 3 billetes $2.000 + 2 monedas $500."
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (3×2000 + 2×500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "3 billetes Pixar \"$2.000\" + 2 monedas doradas \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 100 26\" width=\"100\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text><rect x=\"35\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"48\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text><rect x=\"65\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"78\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text></svg><svg viewBox=\"0 0 68 26\" width=\"68\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text><circle cx=\"38\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"38\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$7.000</strong><div class=\"pcg-calc\">(6000+1000=7000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🥖 Ejercicio 5",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes $6.500 y recibes $2.500 más. ¿Cuánto tienes?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (6500+2500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Hucha Pixar con billetes + nueva mano con \"$2.500\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$9.000</strong><div class=\"pcg-calc\">(6500+2500=9000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "☕ Ejercicio 6",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Pagas $1.800 de café con $2.000. ¿Vuelto?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Sustracción (2000−1800)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 taza café Pixar \"$1.800\" + 1 billete \"$2.000\". Vuelto: 1 moneda \"$200\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$2,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$200</strong><div class=\"pcg-calc\">(2000−1800=200)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🌹 Ejercicio 7",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras flores $3.500 con $5.000. ¿Vuelto?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Sustracción (5000−3500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 ramo flores Pixar \"$3.500\" + 1 billete \"$5.000\". Vuelto: 1 billete \"$1.000\" + 1 billete \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$5,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.500</strong><div class=\"pcg-calc\">(5000−3500=1500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🎫 Ejercicio 8",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes $7.500, gastas $4.200 en cine. ¿Cuánto queda?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Sustracción (7500−4200)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Billetera Pixar con sobra \"$3.300\" + ticket cine \"$4.200\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$3.300</strong><div class=\"pcg-calc\">(7500−4200=3300)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🥕 Ejercicio 9",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Pagas $5.800 de verduras con $10.000. ¿Vuelto?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Sustracción (10000−5800)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Canasta verduras Pixar \"$5.800\" + 1 billete \"$10.000\". Vuelto: $4.200.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$10,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$4.200</strong><div class=\"pcg-calc\">(10000−5800=4200)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🧦 Ejercicio 10",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras $9.500 y pagas con $10.000. ¿Vuelto?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Sustracción (10000−9500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "1 caja productos Pixar \"$9.500\" + 1 billete \"$10.000\". Vuelto: 1 moneda \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$10,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$500</strong><div class=\"pcg-calc\">(10000−9500=500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🌟 Ejercicio 11",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "6 productos a $300 cada uno. ¿Total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (6×300)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "6 estrellitas brillantes Pixar \"$300 c/u\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.800</strong><div class=\"pcg-calc\">(6×300=1800)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍎 Ejercicio 12",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "8 manzanas a $250 cada una. ¿Total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (8×250)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "8 manzanas rojas Pixar \"$250 c/u\" en canasta."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$2.000</strong><div class=\"pcg-calc\">(8×250=2000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🎁 Ejercicio 13",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "5 regalos a $1.200 cada uno. ¿Cuánto pagas?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (5×1200)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "5 regalos Pixar dorados \"$1.200 c/u\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$6.000</strong><div class=\"pcg-calc\">(5×1200=6000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "📦 Ejercicio 14",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "4 cajas a $2.000 cada una. ¿Total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (4×2000)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "4 cajas Pixar grandes \"$2.000 c/u\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$8.000</strong><div class=\"pcg-calc\">(4×2000=8000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🎈 Ejercicio 15",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "10 globos a $500 cada uno. ¿Total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (10×500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "10 globos vibrantes Pixar elevándose \"$500 c/u\"."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$5.000</strong><div class=\"pcg-calc\">(10×500=5000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍫 Ejercicio 16",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Reparten $2.400 entre 4 niños. ¿Cuánto cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (2400÷4)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "4 niños sonrientes Pixar con \"$600\" cada uno."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$600</strong><div class=\"pcg-calc\">(2400÷4=600)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🐱 Ejercicio 17",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Reparten $4.500 entre 5 amigos. ¿Cuánto cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (4500÷5)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "5 amigos Pixar felices con \"$900\" cada uno."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$900</strong><div class=\"pcg-calc\">(4500÷5=900)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍓 Ejercicio 18",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Repartir $6.000 entre 3 hermanos. ¿Cuánto cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (6000÷3)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "3 hermanos Pixar contentos con \"$2.000\" cada uno."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$2.000</strong><div class=\"pcg-calc\">(6000÷3=2000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🐶 Ejercicio 19",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Repartir $8.000 entre 8 mascotas (comida). ¿Cuánto cada una?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (8000÷8)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "8 mascotas Pixar felices con plato \"$1.000\" cada una."
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.000</strong><div class=\"pcg-calc\">(8000÷8=1000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🌷 Ejercicio 20",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Reparten $10.000 entre 10 estudiantes. ¿Cuánto cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (10000÷10)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "10 estudiantes Pixar con 1 billete \"$1.000\" cada uno.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.000</strong><div class=\"pcg-calc\">(10000÷10=1000)</div></div></div>"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "level": 6,
+    "header": "Nivel 6 — Las 4 Operaciones (Conteo de monedas + Compras)",
+    "guide": {
+      "title": "🛒 ★ Ejemplo Guía",
+      "sections": [
+        {
+          "label": "📝 Enunciado",
+          "content": "Vamos a practicar las 4 operaciones (+, −, ×, ÷) con conteo de monedas y compras reales en la tienda."
+        },
+        {
+          "label": "➗ Operación",
+          "content": "+ Suma · − Resta · × Multiplicación · ÷ División"
+        },
+        {
+          "label": "🎨 Representación gráfica",
+          "content": "Caja registradora Pixar 3D con billetes y monedas:<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg></div>"
+        },
+        {
+          "label": "✅ Respuesta",
+          "content": "<strong>¡A practicar!</strong><div class=\"pcg-calc\">(Lee cada problema y elige la operación correcta)</div>"
+        }
+      ]
+    },
+    "cards": [
+      {
+        "title": "💰 Ejercicio 1",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes 3 monedas de $100 y 2 monedas de $200. ¿Cuánto dinero tienes en total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (3×100 + 2×200)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Conteo de monedas: 3 monedas doradas \"$100\" y 2 monedas plateadas \"$200\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$100</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$200</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$200</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$700</strong><div class=\"pcg-calc\">(300 + 400 = 700)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🛒 Ejercicio 2",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras un cuaderno de $1.500 y un lápiz de $500. ¿Cuánto pagas en total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (1500 + 500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Carrito Pixar con 1 cuaderno azul \"$1.500\" y 1 lápiz amarillo \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$500</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$2.000</strong><div class=\"pcg-calc\">(1500 + 500 = 2000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🥤 Ejercicio 3",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "En la tienda compras un jugo $800 y unas galletas $1.200. ¿Cuánto gastaste?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (800 + 1200)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Mostrador Pixar 3D: 1 jugo verde \"$800\" y 1 paquete de galletas \"$1.200\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$2.000</strong><div class=\"pcg-calc\">(800 + 1200 = 2000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🪙 Ejercicio 4",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes 4 monedas de $500 y 3 monedas de $100. ¿Cuánto dinero juntas?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (4×500 + 3×100)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Conteo: 4 monedas doradas \"$500\" y 3 monedas plateadas \"$100\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$2.300</strong><div class=\"pcg-calc\">(2000 + 300 = 2300)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🎒 Ejercicio 5",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras una mochila de $3.500 y un estuche de $1.500. ¿Cuál es el total?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Suma (3500 + 1500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Tienda escolar Pixar: 1 mochila roja \"$3.500\" + 1 estuche azul \"$1.500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$5.000</strong><div class=\"pcg-calc\">(3500 + 1500 = 5000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "💵 Ejercicio 6",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Pagas $1.000 por un dulce que cuesta $300. ¿Cuánto te devuelven de vuelto?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Resta (1000 − 300)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Caja Pixar: 1 billete \"$1.000\" entregado, vuelto en 1 moneda \"$500\" + 2 monedas \"$100\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$700</strong><div class=\"pcg-calc\">(1000 − 300 = 700)</div>"
+          }
+        ]
+      },
+      {
+        "title": "💸 Ejercicio 7",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tenías $5.000 y gastas $2.300 en el supermercado. ¿Cuánto te queda?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Resta (5000 − 2300)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Billetera Pixar 3D con 5 billetes \"$1.000\" → quedan 2 billetes \"$1.000\" + 1 moneda \"$500\" + 2 monedas \"$100\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$2.700</strong><div class=\"pcg-calc\">(5000 − 2300 = 2700)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🛍️ Ejercicio 8",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compras un libro de $4.500 y pagas con un billete de $5.000. ¿Cuánto te devuelven?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Resta (5000 − 4500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Caja registradora Pixar: vuelto en 1 moneda dorada \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$500</strong><div class=\"pcg-calc\">(5000 − 4500 = 500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🎁 Ejercicio 9",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tu mamá te dio $10.000 y gastaste $6.500 en un regalo. ¿Cuánto te sobra?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Resta (10000 − 6500)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Cartera Pixar: 3 billetes \"$1.000\" + 1 moneda dorada \"$500\" como sobrante.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$3.500</strong><div class=\"pcg-calc\">(10000 − 6500 = 3500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍦 Ejercicio 10",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes $2.000 y un helado cuesta $1.200. ¿Cuánto dinero te queda después de comprarlo?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Resta (2000 − 1200)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Heladería Pixar 3D: tras pagar quedan 1 moneda \"$500\" + 3 monedas \"$100\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$800</strong><div class=\"pcg-calc\">(2000 − 1200 = 800)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍎 Ejercicio 11",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Cada manzana cuesta $500. Si compras 4 manzanas, ¿cuánto pagas?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (500 × 4)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Mostrador Pixar: 4 manzanas rojas, cada una con etiqueta \"$500\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$2.000</strong><div class=\"pcg-calc\">(500 × 4 = 2000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🥖 Ejercicio 12",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Cada pan cuesta $300. ¿Cuánto pagas si compras 5 panes?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (300 × 5)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Panadería Pixar 3D: 5 panes dorados con etiqueta \"$300\" cada uno.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$300</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$300</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$300</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$300</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$300</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.500</strong><div class=\"pcg-calc\">(300 × 5 = 1500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🚌 Ejercicio 13",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Un pasaje de bus cuesta $800. Tu familia (5 personas) viaja junta. ¿Cuánto pagan?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (800 × 5)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Bus Pixar 3D con 5 asientos ocupados, cada pasaje \"$800\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$4.000</strong><div class=\"pcg-calc\">(800 × 5 = 4000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍫 Ejercicio 14",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Una barra de chocolate cuesta $1.500. ¿Cuánto pagas por 3 barras iguales?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (1500 × 3)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Dulcería Pixar: 3 barras de chocolate \"$1.500\" cada una.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$500</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$4.500</strong><div class=\"pcg-calc\">(1500 × 3 = 4500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "📒 Ejercicio 15",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Cada cuaderno cuesta $2.000. Compras 4 cuadernos para el colegio. ¿Cuánto pagas?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "Multiplicación (2000 × 4)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Librería Pixar 3D: 4 cuadernos azules \"$2.000\" cada uno.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$8.000</strong><div class=\"pcg-calc\">(2000 × 4 = 8000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍪 Ejercicio 16",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tienes $1.000 para repartir en partes iguales entre 5 amigos. ¿Cuánto recibe cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (1000 ÷ 5)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Mesa Pixar: 1 billete \"$1.000\" → 5 monedas doradas \"$200\" para cada amigo.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#FFD66B\" stroke=\"#7A3200\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#7A3200\">$200</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$200</strong><div class=\"pcg-calc\">(1000 ÷ 5 = 200)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🍕 Ejercicio 17",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Compraste una pizza por $6.000 y la pagas entre 3 amigos en partes iguales. ¿Cuánto pone cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (6000 ÷ 3)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Pizzería Pixar: 3 amigos cada uno con 2 billetes \"$1.000\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$2.000</strong><div class=\"pcg-calc\">(6000 ÷ 3 = 2000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🎂 Ejercicio 18",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Tu mamá te dio $4.000 para repartir entre 4 hermanos por igual. ¿Cuánto recibe cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (4000 ÷ 4)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Casa Pixar 3D: 4 hermanos, cada uno con 1 billete \"$1.000\".<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$1.000</strong><div class=\"pcg-calc\">(4000 ÷ 4 = 1000)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🪙 Ejercicio 19",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "10 monedas de $100 se reparten entre 2 amigos en partes iguales. ¿Cuánto recibe cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (1000 ÷ 2)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Conteo: 10 monedas plateadas \"$100\" → 5 monedas \"$100\" para cada uno.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg><svg viewBox=\"0 0 44 26\" width=\"44\" height=\"26\"><circle cx=\"14\" cy=\"13\" r=\"10\" fill=\"#D9D6E0\" stroke=\"#3D1468\" stroke-width=\"1\"/><text x=\"14\" y=\"17\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#3D1468\">$100</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$500</strong><div class=\"pcg-calc\">(1000 ÷ 2 = 500)</div>"
+          }
+        ]
+      },
+      {
+        "title": "🧁 Ejercicio 20",
+        "sections": [
+          {
+            "label": "📝 Enunciado",
+            "content": "Vendiste cupcakes y juntaste $8.000. Lo repartes en partes iguales entre 4 vendedores. ¿Cuánto le toca a cada uno?"
+          },
+          {
+            "label": "➗ Operación",
+            "content": "División (8000 ÷ 4)"
+          },
+          {
+            "label": "🎨 Representación gráfica",
+            "content": "Puesto de cupcakes Pixar: 4 vendedores reciben 2 billetes \"$1.000\" cada uno.<div class=\"pcg-viz-svg\" style=\"background:#fff;border-radius:8px;padding:6px;margin-top:6px;text-align:center;border:1px solid rgba(26,108,180,.15);display:flex;flex-wrap:wrap;gap:6px;justify-content:center\"><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg><svg viewBox=\"0 0 40 26\" width=\"40\" height=\"26\"><rect x=\"5\" y=\"5\" width=\"26\" height=\"16\" rx=\"3\" fill=\"#34D399\" stroke=\"#0E5240\" stroke-width=\"1\"/><text x=\"18\" y=\"16\" text-anchor=\"middle\" font-size=\"7\" font-weight=\"900\" fill=\"#fff\">$1,000</text></svg></div>"
+          },
+          {
+            "label": "✅ Respuesta",
+            "content": "<strong>$2.000</strong><div class=\"pcg-calc\">(8000 ÷ 4 = 2000)</div></div></div>"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -17,22 +17,25 @@ import type { LevelRef } from '@/types/book.types';
 import { createInitialGamificationState } from './gamification.service';
 import { BOOK_API_URL as API_URL, BOOK_SLUG, bookBackendEnabled as backendEnabled, bookHeaders } from './book-http';
 
-const STORAGE_KEY = 'fedor2_progress_v1';
 
-function readLocal(): BookProgress | null {
+
+function readLocal(slug: string = BOOK_SLUG): BookProgress | null {
   if (typeof window === 'undefined') return null;
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
+    let raw = window.localStorage.getItem(`fedor_progress_${slug}`);
+    if (!raw && (slug === 'matematicas-fedor-2' || slug === BOOK_SLUG)) {
+      raw = window.localStorage.getItem('fedor2_progress_v1');
+    }
     return raw ? (JSON.parse(raw) as BookProgress) : null;
   } catch {
     return null;
   }
 }
 
-function writeLocal(progress: BookProgress): void {
+function writeLocal(progress: BookProgress, slug: string = BOOK_SLUG): void {
   if (typeof window === 'undefined') return;
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    window.localStorage.setItem(`fedor_progress_${slug}`, JSON.stringify(progress));
   } catch {
     /* almacenamiento no disponible (modo privado) */
   }
@@ -45,24 +48,24 @@ export function levelKey(ref: LevelRef): string {
 
 class BookProgressService {
   /** Crea un progreso nuevo a partir de los datos del estudiante. */
-  createProgress(student: BookStudent): BookProgress {
+  createProgress(student: BookStudent, slug: string = BOOK_SLUG): BookProgress {
     const progress: BookProgress = {
-      bookSlug: BOOK_SLUG,
+      bookSlug: slug,
       student,
       scores: {},
       gamification: createInitialGamificationState(student.avatar),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    writeLocal(progress);
+    writeLocal(progress, slug);
     return progress;
   }
 
   /** Carga el progreso actual (backend → mock local). */
-  async getProgress(): Promise<BookProgress | null> {
+  async getProgress(slug: string = BOOK_SLUG): Promise<BookProgress | null> {
     if (backendEnabled()) {
       try {
-        const res = await fetch(`${API_URL}/books/${BOOK_SLUG}/progress`, {
+        const res = await fetch(`${API_URL}/books/${slug}/progress`, {
           headers: bookHeaders(),
         });
         if (res.ok) return (await res.json()) as BookProgress;
@@ -70,16 +73,17 @@ class BookProgressService {
         console.warn('[book-progress] fallback local:', error);
       }
     }
-    return readLocal();
+    return readLocal(slug);
   }
 
   /** Guarda el progreso completo. */
   async saveProgress(progress: BookProgress): Promise<BookProgress> {
     const next: BookProgress = { ...progress, updatedAt: new Date().toISOString() };
-    writeLocal(next);
+    const slug = progress.bookSlug || BOOK_SLUG;
+    writeLocal(next, slug);
     if (backendEnabled()) {
       try {
-        await fetch(`${API_URL}/books/${BOOK_SLUG}/progress`, {
+        await fetch(`${API_URL}/books/${slug}/progress`, {
           method: 'PUT',
           headers: bookHeaders(),
           body: JSON.stringify(next),
@@ -112,10 +116,11 @@ class BookProgressService {
     };
     const scores: ScoreMap = { ...progress.scores, [result.levelKey]: score };
     const next: BookProgress = { ...progress, scores };
+    const slug = progress.bookSlug || BOOK_SLUG;
 
     if (backendEnabled()) {
       try {
-        await fetch(`${API_URL}/books/${BOOK_SLUG}/results`, {
+        await fetch(`${API_URL}/books/${slug}/results`, {
           method: 'POST',
           headers: bookHeaders(),
           body: JSON.stringify(result),
@@ -128,9 +133,12 @@ class BookProgressService {
   }
 
   /** Borra el progreso local (reinicio). */
-  reset(): void {
+  reset(slug: string = BOOK_SLUG): void {
     if (typeof window === 'undefined') return;
-    window.localStorage.removeItem(STORAGE_KEY);
+    window.localStorage.removeItem(`fedor_progress_${slug}`);
+    if (slug === 'matematicas-fedor-2' || slug === BOOK_SLUG) {
+      window.localStorage.removeItem('fedor2_progress_v1');
+    }
   }
 }
 

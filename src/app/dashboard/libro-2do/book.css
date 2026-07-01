@@ -22,10 +22,10 @@
   --r-sm:10px;--r-md:16px;--r-lg:22px;--r-xl:28px;
 }
 .fedor-book {scroll-behavior:smooth}
-.fedor-book {background:var(--bg);min-height:100vh;font-family:'Nunito',sans-serif;color:var(--text)}
-.fedor-book .app {max-width:740px;margin:0 auto;padding:1rem 1rem 4rem}
+.fedor-book {background:var(--bg);min-height:100vh;font-family:'Nunito',sans-serif;color:var(--text);position:relative}
+.fedor-book .app {max-width:1200px;margin:0 auto;padding:1.5rem 1rem 4rem}
 .fedor-book /* CUANDO LA PANTALLA ACTIVA ES LA LECCIÓN, .fedor-book EXPANDIR HORIZONTALMENTE para no perder visión vertical */
-body.in-lesson .app {max-width:1180px;padding:1rem 1.4rem 4rem}
+.fedor-book.in-lesson .app {max-width:1180px;padding:1rem 1.4rem 4rem}
 .fedor-book.in-lesson .ex-q-card, .fedor-book.in-lesson .lesson-content, .fedor-book.in-lesson .ex-card, .fedor-book.in-lesson .examples-panel {max-width:100%;width:100%}
 .fedor-book.in-lesson .ex-mcq-grid {grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
 .fedor-book.in-lesson .lesson-main {display:grid;grid-template-columns:minmax(0,1fr);gap:1rem}
@@ -65,8 +65,8 @@ body.in-lesson .app {max-width:1180px;padding:1rem 1.4rem 4rem}
 .hdr {
   display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
   padding:10px 18px;background:rgba(255,255,255,.92);border:1.5px solid var(--border);
-  border-radius:var(--r-lg);box-shadow:var(--shadow-sm);margin-bottom:1.25rem;
-  position:sticky;top:8px;z-index:200;backdrop-filter:blur(16px);
+  border-radius:var(--r-lg);box-shadow:var(--shadow-sm);margin-bottom:3.5rem;
+  position:sticky;top:72px;z-index:200;backdrop-filter:blur(16px);
 }
 .fedor-book .logo-area {display:flex;align-items:center;gap:10px}
 .fedor-book .logo-orb {width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#3D1468,#6C28B4);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px rgba(108,40,180,.2),0 4px 12px rgba(108,40,180,.3);flex-shrink:0;position:relative;overflow:hidden}
@@ -76,16 +76,83 @@ body.in-lesson .app {max-width:1180px;padding:1rem 1.4rem 4rem}
 .fedor-book .logo-top {font-size:10px;font-weight:900;color:var(--purple);letter-spacing:.06em;text-transform:uppercase}
 .fedor-book .logo-bot {font-size:18px;font-weight:900;color:var(--orange);font-family:'Baloo 2',sans-serif;line-height:1}
 .fedor-book .hdr-mid {display:flex;align-items:center;gap:8px}
-.fedor-book .grade-pill {font-size:11px;font-weight:900;background:linear-gradient(135deg,#FEF0E6,#FFE2C8);color:var(--orange-d);padding:5px 14px;border-radius:20px;border:1.5px solid #FBBF7A;letter-spacing:.02em}
-.fedor-book .hdr-btns {display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.fedor-book .grade-pill {font-size:12px;font-weight:900;background:linear-gradient(135deg,#FEF0E6,#FFE2C8);color:var(--orange-d);padding:6px 16px;border-radius:20px;border:1.5px solid #FBBF7A;letter-spacing:.02em}
+.fedor-book .hdr-btns {display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .fedor-book .hdr-btn {font-size:11px;font-weight:800;padding:5px 12px;border-radius:20px;cursor:pointer;border:1.5px solid var(--border);background:var(--bg);color:var(--purple);transition:all .2s;font-family:'Nunito',sans-serif}
 .fedor-book .hdr-btn:hover {background:var(--purple);color:#fff;border-color:var(--purple)}
+.fedor-book .hdr-btn.f1-hdr-intro {
+  background: linear-gradient(135deg, #FF1D4E, #FF9F00) !important;
+  color: #fff !important;
+  border: 2px solid #FFF7C2 !important;
+  font-size: 13px !important;
+  padding: 8px 18px !important;
+  font-weight: 900 !important;
+  border-radius: 24px !important;
+  box-shadow: 0 4px 14px rgba(255, 29, 78, 0.4) !important;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  animation: f1cta_pulse 2.2s ease-in-out infinite !important;
+}
+.fedor-book .hdr-btn.f1-hdr-intro:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 18px rgba(255, 29, 78, 0.6) !important;
+}
+.fedor-book .f1-hdr-rocket-ico {
+  display: inline-block;
+  animation: f1cta_hdrRocket 1.2s ease-in-out infinite;
+}
+.fedor-book .hdr-btn.f1-hdr-reset {
+  background: #FFF5F2 !important;
+  color: #BA340A !important;
+  border: 1.5px solid #FBC0B0 !important;
+  font-size: 13px !important;
+  padding: 8px 18px !important;
+  font-weight: 900 !important;
+  border-radius: 24px !important;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.fedor-book .hdr-btn.f1-hdr-reset:hover {
+  background: #FFEBE6 !important;
+  transform: scale(1.04);
+}
+.fedor-book .f1-hdr-reset-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: #4285F4;
+  border-radius: 5px;
+  color: #fff;
+  flex-shrink: 0;
+}
 .fedor-book .hdr-btn.student {display:none}
 .fedor-book .hdr-btn.report-btn {background:linear-gradient(135deg,#FEF0E6,#FFE2C8);color:var(--orange-d);border-color:#FBBF7A}
 .fedor-book .coin-hdr {display:none;align-items:center;gap:5px;font-size:13px;font-weight:900;color:var(--yellow);background:rgba(212,160,23,.12);border:1.5px solid rgba(245,197,24,.35);padding:4px 12px;border-radius:20px}
 .fedor-book .coin-hdr.show {display:flex}
 .fedor-book .streak-hdr {display:none;align-items:center;gap:5px;font-size:13px;font-weight:900;color:#FF6B6B;background:rgba(255,107,107,.1);border:1.5px solid rgba(255,107,107,.3);padding:4px 12px;border-radius:20px}
 .fedor-book .streak-hdr.show {display:flex}
+@keyframes f1cta_pulse {
+  0%, 100% {
+    box-shadow: 0 4px 14px rgba(255, 29, 78, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 8px 20px rgba(255, 29, 78, 0.6), 0 0 0 4px rgba(255, 224, 102, 0.35);
+    transform: scale(1.025);
+  }
+}
+@keyframes f1cta_hdrRocket {
+  0% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-3px) rotate(8deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
 .fedor-book /* ═══ SETUP ═══ */
 .setup-wrap {background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-lg)}
 .fedor-book .setup-hero {background:linear-gradient(160deg,#140830 0%,#2A0F6A 55%,#1A4030 100%);padding:2.5rem 1.5rem 2rem;text-align:center;position:relative;overflow:hidden}
@@ -1111,15 +1178,18 @@ button, .fedor-book .av-btn, .fedor-book .unit-card, .fedor-book .tc {
 .fedor-book .lic-skip{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:18px;padding:6px 14px;font-size:11px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;letter-spacing:.05em;z-index:5}
 
 /* ── Tutorial de unidad ───────────────────────────────────────── */
+@keyframes iconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 .fedor-book .utut-overlay{position:fixed;inset:0;z-index:9300;background:rgba(10,5,30,.8);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:1.25rem}
 .fedor-book .utut-card{background:var(--white);border-radius:var(--r-xl);padding:1.75rem 1.5rem;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:popIn .4s ease;max-height:88vh;overflow-y:auto}
-.fedor-book .utut-icon{font-size:52px;animation:float 3s ease-in-out infinite}
+.fedor-book .utut-icon{font-size:52px;display:block;margin-bottom:.25rem;animation:iconFloat 2.8s ease-in-out infinite;will-change:transform}
 .fedor-book .utut-title{font-family:'Baloo 2',sans-serif;font-size:19px;font-weight:900;color:var(--text);margin-top:.4rem}
 .fedor-book .utut-text{font-size:13px;color:var(--muted);font-weight:700;line-height:1.5;margin:.5rem 0 1rem}
 .fedor-book .utut-steps{display:grid;gap:8px;text-align:left;margin-bottom:1.25rem}
 .fedor-book .utut-step{display:flex;align-items:center;gap:10px;background:var(--bg);border-radius:12px;padding:9px 12px}
 .fedor-book .utut-step-num{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#7B2FBE,#A864E8);color:#fff;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center}
 .fedor-book .utut-step-txt{font-size:12px;font-weight:700;color:var(--text);line-height:1.35}
+.fedor-book .utut-skip{display:block;width:100%;background:none;border:none;color:var(--muted);font-size:13px;font-weight:700;text-align:center;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:.65rem;text-decoration:underline;text-underline-offset:2px;padding:4px 0;transition:color .2s}
+.fedor-book .utut-skip:hover{color:var(--purple)}
 
 /* ── Hub de juegos ────────────────────────────────────────────── */
 .fedor-book .games-grid{display:grid;grid-template-columns:1fr;gap:10px}
@@ -1359,3 +1429,1331 @@ button, .fedor-book .av-btn, .fedor-book .unit-card, .fedor-book .tc {
   .fedor-book .bqa-label{min-width:132px;font-size:10px}
   .fedor-book .bqa-orb{width:48px;height:48px}
 }
+
+/* Estilos para recursos extra específicos de Grado 1 (feat-btn) */
+.fedor-book .feat-btn {
+  position:relative;display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:18px;
+  background:linear-gradient(135deg,#fff 0%,#F8FAFF 100%);
+  border:1px solid rgba(0,0,0,.06);box-shadow:0 8px 24px rgba(0,40,80,.12),0 2px 6px rgba(0,40,80,.08);
+  cursor:pointer;transition:all .25s cubic-bezier(.34,1.56,.64,1);overflow:hidden;margin-bottom:.65rem;
+  font-family:'Baloo 2','Montserrat',sans-serif;
+  text-decoration:none;
+}
+.fedor-book .feat-btn:hover {transform:translateY(-3px) scale(1.015);box-shadow:0 14px 40px rgba(0,40,80,.18)}
+.fedor-book .feat-btn::before {content:"";position:absolute;inset:0;background:radial-gradient(circle at top left,rgba(255,255,255,.6),transparent 60%);pointer-events:none}
+.fedor-book .feat-icon {
+  width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-size:30px;flex-shrink:0;position:relative;z-index:1;
+  box-shadow:inset 0 -3px 8px rgba(0,0,0,.08),0 4px 14px rgba(0,40,80,.15);
+}
+.fedor-book .feat-info {flex:1;min-width:0;position:relative;z-index:1;text-align:left}
+.fedor-book .feat-name {font-size:17px;font-weight:900;color:#0A3A6A;line-height:1.2;margin-bottom:2px}
+.fedor-book .feat-meta {font-size:11.5px;color:rgba(20,60,100,.65);font-weight:700;letter-spacing:.01em}
+.fedor-book .feat-sub {font-size:11.5px;color:rgba(20,60,100,.65);font-weight:700;letter-spacing:.01em}
+.fedor-book .feat-arrow {font-size:22px;color:#1A6CB4;font-weight:900;position:relative;z-index:1}
+
+/* Estilos para Estándares MEN */
+.fedor-book .men-hero {background:linear-gradient(135deg,#0E5240,#16876A,#FCD116);padding:1.2rem 1rem;border-radius:14px;color:#fff;margin-bottom:1rem;text-align:center}
+.fedor-book .men-hero h2 {margin:0;font-size:20px;font-weight:900;font-family:'Baloo 2',sans-serif}
+.fedor-book .men-hero .sub {font-size:12px;font-weight:700;opacity:.9;margin-top:4px}
+.fedor-book .men-hero .flag {font-size:32px;margin-bottom:6px}
+.fedor-book .men-tabs {display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:1rem;padding:0 .5rem}
+.fedor-book .men-tab {background:rgba(186,117,23,.12);border:2px solid rgba(186,117,23,.3);color:#7A3200;font-weight:900;font-size:11px;padding:8px 4px;border-radius:12px;cursor:pointer;font-family:Nunito,sans-serif;text-align:center;line-height:1.15;transition:all .15s;min-width:0}
+.fedor-book .men-tab.on {background:linear-gradient(135deg,#16876A,#24C496);color:#fff;border-color:#0E5240;box-shadow:0 6px 14px rgba(22,135,106,.35)}
+.fedor-book .men-section {background:#fff;border:2px solid #C0E2D6;border-radius:16px;padding:1rem 1.1rem;margin-bottom:1rem;box-shadow:0 4px 14px rgba(14,82,64,.08)}
+.fedor-book .men-section h3 {margin:0 0 8px;font-size:15px;font-weight:900;color:#0E5240;display:flex;align-items:center;gap:8px}
+.fedor-book .men-section h3 .ic {font-size:24px}
+.fedor-book .men-section .desc {font-size:13px;color:#444;line-height:1.55;margin-bottom:8px}
+.fedor-book .men-section ul {margin:0;padding-left:1.1rem;list-style:none}
+.fedor-book .men-section ul li {font-size:13px;color:#222;line-height:1.55;padding:6px 0;border-bottom:1px dashed #DCF5EE;position:relative;padding-left:1.5rem;text-align:left}
+.fedor-book .men-section ul li:last-child {border-bottom:none}
+.fedor-book .men-section ul li::before {content:'';position:absolute;left:0;top:14px;width:8px;height:8px;border-radius:50%;background:#16876A}
+.fedor-book .men-section.pensamiento {border-color:#7B2FBE;background:linear-gradient(180deg,#FFF,#F8F5FF)}
+.fedor-book .men-section.pensamiento h3 {color:#3D1468}
+.fedor-book .men-section.pensamiento ul li::before {background:#7B2FBE}
+.fedor-book .men-section.competencia {border-color:#E8650A;background:linear-gradient(180deg,#FFF,#FFF8F0)}
+.fedor-book .men-section.competencia h3 {color:#7A3200}
+.fedor-book .men-section.competencia ul li::before {background:#E8650A}
+.fedor-book .men-section.dba {border-color:#0070C0;background:linear-gradient(180deg,#FFF,#E8F0FF)}
+.fedor-book .men-section.dba h3 {color:#003078}
+.fedor-book .men-section.dba ul li::before {background:#0070C0}
+.fedor-book .men-section.desempeno {border-color:#C25400;background:linear-gradient(180deg,#FFF,#FFF0E0)}
+.fedor-book .men-section.desempeno h3 {color:#7A3200}
+.fedor-book .men-section.desempeno ul li::before {background:#C25400}
+.fedor-book .men-card {background:linear-gradient(135deg,#16876A,#24C496);color:#fff;padding:.8rem 1rem;border-radius:12px;display:flex;align-items:center;gap:12px;margin:.5rem 0;box-shadow:0 4px 12px rgba(22,135,106,.25)}
+.fedor-book .men-card .em {font-size:32px}
+.fedor-book .men-card .info {flex:1;text-align:left}
+.fedor-book .men-card .info .t {font-size:14px;font-weight:900;margin-bottom:2px}
+.fedor-book .men-card .info .s {font-size:11px;opacity:.92}
+.fedor-book .men-niveles {display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:8px}
+.fedor-book .men-nivel {padding:.8rem .9rem;border-radius:12px;color:#fff;font-weight:900}
+.fedor-book .men-nivel .l {font-size:12px;opacity:.85;text-transform:uppercase;letter-spacing:.5px}
+.fedor-book .men-nivel .n {font-size:18px;margin:4px 0;font-family:'Baloo 2',sans-serif}
+.fedor-book .men-nivel .d {font-size:11px;font-weight:700;opacity:.9;line-height:1.4;text-align:left}
+.fedor-book .men-n-superior {background:linear-gradient(135deg,#7B2FBE,#A864E8)}
+.fedor-book .men-n-alto {background:linear-gradient(135deg,#16876A,#24C496)}
+.fedor-book .men-n-basico {background:linear-gradient(135deg,#E8650A,#FFB066)}
+.fedor-book .men-n-bajo {background:linear-gradient(135deg,#888,#bbb)}
+
+/* Estilos para Problemas Cotidianos */
+.fedor-book .pcp-intro{background:linear-gradient(135deg,#0E5240,#34D399);border-radius:14px;padding:1.1rem 1rem;margin:.8rem 0;color:#fff;text-align:center}
+.fedor-book .pcp-intro h3{font-size:18px;font-weight:900;margin:0 0 6px}
+.fedor-book .pcp-intro p{font-size:13px;font-weight:700;margin:0 0 12px;opacity:.95}
+.fedor-book .pcp-go-btn{background:#fff;color:#0E5240;font-weight:900;font-size:14px;border:none;border-radius:50px;padding:10px 22px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.18);transition:transform .2s}
+.fedor-book .pcp-go-btn:hover{transform:scale(1.05)}
+.fedor-book .pcp-modal{background:#fff;border-radius:24px;max-width:560px;width:100%;padding:1.4rem 1.2rem;box-shadow:0 24px 64px rgba(0,0,0,.05);position:relative;margin:0 auto;text-align:left}
+.fedor-book .pcp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+.fedor-book .pcp-badge{background:#FAEEDA;color:#7A3200;padding:5px 11px;border-radius:20px;font-size:12px;font-weight:900}
+.fedor-book .pcp-timer{background:#FEE2E8;color:#A30041;padding:5px 11px;border-radius:20px;font-size:13px;font-weight:900;display:flex;align-items:center;gap:5px}
+.fedor-book .pcp-score{background:#DCF5EE;color:#074F3A;padding:5px 11px;border-radius:20px;font-size:13px;font-weight:900}
+.fedor-book .pcp-progress{height:8px;background:#F1EFE8;border-radius:99px;overflow:hidden;margin:6px 0 14px}
+.fedor-book .pcp-progress-bar{height:100%;background:linear-gradient(90deg,#16876A,#34D399);transition:width .3s}
+.fedor-book .pcp-op-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:900;color:#fff;margin-bottom:8px}
+.fedor-book .pcp-q{font-size:16px;font-weight:900;color:#1A0848;line-height:1.4;margin-bottom:14px;background:#F8F5FF;padding:14px;border-radius:12px;border-left:5px solid #6C28B4;text-align:left}
+.fedor-book .pcp-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fedor-book .pcp-opt{background:#fff;border:2px solid #C5BFEE;color:#3D1468;padding:13px 14px;border-radius:14px;font-size:14px;font-weight:900;cursor:pointer;font-family:Nunito,sans-serif;text-align:center;transition:all .18s}
+.fedor-book .pcp-opt:hover:not(:disabled){background:#EEEDFE;transform:translateY(-2px)}
+.fedor-book .pcp-opt.ok{background:#16876A;color:#fff;border-color:#0E5240}
+.fedor-book .pcp-opt.bad{background:#C94B22;color:#fff;border-color:#7A1B00}
+.fedor-book .pcp-result{text-align:center;padding:12px;font-size:15px;font-weight:900;margin-top:12px;border-radius:12px;text-align:left}
+.fedor-book .pcp-result.ok{background:#DCF5EE;color:#074F3A}
+.fedor-book .pcp-result.bad{background:#FEE2E8;color:#A30041}
+.fedor-book .pcp-next{background:#6C28B4;color:#fff;border:none;border-radius:14px;padding:11px 24px;font-size:14px;font-weight:900;cursor:pointer;margin-top:12px;width:100%;font-family:Nunito,sans-serif}
+.fedor-book .pcp-next:hover{background:#5A1F9E}
+.fedor-book .pcp-final{text-align:center;padding:1rem}
+.fedor-book .pcp-final .medal{font-size:72px}
+.fedor-book .pcp-final .title{font-size:22px;font-weight:900;color:#3D1468;margin:6px 0}
+.fedor-book .pcp-final .sub{font-size:14px;color:#6C28B4;font-weight:700;margin-bottom:10px}
+.fedor-book .pcp-final .scorebig{font-size:48px;font-weight:900;color:#16876A;margin:8px 0}
+.fedor-book .pcp-final .breakdown{display:flex;justify-content:center;gap:14px;margin:14px 0;flex-wrap:wrap}
+.fedor-book .pcp-final .stat{background:#F8F5FF;padding:9px 14px;border-radius:12px;font-size:13px;font-weight:700;color:#3D1468}
+
+/* Estilos para botones flotantes específicos de Grado 1 */
+.fedor-book .kj1-mascot {
+  position:fixed;bottom:96px;left:14px;font-size:62px;z-index:9997;cursor:pointer;
+  animation:float 2.4s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(0,0,0,.35));
+  user-select:none;background:rgba(255,255,255,.18);border-radius:50%;width:78px;height:78px;
+  display:flex;align-items:center;justify-content:center;border:3px solid #FFE066;
+  box-shadow:0 6px 18px rgba(0,0,0,.3);
+}
+.fedor-book .kj1-bubble {
+  position:fixed;bottom:182px;left:96px;background:#fff;border:3.5px solid #FF8C2A;
+  border-radius:20px;padding:12px 16px;font-weight:900;font-size:16px;color:#7A3200;
+  max-width:220px;z-index:9998;box-shadow:0 8px 24px rgba(0,0,0,.25);
+  animation:slideUp .35s cubic-bezier(.34,1.56,.64,1);line-height:1.35;
+}
+.fedor-book .kj1-stickerbook-btn {
+  position:fixed;bottom:96px;right:14px;background:linear-gradient(135deg,#9B5CFF,#FF1D4E);
+  color:#fff;border:none;border-radius:50%;width:62px;height:62px;font-size:30px;
+  cursor:pointer;z-index:9997;box-shadow:0 6px 18px rgba(108,40,180,.5);
+  animation:float 3s ease-in-out infinite;border:3px solid #fff;
+  display:flex;align-items:center;justify-content:center;
+}
+.fedor-book .f1-concept-btn {
+  position:fixed;bottom:430px;right:14px;background:linear-gradient(135deg,#BA7517,#F5C518);
+  color:#fff;border:3px solid #fff;border-radius:50%;width:54px;height:54px;
+  cursor:pointer;font-size:24px;z-index:9996;
+  animation:float 1.6s ease-in-out infinite;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 22px rgba(186,117,23,.5);
+}
+.fedor-book .f1-tablas-btn {
+  position:fixed;bottom:370px;right:14px;background:linear-gradient(135deg,#FF1D4E,#F5C518);
+  color:#fff;border:3px solid #fff;border-radius:50%;width:54px;height:54px;
+  cursor:pointer;font-size:22px;z-index:9996;
+  animation:float 2.6s ease-in-out infinite;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 22px rgba(255,29,78,.55);
+}
+.fedor-book .f1-lab-btn {
+  position:fixed;bottom:300px;right:14px;background:linear-gradient(135deg,#16876A,#24C496);
+  color:#fff;border:3px solid #fff;border-radius:50%;width:54px;height:54px;
+  cursor:pointer;font-size:24px;z-index:9996;
+  animation:float 3s ease-in-out infinite;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 22px rgba(22,135,106,.55);
+}
+.fedor-book .f1-gamepad-btn {
+  position:fixed;bottom:18px;left:14px;z-index:8500;width:56px;height:56px;
+  border-radius:50%;background:linear-gradient(135deg,#FF1D4E,#FF8C2A);
+  color:#fff;border:3px solid #fff;font-size:26px;cursor:pointer;
+  box-shadow:0 8px 24px rgba(255,29,78,.5);
+  display:flex;align-items:center;justify-content:center;
+  animation:float 2s ease-in-out infinite;
+}
+
+/* ==========================================
+   AI CHATBOT FLOATING BUTTON & SIDEBAR
+   ========================================== */
+
+/* Botón flotante de IA */
+.fedor-book .f1-aichat-btn {
+  position: fixed;
+  bottom: 230px;
+  right: 14px;
+  background: linear-gradient(135deg, #4F46E5, #06B6D4);
+  color: #fff;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  width: 54px;
+  height: 54px;
+  cursor: pointer;
+  z-index: 9996;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 22px rgba(79, 70, 229, 0.55);
+  animation: float 2.8s ease-in-out infinite;
+  transition: all 0.25s ease;
+  font-size: 24px;
+}
+.fedor-book .f1-aichat-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 28px rgba(79, 70, 229, 0.7);
+}
+
+/* Backdrop */
+.fedor-book .ai-chat-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 8, 48, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.fedor-book .ai-chat-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Sidebar Drawer */
+.fedor-book .ai-chat-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 380px;
+  max-width: 90vw;
+  background: #ffffff;
+  z-index: 10000;
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(100%);
+  border-left: 2px solid var(--border);
+}
+.fedor-book .ai-chat-drawer.open {
+  transform: translateX(0);
+}
+
+/* Dark mode */
+.fedor-book.dark .ai-chat-drawer {
+  background: #1e1f25;
+  border-left-color: #282828;
+}
+
+/* Header */
+.fedor-book .ai-chat-header {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #6C28B4, #9B5CE5);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(108, 40, 180, 0.15);
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+.fedor-book .ai-chat-header h3 {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 17px;
+  font-weight: 900;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fedor-book .ai-chat-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  font-size: 14px;
+}
+.fedor-book .ai-chat-close:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* Message Area */
+.fedor-book .ai-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #f7f5ff;
+}
+.fedor-book.dark .ai-chat-messages {
+  background: #15161b;
+}
+
+/* Bubbles */
+.fedor-book .ai-chat-msg {
+  max-width: 85%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  word-wrap: break-word;
+  font-family: 'Nunito', sans-serif;
+}
+.fedor-book .ai-chat-msg.user {
+  align-self: flex-end;
+  background: #4F46E5;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+}
+.fedor-book .ai-chat-msg.assistant {
+  align-self: flex-start;
+  background: #ffffff;
+  color: #180d38;
+  border-bottom-left-radius: 4px;
+  border: 1.5px solid var(--border);
+}
+.fedor-book.dark .ai-chat-msg.assistant {
+  background: #282828;
+  color: #fff;
+  border-color: #363636;
+}
+
+.fedor-book .ai-chat-time {
+  font-size: 10px;
+  opacity: 0.6;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Loading Dots */
+.fedor-book .ai-chat-loading {
+  display: flex;
+  gap: 4px;
+  align-self: flex-start;
+  background: #ffffff;
+  padding: 12px 18px;
+  border-radius: 18px;
+  border-bottom-left-radius: 4px;
+  border: 1.5px solid var(--border);
+}
+.fedor-book.dark .ai-chat-loading {
+  background: #282828;
+  border-color: #363636;
+}
+.fedor-book .ai-loading-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #7b7299;
+  border-radius: 50%;
+  animation: float 1s infinite alternate;
+}
+.fedor-book .ai-loading-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.fedor-book .ai-loading-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Starters */
+.fedor-book .ai-chat-starters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1.5px dashed var(--border);
+}
+.fedor-book.dark .ai-chat-starters {
+  border-top-color: #282828;
+}
+.fedor-book .ai-chat-starter-title {
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+.fedor-book .ai-starter-chip {
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+  color: var(--purple);
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  line-height: 1.25;
+}
+.fedor-book.dark .ai-starter-chip {
+  background: #282828;
+  border-color: #363636;
+  color: #c5bfee;
+}
+.fedor-book .ai-starter-chip:hover {
+  transform: translateY(-1px);
+  background: var(--bg);
+  border-color: var(--purple-l);
+}
+
+/* Input Area */
+.fedor-book .ai-chat-input-area {
+  padding: 16px 20px 24px;
+  background: #ffffff;
+  border-top: 1.5px solid var(--border);
+}
+.fedor-book.dark .ai-chat-input-area {
+  background: #1e1f25;
+  border-top-color: #282828;
+}
+.fedor-book .ai-chat-input-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.fedor-book .ai-chat-textarea {
+  flex: 1;
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+  outline: none;
+  resize: none;
+  min-height: 44px;
+  max-height: 120px;
+  background: #f7f5ff;
+  color: var(--text);
+  transition: all 0.2s;
+}
+.fedor-book.dark .ai-chat-textarea {
+  background: #282828;
+  border-color: #363636;
+  color: #fff;
+}
+.fedor-book .ai-chat-textarea:focus {
+  border-color: var(--purple);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(108, 40, 180, 0.1);
+}
+.fedor-book.dark .ai-chat-textarea:focus {
+  background: #1e1f25;
+}
+.fedor-book .ai-chat-send-btn {
+  background: linear-gradient(135deg, #6C28B4, #9B5CE5);
+  color: #fff;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(108, 40, 180, 0.25);
+  flex-shrink: 0;
+}
+.fedor-book .ai-chat-send-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(108, 40, 180, 0.35);
+}
+.fedor-book .ai-chat-send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* === FEDOR_1RO_PC_PEDAGOGICO_CSS === */
+.fedor-book .pcg-level {
+  background: #fff;
+  border-radius: 18px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 22px rgba(14, 82, 64, 0.1);
+  border: 1.5px solid rgba(14, 82, 64, 0.1);
+}
+.fedor-book.dark .pcg-level {
+  background: #1A1340;
+  border-color: rgba(255, 255, 255, 0.05);
+  box-shadow: none;
+}
+.fedor-book .pcg-level-h {
+  font-weight: 900;
+  color: #0E5240;
+  font-size: 16px;
+  margin-bottom: 0.7rem;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  background: linear-gradient(135deg, #E8FAF1, #fff);
+  padding: 0.6rem;
+  border-radius: 12px;
+  border: 1px solid #16876A;
+}
+.fedor-book.dark .pcg-level-h {
+  background: linear-gradient(135deg, #103A30, #1A1340);
+  color: #7DE0BE;
+  border-color: #16876A;
+}
+.fedor-book .pcg-guide {
+  background: linear-gradient(135deg, #FFF8DC, #FFFCE5);
+  border-radius: 14px;
+  padding: 0.85rem;
+  margin-bottom: 0.7rem;
+  border-left: 5px solid #F5C518;
+  box-shadow: 0 2px 10px rgba(245, 197, 24, 0.15);
+}
+.fedor-book.dark .pcg-guide {
+  background: linear-gradient(135deg, #2e2815, #1A1340);
+  border-left-color: #F5C518;
+  box-shadow: none;
+}
+.fedor-book .pcg-guide-h {
+  font-weight: 900;
+  color: #7A3200;
+  font-size: 13px;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.fedor-book.dark .pcg-guide-h {
+  color: #FFD66B;
+}
+.fedor-book .pcg-card {
+  background: linear-gradient(135deg, #fff, #F8FFFB);
+  border-radius: 14px;
+  padding: 0.8rem 0.9rem;
+  margin-bottom: 0.55rem;
+  border-left: 4px solid #16876A;
+  box-shadow: 0 2px 10px rgba(14, 82, 64, 0.08);
+}
+.fedor-book.dark .pcg-card {
+  background: linear-gradient(135deg, #103A30, #1A1340);
+  border-left-color: #16876A;
+  box-shadow: none;
+}
+.fedor-book .pcg-num {
+  font-weight: 900;
+  color: #16876A;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+.fedor-book.dark .pcg-num {
+  color: #7DE0BE;
+}
+.fedor-book .pcg-sec {
+  margin-bottom: 0.45rem;
+}
+.fedor-book .pcg-label {
+  font-size: 11px;
+  font-weight: 900;
+  color: #0E5240;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.fedor-book.dark .pcg-label {
+  color: #7DE0BE;
+}
+.fedor-book .pcg-enun {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0A3A6A;
+  line-height: 1.4;
+}
+.fedor-book.dark .pcg-enun {
+  color: #c5bfee;
+}
+.fedor-book .pcg-op {
+  font-size: 12.5px;
+  color: #5A3200;
+  background: #FFF8DC;
+  border-radius: 8px;
+  padding: 5px 9px;
+  font-weight: 700;
+  border-left: 3px solid #F5C518;
+}
+.fedor-book.dark .pcg-op {
+  background: #2e2815;
+  color: #FFD66B;
+  border-left-color: #F5C518;
+}
+.fedor-book .pcg-viz {
+  font-size: 12px;
+  color: #0A3A6A;
+  background: #E0F7FF;
+  border-radius: 8px;
+  padding: 6px 9px;
+  font-weight: 600;
+  border-left: 3px solid #1A6CB4;
+  line-height: 1.4;
+}
+.fedor-book.dark .pcg-viz {
+  background: #112a44;
+  color: #a8cbee;
+  border-left-color: #1A6CB4;
+}
+.fedor-book .pcg-viz-svg {
+  background: #fff;
+  border-radius: 8px;
+  padding: 5px;
+  margin-top: 5px;
+  text-align: center;
+  border: 1px solid rgba(26, 108, 180, 0.15);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+.fedor-book.dark .pcg-viz-svg {
+  background: #1A1340;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+.fedor-book .pcg-ans {
+  font-size: 14px;
+  color: #7A1B00;
+  font-weight: 900;
+  background: #FFE9C4;
+  border-radius: 8px;
+  padding: 5px 9px;
+  border-left: 3px solid #FF8A1F;
+}
+.fedor-book.dark .pcg-ans {
+  background: #3a1a12;
+  color: #FFA066;
+  border-left-color: #FF8A1F;
+}
+.fedor-book .pcg-ans strong {
+  color: #FF8A1F;
+  font-size: 16px;
+}
+.fedor-book.dark .pcg-ans strong {
+  color: #FFA066;
+}
+.fedor-book .pcg-calc {
+  font-size: 11.5px;
+  color: #7A3200;
+  font-style: italic;
+  margin-top: 3px;
+  opacity: 0.85;
+}
+.fedor-book.dark .pcg-calc {
+  color: #FFA066;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   GRADE 1 — CTA "Repetir el despegue" card
+   ═══════════════════════════════════════════════════════════════════ */
+.fedor-book .f1cta-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(135deg, #140830 0%, #1E0848 50%, #2A0F60 100%);
+  border-radius: 18px;
+  padding: 1rem 1.1rem;
+  margin-top: .85rem;
+  cursor: pointer;
+  border: 2px solid rgba(245, 197, 24, .35);
+  box-shadow: 0 8px 28px rgba(30, 8, 72, .5);
+  transition: transform .2s, box-shadow .2s;
+  overflow: hidden;
+}
+.fedor-book .f1cta-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(30, 8, 72, .65);
+}
+.fedor-book .f1cta-rocket-wrap {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.fedor-book .f1cta-rocket {
+  font-size: 36px;
+  filter: drop-shadow(0 0 12px rgba(245, 197, 24, .7));
+  animation: f1ctaRocketBob 2.4s ease-in-out infinite;
+}
+@keyframes f1ctaRocketBob {
+  0%, 100% { transform: translateY(0) rotate(-8deg); }
+  50% { transform: translateY(-5px) rotate(4deg); }
+}
+.fedor-book .f1cta-flame {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 18px;
+  background: radial-gradient(ellipse, #FFEE99, #FF8800 60%, transparent);
+  border-radius: 50%;
+  animation: f1ctaFlame .12s linear infinite;
+  opacity: .8;
+}
+@keyframes f1ctaFlame {
+  0%, 100% { transform: translateX(-50%) scaleY(1); }
+  50% { transform: translateX(-50%) scaleY(1.4); }
+}
+.fedor-book .f1cta-body {
+  flex: 1;
+  min-width: 0;
+}
+.fedor-book .f1cta-pretitle {
+  font-size: 10px;
+  font-weight: 900;
+  color: rgba(245, 197, 24, .7);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 2px;
+}
+.fedor-book .f1cta-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: #fff;
+  font-family: 'Baloo 2', sans-serif;
+  line-height: 1.2;
+}
+.fedor-book .f1cta-sub {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, .6);
+  margin-top: 2px;
+}
+.fedor-book .f1cta-arrow {
+  font-size: 28px;
+  color: rgba(245, 197, 24, .5);
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   GRADE 1 — Laboratorio de Estadística card
+   ═══════════════════════════════════════════════════════════════════ */
+.fedor-book .fedor-lab-card {
+  position: relative;
+  background: linear-gradient(135deg, #0A3D28 0%, #16876A 50%, #24C496 100%);
+  border-radius: 22px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: .85rem;
+  box-shadow: 0 16px 40px rgba(22, 135, 106, .5), inset 0 0 30px rgba(255, 255, 255, .1);
+  border: 3px solid rgba(245, 197, 24, .5);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all .25s;
+  z-index: 5;
+}
+.fedor-book .fedor-lab-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 24px 50px rgba(22, 135, 106, .65);
+}
+.fedor-book .fedor-lab-card::before {
+  content: "NUEVO";
+  position: absolute;
+  top: -9px;
+  right: 14px;
+  background: linear-gradient(135deg, #FF1D4E, #F5C518);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  padding: 3px 14px;
+  border-radius: 12px;
+  letter-spacing: .12em;
+  box-shadow: 0 4px 12px rgba(255, 29, 78, .5);
+}
+.fedor-book .flc-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  z-index: 2;
+}
+.fedor-book .flc-icon {
+  font-size: 54px;
+  line-height: 1;
+  filter: drop-shadow(0 0 18px rgba(245, 197, 24, .7));
+  animation: flcIconBob 2.4s ease-in-out infinite;
+}
+@keyframes flcIconBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.fedor-book .flc-info {
+  flex: 1;
+  color: #fff;
+}
+.fedor-book .flc-title {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 19px;
+  font-weight: 900;
+  color: #FFD66B;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, .4);
+  line-height: 1.1;
+}
+.fedor-book .flc-sub {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, .92);
+  margin-top: 4px;
+  line-height: 1.35;
+}
+.fedor-book .flc-cta {
+  background: rgba(255, 255, 255, .18);
+  border: 2px solid #FFD66B;
+  color: #FFD66B;
+  border-radius: 14px;
+  padding: 6px 14px;
+  font-weight: 900;
+  font-size: 12px;
+  display: inline-block;
+  margin-top: 8px;
+  font-family: 'Nunito', sans-serif;
+  backdrop-filter: blur(4px);
+}
+.fedor-book .flc-preview {
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, .25);
+  border-radius: 12px;
+  padding: 8px;
+  border: 2px solid rgba(255, 255, 255, .25);
+}
+.fedor-book .flc-preview svg {
+  display: block;
+}
+@media (max-width: 520px) {
+  .fedor-book .flc-preview { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   GRADE 1 — Viaje a la Luna — Journey tracker
+   ═══════════════════════════════════════════════════════════════════ */
+.fedor-book .fj1-wrap {
+  position: relative;
+  background: linear-gradient(180deg, #020611 0%, #0A1840 50%, #1A0D40 100%);
+  border-radius: 20px;
+  padding: 1rem;
+  margin-bottom: .85rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .6);
+  overflow: hidden;
+  min-height: 200px;
+  border: 2px solid rgba(91, 191, 255, .25);
+}
+.fedor-book .fj1-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 15% 30%, rgba(255,255,255,.7) 1px, transparent 1.5px),
+    radial-gradient(circle at 45% 70%, rgba(255,255,255,.6) 1px, transparent 1.5px),
+    radial-gradient(circle at 75% 20%, rgba(255,255,255,.5) 1px, transparent 1.5px),
+    radial-gradient(circle at 90% 80%, rgba(255,255,255,.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 25% 90%, rgba(255,255,255,.5) 1px, transparent 1.5px);
+  background-size: 240px 240px, 200px 200px, 300px 300px, 160px 160px, 250px 250px;
+  animation: fj1StarsScroll 60s linear infinite;
+  opacity: .7;
+}
+@keyframes fj1StarsScroll {
+  from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+  to   { background-position: -240px 0, -200px 0, -300px 0, -160px 0, -250px 0; }
+}
+.fedor-book .fj1-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .6rem;
+}
+.fedor-book .fj1-title {
+  color: #FFD66B;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  text-shadow: 0 0 18px rgba(255, 214, 107, .5);
+}
+.fedor-book .fj1-progress {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+  background: rgba(255, 255, 255, .12);
+  padding: 5px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 214, 107, .4);
+}
+.fedor-book .fj1-track {
+  position: relative;
+  z-index: 2;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 0 6px;
+}
+.fedor-book .fj1-earth,
+.fedor-book .fj1-moon {
+  flex-shrink: 0;
+  position: relative;
+  animation: fj1PlanetBob 3s ease-in-out infinite;
+}
+@keyframes fj1PlanetBob {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50%      { transform: translateY(-4px) rotate(8deg); }
+}
+.fedor-book .fj1-earth {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #5BBFFF 0%, #1A6CB4 50%, #0A2E5A 90%);
+  box-shadow: 0 0 36px rgba(91, 191, 255, .7), inset -8px -8px 22px rgba(0, 0, 0, .4);
+  overflow: hidden;
+  position: relative;
+}
+.fedor-book .fj1-earth::after {
+  content: "";
+  position: absolute;
+  top: 25%; left: 18%;
+  width: 35%; height: 30%;
+  background: rgba(124, 200, 80, .7);
+  border-radius: 50%;
+}
+.fedor-book .fj1-earth::before {
+  content: "";
+  position: absolute;
+  top: 55%; left: 55%;
+  width: 28%; height: 22%;
+  background: rgba(124, 200, 80, .6);
+  border-radius: 50%;
+  z-index: 1;
+}
+.fedor-book .fj1-earth.starter {
+  box-shadow: 0 0 36px rgba(91, 191, 255, .95), 0 0 60px rgba(91, 191, 255, .7), inset -8px -8px 22px rgba(0, 0, 0, .4) !important;
+  animation: fj1EarthGlow 1.5s ease-in-out infinite, fj1PlanetBob 3s ease-in-out infinite;
+}
+@keyframes fj1EarthGlow {
+  0%, 100% { filter: brightness(1); }
+  50%      { filter: brightness(1.3) saturate(1.3); }
+}
+.fedor-book .fj1-moon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #FFF7E6, #E6DEC8, #A89888 80%);
+  box-shadow: 0 0 32px rgba(255, 247, 230, .8), inset -8px -8px 22px rgba(0, 0, 0, .45);
+  position: relative;
+  overflow: hidden;
+}
+.fedor-book .fj1-moon::after {
+  content: "";
+  position: absolute;
+  top: 25%; left: 20%;
+  width: 28%; height: 25%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(90, 72, 56, .55), transparent 80%);
+}
+.fedor-book .fj1-moon::before {
+  content: "";
+  position: absolute;
+  top: 55%; left: 50%;
+  width: 22%; height: 18%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(90, 72, 56, .45), transparent 80%);
+  z-index: 1;
+}
+.fedor-book .fj1-planet-label {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #FFD66B;
+  font-size: 11px;
+  font-weight: 900;
+  text-shadow: 0 0 10px rgba(0, 0, 0, .8);
+  white-space: nowrap;
+}
+.fedor-book .fj1-ast-row {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 60px;
+  margin: 0 4px;
+}
+.fedor-book .fj1-ast-row::before {
+  content: "";
+  position: absolute;
+  top: 50%; left: 0; right: 0;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, rgba(255, 214, 107, .4) 0 8px, transparent 8px 14px);
+  transform: translateY(-50%);
+}
+.fedor-book .fj1-ast {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #A89684, #605040, #2A1F12);
+  box-shadow: 0 0 8px rgba(168, 150, 132, .5);
+  z-index: 2;
+  transition: all .4s;
+}
+.fedor-book .fj1-ast.done {
+  background: radial-gradient(circle at 30% 30%, #FFEE99, #F5C518);
+  box-shadow: 0 0 18px rgba(245, 197, 24, .9);
+  transform: scale(1.35);
+}
+.fedor-book .fj1-ast.current {
+  background: radial-gradient(circle at 30% 30%, #FF89A8, #FF1D4E);
+  box-shadow: 0 0 26px rgba(255, 29, 78, .9);
+  transform: scale(1.6);
+  animation: fj1Pulse 1.4s ease-in-out infinite;
+}
+@keyframes fj1Pulse {
+  0%, 100% { transform: scale(1.6); box-shadow: 0 0 26px rgba(255, 29, 78, .9); }
+  50%      { transform: scale(1.95); box-shadow: 0 0 40px rgba(255, 29, 78, 1); }
+}
+.fedor-book .fj1-ship {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left 1.2s cubic-bezier(.5, 0, .5, 1.2);
+  pointer-events: none;
+}
+.fedor-book .fj1-ship svg {
+  filter: drop-shadow(0 0 12px rgba(91, 191, 255, .85)) drop-shadow(0 0 22px rgba(245, 197, 24, .55));
+  animation: fj1ShipBob 1.4s ease-in-out infinite;
+}
+@keyframes fj1ShipBob {
+  0%, 100% { transform: rotate(-4deg); }
+  50%      { transform: rotate(4deg); }
+}
+.fedor-book .fj1-ship::before {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(91, 191, 255, .4), transparent 70%);
+  animation: fj1ShipAura 1.6s ease-in-out infinite;
+  z-index: -1;
+}
+@keyframes fj1ShipAura {
+  0%, 100% { transform: scale(1); opacity: .6; }
+  50%      { transform: scale(1.6); opacity: .95; }
+}
+.fedor-book .fj1-flame {
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 20px;
+  background: radial-gradient(ellipse, #FFEE99, #FF8800 60%, transparent);
+  border-radius: 50% 0 0 50%;
+  animation: fj1Flame .1s linear infinite;
+}
+@keyframes fj1Flame {
+  0%, 100% { transform: translateY(-50%) scaleX(1); }
+  50%      { transform: translateY(-50%) scaleX(1.5); }
+}
+.fedor-book .fj1-legend {
+  position: relative;
+  z-index: 2;
+  margin-top: .7rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  font-size: 11px;
+  color: #C5BFEE;
+  font-weight: 800;
+}
+.fedor-book .fj1-legend span {
+  padding: 3px 10px;
+  background: rgba(0, 0, 0, .4);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 214, 107, .3);
+}
+.fedor-book .fj1-start-here {
+  position: absolute;
+  top: -58px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  animation: fj1StartBounce 1s ease-in-out infinite;
+  z-index: 10;
+}
+.fedor-book .fj1-start-pill {
+  background: linear-gradient(135deg, #FF1D4E, #F5C518);
+  color: #fff;
+  font-weight: 900;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 16px;
+  letter-spacing: .05em;
+  box-shadow: 0 6px 18px rgba(255, 29, 78, .6), 0 0 30px rgba(245, 197, 24, .5);
+  white-space: nowrap;
+  border: 2px solid #fff;
+}
+.fedor-book .fj1-start-arrow {
+  color: #F5C518;
+  font-size: 24px;
+  text-shadow: 0 0 14px rgba(245, 197, 24, .9);
+  line-height: 1;
+  margin-bottom: -3px;
+}
+@keyframes fj1StartBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(-10px); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   GRADE 1 — Action Bar & Panels
+   ═══════════════════════════════════════════════════════════════════ */
+.fedor-book .f1-action-bar {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  background: linear-gradient(135deg, #1A0A3C, #2A0F60, #0A1B40);
+  padding: 1.2rem 1rem 1rem;
+  border-radius: 20px;
+  margin: .85rem 0;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .55), inset 0 0 30px rgba(91, 191, 255, .15);
+  border: 2.5px solid rgba(91, 191, 255, .4);
+  z-index: 5;
+}
+.fedor-book .ab1-btn {
+  flex: 1;
+  min-width: 104px;
+  border: 2.5px solid rgba(255, 255, 255, .22);
+  color: #fff;
+  font-weight: 900;
+  font-size: 14px;
+  padding: 12px 8px;
+  border-radius: 16px;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: all .2s;
+  backdrop-filter: blur(8px);
+  min-height: 80px;
+}
+.fedor-book .ab1-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 10px 26px rgba(91, 191, 255, .45);
+  border-color: rgba(245, 197, 24, .7);
+}
+.fedor-book .ab1-btn:active {
+  transform: translateY(-1px) scale(1);
+}
+.fedor-book .ab1-ico {
+  font-size: 32px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .4));
+}
+.fedor-book .ab1-lbl {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .02em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+}
+
+/* Concept Tip */
+.fedor-book .f1-concept-tip {
+  position: relative;
+  background: linear-gradient(135deg, #FFF8DC, #FFE6A8);
+  border: 2.5px solid #F5C518;
+  border-radius: 18px;
+  padding: .85rem 1.1rem;
+  margin: .85rem 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: f1ct_glow 2.6s ease-in-out infinite;
+  box-shadow: 0 4px 14px rgba(186, 117, 23, .35);
+  overflow: hidden;
+}
+@keyframes f1ct_glow {
+  0%, 100% { box-shadow: 0 4px 14px rgba(186, 117, 23, .35); }
+  50% { box-shadow: 0 8px 22px rgba(245, 197, 24, .55); }
+}
+.fedor-book .f1ct-icon {
+  font-size: 34px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .2));
+  flex-shrink: 0;
+}
+.fedor-book .f1ct-text {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 800;
+  color: #7A3200;
+  line-height: 1.4;
+  text-align: left;
+}
+.fedor-book .f1ct-text strong {
+  color: #5A1F00;
+}
+
+/* Saber Card */
+.fedor-book .f1-saber-card {
+  position: relative;
+  background: linear-gradient(135deg, #A30041 0%, #FF1D4E 50%, #FF8C2A 100%);
+  border-radius: 24px;
+  padding: 1.1rem 1.3rem;
+  margin: .85rem 0;
+  color: #fff;
+  border: 3px solid #FFE066;
+  box-shadow: 0 14px 38px rgba(163, 0, 65, .55);
+  cursor: pointer;
+  overflow: hidden;
+  animation: f1sb_pulse 2.2s ease-in-out infinite;
+  transition: transform .2s;
+  text-align: left;
+}
+.fedor-book .f1-saber-card:hover {
+  transform: translateY(-3px);
+}
+.fedor-book .f1-saber-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .35), transparent);
+  transform: translateX(-150%) skewX(-22deg);
+  animation: f1sb_shine 3.4s ease-in-out infinite 1.5s;
+  pointer-events: none;
+}
+@keyframes f1sb_pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 8px 26px rgba(163, 0, 65, .5); }
+  50% { transform: scale(1.035); box-shadow: 0 12px 36px rgba(255, 29, 78, .65), 0 0 0 14px rgba(255, 29, 78, 0); }
+}
+@keyframes f1sb_shine {
+  0% { transform: translateX(-150%) skewX(-22deg); }
+  50%, 100% { transform: translateX(220%) skewX(-22deg); }
+}
+.fedor-book .f1sb-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  z-index: 2;
+}
+.fedor-book .f1sb-ic {
+  font-size: 54px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .35));
+  animation: f1sb_ic_bob 2.4s ease-in-out infinite;
+}
+@keyframes f1sb_ic_bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.fedor-book .f1sb-info {
+  flex: 1;
+}
+.fedor-book .f1sb-title {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: #FFF7C2;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, .45);
+  line-height: 1.15;
+}
+.fedor-book .f1sb-sub {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, .94);
+  margin-top: 4px;
+  line-height: 1.35;
+}
+.fedor-book .f1sb-cta {
+  display: inline-block;
+  margin-top: 8px;
+  background: rgba(255, 255, 255, .2);
+  border: 2px solid #FFE066;
+  color: #FFE066;
+  border-radius: 14px;
+  padding: 5px 14px;
+  font-weight: 900;
+  font-size: 12px;
+  font-family: 'Nunito', sans-serif;
+}
+
+/* LEVEL DOTS (1ro) */
+.fedor-book .level-indicator{display:flex;gap:4px;margin-top:6px}
+.fedor-book .lv-dot{width:8px;height:8px;border-radius:50%;background:#EEE}
+.fedor-book .lv-dot.fill-1{background:#16876A}
+.fedor-book .lv-dot.fill-2{background:#BA7517}
+.fedor-book .lv-dot.fill-3{background:#C94B22}
+.fedor-book .lv-dot.fill-4{background:#C25400}
+.fedor-book .lv-dot.fill-5{background:#6A1B9A}
+
+/* TOPICS (1ro) */
+.fedor-book .tc{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-md);padding:1rem 1.25rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm);margin-bottom:0.75rem;}
+.fedor-book .tc:hover{transform:translateX(5px);box-shadow:var(--shadow-md);border-color:var(--purple-l)}
+.fedor-book .tc.done{border-color:#16876A;border-width:2.5px;background:linear-gradient(135deg,#16876A,#24C496);color:#fff;box-shadow:0 6px 18px rgba(22,135,106,.35)}.fedor-book .tc.done .tc-name{color:#fff !important;text-shadow:0 1px 2px rgba(0,0,0,.15)}.fedor-book .tc.done .tc-desc{color:rgba(255,255,255,.92) !important}.fedor-book .tc.done .level-indicator .lv-dot{background:rgba(255,255,255,.45)}.fedor-book .tc.done .level-indicator .lv-dot.fill-1,.fedor-book .tc.done .level-indicator .lv-dot.fill-2,.fedor-book .tc.done .level-indicator .lv-dot.fill-3,.fedor-book .tc.done .level-indicator .lv-dot.fill-4,.fedor-book .tc.done .level-indicator .lv-dot.fill-5{background:#FFD66B}
+.fedor-book .tc.locked{opacity:.5;cursor:not-allowed}
+.fedor-book .tc.locked:hover{transform:none;box-shadow:var(--shadow-sm)}
+.fedor-book .tc-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.fedor-book .tc-body{flex:1}
+.fedor-book .tc-name{font-size:14px;font-weight:900;color:var(--text)}
+.fedor-book .tc-desc{font-size:11px;color:var(--muted);font-weight:600;margin-top:2px;line-height:1.4}
+.fedor-book .tc-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.fedor-book .tc-grade{font-size:11px;font-weight:900;padding:2px 8px;border-radius:12px}
+.fedor-book .tc-arrow{font-size:18px;color:var(--muted)}
+.fedor-book .tc.done .tc-arrow{color:var(--teal)}
+.fedor-book .tc-level-tag{font-size:9px;font-weight:900;padding:2px 7px;border-radius:8px;background:#EEEDFE;color:#3D1468}
+
+.fedor-book #f1LessonConceptBanner{background:linear-gradient(135deg,#E0F7FF,#DBEEFF);border:2px solid #5BBFFF;border-left:5px solid #1A6CB4;border-radius:12px;padding:10px 14px;margin-bottom:1rem;font-size:13px;font-weight:800;color:#0A3A6A;display:flex;align-items:center;gap:10px;line-height:1.4;text-align:left}
+.fedor-book #f1LessonConceptBanner .ico{font-size:24px}
+

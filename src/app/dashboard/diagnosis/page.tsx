@@ -6,6 +6,7 @@ import { authService } from '@/services/auth.service';
 import Sidebar from '@/components/Sidebar';
 import { FiUpload, FiPlus, FiX, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
 import { diagnosticService } from '@/services/diagnostic.service';
+import Swal from 'sweetalert2';
 
 interface User {
   id: string;
@@ -142,7 +143,12 @@ export default function DiagnosisPage() {
         file
       }));
     } else {
-      alert('Por favor, selecciona un archivo .xlsm válido');
+      Swal.fire({
+        title: 'Archivo no válido',
+        text: 'Por favor, selecciona un archivo .xlsm válido',
+        icon: 'error',
+        confirmButtonColor: '#ef4444'
+      });
     }
   };
 
