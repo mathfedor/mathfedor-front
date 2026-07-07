@@ -1,16 +1,21 @@
 'use client';
 
-import { useState, type ChangeEvent } from 'react';
+import { useState, useEffect, type ChangeEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import { useBook } from '../context/BookContext';
 import Starfield from '../shared/Starfield';
 import type { BookStudent } from '@/types/book-progress.types';
+import { authService } from '@/services/auth.service';
+import Swal from 'sweetalert2';
 
 const AVATARS = ['🧑‍🚀', '👩‍🚀', '🦁', '🐯', '🦊', '🐸', '🦋', '🦄', '🐉', '🤖'];
 
 /** Pantalla de bienvenida y captura de datos del estudiante. */
 export default function SetupScreen() {
   const { book, startStudent, goScreen } = useBook();
+  const router = useRouter();
   const [avatar, setAvatar] = useState('🧑‍🚀');
+  const [hasStudentData, setHasStudentData] = useState(true);
   const [form, setForm] = useState<Omit<BookStudent, 'avatar'>>({
     name: '',
     school: '',
@@ -19,11 +24,65 @@ export default function SetupScreen() {
     email: '',
   });
 
+  /** Al montar, pre-carga los datos del estudiante si el usuario tiene perfil completo. */
+  useEffect(() => {
+    const user = authService.getCurrentUser();
+    if (!user) return;
+
+    const student = user.student;
+    const studentComplete = !!(student && (student.name || student.institution || student.city));
+    setHasStudentData(studentComplete);
+
+    if (studentComplete && student) {
+      // Pre-cargar datos del estudiante en el formulario
+      setForm((prev) => ({
+        ...prev,
+        name: student.name ?? prev.name,
+        school: student.institution ?? prev.school,
+        city: student.city ?? prev.city,
+        email: student.email ?? prev.email,
+      }));
+    }
+  }, []);
+
   const update = (k: keyof typeof form) => (e: ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
-  const launch = () => {
-    if (!form.name.trim()) return;
+  const showProfileIncompleteAlert = async () => {
+    const result = await Swal.fire({
+      icon: 'warning',
+      title: '¡Perfil incompleto!',
+      html: `
+        <p style="color:#555;margin-bottom:0.5rem">
+          Para comenzar la aventura necesitas completar los datos de tu estudiante en tu perfil.
+        </p>
+        <p style="color:#888;font-size:13px">
+          Ve a <strong>Mi Perfil</strong> y llena la información de nombre, ciudad y colegio.
+        </p>
+      `,
+      showCancelButton: true,
+      confirmButtonText: '📝 Ir a Mi Perfil',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#7B2FBE',
+      cancelButtonColor: '#aaa',
+    });
+    if (result.isConfirmed) {
+      router.push('/dashboard/profile');
+    }
+  };
+
+  const launch = async () => {
+    if (!form.name.trim()) {
+      await showProfileIncompleteAlert();
+      return;
+    }
+
+    // Si el usuario logueado no tiene datos de estudiante, mostrar popup
+    if (!hasStudentData) {
+      await showProfileIncompleteAlert();
+      return;
+    }
+
     startStudent({ ...form, avatar });
   };
 

@@ -32,7 +32,7 @@
 @media(min-width:980px) {
 .fedor-book.in-lesson .lesson-main {grid-template-columns:minmax(0,1.4fr) minmax(280px,1fr)}
 }
-.fedor-book /* ANIMATIONS */
+/* ANIMATIONS */
 @keyframes float {0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes floatSm{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @keyframes twinkle{0%{opacity:.1;transform:scale(.8)}100%{opacity:.9;transform:scale(1)}}
@@ -530,7 +530,7 @@
 .lvl-easy {background:linear-gradient(135deg,#16876A,#24C496)}
 .fedor-book .lvl-medium {background:linear-gradient(135deg,#BA7517,#F5A623)}
 .fedor-book .lvl-hard {background:linear-gradient(135deg,#C94B22,#E8650A)}
-.fedor-book /* ═══ RESPONSIVE ═══ */
+/* ═══ RESPONSIVE ═══ */
 @media(max-width:480px) {
   .field-grid{grid-template-columns:1fr}
   .field-full{grid-column:1}
@@ -664,14 +664,14 @@
 .fedor-book /* ═══ COMBO MULTIPLIER ═══ */
 .combo-bar {height:5px;background:#EEEBF8;border-radius:3px;margin-bottom:.75rem;overflow:hidden}
 .fedor-book .combo-fill {height:5px;background:linear-gradient(90deg,#F5C518,#FF8C2A);border-radius:3px;transition:width .3s}
-.fedor-book /* ═══ RESPONSIVE ═══ */
+/* ═══ RESPONSIVE ═══ */
 @media(max-width:480px) {
   .count-obj{font-size:36px;gap:7px}
   .ph-stats{grid-template-columns:repeat(2,1fr)}
   .ph-stat:nth-child(2){border-right:none}
   .ph-stat:nth-child(3){border-top:1px solid rgba(255,255,255,.1)}
 }
-.fedor-book /* ═══ MOBILE/TABLET RESPONSIVE ═══════════════════════════════ */
+/* ═══ MOBILE/TABLET RESPONSIVE ═══════════════════════════════ */
 @media(max-width:600px) {
   .field-grid{grid-template-columns:1fr}
   .field-full{grid-column:1}
@@ -722,7 +722,7 @@ button, .fedor-book .av-btn, .fedor-book .unit-card, .fedor-book .tc {
 .fedor-book .drag-item {transition:transform .15s;display:inline-block}
 .fedor-book .drag-item:active {transform:scale(1.2);opacity:.7}
 .fedor-book .drag-item.dragging {opacity:.4}
-.fedor-book /* ═══════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════════
    RESPONSIVE — mobile + tablet adaptive layout
    Adds richer breakpoints for the gamification modals, .fedor-book the 3D
    galaxy, .fedor-book the new header buttons and the shop screen.
@@ -750,7 +750,7 @@ button, .fedor-book .av-btn, .fedor-book .unit-card, .fedor-book .tc {
   #cinLine2{font-size:18px}
   #cinLine3{font-size:14px}
 }
-.fedor-book /* MOBILE general (≤600px) — headline collapses, .fedor-book modals fullscreen, .fedor-book buttons stack */
+/* MOBILE general (≤600px) — headline collapses, .fedor-book modals fullscreen, .fedor-book buttons stack */
 @media (max-width:600px) {
   /* Header buttons: collapse to icon-only on small screens to fit them all */
   .hdr-btns{flex-wrap:wrap;justify-content:flex-end;gap:4px}
@@ -805,7 +805,7 @@ button, .fedor-book .av-btn, .fedor-book .unit-card, .fedor-book .tc {
   /* Confirm button always visible */
   .btn-ok{margin-top:.65rem}
 }
-.fedor-book /* SMALL MOBILE (≤380px) — even tighter */
+/* SMALL MOBILE (≤380px) — even tighter */
 @media (max-width:380px) {
   .fedor-book .app{padding:.65rem .55rem 4.5rem}
   .hdr-btn{font-size:10px;padding:4px 7px}
@@ -821,7 +821,7 @@ button, .fedor-book .av-btn, .fedor-book .unit-card, .fedor-book .tc {
   .shop-emoji{font-size:34px}
   .iceShield-btn{width:42px;height:42px;font-size:18px;top:52px;right:8px}
 }
-.fedor-book /* LANDSCAPE phone — keep modal scrollable */
+/* LANDSCAPE phone — keep modal scrollable */
 @media (max-height:480px) and (orientation:landscape) {
   .fg-modal{align-items:center}
   .fg-card{max-height:96vh;border-radius:18px}
@@ -2756,4 +2756,416 @@ button, .fedor-book .av-btn, .fedor-book .unit-card, .fedor-book .tc {
 
 .fedor-book #f1LessonConceptBanner{background:linear-gradient(135deg,#E0F7FF,#DBEEFF);border:2px solid #5BBFFF;border-left:5px solid #1A6CB4;border-radius:12px;padding:10px 14px;margin-bottom:1rem;font-size:13px;font-weight:800;color:#0A3A6A;display:flex;align-items:center;gap:10px;line-height:1.4;text-align:left}
 .fedor-book #f1LessonConceptBanner .ico{font-size:24px}
+
+/* Fedor 1ro Ported Juegos Picker Modal */
+.fedor-book .jg-picker-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 8, 48, 0.82);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  font-family: 'Nunito', sans-serif;
+  backdrop-filter: blur(8px);
+}
+.fedor-book .jg-picker-modal {
+  background: #ffffff;
+  border-radius: 28px;
+  max-width: 380px;
+  width: 100%;
+  padding: 1.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+  position: relative;
+  border: 4px solid #FDFBFF;
+  animation: floatUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fedor-book .jg-picker-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #FEE2E8;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  font-weight: 900;
+  color: #A30041;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+.fedor-book .jg-picker-close:hover {
+  transform: scale(1.15);
+}
+.fedor-book .jg-picker-header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.fedor-book .jg-picker-emoji {
+  font-size: 42px;
+  animation: iconFloat 2.8s ease-in-out infinite;
+}
+.fedor-book .jg-picker-title {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: #A30041;
+  margin-top: 4px;
+}
+.fedor-book .jg-picker-subtitle {
+  font-size: 12px;
+  color: #7A7299;
+  font-weight: 700;
+  margin-top: 2px;
+}
+.fedor-book .jg-picker-grid {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+.fedor-book .jg-picker-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-radius: 16px;
+  padding: 12px 14px;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.2s ease;
+  width: 100%;
+  border-width: 2px;
+  border-style: solid;
+}
+.fedor-book .jg-picker-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+.fedor-book .jg-picker-item-icon {
+  font-size: 32px;
+}
+.fedor-book .jg-picker-item-body {
+  flex: 1;
+}
+.fedor-book .jg-picker-item-title {
+  font-size: 15px;
+  font-weight: 900;
+}
+.fedor-book .jg-picker-item-desc {
+  font-size: 11px;
+  color: #7A7299;
+  font-weight: 700;
+  margin-top: 1px;
+}
+.fedor-book .jg-picker-item-arrow {
+  font-weight: 900;
+  font-size: 18px;
+}
+
+@keyframes floatUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ── Tablas de Conteo ─────────────────────────────────────────── */
+.fedor-book .tc-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1rem;
+  margin-bottom: .8rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,.08);
+  border: 1px solid rgba(0,40,80,.05);
+}
+.fedor-book .tc-title {
+  font-weight: 900;
+  color: #0A3A6A;
+  font-size: 14px;
+  margin-bottom: .5rem;
+}
+.fedor-book .tc-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.fedor-book .tc-cell {
+  background: linear-gradient(135deg, #F0F8FF, #fff);
+  border-radius: 10px;
+  padding: 8px 4px;
+  text-align: center;
+  border: 1px solid rgba(26,108,180,.15);
+}
+.fedor-book .tc-cell-emojis {
+  font-size: 18px;
+  line-height: 1.1;
+  margin-bottom: 3px;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.fedor-book .tc-cell-num {
+  font-weight: 900;
+  color: #0A3A6A;
+  font-size: 14px;
+}
+
+/* ── Retos Matemáticos ───────────────────────────────────────── */
+.fedor-book .reto-card {
+  background: linear-gradient(135deg, #FFF9E6, #FFFFFF);
+  border-radius: 14px;
+  padding: 1rem;
+  margin-bottom: .6rem;
+  border: 2px solid #FFB066;
+  box-shadow: 0 4px 18px rgba(255,140,40,.15);
+  text-align: left;
+}
+.fedor-book .reto-q {
+  font-weight: 900;
+  color: #7A3200;
+  font-size: 14px;
+  margin-bottom: .4rem;
+}
+.fedor-book .reto-hint {
+  font-size: 12px;
+  color: #A05500;
+  font-weight: 700;
+  margin-bottom: .3rem;
+}
+.fedor-book .reto-btn {
+  background: linear-gradient(135deg, #FF8A1F, #FFB066);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 900;
+  cursor: pointer;
+  font-size: 13px;
+  transition: transform 0.2s;
+}
+.fedor-book .reto-btn:hover {
+  transform: scale(1.03);
+}
+.fedor-book .reto-ans {
+  display: none;
+  margin-top: .5rem;
+  padding: .5rem;
+  background: #FFE9C4;
+  border-radius: 8px;
+  font-weight: 900;
+  color: #7A1B00;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+.fedor-book .reto-ans.show {
+  display: block;
+}
+
+/* === Conceptos Fedor Modal === */
+.fedor-book .f1cp-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 4, 30, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 99990;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  animation: f1cp_slideUp 0.3s ease;
+}
+@keyframes f1cp_slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.fedor-book .f1cp-card {
+  background: #fff;
+  border-radius: 24px;
+  max-width: 780px;
+  width: 100%;
+  max-height: 92vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  border: 3px solid #FFE066;
+}
+.fedor-book .f1cp-head {
+  background: linear-gradient(135deg, #BA7517, #F5C518);
+  color: #fff;
+  padding: 1.1rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Baloo 2', sans-serif;
+  text-align: left;
+}
+.fedor-book .f1cp-head-ic {
+  font-size: 36px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+}
+.fedor-book .f1cp-head-info {
+  flex: 1;
+}
+.fedor-book .f1cp-head-title {
+  font-size: 21px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+.fedor-book .f1cp-head-sub {
+  font-size: 12px;
+  font-weight: 700;
+  opacity: .85;
+  margin-top: 2px;
+}
+.fedor-book .f1cp-close {
+  background: rgba(255, 255, 255, 0.22);
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.fedor-book .f1cp-close:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+.fedor-book .f1cp-body {
+  padding: 1.1rem 1.2rem;
+  overflow-y: auto;
+  flex: 1;
+  background: linear-gradient(180deg, #FFF8E0, #FFFCEF);
+}
+.fedor-book .f1cp-tabs {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+.fedor-book .f1cp-tab {
+  min-width: 0;
+  background: rgba(186, 117, 23, 0.12);
+  border: 2px solid rgba(186, 117, 23, 0.3);
+  color: #7A3200;
+  font-weight: 900;
+  font-size: 12px;
+  padding: 8px 6px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  text-align: center;
+  line-height: 1.15;
+  transition: all 0.15s;
+}
+.fedor-book .f1cp-tab:hover {
+  background: rgba(186, 117, 23, 0.2);
+}
+.fedor-book .f1cp-tab.on {
+  background: linear-gradient(135deg, #BA7517, #F5C518);
+  color: #fff;
+  border-color: #BA7517;
+  box-shadow: 0 6px 14px rgba(186, 117, 23, 0.35);
+}
+.fedor-book .f1cp-section {
+  background: #fff;
+  border: 2px solid #FFB066;
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 14px rgba(255, 138, 31, 0.15);
+  text-align: left;
+}
+.fedor-book .f1cp-section-title {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: #7A1B00;
+  margin-bottom: .6rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 2px dashed #FFC58A;
+  padding-bottom: .4rem;
+}
+.fedor-book .f1cp-snippet {
+  background: #FFF8E0;
+  border-left: 4px solid #F5C518;
+  border-radius: 8px;
+  padding: .55rem .85rem;
+  margin-bottom: .5rem;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.45;
+}
+.fedor-book .f1cp-snippet.big {
+  font-size: 16px;
+  font-weight: 800;
+  color: #000;
+  background: #FFFFFF;
+  border-left: 5px solid #FF8A1F;
+}
+.fedor-book .f1cp-empty {
+  text-align: center;
+  color: #7A3200;
+  font-weight: 800;
+  padding: 2rem 1rem;
+}
+@media (max-width: 600px) {
+  .fedor-book .f1cp-card {
+    border-radius: 18px;
+  }
+  .fedor-book .f1cp-head {
+    padding: .85rem 1rem;
+  }
+  .fedor-book .f1cp-head-title {
+    font-size: 17px;
+  }
+  .fedor-book .f1cp-head-ic {
+    font-size: 30px;
+  }
+  .fedor-book .f1cp-tabs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@keyframes trophyPop {
+  0% { transform: scale(.2) rotate(-180deg); opacity: 0; }
+  60% { transform: scale(1.2) rotate(15deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes trophySpin {
+  0% { transform: rotate(-6deg); }
+  50% { transform: rotate(6deg); }
+  100% { transform: rotate(-6deg); }
+}
+
+@keyframes rankPulse {
+  0%,100% { transform:scale(1); filter:drop-shadow(0 0 30px rgba(168,100,232,.7)); }
+  50% { transform:scale(1.08); filter:drop-shadow(0 0 50px rgba(245,197,24,.9)); }
+}
+
+
 

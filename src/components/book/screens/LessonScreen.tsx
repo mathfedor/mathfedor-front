@@ -185,14 +185,15 @@ export default function LessonScreen() {
   const exercise = exercises[idx];
 
   // Fase de ejemplos: se muestra antes de la práctica (salvo reto diario).
+  // Fase de ejemplos: se muestra antes de la práctica (salvo reto diario).
   if (phase === 'examples') {
     if (!book || !currentLevel) return null;
 
     return (
       <div className="screen active" id="screen-lesson">
         <div className="back-row" onClick={() => goScreen(meta.backTarget)}>← Volver a temas</div>
-        {isGrade1 && (
-          <div style={{ textAlign: 'left', marginBottom: '1.25rem' }}>
+        {isGrade1 ? (
+          <div style={{ textAlign: 'left', marginBottom: '1rem' }}>
             <div style={{ fontWeight: 900, fontSize: 16 }}>
               {meta.headerIcon} {meta.headerTitle}
               {(() => {
@@ -204,13 +205,73 @@ export default function LessonScreen() {
               {meta.level?.short || 'N1'}
             </div>
           </div>
+        ) : (
+          <div style={{ textAlign: 'left', marginBottom: '1.25rem' }}>
+            <div style={{ fontWeight: 900, fontSize: 16 }}>{meta.headerIcon} {meta.headerTitle}</div>
+            <div style={{ fontSize: 12, color: 'var(--muted)' }}>{meta.levelLabel}</div>
+          </div>
         )}
-        {isGrade1 && conceptTip && (
-          <div id="f1LessonConceptBanner">
+
+        {conceptTip && (
+          <div id="f1LessonConceptBanner" style={{ marginBottom: '1rem' }}>
             <span className="ico">{conceptTip.icon}</span>
             <span>{conceptTip.text}</span>
           </div>
         )}
+
+        {isGrade1 && (
+          <>
+            {/* Timeline of dots */}
+            <div id="progTrack" style={{ margin: '0.85rem 0 1.25rem' }}>
+              {exercises.map((_, dotIdx) => (
+                <div key={dotIdx} className="pt-dot">
+                  {dotIdx + 1}
+                </div>
+              ))}
+            </div>
+
+            {/* Preview of the first exercise card */}
+            <div style={{ background: '#fff', border: '2px solid #FF8C2A', borderRadius: '18px', padding: '1.25rem', marginBottom: '1.5rem', boxShadow: '0 8px 24px rgba(0,0,0,.05)' }}>
+              {/* Question box */}
+              <div style={{ background: '#E8F5FF', border: '1.5px solid #BFE3FF', borderRadius: '12px', padding: '.75rem 1rem', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '.75rem' }}>
+                <span style={{ fontSize: '18px' }}>👋</span>
+                <div style={{ fontSize: '14px', fontWeight: 800, color: '#0A3A6A', textAlign: 'left' }}>
+                  {exercises[0].q}
+                </div>
+              </div>
+
+              {/* Instruction box */}
+              <div style={{ background: '#FFFDF0', border: '1.5px solid #FFEFA8', borderRadius: '12px', padding: '.75rem 1rem', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '.75rem' }}>
+                <span style={{ fontSize: '16px' }}>📖</span>
+                <div style={{ fontSize: '13px', fontWeight: 700, color: '#7A5C00', textAlign: 'left' }}>
+                  Instrucción: Lee la pregunta y piensa paso a paso.
+                </div>
+              </div>
+
+              {/* Procedure button */}
+              <button 
+                disabled
+                style={{
+                  padding: '10px 20px',
+                  background: '#24C496',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '13px',
+                  fontWeight: 900,
+                  cursor: 'not-allowed',
+                  opacity: 0.95,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                💡 Ver procedimiento
+              </button>
+            </div>
+          </>
+        )}
+
         <ExamplesPanel
           examples={examples}
           levelIndex={currentLevel.levelIndex}
@@ -302,9 +363,27 @@ export default function LessonScreen() {
             <div style={{ fontWeight: 900, color: 'var(--orange)' }}>{idx + 1}/{exercises.length}</div>
           </div>
         </div>
-        <div className="pg-bar" style={{ marginTop: 8 }}>
-          <div className="pg-fill" style={{ width: `${progressPct}%` }} />
-        </div>
+        {isGrade1 ? (
+          <div id="progTrack" style={{ margin: '0.85rem 0 0' }}>
+            {exercises.map((_, dotIdx) => {
+              let cls = 'pt-dot';
+              if (dotIdx === idx) cls += ' active';
+              else if (dotIdx < idx) {
+                const att = attempts.find(a => a.exerciseId === exercises[dotIdx].id);
+                cls += (att && att.isCorrect) ? ' done' : ' wrong';
+              }
+              return (
+                <div key={dotIdx} className={cls}>
+                  {dotIdx + 1}
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="pg-bar" style={{ marginTop: 8 }}>
+            <div className="pg-fill" style={{ width: `${progressPct}%` }} />
+          </div>
+        )}
       </div>
 
       {isGrade1 && conceptTip && (

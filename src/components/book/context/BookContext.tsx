@@ -15,6 +15,7 @@ import {
   useMemo,
   type ReactNode,
 } from 'react';
+import Swal from 'sweetalert2';
 import type { Book, LevelRef, Exercise } from '@/types/book.types';
 import type { GamificationCatalog, ShopItem } from '@/types/gamification.types';
 import { pickDailyExercises, dayKey } from '@/services/daily-challenge.service';
@@ -35,6 +36,7 @@ import {
   getUnlockedAvatars,
   registerLogin,
 } from '@/services/gamification.service';
+import { unlockRandomSticker, resetStickers } from '../utils/stickerService';
 
 export type BookScreen =
   | 'setup'
@@ -51,9 +53,11 @@ export type BookScreen =
   | 'examen'
   | 'espacial'
   | 'estandares'
-  | 'problemas';
+  | 'problemas'
+  | 'conteo'
+  | 'retos';
 
-export type BookGameShortcut = 'tablas' | 'stats';
+export type BookGameShortcut = 'tablas' | 'stats' | 'conteo' | 'retos1';
 
 interface BookContextValue {
   loading: boolean;
@@ -214,6 +218,9 @@ export function BookProvider({ children, slug }: { children: ReactNode; slug: st
 
   const goScreen = useCallback((s: BookScreen) => {
     setScreen(s);
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0);
+    }
     if (typeof document !== 'undefined') {
       const root = document.querySelector('.fedor-book');
       if (root) root.classList.toggle('in-lesson', s === 'lesson');
@@ -226,8 +233,14 @@ export function BookProvider({ children, slug }: { children: ReactNode; slug: st
 
   const openGameShortcut = useCallback(
     (shortcut: BookGameShortcut) => {
-      setGameShortcut(shortcut);
-      goScreen('games');
+      if (shortcut === 'conteo') {
+        goScreen('conteo');
+      } else if (shortcut === 'retos1') {
+        goScreen('retos');
+      } else {
+        setGameShortcut(shortcut);
+        goScreen('games');
+      }
     },
     [goScreen]
   );
@@ -330,6 +343,25 @@ export function BookProvider({ children, slug }: { children: ReactNode; slug: st
       if (fresh.length || ru) await bookProgressService.saveProgress(finalProgress);
       setNewBadges(fresh);
       setRankUp(ru);
+
+      // Unlock a random sticker in 1st Grade if score is >= 70%
+      if (book?.slug === 'libro-1ro' && result.pct >= 70) {
+        setTimeout(() => {
+          const sticker = unlockRandomSticker();
+          if (sticker) {
+            Swal.fire({
+              title: '¡Has ganado un sticker! 🎉',
+              html: `<div style="font-size: 64px; margin: 15px 0; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));">${sticker.e}</div>
+                     <div style="font-size: 18px; font-weight: 900; color: #9B0066; font-family: 'Baloo 2', sans-serif;">${sticker.name}</div>
+                     <div style="font-size: 13px; color: #666; margin-top: 8px; font-weight: 700;">¡Agrégalo a tu colección en el Álbum!</div>`,
+              confirmButtonText: '¡Súper!',
+              confirmButtonColor: '#9B5CFF',
+              background: '#FFF7E0',
+            });
+          }
+        }, 1500);
+      }
+
       goScreen('results');
     },
     [progress, catalog, book, goScreen]
@@ -391,7 +423,7 @@ export function BookProvider({ children, slug }: { children: ReactNode; slug: st
         ...progress.gamification,
         lastDaily: today,
         totalXP: progress.gamification.totalXP + bonus,
-        coins: progress.gamification.coins + 20,
+        coins: progress.gamification.coins + 25,
       },
     });
     return bonus;
@@ -431,6 +463,7 @@ export function BookProvider({ children, slug }: { children: ReactNode; slug: st
 
   const resetAll = useCallback(() => {
     bookProgressService.reset(slug);
+    resetStickers();
     setProgress(null);
     goScreen('setup');
   }, [goScreen, slug]);

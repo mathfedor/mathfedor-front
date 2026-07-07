@@ -22,10 +22,16 @@ import FinalExamScreen from './screens/FinalExamScreen';
 import EspacialScreen from './screens/EspacialScreen';
 import EstandaresScreen from './screens/EstandaresScreen';
 import ProblemasScreen from './screens/ProblemasScreen';
+import ConteoScreen from './screens/ConteoScreen';
+import RetosScreen from './screens/RetosScreen';
+import ConceptosFedorModal from './shared/ConceptosFedorModal';
+import StickerAlbumModal from './shared/StickerAlbumModal';
 import PwaRegister from './shared/PwaRegister';
 import InstallPrompt from './shared/InstallPrompt';
 import BookHeader from './shared/BookHeader';
 import LaunchIntro from './shared/LaunchIntro';
+import StatsLab from './games/StatsLab';
+import MultiplicationTables from './games/MultiplicationTables';
 
 const SCREENS: Record<BookScreen, ComponentType> = {
   setup: SetupScreen,
@@ -43,6 +49,8 @@ const SCREENS: Record<BookScreen, ComponentType> = {
   espacial: EspacialScreen,
   estandares: EstandaresScreen,
   problemas: ProblemasScreen,
+  conteo: ConteoScreen,
+  retos: RetosScreen,
 };
 
 /** Punto de entrada de la experiencia del libro (incluye el proveedor). */
@@ -214,10 +222,14 @@ function FloatingQuickActions() {
     </div>
   );
 }
-
 function Grade1FloatingButtons() {
-  const { screen, goScreen, openGameShortcut } = useBook();
+  const { screen, goScreen, openGameShortcut, grantReward } = useBook();
   const [bubbleText, setBubbleText] = useState<string | null>(null);
+  const [showJuegosPicker, setShowJuegosPicker] = useState(false);
+  const [showStatsLab, setShowStatsLab] = useState(false);
+  const [showTablas, setShowTablas] = useState(false);
+  const [showConceptos, setShowConceptos] = useState(false);
+  const [showStickers, setShowStickers] = useState(false);
 
   const hidden = screen === 'lesson' || screen === 'galaxy';
   if (hidden) return null;
@@ -235,6 +247,17 @@ function Grade1FloatingButtons() {
     setTimeout(() => {
       setBubbleText(null);
     }, 4500);
+  };
+
+  const handleGameSelect = (gameId: 'stats' | 'tablas' | 'conteo' | 'retos1') => {
+    setShowJuegosPicker(false);
+    if (gameId === 'stats') {
+      setShowStatsLab(true);
+    } else if (gameId === 'tablas') {
+      setShowTablas(true);
+    } else {
+      openGameShortcut(gameId);
+    }
   };
 
   return (
@@ -260,28 +283,28 @@ function Grade1FloatingButtons() {
       <button
         type="button"
         className="f1-gamepad-btn"
-        onClick={() => goScreen('games')}
+        onClick={() => setShowJuegosPicker(true)}
         title="Juegos de Fedor"
       >
         🎮
       </button>
 
-      {/* Botón Stickerbook (Diario) */}
+      {/* Botón Mi Álbum de stickers */}
       <button
         type="button"
         className="kj1-stickerbook-btn"
-        onClick={() => goScreen('diary')}
-        title="Diario del Viaje"
+        onClick={() => setShowStickers(true)}
+        title="Mi Álbum de stickers"
       >
-        📖
+        📔
       </button>
 
       {/* Botón Conceptos (Libros) */}
       <button
         type="button"
         className="f1-concept-btn"
-        onClick={() => goScreen('estandares')}
-        title="Estándares MEN"
+        onClick={() => setShowConceptos(true)}
+        title="Conceptos Fedor"
       >
         📚
       </button>
@@ -290,7 +313,7 @@ function Grade1FloatingButtons() {
       <button
         type="button"
         className="f1-tablas-btn"
-        onClick={() => openGameShortcut('tablas')}
+        onClick={() => setShowTablas(true)}
         title="Tablas de Multiplicar"
       >
         🔢
@@ -300,11 +323,106 @@ function Grade1FloatingButtons() {
       <button
         type="button"
         className="f1-lab-btn"
-        onClick={() => openGameShortcut('stats')}
+        onClick={() => setShowStatsLab(true)}
         title="Laboratorio de Estadística"
       >
         🧪
       </button>
+
+      {/* Modal Picker Juegos de 1° */}
+      {showJuegosPicker && (
+        <div className="jg-picker-overlay" onClick={() => setShowJuegosPicker(false)}>
+          <div className="jg-picker-modal" onClick={(e) => e.stopPropagation()}>
+            <button 
+              type="button"
+              className="jg-picker-close" 
+              onClick={() => setShowJuegosPicker(false)}
+              aria-label="Cerrar"
+            >
+              ✕
+            </button>
+            <div className="jg-picker-header">
+              <div className="jg-picker-emoji">🎮</div>
+              <div className="jg-picker-title">Juegos de 1°</div>
+              <div className="jg-picker-subtitle">Practica jugando y aprende más</div>
+            </div>
+            <div className="jg-picker-grid">
+              {/* Laboratorio de Estadística */}
+              <button
+                type="button"
+                className="jg-picker-item"
+                style={{ background: 'linear-gradient(135deg,#F8F5FF,#EEEDFE)', borderColor: '#C5BFEE', color: '#3D1468' }}
+                onClick={() => handleGameSelect('stats')}
+              >
+                <span className="jg-picker-item-icon">🧪</span>
+                <div className="jg-picker-item-body">
+                  <div className="jg-picker-item-title">Laboratorio de Estadística</div>
+                  <div className="jg-picker-item-desc">Mete datos y crea gráficos</div>
+                </div>
+                <span className="jg-picker-item-arrow">›</span>
+              </button>
+
+              {/* Tablas Mágicas */}
+              <button
+                type="button"
+                className="jg-picker-item"
+                style={{ background: 'linear-gradient(135deg,#FEF0E6,#FFE2C8)', borderColor: '#FBBF7A', color: '#7A3200' }}
+                onClick={() => handleGameSelect('tablas')}
+              >
+                <span className="jg-picker-item-icon">📊</span>
+                <div className="jg-picker-item-body">
+                  <div className="jg-picker-item-title">Tablas Mágicas</div>
+                  <div className="jg-picker-item-desc">Practica las tablas del 1 al 10</div>
+                </div>
+                <span className="jg-picker-item-arrow">›</span>
+              </button>
+
+              {/* Tablas de Conteo */}
+              <button
+                type="button"
+                className="jg-picker-item"
+                style={{ background: 'linear-gradient(135deg,#DCF5EE,#B8F0DE)', borderColor: '#8FD9C0', color: '#074F3A' }}
+                onClick={() => handleGameSelect('conteo')}
+              >
+                <span className="jg-picker-item-icon">🔢</span>
+                <div className="jg-picker-item-body">
+                  <div className="jg-picker-item-title">Tablas de Conteo</div>
+                  <div className="jg-picker-item-desc">Conteo 1-10, 1-20, 1-50, 1-100</div>
+                </div>
+                <span className="jg-picker-item-arrow">›</span>
+              </button>
+
+              {/* Retos Matemáticos */}
+              <button
+                type="button"
+                className="jg-picker-item"
+                style={{ background: 'linear-gradient(135deg,#FAECE7,#F5C7B8)', borderColor: '#F5B09A', color: '#7A1B00' }}
+                onClick={() => handleGameSelect('retos1')}
+              >
+                <span className="jg-picker-item-icon">🎯</span>
+                <div className="jg-picker-item-body">
+                  <div className="jg-picker-item-title">Retos Matemáticos</div>
+                  <div className="jg-picker-item-desc">Pon a prueba tu velocidad</div>
+                </div>
+                <span className="jg-picker-item-arrow">›</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {showStatsLab && <StatsLab onClose={() => setShowStatsLab(false)} />}
+      {showTablas && (
+        <MultiplicationTables
+          onReward={(coins) => grantReward(0, coins)}
+          onClose={() => setShowTablas(false)}
+        />
+      )}
+      {showConceptos && (
+        <ConceptosFedorModal onClose={() => setShowConceptos(false)} />
+      )}
+      {showStickers && (
+        <StickerAlbumModal onClose={() => setShowStickers(false)} />
+      )}
     </>
   );
 }

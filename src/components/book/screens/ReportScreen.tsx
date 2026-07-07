@@ -75,7 +75,7 @@ export default function ReportScreen() {
       <ReportCharts summary={summary} gradeCounts={countGrades(Object.values(progress.scores).map((s) => s.grade))} />
 
       <div className="no-print" style={{ marginTop: '1.25rem' }}>
-        <button className="btn-primary" style={{ width: '100%' }} onClick={runAI} disabled={loadingAi}>
+        <button id="ai-report-btn" className="btn-primary" style={{ width: '100%' }} onClick={runAI} disabled={loadingAi}>
           {loadingAi ? 'Analizando…' : '🤖 Generar Análisis IA Fedor'}
         </button>
       </div>

@@ -10,7 +10,7 @@ import DecompositionTool from '../games/DecompositionTool';
 import BadgeShelf from '../games/BadgeShelf';
 import { genHearts, genClock, genStore } from '../games/gameRounds';
 
-type GameId = 'tablas' | 'hearts' | 'clock' | 'store' | 'division' | 'stats' | 'decomp' | 'badges' | null;
+type GameId = 'tablas' | 'hearts' | 'clock' | 'store' | 'division' | 'stats' | 'conteo' | 'retos1' | 'decomp' | 'badges' | null;
 
 interface GameCard {
   id: Exclude<GameId, null>;
@@ -28,6 +28,8 @@ const CARDS: GameCard[] = [
   { id: 'store', emoji: '🏪', title: 'Tienda de Math', desc: 'Da el cambio correcto', reward: '+20 🪙', color: '#16876A' },
   { id: 'division', emoji: '🍫', title: 'Chocolatinas de Math', desc: 'Reparte arrastrando a cada cesto', reward: '+10 🪙', color: '#B84D00' },
   { id: 'stats', emoji: '📊', title: 'Laboratorio de Estadística', desc: '¡Crea tus propios gráficos!', color: '#0E6BA8' },
+  { id: 'conteo', emoji: '🔢', title: 'Tablas de Conteo', desc: 'Conteo 1-10, 1-20, 1-50, 1-100', color: '#16876A' },
+  { id: 'retos1', emoji: '🎯', title: 'Retos Matemáticos', desc: 'Pon a prueba tu velocidad y conocimientos', reward: '+15 🪙', color: '#C94B22' },
   { id: 'decomp', emoji: '🔢', title: 'Descomposición Posicional', desc: 'Centenas, decenas y unidades', color: '#6A1B9A' },
   { id: 'badges', emoji: '🏅', title: 'Mis Insignias', desc: 'Tu colección de medallas', color: '#C94B22' },
 ];
@@ -59,7 +61,20 @@ export default function GamesScreen() {
 
       <div className="games-grid">
         {CARDS.map((c) => (
-          <button key={c.id} className="game-card-btn" onClick={() => setActive(c.id)} style={{ borderColor: c.color }}>
+          <button
+            key={c.id}
+            className="game-card-btn"
+            onClick={() => {
+              if (c.id === 'conteo') {
+                goScreen('conteo');
+              } else if (c.id === 'retos1') {
+                goScreen('retos');
+              } else {
+                setActive(c.id);
+              }
+            }}
+            style={{ borderColor: c.color }}
+          >
             <span className="gcb-emoji">{c.emoji}</span>
             <span className="gcb-title" style={{ color: c.color }}>{c.title}</span>
             <span className="gcb-desc">{c.desc}</span>
@@ -73,7 +88,7 @@ export default function GamesScreen() {
         <NumberMiniGame emoji="❤️" title="Reparte los Corazones" instruction="Divide en partes iguales" reward={10} accent="linear-gradient(135deg,#7B2FBE,#D4286A)" generate={genHearts} onReward={reward} onClose={close} />
       )}
       {active === 'clock' && (
-        <NumberMiniGame emoji="🕒" title="Reto del Reloj" instruction="Convierte entre horas, minutos y segundos" reward={15} accent="linear-gradient(135deg,#E8650A,#FF8C2A)" generate={genClock} onReward={reward} onClose={close} />
+        <NumberMiniGame emoji="🕒" title="Reto del Reloj" instruction="Convierte entre horas, minutes y segundos" reward={15} accent="linear-gradient(135deg,#E8650A,#FF8C2A)" generate={genClock} onReward={reward} onClose={close} />
       )}
       {active === 'store' && (
         <NumberMiniGame emoji="🏪" title="Tienda de Math — Da el cambio" instruction="¿Cuánto cambio recibe el cliente?" reward={20} accent="linear-gradient(135deg,#16876A,#24C496)" generate={genStore} onReward={reward} onClose={close} />
@@ -91,8 +106,82 @@ export default function GamesScreen() {
         </div>
       )}
       {active === 'stats' && <StatsLab onClose={close} />}
+      {active === 'conteo' && <ConteoGame onClose={close} />}
       {active === 'decomp' && <DecompositionTool onClose={close} />}
       {active === 'badges' && <BadgeShelf onClose={close} />}
+    </div>
+  );
+}
+
+function ConteoGame({ onClose }: { onClose: () => void }) {
+  const [tab, setTab] = useState<'20' | '50' | '100'>('20');
+  
+  const items20 = Array.from({ length: 20 }, (_, i) => ({
+    num: i + 1,
+    emojis: '🍎'.repeat(i + 1)
+  }));
+  const items50 = Array.from({ length: 10 }, (_, i) => ({
+    num: (i + 1) * 5,
+    emojis: '⭐'.repeat((i + 1) * 5)
+  }));
+  const items100 = Array.from({ length: 10 }, (_, i) => ({
+    num: (i + 1) * 10,
+    emojis: '🎈'.repeat((i + 1) * 10)
+  }));
+
+  return (
+    <div className="mg-overlay" onClick={onClose} style={{ zIndex: 9900 }}>
+      <div className="mg-card" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 500, width: '100%', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
+        <button className="mg-close" onClick={onClose} aria-label="Cerrar">✕</button>
+        <div className="mg-head" style={{ marginBottom: '1rem', flexShrink: 0 }}>
+          <div style={{ fontSize: 42 }}>🔢</div>
+          <div className="mg-title" style={{ fontFamily: "'Baloo 2', sans-serif", fontSize: 22, fontWeight: 900, color: '#074F3A' }}>Tablas de Conteo</div>
+          <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 700 }}>Conteo visual de cantidades</div>
+        </div>
+
+        <div style={{ display: 'flex', gap: 6, marginBottom: '1rem', justifyContent: 'center', flexShrink: 0 }}>
+          {(['20', '50', '100'] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              style={{
+                padding: '6px 16px',
+                borderRadius: 12,
+                border: '1.5px solid #8FD9C0',
+                background: tab === t ? '#DCF5EE' : '#fff',
+                color: '#074F3A',
+                fontWeight: 900,
+                cursor: 'pointer'
+              }}
+            >
+              Rango 1-{t}
+            </button>
+          ))}
+        </div>
+
+        <div style={{ overflowY: 'auto', display: 'grid', gap: 8, padding: 4, flex: 1 }}>
+          {(tab === '20' ? items20 : tab === '50' ? items50 : items100).map((it) => (
+            <div
+              key={it.num}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                padding: '10px 14px',
+                background: '#F8FBF9',
+                border: '1px solid #E2EFEA',
+                borderRadius: 12,
+                textAlign: 'left'
+              }}
+            >
+              <div style={{ fontSize: 18, fontWeight: 900, color: '#074F3A', minWidth: 28 }}>{it.num}</div>
+              <div style={{ flex: 1, fontSize: tab === '20' ? 16 : 12, wordBreak: 'break-all', letterSpacing: '0.1em' }}>
+                {it.emojis}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

@@ -2,10 +2,12 @@
 
 import { useEffect, useMemo, useState, Fragment, type ReactNode } from 'react';
 import { useBook, useRank } from '../context/BookContext';
+import Swal from 'sweetalert2';
 import Starfield from '../shared/Starfield';
 import UnitCard from '../shared/UnitCard';
 import LaunchIntro from '../shared/LaunchIntro';
 import TutorialOverlay from '../shared/TutorialOverlay';
+import ConceptosFedorModal from '../shared/ConceptosFedorModal';
 import { globalProgressPct, unitProgressPct } from '../shared/progress.utils';
 import { dayKey } from '@/services/daily-challenge.service';
 
@@ -52,13 +54,102 @@ const CONCEPT_PHRASES = [
   { text: 'Contar, Sumar y Completar.', icon: '🔢' }
 ];
 
+interface DailyMissionState {
+  day: string;
+  missionId: string;
+  progress: number;
+  claimed: boolean;
+  baselineXP: number;
+}
+
+const DAILY_MISSIONS = [
+  { id: 'm_corr5', txt: 'Acierta 5 ejercicios hoy', goal: 5, metric: 'correct', xp: 60, coins: 40 },
+  { id: 'm_corr10', txt: 'Acierta 10 ejercicios hoy', goal: 10, metric: 'correct', xp: 120, coins: 80 },
+  { id: 'm_streak3', txt: 'Logra una racha de 3 correctas', goal: 3, metric: 'streak', xp: 80, coins: 50 },
+  { id: 'm_streak5', txt: 'Logra una racha de 5 correctas', goal: 5, metric: 'streak', xp: 140, coins: 90 },
+  { id: 'm_xp200', txt: 'Gana 200 XP en el día', goal: 200, metric: 'xp', xp: 100, coins: 60 },
+];
+
 /** Pantalla principal: hero del estudiante, progreso global y unidades. */
 export default function HomeScreen() {
-  const { book, progress, openUnit, goScreen, claimDaily, startDailyChallenge, openGameShortcut } = useBook();
+  const { book, progress, openUnit, goScreen, claimDaily, startDailyChallenge, openGameShortcut, grantReward } = useBook();
   const isGrade1 = book?.slug === 'libro-1ro';
   const rank = useRank();
+
+  const [dailyMissionState, setDailyMissionState] = useState<DailyMissionState | null>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const today = new Date().toDateString();
+      const raw = localStorage.getItem('fedor1_daily_mission');
+      let state = raw ? JSON.parse(raw) : null;
+      
+      const missionIndex = (new Date().getDate() + new Date().getMonth()) % DAILY_MISSIONS.length;
+      const mission = DAILY_MISSIONS[missionIndex];
+
+      if (!state || state.day !== today) {
+        state = {
+          day: today,
+          missionId: mission.id,
+          progress: 0,
+          claimed: false,
+          baselineXP: progress?.gamification?.totalXP ?? 0,
+        };
+        localStorage.setItem('fedor1_daily_mission', JSON.stringify(state));
+      } else {
+        const activeMission = DAILY_MISSIONS.find(m => m.id === state.missionId);
+        if (activeMission && activeMission.metric === 'xp' && progress) {
+          const delta = progress.gamification.totalXP - (state.baselineXP || 0);
+          state.progress = Math.min(activeMission.goal, Math.max(0, delta));
+          localStorage.setItem('fedor1_daily_mission', JSON.stringify(state));
+        }
+      }
+      setDailyMissionState(state);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [progress?.gamification?.totalXP]);
+
+  const handleClaimDailyMission = () => {
+    if (!dailyMissionState || dailyMissionState.claimed) return;
+    const mission = DAILY_MISSIONS.find(m => m.id === dailyMissionState.missionId);
+    if (!mission) return;
+
+    const updated = { ...dailyMissionState, claimed: true };
+    try {
+      localStorage.setItem('fedor1_daily_mission', JSON.stringify(updated));
+    } catch {}
+    setDailyMissionState(updated);
+
+    grantReward(mission.xp, mission.coins);
+
+    Swal.fire({
+      title: '¡Misión Completada! 🎁',
+      html: `<div style="font-size:16px; font-weight:800; color:#2A0F60; margin-top:8px;">
+               Has recibido:<br/>
+               <span style="font-size:22px; color:#F5C518; font-weight:900;">+${mission.xp} XP · +${mission.coins} 🪙</span>
+             </div>`,
+      icon: 'success',
+      confirmButtonText: '¡Súper!',
+      confirmButtonColor: '#9B5CFF',
+    });
+  };
   const [showIntro, setShowIntro] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [showDailyModal, setShowDailyModal] = useState(false);
+  const [showRankUpModal, setShowRankUpModal] = useState(false);
+  const [showConceptos, setShowConceptos] = useState(false);
+
+  const handleClaimDailyClick = () => {
+    claimDaily();
+    setShowDailyModal(true);
+  };
+
+  const handleCloseDailyModal = () => {
+    setShowDailyModal(false);
+    setShowRankUpModal(true);
+  };
 
   const getPlanetPct = (unitIdx: number) => {
     if (!book || !progress) return 0;
@@ -485,15 +576,61 @@ export default function HomeScreen() {
             Ver informe →
           </button>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 6 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 6, marginBottom: '0.75rem' }}>
           <Stat value={g.totalXP} label="XP Total" color="#FF8C2A" />
           <Stat value={Object.keys(progress.scores).length} label="Niveles ✅" color="#24C496" />
           <Stat value={`${g.maxStreak}🔥`} label="Racha" color="#FF8C2A" />
         </div>
+
+        {/* Unit Progress Bars */}
+        <div style={{ display: 'grid', gap: '5px', margin: '0.85rem 0' }}>
+          {book.units.map((unit) => {
+            const pct = unitProgressPct(unit, progress.scores);
+            const col = pct >= 70 ? '#24C496' : pct >= 50 ? '#F5C518' : '#7B2FBE';
+            return (
+              <div key={unit.id} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '11px', width: '18px', display: 'flex', justifyContent: 'center', color: '#fff' }}>
+                  {unit.icon || '📚'}
+                </span>
+                <div style={{ flex: 1, height: '5px', background: 'rgba(255,255,255,0.1)', borderRadius: '3px', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', background: col, width: `${pct}%`, borderRadius: '3px', transition: 'width 1.2s' }} />
+                </div>
+                <span style={{ fontSize: '10px', fontWeight: 900, color: col, minWidth: '28px', textAlign: 'right' }}>
+                  {pct}%
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Botón Análisis IA Fedor */}
+        <button 
+          onClick={() => {
+            goScreen('report');
+            setTimeout(() => {
+              document.getElementById('ai-report-btn')?.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+          }} 
+          style={{ 
+            width: '100%', 
+            padding: '9px', 
+            fontSize: '12px', 
+            fontWeight: 900, 
+            background: 'rgba(245,197,24,.12)', 
+            color: '#F5C518', 
+            border: '1.5px solid rgba(245,197,24,.25)', 
+            borderRadius: '10px', 
+            cursor: 'pointer', 
+            fontFamily: "'Nunito',sans-serif",
+            marginTop: '8px'
+          }}
+        >
+          🤖 Análisis IA Fedor
+        </button>
       </div>
 
       {/* Recompensa diaria */}
-      <div className="daily-reward" onClick={() => claimDaily()} style={{ opacity: dailyAvailable ? 1 : 0.55 }}>
+      <div className="daily-reward" onClick={handleClaimDailyClick} style={{ opacity: dailyAvailable ? 1 : 0.55 }}>
         <span className="dr-icon">🎁</span>
         <div className="dr-body">
           <div className="dr-title">Recompensa diaria</div>
@@ -502,8 +639,134 @@ export default function HomeScreen() {
         <span className="dr-badge">{dailyAvailable ? '¡Disponible!' : 'Reclamada'}</span>
       </div>
 
+      {/* Grade 1: Brand banner (Matemáticas de Fedor) */}
+      {isGrade1 && (
+        <div className="fedor-brand" style={{ marginBottom: '.85rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div className="fedor-brand-logo"><span style={{ fontSize: 20 }}>🚀</span></div>
+            <div>
+              <div className="fedor-brand-txt">Matemáticas de Fedor</div>
+              <div className="fedor-brand-sub">Libro Interactivo · Grado 1° · Colombia</div>
+            </div>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: '11px', fontWeight: 700, color: '#999' }}>¿Tienes el libro Excel?</div>
+            <div style={{ fontSize: '11px', fontWeight: 900, color: '#FF8C2A' }}>Úsalos juntos 📊</div>
+          </div>
+        </div>
+      )}
+
+      {/* Grade 1: Misión del día */}
+      {isGrade1 && dailyMissionState && (() => {
+        const activeMission = DAILY_MISSIONS.find((m) => m.id === dailyMissionState.missionId);
+        if (!activeMission) return null;
+        const pct = Math.min(100, Math.round((dailyMissionState.progress / activeMission.goal) * 100));
+        const done = dailyMissionState.progress >= activeMission.goal;
+        const claimed = dailyMissionState.claimed;
+
+        return (
+          <div 
+            className="daily-mission-card"
+            style={{
+              background: 'linear-gradient(135deg, #1E0848, #7B2FBE, #E8650A)',
+              borderRadius: '18px',
+              padding: '1rem 1.15rem',
+              marginBottom: '.85rem',
+              color: '#fff',
+              boxShadow: '0 8px 30px rgba(123, 47, 190, .4)',
+              position: 'relative',
+              overflow: 'hidden',
+              textAlign: 'left'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', position: 'relative', zIndex: 1 }}>
+              <div 
+                style={{ 
+                  width: '48px', 
+                  height: '48px', 
+                  borderRadius: '14px', 
+                  background: 'rgba(0,0,0,.35)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  fontSize: '26px', 
+                  flexShrink: 0, 
+                  border: '1.5px solid rgba(255,224,102,.4)' 
+                }}
+              >
+                🎯
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: '10px', fontWeight: 900, color: 'rgba(255,224,102,.85)', letterSpacing: '.15em', textTransform: 'uppercase' }}>
+                  Misión del día
+                </div>
+                <div style={{ fontFamily: "'Baloo 2', sans-serif", fontSize: '15px', fontWeight: 900, color: '#fff', lineHeight: 1.2, marginTop: '2px' }}>
+                  {activeMission.txt}
+                </div>
+                
+                {/* Progress track */}
+                <div 
+                  style={{ 
+                    height: '8px', 
+                    background: 'rgba(255,255,255,0.18)', 
+                    borderRadius: '5px', 
+                    overflow: 'hidden', 
+                    marginTop: '10px',
+                    position: 'relative'
+                  }}
+                >
+                  <div 
+                    style={{ 
+                      height: '100%', 
+                      background: 'linear-gradient(90deg, #FFB066, #FF7300)', 
+                      borderRadius: '5px', 
+                      width: `${pct}%`,
+                      transition: 'width 0.4s ease'
+                    }} 
+                  />
+                </div>
+                
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', fontWeight: 800, color: 'rgba(255,255,255,.75)', marginTop: '6px' }}>
+                  <span>{dailyMissionState.progress} / {activeMission.goal}</span>
+                  <span style={{ color: '#F5C518' }}>+{activeMission.xp} XP · +{activeMission.coins} 🪙</span>
+                </div>
+              </div>
+              
+              <div style={{ flexShrink: 0, alignSelf: 'center', marginLeft: '8px' }}>
+                {done && !claimed ? (
+                  <button 
+                    onClick={handleClaimDailyMission} 
+                    style={{ 
+                      background: 'linear-gradient(135deg, #F5C518, #FF8C2A)', 
+                      color: '#2A0F60', 
+                      border: 'none', 
+                      borderRadius: '12px', 
+                      padding: '10px 14px', 
+                      fontSize: '12px', 
+                      fontWeight: 900, 
+                      cursor: 'pointer', 
+                      fontFamily: "'Nunito', sans-serif", 
+                      boxShadow: '0 4px 14px rgba(245,197,24,.5)',
+                      animation: 'pulse 1.6s ease-in-out infinite' 
+                    }}
+                  >
+                    🎁 RECLAMAR
+                  </button>
+                ) : claimed ? (
+                  <div style={{ background: 'rgba(36,196,150,.2)', border: '1px solid #24C496', color: '#24C496', borderRadius: '10px', padding: '6px 10px', fontSize: '11px', fontWeight: 900 }}>
+                    ✅ HECHO
+                  </div>
+                ) : (
+                  <div style={{ fontSize: '32px', opacity: 0.7 }}>🔒</div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* Reto del día */}
-      <div className="daily-challenge" onClick={() => !challengeDone && startDailyChallenge()} style={{ opacity: challengeDone ? 0.55 : 1, cursor: challengeDone ? 'default' : 'pointer' }}>
+      <div className="daily-challenge" onClick={() => !challengeDone && startDailyChallenge()} style={{ opacity: challengeDone ? 0.55 : 1, cursor: challengeDone ? 'default' : 'pointer', marginBottom: '.85rem' }}>
         <span className="dc-icon">⚡</span>
         <div className="dc-body">
           <div className="dc-title">Desafío del día</div>
@@ -514,7 +777,7 @@ export default function HomeScreen() {
 
       {/* Mini-juegos */}
       {!isGrade1 && (
-        <div className="daily-challenge" onClick={() => goScreen('games')} style={{ cursor: 'pointer' }}>
+        <div className="daily-challenge" onClick={() => goScreen('games')} style={{ cursor: 'pointer', marginBottom: '.85rem' }}>
           <span className="dc-icon">🎮</span>
           <div className="dc-body">
             <div className="dc-title">Mini-juegos</div>
@@ -526,7 +789,7 @@ export default function HomeScreen() {
 
       {/* Diario narrativo */}
       {!isGrade1 && (
-        <div className="daily-challenge" onClick={() => goScreen('diary')} style={{ cursor: 'pointer' }}>
+        <div className="daily-challenge" onClick={() => goScreen('diary')} style={{ cursor: 'pointer', marginBottom: '.85rem' }}>
           <span className="dc-icon">📖</span>
           <div className="dc-body">
             <div className="dc-title">Diario del viaje</div>
@@ -538,7 +801,7 @@ export default function HomeScreen() {
 
       {/* Examen final */}
       {!isGrade1 && (
-        <div className="daily-challenge" onClick={() => goScreen('examen')} style={{ cursor: 'pointer' }}>
+        <div className="daily-challenge" onClick={() => goScreen('examen')} style={{ cursor: 'pointer', marginBottom: '.85rem' }}>
           <span className="dc-icon">🎓</span>
           <div className="dc-body">
             <div className="dc-title">Examen Final</div>
@@ -550,7 +813,7 @@ export default function HomeScreen() {
 
       {/* Reto espacial */}
       {!isGrade1 && (
-        <div className="daily-challenge" onClick={() => goScreen('espacial')} style={{ cursor: 'pointer' }}>
+        <div className="daily-challenge" onClick={() => goScreen('espacial')} style={{ cursor: 'pointer', marginBottom: '.85rem' }}>
           <span className="dc-icon">🚀</span>
           <div className="dc-body">
             <div className="dc-title">Reto Espacial</div>
@@ -569,29 +832,348 @@ export default function HomeScreen() {
         <div className="pg-pct">{globalPct}%</div>
       </div>
 
-      <div className="sec-title">📦 Unidades de aprendizaje</div>
-      <HomeSection icon="🧮" title="Operaciones Básicas" gradient="linear-gradient(135deg,#6C28B4,#9B5CE5)" defaultOpen>
-        {book.units.slice(0, 4).map((unit) => (
-          <UnitCard key={unit.id} unit={unit} pct={unitProgressPct(unit, progress.scores)} onClick={() => openUnit(unit.index)} />
-        ))}
-      </HomeSection>
-      {book.units.length > 4 && (
-        <HomeSection icon="📐" title="Magnitudes, Geometría y más" gradient="linear-gradient(135deg,#16876A,#24C496)">
-          {book.units.slice(4).map((unit) => (
-            <UnitCard key={unit.id} unit={unit} pct={unitProgressPct(unit, progress.scores)} onClick={() => openUnit(unit.index)} />
+      {/* Grade 1: Mapa de progreso */}
+      {isGrade1 && <ProgressMap />}
+
+      <div className="sec-title">📦 UNIDADES DE APRENDIZAJE</div>
+      {isGrade1 ? (
+        <div style={{ display: 'grid', gap: '8px', marginBottom: '1.25rem' }}>
+          {book.units.map((unit) => (
+            <UnitCard 
+              key={unit.id} 
+              unit={unit} 
+              pct={unitProgressPct(unit, progress.scores)} 
+              onClick={() => openUnit(unit.index)} 
+              isGrade1={true}
+            />
           ))}
-        </HomeSection>
+        </div>
+      ) : (
+        <>
+          <HomeSection icon="🧮" title="Operaciones Básicas" gradient="linear-gradient(135deg,#6C28B4,#9B5CE5)" defaultOpen>
+            {book.units.slice(0, 4).map((unit) => (
+              <UnitCard key={unit.id} unit={unit} pct={unitProgressPct(unit, progress.scores)} onClick={() => openUnit(unit.index)} />
+            ))}
+          </HomeSection>
+          {book.units.length > 4 && (
+            <HomeSection icon="📐" title="Magnitudes, Geometría y más" gradient="linear-gradient(135deg,#16876A,#24C496)">
+              {book.units.slice(4).map((unit) => (
+                <UnitCard key={unit.id} unit={unit} pct={unitProgressPct(unit, progress.scores)} onClick={() => openUnit(unit.index)} />
+              ))}
+            </HomeSection>
+          )}
+        </>
       )}
 
-      <div className="fedor-brand" style={{ marginTop: '1rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div className="fedor-brand-logo"><span style={{ fontSize: 20 }}>🚀</span></div>
-          <div>
-            <div className="fedor-brand-txt">Matemáticas de Fedor</div>
-            <div className="fedor-brand-sub">Libro Interactivo · {isGrade1 ? 'Grado 1°' : 'Grado 2°'} · Colombia</div>
+      {/* Grade 1: Recursos extra */}
+      {isGrade1 && (
+        <div style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>
+          <div 
+            style={{ 
+              fontSize: '13px', 
+              fontWeight: 900, 
+              color: 'rgba(245,197,24,.85)', 
+              textTransform: 'uppercase', 
+              letterSpacing: '.08em', 
+              paddingLeft: '6px',
+              marginBottom: '.85rem'
+            }}
+          >
+            ✨ Recursos extra
+          </div>
+
+          {/* Tablas de Conteo */}
+          <div 
+            className="feat-btn" 
+            onClick={() => goScreen('conteo')} 
+            style={{ background: 'linear-gradient(135deg,#fff,#F0F8FF)' }}
+          >
+            <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#1A6CB4,#4DA6FF)' }}>🔢</div>
+            <div className="feat-info">
+              <div className="feat-name">Tablas de Conteo</div>
+              <div className="feat-meta">Ranges 1-10, 1-20, 1-30, 1-50, 1-100</div>
+            </div>
+            <div className="feat-arrow">→</div>
+          </div>
+
+          {/* Conceptos */}
+          <div 
+            className="feat-btn" 
+            onClick={() => setShowConceptos(true)} 
+            style={{ background: 'linear-gradient(135deg,#fff,#E8FAF1)' }}
+          >
+            <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#16876A,#34D399)' }}>📚</div>
+            <div className="feat-info">
+              <div className="feat-name">Conceptos</div>
+              <div className="feat-meta">Definiciones técnicas de cada operación</div>
+            </div>
+            <div className="feat-arrow">→</div>
+          </div>
+
+          {/* Retos Matemáticos */}
+          <div 
+            className="feat-btn" 
+            onClick={() => goScreen('retos')} 
+            style={{ background: 'linear-gradient(135deg,#fff,#FFF6E6)' }}
+          >
+            <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#FF8A1F,#FFB066)' }}>🏆</div>
+            <div className="feat-info">
+              <div className="feat-name">Retos Matemáticos</div>
+              <div className="feat-meta">Desafíos para primer grado</div>
+            </div>
+            <div className="feat-arrow">→</div>
+          </div>
+
+          {/* Separator / Spacer */}
+          <div style={{ height: '1.5rem' }} />
+
+          {/* Estándares MEN */}
+          <div 
+            className="feat-btn" 
+            onClick={() => goScreen('estandares')} 
+            style={{ background: 'linear-gradient(135deg,#fff,#F0FDF9)' }}
+          >
+            <div 
+              className="feat-icon" 
+              style={{ 
+                background: '#fff', 
+                fontSize: '18px', 
+                fontWeight: 900, 
+                color: '#333', 
+                border: '1.5px solid rgba(0,0,0,.08)',
+                boxShadow: 'none' 
+              }}
+            >
+              CO
+            </div>
+            <div className="feat-info">
+              <div className="feat-name">Estándares MEN</div>
+              <div className="feat-sub">Programa de 1° Colombia</div>
+            </div>
+          </div>
+
+          {/* Problemas Cotidianos */}
+          <div 
+            className="feat-btn" 
+            onClick={() => goScreen('problemas')} 
+            style={{ background: 'linear-gradient(135deg,#fff,#E8FAF1)' }}
+          >
+            <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#0E5240,#34D399)' }}>🛒</div>
+            <div className="feat-info">
+              <div className="feat-name">Problemas Cotidianos</div>
+              <div className="feat-meta">Conteo de monedas + compras + 4 operaciones</div>
+            </div>
+            <div className="feat-arrow">→</div>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* For Grade 2, we can render fedor-brand at the bottom */}
+      {!isGrade1 && (
+        <div className="fedor-brand" style={{ marginTop: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div className="fedor-brand-logo"><span style={{ fontSize: 20 }}>🚀</span></div>
+            <div>
+              <div className="fedor-brand-txt">Matemáticas de Fedor</div>
+              <div className="fedor-brand-sub">Libro Interactivo · Grado 2° · Colombia</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showDailyModal && (
+        <div 
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 10010,
+            background: 'radial-gradient(circle at center, rgba(20,8,48,.96), rgba(0,0,0,.98))',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backdropFilter: 'blur(8px)',
+            fontFamily: "'Nunito', sans-serif"
+          }}
+        >
+          <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: '340px', padding: '0 1rem', color: '#fff' }}>
+            <div 
+              style={{ 
+                fontSize: '11px', 
+                fontWeight: 900, 
+                color: '#F5C518', 
+                letterSpacing: '.2em', 
+                marginBottom: '.5rem', 
+                animation: 'fadeInDown .5s ease .2s both' 
+              }}
+            >
+              ★ MEDALLA DESBLOQUEADA ★
+            </div>
+            <div 
+              style={{ 
+                fontSize: '130px', 
+                margin: '.5rem 0', 
+                filter: 'drop-shadow(0 0 35px rgba(245,197,24,.7))', 
+                animation: 'trophyPop 1.1s cubic-bezier(.34,1.56,.64,1) both, trophySpin 3s linear .8s infinite',
+                lineHeight: 1.1
+              }}
+            >
+              📅
+            </div>
+            <div 
+              style={{ 
+                fontFamily: "'Baloo 2', sans-serif", 
+                fontSize: '30px', 
+                fontWeight: 900, 
+                color: '#FFE066', 
+                marginBottom: '.4rem', 
+                textShadow: '0 0 20px rgba(245,197,24,.6)', 
+                animation: 'fadeInUp .5s ease .6s both' 
+              }}
+            >
+              Constante
+            </div>
+            <div 
+              style={{ 
+                fontSize: '13px', 
+                fontWeight: 700, 
+                color: 'rgba(255,255,255,.85)', 
+                lineHeight: 1.5, 
+                marginBottom: '1rem', 
+                animation: 'fadeInUp .5s ease .8s both' 
+              }}
+            >
+              Entraste {progress.gamification.loginStreak || 3} días seguidos
+            </div>
+            <div 
+              style={{ 
+                display: 'inline-flex', 
+                gap: '14px', 
+                background: 'rgba(245,197,24,.15)', 
+                border: '1.5px solid rgba(245,197,24,.4)', 
+                borderRadius: '14px', 
+                padding: '8px 18px', 
+                marginBottom: '1.25rem', 
+                animation: 'fadeInUp .5s ease 1s both' 
+              }}
+            >
+              <span style={{ fontSize: '14px', fontWeight: 900, color: '#F5C518' }}>+50 XP</span>
+              <span style={{ fontSize: '14px', fontWeight: 900, color: '#FF8C2A' }}>+25 🪙</span>
+            </div>
+            <button 
+              onClick={handleCloseDailyModal}
+              style={{ 
+                display: 'block', 
+                width: '100%', 
+                padding: '14px', 
+                fontSize: '15px', 
+                fontWeight: 900, 
+                background: 'linear-gradient(135deg,#F5C518,#FF8C2A)', 
+                color: '#2A0F60', 
+                border: 'none', 
+                borderRadius: '14px', 
+                cursor: 'pointer', 
+                fontFamily: "'Nunito', sans-serif", 
+                letterSpacing: '.05em', 
+                boxShadow: '0 8px 28px rgba(245,197,24,.5)', 
+                animation: 'fadeInUp .5s ease 1.2s both' 
+              }}
+            >
+              ¡GENIAL! 🚀
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showRankUpModal && (
+        <div 
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 10010,
+            background: 'radial-gradient(circle at center, rgba(123,47,190,.96), rgba(10,4,32,.98))',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backdropFilter: 'blur(6px)',
+            fontFamily: "'Nunito', sans-serif"
+          }}
+        >
+          <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: '360px', padding: '0 1rem', color: '#fff' }}>
+            <div style={{ fontSize: '12px', fontWeight: 900, color: '#FFE066', letterSpacing: '.25em', marginBottom: '.5rem' }}>
+              ↑ ASCENSO DE RANGO ↑
+            </div>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: 'rgba(255,255,255,.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', marginBottom: '.4rem' }}>
+              <span>🌱</span> Explorador
+            </div>
+            <div 
+              style={{ 
+                fontSize: '90px', 
+                margin: '.5rem 0', 
+                filter: 'drop-shadow(0 0 40px rgba(168,100,232,.9))', 
+                animation: 'rankPulse 1.6s ease-in-out infinite',
+                lineHeight: 1.1
+              }}
+            >
+              ⭐
+            </div>
+            <div 
+              style={{ 
+                fontFamily: "'Baloo 2', sans-serif", 
+                fontSize: '52px', 
+                fontWeight: 900, 
+                color: '#fff', 
+                marginBottom: '.5rem',
+                lineHeight: 1.1
+              }}
+            >
+              Aprendiz
+            </div>
+            <div 
+              style={{ 
+                display: 'inline-flex', 
+                alignItems: 'center',
+                gap: '6px',
+                background: 'rgba(245,197,24,.15)', 
+                border: '1.5px solid rgba(245,197,24,.4)', 
+                borderRadius: '14px', 
+                padding: '6px 16px', 
+                marginBottom: '1.25rem',
+                color: '#FFE066',
+                fontWeight: 800,
+                fontSize: '15px'
+              }}
+            >
+              <span>⭐</span> Aprendiz
+            </div>
+            <div style={{ fontSize: '12px', color: 'rgba(255,255,255,.85)', fontWeight: 700, marginBottom: '1.5rem', lineHeight: 1.5, maxWidth: '280px', margin: '0 auto 1.5rem' }}>
+              ¡Has subido al siguiente rango espacial! Sigue volando alto, astronauta.
+            </div>
+            <button 
+              onClick={() => setShowRankUpModal(false)}
+              style={{ 
+                width: '100%', 
+                padding: '14px', 
+                fontSize: '15px', 
+                fontWeight: 900, 
+                background: 'linear-gradient(135deg, #7B2FBE, #A864E8)', 
+                color: '#fff', 
+                border: 'none', 
+                borderRadius: '14px', 
+                cursor: 'pointer', 
+                fontFamily: "'Nunito', sans-serif", 
+                letterSpacing: '.05em', 
+                boxShadow: '0 8px 28px rgba(123,47,190,.5)' 
+              }}
+            >
+              CONTINUAR MISIÓN ✨
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showConceptos && (
+        <ConceptosFedorModal onClose={() => setShowConceptos(false)} />
+      )}
     </div>
   );
 }
@@ -730,3 +1312,61 @@ function MoonJourney() {
     </div>
   );
 }
+
+function ProgressMap() {
+  const { book, progress, openUnit } = useBook();
+  if (!book || !progress) return null;
+
+  const unit1 = book.units[0];
+  if (!unit1) return null;
+
+  return (
+    <div className="progress-map" style={{ cursor: 'pointer' }} onClick={() => openUnit(0)}>
+      <div className="pm-title">
+        <span>🗺️</span> MAPA DE PROGRESO — UNIDAD 1
+      </div>
+      <div className="pm-path">
+        {unit1.topics.map((t, ti) => {
+          const isTopicDone = t.levels.every((l) => {
+            const key = `u0t${ti}-n${l.index}`;
+            return progress.scores[key] && progress.scores[key].pts > 0;
+          });
+
+          const isTopicStarted = t.levels.some((l) => {
+            const key = `u0t${ti}-n${l.index}`;
+            return progress.scores[key] && progress.scores[key].pts > 0;
+          });
+
+          const bestL = t.levels.findIndex((l) => {
+            const key = `u0t${ti}-n${l.index}`;
+            return !progress.scores[key] || progress.scores[key].pts === 0;
+          });
+          const bestLName = bestL >= 0 ? t.levels[bestL].label : '';
+
+          let cls = 'locked';
+          if (isTopicDone) cls = 'done';
+          else if (isTopicStarted) cls = 'active';
+
+          return (
+            <Fragment key={ti}>
+              {ti > 0 && <span className="pm-connector">→</span>}
+              <div className="pm-step">
+                <div className={`pm-bubble ${cls}`}>
+                  {t.icon || '📚'}
+                  {isTopicDone && <span className="pm-check">✅</span>}
+                  {isTopicStarted && !isTopicDone && bestLName && (
+                    <span className="pm-level-badge">{bestLName}</span>
+                  )}
+                </div>
+                <div className="pm-label">
+                  {t.title.split(' ').slice(0, 2).join(' ')}
+                </div>
+              </div>
+            </Fragment>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+

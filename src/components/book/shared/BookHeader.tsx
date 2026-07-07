@@ -2,6 +2,7 @@
 
 import { useBook } from '../context/BookContext';
 import { bookAudio } from '@/services/book-audio.service';
+import Swal from 'sweetalert2';
 
 interface BookHeaderProps {
   onOpenIntro: () => void;
@@ -17,10 +18,28 @@ export default function BookHeader({ onOpenIntro }: BookHeaderProps) {
   };
 
   const handleResetClick = () => {
-    if (window.confirm('¿Borrar TODO el progreso del libro?\n\nSe perderá: nombre, avatar, niveles resueltos, monedas, stickers, intro vista.\n\n¿Continuar?')) {
-      bookAudio.click();
-      resetAll();
-    }
+    Swal.fire({
+      title: '¿Borrar TODO el progreso?',
+      text: 'Se perderá: nombre, avatar, niveles resueltos, monedas, stickers e historial.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, borrar todo',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        bookAudio.click();
+        resetAll();
+        Swal.fire({
+          title: '¡Reiniciado!',
+          text: 'El progreso ha sido borrado por completo.',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      }
+    });
   };
 
   const handleIntroClick = () => {

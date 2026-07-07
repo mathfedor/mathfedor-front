@@ -35,9 +35,22 @@ export default function ExamplesPanel({ examples, levelIndex, topicTitle, concep
 
       {/* HEADER */}
       <div style={{ padding: '1.5rem 1.25rem 1rem', position: 'relative', zIndex: 1 }}>
-        <div style={{ display: 'inline-block', fontSize: 10, fontWeight: 900, color: 'rgba(245,197,24,.85)', textTransform: 'uppercase', letterSpacing: '.12em', marginBottom: 8 }}>
-          📚 Aprende con ejemplos
+        <div style={{ display: 'inline-block', fontSize: 10, fontWeight: 900, color: 'rgba(245,197,24,.9)', textTransform: 'uppercase', letterSpacing: '.12em', background: 'rgba(245,197,24,.15)', border: '1px solid rgba(245,197,24,.35)', padding: '4px 12px', borderRadius: 20, marginBottom: '0.85rem' }}>
+          📖 PANEL DE EJEMPLOS · MÉTODO FEDOR
         </div>
+        
+        {/* Paso 1 / Paso 2 indicator */}
+        <div style={{ display: 'flex', alignItems: 'stretch', gap: 0, marginBottom: '1rem', background: 'rgba(255,255,255,.06)', borderRadius: 12, overflow: 'hidden', border: '1px solid rgba(255,255,255,.12)' }}>
+          <div style={{ flex: 1, padding: '.55rem .65rem', background: 'rgba(245,197,24,.18)', borderRight: '1px solid rgba(255,255,255,.1)' }}>
+            <div style={{ fontSize: '9px', fontWeight: 900, color: '#FFE066', letterSpacing: '.12em' }}>PASO 1 · AHORA</div>
+            <div style={{ fontSize: '12px', fontWeight: 800, color: '#fff', marginTop: '1px' }}>👀 Mira los ejemplos</div>
+          </div>
+          <div style={{ flex: 1, padding: '.55rem .65rem', background: 'rgba(255,255,255,.04)', opacity: 0.7 }}>
+            <div style={{ fontSize: '9px', fontWeight: 900, color: 'rgba(255,255,255,.65)', letterSpacing: '.12em' }}>PASO 2 · DESPUÉS</div>
+            <div style={{ fontSize: '12px', fontWeight: 800, color: 'rgba(255,255,255,.85)', marginTop: '1px' }}>🎮 Resuelve los ejercicios</div>
+          </div>
+        </div>
+
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
           <div>
             <div style={{ fontFamily: "'Baloo 2',sans-serif", fontSize: 22, fontWeight: 900, color: '#fff', marginBottom: 2 }}>{lm.headerTxt}</div>
@@ -71,7 +84,7 @@ export default function ExamplesPanel({ examples, levelIndex, topicTitle, concep
           ✨ {examples.length} ejemplos resueltos
         </div>
         {examples.map((e, i) => (
-          <ExampleCard key={i} ex={e} />
+          <ExampleCard key={i} ex={e} index={i} />
         ))}
       </div>
 
@@ -88,18 +101,22 @@ export default function ExamplesPanel({ examples, levelIndex, topicTitle, concep
   );
 }
 
-function ExampleCard({ ex }: { ex: LevelExample }) {
+function ExampleCard({ ex, index }: { ex: LevelExample; index: number }) {
   return (
-    <div style={{ background: 'rgba(255,255,255,.12)', border: '1px solid rgba(255,255,255,.2)', borderRadius: 16, padding: '1rem', marginBottom: '.65rem', position: 'relative' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: ex.vis || ex.nl ? '.5rem' : 0, flexWrap: 'wrap' }}>
-        <div style={{ width: 32, height: 32, borderRadius: 10, background: 'rgba(255,255,255,.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>{ex.icon}</div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 14, fontWeight: 800, color: 'rgba(255,255,255,.9)', lineHeight: 1.45, wordWrap: 'break-word' }}>{ex.q}</div>
+    <div style={{ background: '#fff', border: '2px solid #FF8C2A', borderRadius: 16, padding: '1rem', marginBottom: '.65rem', color: '#333', boxShadow: '0 6px 16px rgba(0,0,0,.08)', position: 'relative' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: ex.vis || ex.nl ? '.5rem' : 0, flexWrap: 'wrap' }}>
+        <div style={{ width: 28, height: 28, borderRadius: 8, background: '#FF8C2A', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 900, flexShrink: 0 }}>
+          {index + 1}
         </div>
-        <div style={{ fontSize: 20, fontWeight: 900, color: '#FFE066', background: 'rgba(245,197,24,.2)', border: '1px solid rgba(245,197,24,.4)', padding: '4px 12px', borderRadius: 10, flexShrink: 0 }}>{ex.a}</div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: '#2A0F60', lineHeight: 1.45, wordWrap: 'break-word' }}>{ex.q}</div>
+        </div>
+        <div style={{ fontSize: 18, fontWeight: 900, color: '#fff', background: '#FF8C2A', padding: '4px 12px', borderRadius: 8, flexShrink: 0 }}>
+          {ex.a}
+        </div>
       </div>
 
-      {ex.vis && <div className="ex2-vis" dangerouslySetInnerHTML={{ __html: ex.vis }} />}
+      {ex.vis && <div className="ex2-vis" style={{ color: '#333', margin: '.5rem 0' }} dangerouslySetInnerHTML={{ __html: ex.vis }} />}
       {ex.nl && <NumberLine min={ex.nl.min} max={ex.nl.max} ans={ex.nl.ans} />}
 
       {ex.explain && (
