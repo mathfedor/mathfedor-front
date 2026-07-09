@@ -12,7 +12,7 @@ type OverlayPhase = 'cel' | 'trophy' | 'rank' | 'done';
 
 /** Resultado de la lección recién completada. */
 export default function ResultsScreen() {
-  const { lastResult, goScreen, newBadges, catalog, rankUp, clearRankUp } = useBook();
+  const { lastResult, goScreen, newBadges, catalog, rankUp, clearRankUp, book, currentLevel, openLesson } = useBook();
   const freshBadges = catalog ? resolveBadges(catalog, newBadges) : [];
   const [phase, setPhase] = useState<OverlayPhase>('cel');
   const [trophyIdx, setTrophyIdx] = useState(0);
@@ -37,20 +37,35 @@ export default function ResultsScreen() {
 
   const { grade, ok, wrong, pts, maxPts, topicTitle, levelLabel } = lastResult;
 
+  const handleNextLevel = () => {
+    if (book && currentLevel) {
+      const unit = book.units[currentLevel.unitIndex];
+      const topic = unit?.topics[currentLevel.topicIndex];
+      if (topic && currentLevel.levelIndex + 1 < topic.levels.length) {
+        openLesson({
+          ...currentLevel,
+          levelIndex: currentLevel.levelIndex + 1,
+        });
+        return;
+      }
+    }
+    goScreen('unit');
+  };
+
   // Secuencia: celebración → trofeos (uno por insignia) → subida de rango.
   const afterCelebration = () => {
     if (freshBadges.length > 0) setPhase('trophy');
     else if (rankUp) setPhase('rank');
-    else setPhase('done');
+    else handleNextLevel();
   };
   const afterTrophy = () => {
     if (trophyIdx + 1 < freshBadges.length) setTrophyIdx((i) => i + 1);
     else if (rankUp) setPhase('rank');
-    else setPhase('done');
+    else handleNextLevel();
   };
   const afterRank = () => {
     clearRankUp();
-    setPhase('done');
+    handleNextLevel();
   };
 
   const currentBadge = freshBadges[trophyIdx];

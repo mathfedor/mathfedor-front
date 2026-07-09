@@ -109,6 +109,7 @@ interface BookContextValue {
   /** Reclama la recompensa de una misión completada. */
   claimMission: (missionId: string, reward: number) => void;
   resetAll: () => void;
+  cameFromLesson: boolean;
 }
 
 interface ResultReward {
@@ -141,6 +142,7 @@ export function BookProvider({ children, slug }: { children: ReactNode; slug: st
   const [dailyExercises, setDailyExercises] = useState<Exercise[]>([]);
   const [dark, setDark] = useState(false);
   const [soundOn, setSoundOn] = useState(true);
+  const [cameFromLesson, setCameFromLesson] = useState(false);
 
   // Carga de preferencias de dispositivo (modo oscuro / sonido).
   useEffect(() => {
@@ -217,7 +219,14 @@ export function BookProvider({ children, slug }: { children: ReactNode; slug: st
   }, [slug]);
 
   const goScreen = useCallback((s: BookScreen) => {
-    setScreen(s);
+    setScreen((prev) => {
+      if (prev === 'lesson') {
+        setCameFromLesson(true);
+      } else if (s === 'home' || s === 'setup') {
+        setCameFromLesson(false);
+      }
+      return s;
+    });
     if (typeof window !== 'undefined') {
       window.scrollTo(0, 0);
     }
@@ -504,6 +513,7 @@ export function BookProvider({ children, slug }: { children: ReactNode; slug: st
       grantReward,
       claimMission,
       resetAll,
+      cameFromLesson,
     }),
     [
       loading,
@@ -540,6 +550,7 @@ export function BookProvider({ children, slug }: { children: ReactNode; slug: st
       grantReward,
       claimMission,
       resetAll,
+      cameFromLesson,
     ]
   );
 

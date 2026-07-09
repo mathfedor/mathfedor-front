@@ -1144,7 +1144,7 @@ html,body{overflow-x:hidden;max-width:100vw}
       <div class="setup-badges">
         <span class="s-badge sb-purple">🎮 Gamificado</span>
         <span class="s-badge sb-teal">✅ MEN Colombia</span>
-        <span class="s-badge sb-orange">🏆 3 Niveles</span>
+                <span class="s-badge sb-orange">🏆 5 Niveles</span>
         <span class="s-badge sb-blue">📊 Reporte Docente</span>
       </div>
     </div>
@@ -7261,10 +7261,7 @@ if(!CanvasRenderingContext2D.prototype.roundRect){
     window.enterBook = function(){
       var ret = _origEnterBook.apply(this, arguments);
       try {
-        if(!localStorage.getItem('fedor_cin_done')){
-          localStorage.setItem('fedor_cin_done', '1');
-          setTimeout(window.playCinematicIntro, 200);
-        }
+        if(typeof window.openLaunchIntro === 'function'){ setTimeout(window.openLaunchIntro, 200); }
       } catch(e){}
       // Apply equipped avatar after entering
       setTimeout(applyEquippedAvatar, 300);

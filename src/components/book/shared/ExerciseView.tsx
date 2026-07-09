@@ -4,20 +4,22 @@ import { useState, type CSSProperties } from 'react';
 import type { Exercise } from '@/types/book.types';
 import ExerciseFigure from './ExerciseFigure';
 import { bookAudio } from '@/services/book-audio.service';
+import ProcedureModal from './ProcedureModal';
 
 interface Props {
   exercise: Exercise;
   index: number;
   total: number;
   onAnswer: (userAnswer: string, correctAnswer: string, isCorrect: boolean) => void;
+  isGrade1?: boolean;
 }
 
-/** Renderiza un ejercicio (mcq | input | seq) y evalúa la respuesta. */
-export default function ExerciseView({ exercise, index, total, onAnswer }: Props) {
+export default function ExerciseView({ exercise, index, total, onAnswer, isGrade1 }: Props) {
   const [selected, setSelected] = useState<string | null>(null);
   const [inputVal, setInputVal] = useState('');
   const [seqVals, setSeqVals] = useState<Record<number, string>>({});
   const [answered, setAnswered] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const submitMcq = (opt: string) => {
     if (answered) return;
@@ -65,11 +67,48 @@ export default function ExerciseView({ exercise, index, total, onAnswer }: Props
             {exercise.badge}
           </span>
         )}
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-          {exercise.mascot && <span style={{ fontSize: 30 }}>{exercise.mascot}</span>}
-          <div style={{ flex: 1 }}>
+
+        {exercise.countEmoji && exercise.countN !== undefined && (
+          <div 
+            style={{ 
+              background: '#F1EFFE', 
+              border: '1.5px solid #DCD8FC', 
+              borderRadius: '16px', 
+              padding: '1.25rem', 
+              marginBottom: '1.25rem', 
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px'
+            }}
+          >
+            <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {Array.from({ length: exercise.countN }).map((_, i) => (
+                <span key={i} style={{ fontSize: '32px', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }}>
+                  {exercise.countEmoji}
+                </span>
+              ))}
+            </div>
+            <div style={{ fontSize: '11px', fontWeight: 800, color: '#5A3D8A' }}>
+              Cuenta cada {exercise.countEmoji} ➔ escribe el total abajo
+            </div>
+          </div>
+        )}
+
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: isGrade1 ? 'column' : 'row', 
+          alignItems: 'center', 
+          textAlign: isGrade1 ? 'center' : 'left', 
+          gap: 10,
+          justifyContent: 'center'
+        }}>
+          {exercise.mascot && <span style={{ fontSize: isGrade1 ? 40 : 30 }}>{exercise.mascot}</span>}
+          <div style={{ flex: 1, width: '100%' }}>
             {exercise.ctx && <div className="ex-ctx" style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 6 }}>{exercise.ctx}</div>}
-            <div className="ex-q" style={{ fontSize: 18, fontWeight: 900 }}>{exercise.q}</div>
+            <div className="ex-q" style={{ fontSize: 18, fontWeight: 900, whiteSpace: 'pre-line' }}>{exercise.q}</div>
           </div>
         </div>
         {exercise.figure && <ExerciseFigure figure={exercise.figure} data={exercise.fig_data} />}
@@ -106,44 +145,251 @@ export default function ExerciseView({ exercise, index, total, onAnswer }: Props
 
       {exercise.type === 'input' && (
         <div style={{ marginTop: 14 }}>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <input
-              className="finput"
-              value={inputVal}
-              disabled={answered}
-              onChange={(e) => setInputVal(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && submitInput()}
-              placeholder="Tu respuesta"
-              style={{ flex: 1 }}
-            />
-            <button className="btn-primary" disabled={answered} onClick={submitInput}>Comprobar</button>
-          </div>
-          {exercise.hint && !answered && (
-            <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 6 }}>💡 {exercise.hint}</div>
+          {isGrade1 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+              {exercise.hint && !answered && (
+                <div style={{ width: '100%', background: '#FFFDF0', border: '1.5px solid #FFEFA8', borderRadius: '12px', padding: '.5rem 1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '.5rem' }}>
+                  <span style={{ fontSize: '16px' }}>💡</span>
+                  <div style={{ fontSize: '13px', fontWeight: 700, color: '#7A5C00', textAlign: 'center' }}>
+                    {exercise.hint}
+                  </div>
+                </div>
+              )}
+              
+              <input
+                type="number"
+                className="finput"
+                value={inputVal}
+                disabled={answered}
+                onChange={(e) => setInputVal(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && submitInput()}
+                placeholder=""
+                style={{ 
+                  width: '140px', 
+                  textAlign: 'center', 
+                  fontSize: '20px', 
+                  fontWeight: 'bold', 
+                  borderRadius: '12px',
+                  border: '2px solid #6C28B4',
+                  padding: '10px'
+                }}
+              />
+
+              {/* Ver procedimiento button inside the centered layout */}
+              {exercise.q && (
+                <button
+                  onClick={() => setModalOpen(true)}
+                  style={{
+                    background: 'linear-gradient(135deg, #6C28B4, #9B5CFF)',
+                    color: '#fff',
+                    border: '2px solid #fff',
+                    borderRadius: '22px',
+                    padding: '8px 20px',
+                    fontSize: '13px',
+                    fontWeight: 900,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    boxShadow: '0 4px 10px rgba(108,40,180,0.3)',
+                    fontFamily: "'Nunito', sans-serif",
+                    marginTop: '4px',
+                    marginBottom: '4px'
+                  }}
+                >
+                  💡 Ver procedimiento
+                </button>
+              )}
+
+              <button 
+                className="btn-primary" 
+                disabled={answered} 
+                onClick={submitInput}
+                style={{
+                  background: 'linear-gradient(135deg, #7B2FBE, #9B5CFF)',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '12px',
+                  padding: '12px 36px',
+                  fontSize: '15px',
+                  fontWeight: 900,
+                  cursor: answered ? 'default' : 'pointer',
+                  boxShadow: '0 4px 12px rgba(108,40,180,0.25)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  opacity: answered ? 0.6 : 1
+                }}
+              >
+                ✅ Confirmar
+              </button>
+            </div>
+          ) : (
+            <>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <input
+                  className="finput"
+                  value={inputVal}
+                  disabled={answered}
+                  onChange={(e) => setInputVal(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && submitInput()}
+                  placeholder="Tu respuesta"
+                  style={{ flex: 1 }}
+                />
+                <button className="btn-primary" disabled={answered} onClick={submitInput}>Comprobar</button>
+              </div>
+              {exercise.hint && !answered && (
+                <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 6 }}>💡 {exercise.hint}</div>
+              )}
+            </>
           )}
         </div>
       )}
 
       {exercise.type === 'seq' && (
         <div style={{ marginTop: 14 }}>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-            {exercise.items.map((it, i) =>
-              it.t === 'f' ? (
-                <span key={i} style={{ padding: '10px 14px', background: 'var(--green-bg)', borderRadius: 10, fontWeight: 900 }}>{it.v}</span>
-              ) : (
-                <input
-                  key={i}
-                  className="finput"
-                  disabled={answered}
-                  value={seqVals[i] ?? ''}
-                  onChange={(e) => setSeqVals((s) => ({ ...s, [i]: e.target.value }))}
-                  style={{ width: 64, textAlign: 'center' }}
-                />
-              )
-            )}
-          </div>
-          <button className="btn-primary" disabled={answered} onClick={submitSeq} style={{ marginTop: 10 }}>Comprobar</button>
+          {isGrade1 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>
+                {exercise.items.map((it, i) => {
+                  const isLast = i === exercise.items.length - 1;
+                  return (
+                    <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {it.t === 'f' ? (
+                        <span style={{ fontSize: '18px', fontWeight: 900, color: '#333' }}>{it.v}</span>
+                      ) : (
+                        <input
+                          type="number"
+                          className="finput"
+                          disabled={answered}
+                          value={seqVals[i] ?? ''}
+                          onChange={(e) => setSeqVals((s) => ({ ...s, [i]: e.target.value }))}
+                          placeholder="?"
+                          style={{ 
+                            width: '56px', 
+                            textAlign: 'center', 
+                            fontSize: '16px', 
+                            fontWeight: 'bold', 
+                            borderRadius: '10px',
+                            border: '1.5px solid #6C28B4',
+                            padding: '6px'
+                          }}
+                        />
+                      )}
+                      {!isLast && <span style={{ fontSize: '16px', color: '#6A20A8', fontWeight: 'bold' }}>→</span>}
+                    </span>
+                  );
+                })}
+              </div>
+
+              {/* Ver procedimiento button inside the centered layout */}
+              {exercise.q && (
+                <button
+                  onClick={() => setModalOpen(true)}
+                  style={{
+                    background: 'linear-gradient(135deg, #6C28B4, #9B5CFF)',
+                    color: '#fff',
+                    border: '2px solid #fff',
+                    borderRadius: '22px',
+                    padding: '8px 20px',
+                    fontSize: '13px',
+                    fontWeight: 900,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    boxShadow: '0 4px 10px rgba(108,40,180,0.3)',
+                    fontFamily: "'Nunito', sans-serif",
+                    marginTop: '4px',
+                    marginBottom: '4px'
+                  }}
+                >
+                  💡 Ver procedimiento
+                </button>
+              )}
+
+              <button 
+                className="btn-primary" 
+                disabled={answered} 
+                onClick={submitSeq}
+                style={{
+                  background: 'linear-gradient(135deg, #7B2FBE, #9B5CFF)',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '12px',
+                  padding: '12px 36px',
+                  fontSize: '15px',
+                  fontWeight: 900,
+                  cursor: answered ? 'default' : 'pointer',
+                  boxShadow: '0 4px 12px rgba(108,40,180,0.25)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  opacity: answered ? 0.6 : 1
+                }}
+              >
+                ✅ Confirmar
+              </button>
+            </div>
+          ) : (
+            <>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+                {exercise.items.map((it, i) =>
+                  it.t === 'f' ? (
+                    <span key={i} style={{ padding: '10px 14px', background: 'var(--green-bg)', borderRadius: 10, fontWeight: 900 }}>{it.v}</span>
+                  ) : (
+                    <input
+                      key={i}
+                      className="finput"
+                      disabled={answered}
+                      value={seqVals[i] ?? ''}
+                      onChange={(e) => setSeqVals((s) => ({ ...s, [i]: e.target.value }))}
+                      style={{ width: 64, textAlign: 'center' }}
+                    />
+                  )
+                )}
+              </div>
+              <button className="btn-primary" disabled={answered} onClick={submitSeq} style={{ marginTop: 10 }}>Comprobar</button>
+            </>
+          )}
         </div>
+      )}
+
+      {/* PROCEDURE BUTTON */}
+      {exercise.q && (!isGrade1 || (exercise.type !== 'input' && exercise.type !== 'seq')) && (
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.25rem' }}>
+          <button
+            onClick={() => setModalOpen(true)}
+            style={{
+              background: 'linear-gradient(135deg, #6C28B4, #9B5CFF)',
+              color: '#fff',
+              border: '2px solid #fff',
+              borderRadius: '22px',
+              padding: '8px 20px',
+              fontSize: '13px',
+              fontWeight: 900,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 4px 10px rgba(108,40,180,0.3)',
+              fontFamily: "'Nunito', sans-serif",
+            }}
+          >
+            💡 Ver procedimiento
+          </button>
+        </div>
+      )}
+
+      {/* PROCEDURE MODAL */}
+      {exercise.q && (
+        <ProcedureModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          question={exercise.q}
+          answer={exercise.type === 'seq' ? exercise.items.filter(it => it.t === 'b').map(it => it.a ?? '').join(', ') : (exercise as any).ans || ''}
+          explainHtml={exercise.explain}
+        />
       )}
 
       {answered && (

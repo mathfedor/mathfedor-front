@@ -55,6 +55,10 @@ interface ExerciseBase {
   figure?: string;
   /** Datos para construir la figura. */
   fig_data?: ExerciseFigureData;
+  /** Explicación o procedimiento procedimental (HTML). */
+  explain?: string;
+  countEmoji?: string;
+  countN?: number;
 }
 
 /** Ejercicio de opción múltiple. */

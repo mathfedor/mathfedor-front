@@ -29,6 +29,8 @@ interface RawExercise {
   ans?: string;
   hint?: string;
   items?: Array<{ t: 'f' | 'b'; v?: string; a?: string }>;
+  countEmoji?: string;
+  countN?: number;
 }
 
 interface RawLevel {
@@ -68,6 +70,8 @@ function mapExercise(raw: RawExercise, id: string): Exercise {
     ctx: raw.ctx,
     figure: raw.figure,
     fig_data: raw.fig_data,
+    countEmoji: raw.countEmoji,
+    countN: raw.countN,
   };
   if (raw.type === 'mcq') {
     return { ...base, type: 'mcq', opts: raw.opts ?? [], ans: raw.ans ?? '' };
@@ -174,6 +178,71 @@ export const bookService = {
    * (u1→`sub_`, u2→`mul_`, u3→`div_`); se resuelven por alias.
    */
   getExamples(levelKey: string): LevelExample[] {
+    const cleanCounting: Record<string, LevelExample[]> = {
+      'u0t0-n1': [
+        { icon: "1️⃣", q: "¿Cuántos elementos hay? 🐉", a: "1", explain: "Un dragón = el número 1", vis: "🐉" },
+        { icon: "2️⃣", q: "¿Cuántos elementos hay? 🐄🐄", a: "2", explain: "Dos vacas = el número 2", vis: "🐄🐄" },
+        { icon: "3️⃣", q: "¿Cuántos elementos hay? 🍎🍎🍎", a: "3", explain: "Tres manzanas = el número 3", vis: "🍎🍎🍎" },
+        { icon: "4️⃣", q: "¿Cuántos elementos hay? ⭐⭐⭐•", a: "4", explain: "Cuatro estrellas = el número 4", vis: "⭐⭐⭐⭐" },
+        { icon: "5️⃣", q: "¿Cuántos elementos hay? 🌸🌸🌸🌸🌸", a: "5", explain: "Cinco flores = el número 5", vis: "🌸🌸🌸🌸🌸" },
+        { icon: "🔢", q: "¿Qué número va DESPUÉS del 3?", a: "4", explain: "1, 2, 3, → 4" },
+        { icon: "🔢", q: "¿Qué número va ANTES del 5?", a: "4", explain: "3, 4, 5 → el anterior a 5 es 4" },
+        { icon: "🌙", q: "¿Qué número va ENTRE 2 y 4?", a: "3", explain: "2, 3, 4" },
+        { icon: "🍬", q: "¿Cuántos elementos hay? 🍬🍬🍬🍬", a: "4", explain: "Cuatro dulces = el número 4", vis: "🍬🍬🍬🍬" },
+        { icon: "📊", q: "¿Cuál número es Mayor: 1 o 5?", a: "5", explain: "5 está más adelante en la recta" }
+      ],
+      'u0t0-n2': [
+        { icon: "6️⃣", q: "¿Cuántos elementos hay? ⚽⚽⚽⚽⚽⚽", a: "6", explain: "Seis balones = número 6", vis: "⚽⚽⚽⚽⚽⚽" },
+        { icon: "7️⃣", q: "¿Cuántos elementos hay? 🥭×7", a: "7", explain: "Siete mangos", vis: "🥭🥭🥭🥭🥭🥭🥭" },
+        { icon: "8️⃣", q: "¿Cuántos elementos hay? 🐟×8", a: "8", explain: "Ocho peces", vis: "🐟🐟🐟🐟🐟🐟🐟🐟" },
+        { icon: "9️⃣", q: "¿Cuántos elementos hay? 🍬×9", a: "9", explain: "Nueve dulces", vis: "🍬🍬🍬🍬🍬🍬🍬🍬🍬" },
+        { icon: "🔟", q: "¿Cuántos elementos hay? 🌸×10", a: "10", explain: "Diez flores = una decena", vis: "🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸" },
+        { icon: "🔢", q: "Cuenta: 1,2,3,4,5,?,7,8,9,10", a: "6", explain: "Entre 5 y 7 va el 6" },
+        { icon: "🔢", q: "Regresivo: 10,9,8,?,6,5", a: "7", explain: "Bajamos uno: 8→7→6" },
+        { icon: "⚖️", q: "¿Cuál número es Mayor: 7 o 9?", a: "9", explain: "9 > 7" },
+        { icon: "🌟", q: "¿Cuántos elementos hay? 🌟×8", a: "8", explain: "Ocho estrellas", vis: "🌟🌟🌟🌟🌟🌟🌟🌟" },
+        { icon: "📊", q: "De 2 en 2: 2,4,?,8", a: "6", explain: "+2 cada paso" }
+      ],
+      'u0t0-n3': [
+        { icon: "🔢", q: "¿Cuántos elementos hay? 🌟×12", a: "12", explain: "Doce estrellas = 10 + 2", vis: "🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟" },
+        { icon: "📊", q: "De 2 en 2: 2,4,6,8,?,12", a: "10", explain: "Sumamos 2 cada vez: 8+2=10" },
+        { icon: "📊", q: "De 5 en 5: 0,5,?,15", a: "10", explain: "Sumamos 5 cada vez: 10+5=15" },
+        { icon: "⚖️", q: "¿Cuál número es mayor? 13 u 8?", a: "13", explain: "13 > 8" },
+        { icon: "❓", q: "¿Cuál número falta? 11, 12, 14, 15", a: "13", explain: "Secuencia +1: el número entre 12 y 14 es 13" },
+        { icon: "📉", q: "Regresivo: 15,14,?,12", a: "13", explain: "−1 cada paso" },
+        { icon: "🔢", q: "¿Cuántos elementos hay? 🐣×15", a: "15", explain: "1 decena + 5 unidades", vis: "🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣" },
+        { icon: "🌌", q: "¿Cuál número es PAR? 11, 12, 13?", a: "12", explain: "Pares terminan en 0,2,4,6,8" },
+        { icon: "📊", q: "¿Cuál número es IMPAR? 10, 11, 12?", a: "11", explain: "Impares terminan en 1,3,5,7,9" },
+        { icon: "⚖️", q: "¿Cuál número es menor? 14 u 8?", a: "8", explain: "8 < 14" }
+      ],
+      'u0t0-n4': [
+        { icon: "🔢", q: "¿Cuántos elementos hay? 🌟×18", a: "18", explain: "1 decena + 8 unidades", vis: "🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟" },
+        { icon: "📊", q: "De 2 en 2: 10,12,?,16,18", a: "14", explain: "+2 cada vez" },
+        { icon: "📊", q: "De 5 en 5: 0,5,?,15", a: "10", explain: "+5 cada vez" },
+        { icon: "⚖️", q: "¿Cuál es el número MAYOR de 16,19,12,11", a: "19", explain: "El más grande" },
+        { icon: "❓", q: "¿Cuál número falta: 17,?,19?", a: "18", explain: "+1" },
+        { icon: "📉", q: "Regresivo: 20,19,?,17", a: "18", explain: "−1" },
+        { icon: "🌌", q: "¿Cuál número es PAR: 17,18,19?", a: "18", explain: "Pares terminan en 0,2,4,6,8" },
+        { icon: "⚖️", q: "¿Entre 18 y 20?", a: "19", explain: "18→19→20" },
+        { icon: "📊", q: "De 5 en 5: 5,10,15,?", a: "20", explain: "+5 cada paso" },
+        { icon: "📊", q: "De 2 en 2: 14,16,?,20", a: "18", explain: "+2" }
+      ],
+      'u0t0-n5': [
+        { icon: "📝", q: "¡Repaso! Cuenta y compara hasta 20", a: "📚", explain: "Recordamos: contar, antes/después, entre, mayor/menor, par, secuencias de 2 y 5" },
+        { icon: "🌟", q: "¿Cuántas? 🌟×3", a: "3", explain: "Tres estrellas", vis: "🌟🌟🌟" },
+        { icon: "🔢", q: "¿Después del 13?", a: "14", explain: "13→14" },
+        { icon: "⚖️", q: "¿Cuál número es mayor? 12 u 8?", a: "12", explain: "12>8" },
+        { icon: "📊", q: "2 → ? → 6 → ?", a: "4 y 8", explain: "De 2 en 2" },
+        { icon: "📉", q: "20,19,?,17", a: "18", explain: "−1" },
+        { icon: "📊", q: "¿Después del 17?", a: "18", explain: "17→18" },
+        { icon: "⚖️", q: "¿Cuál número es Mayor: 19 o 16?", a: "19", explain: "19>16" },
+        { icon: "🌟", q: "¿Cuál número es PAR: 14, 15, 17?", a: "14", explain: "14 termina en 4" },
+        { icon: "📊", q: "De 2 en 2: 16,?,20", a: "18", explain: "+2" }
+      ]
+    };
+
+    if (cleanCounting[levelKey]) return cleanCounting[levelKey];
+
     const direct = mockLevelExamples[levelKey];
     if (direct) return direct;
     const alias: Record<string, string> = { u1: 'sub', u2: 'mul', u3: 'div' };

@@ -42,8 +42,8 @@ export default function CelebrationOverlay({
           <div className="cel-subtitle">{subtitle}</div>
           <span className="cel-stars">
             {[0, 1, 2].map((i) => (
-              <span key={i} className="cel-star" style={{ opacity: i < starCount ? 1 : 0.25 }}>
-                {i < starCount ? '⭐' : '☆'}
+              <span key={i} className="cel-star" style={{ opacity: i < starCount ? 1 : 0.15 }}>
+                ⭐
               </span>
             ))}
           </span>
@@ -54,7 +54,7 @@ export default function CelebrationOverlay({
           {unlockText && <div className="cel-unlock" style={{ display: 'block' }}>{unlockText}</div>}
         </div>
         <div className="cel-body">
-          <button className="cel-btn" onClick={onNext}>🚀 ¡Siguiente!</button>
+          <button className="cel-btn" onClick={onNext}>🚀 ¡Siguiente nivel!</button>
           <button className="cel-btn-sec" onClick={onAllTopics}>📚 Ver todos los temas</button>
         </div>
       </div>
@@ -62,9 +62,19 @@ export default function CelebrationOverlay({
   );
 }
 
+function getShortLevel(label: string): string {
+  if (label.includes('Nivel 1')) return 'N1';
+  if (label.includes('Nivel 2')) return 'N2';
+  if (label.includes('Nivel 3')) return 'N3';
+  if (label.includes('Nivel 4')) return 'N4';
+  if (label.toLowerCase().includes('evaluación') || label.toLowerCase().includes('evaluacion')) return 'Evaluación';
+  return label;
+}
+
 function resolve(pct: number, topicTitle: string, levelLabel: string, okCount: number, total: number) {
-  if (pct >= 95) return { medal: '🥇', title: '¡PERFECTO!', subtitle: `¡Respondiste TODO en ${topicTitle} — ${levelLabel}!` };
+  const shortLevel = getShortLevel(levelLabel);
+  if (pct >= 95) return { medal: '🥇', title: '¡PERFECTO!', subtitle: `¡Respondiste TODO en ${topicTitle} — ${shortLevel}!` };
   if (pct >= 85) return { medal: '🏅', title: '¡EXCELENTE!', subtitle: `${okCount} de ${total} correctas en ${topicTitle}.` };
-  if (pct >= 70) return { medal: '⭐', title: '¡MUY BIEN!', subtitle: `Superaste ${levelLabel} de ${topicTitle}. ¡Sigue así!` };
-  return { medal: '💪', title: '¡APROBADO!', subtitle: `Completaste ${topicTitle} — ${levelLabel}.` };
+  if (pct >= 70) return { medal: '⭐', title: '¡MUY BIEN!', subtitle: `Superaste ${shortLevel} de ${topicTitle}. ¡Sigue así!` };
+  return { medal: '💪', title: '¡APROBADO!', subtitle: `Completaste ${topicTitle} — ${shortLevel}.` };
 }

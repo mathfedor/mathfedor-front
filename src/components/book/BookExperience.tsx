@@ -70,6 +70,14 @@ function BookShell() {
   const isGrade1 = book?.slug === 'libro-1ro';
   const bookGroup = book?.slug === 'libro-1ro' ? 'Grado1' : 'Grado2';
 
+  const prevScreenRef = useRef(screen);
+  useEffect(() => {
+    if (prevScreenRef.current === 'setup' && screen === 'home') {
+      setShowIntro(true);
+    }
+    prevScreenRef.current = screen;
+  }, [screen]);
+
   // Hide AI floating button when inside active lesson and galaxy map screens
   const showFloatingChatButton = !loading && screen !== 'lesson' && screen !== 'galaxy';
 

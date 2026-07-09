@@ -6,10 +6,10 @@ import { useBook } from '../context/BookContext';
 type TabType = 'pensamientos' | 'estandares' | 'competencias' | 'dba' | 'desempeno';
 
 export default function EstandaresScreen() {
-  const { progress, goScreen, book } = useBook();
+  const { progress, goScreen, book, cameFromLesson } = useBook();
   const [activeTab, setActiveTab] = useState<TabType>('pensamientos');
 
-  const backScreen = progress ? 'home' : 'setup';
+  const backScreen = cameFromLesson ? 'lesson' : (progress ? 'home' : 'setup');
 
   return (
     <div className="screen active" id="screen-estandares-men">

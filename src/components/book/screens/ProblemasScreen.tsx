@@ -38,7 +38,7 @@ const EXERCISES: ProblemExercise[] = [
 ];
 
 export default function ProblemasScreen() {
-  const { progress, goScreen, book } = useBook();
+  const { progress, goScreen, book, cameFromLesson } = useBook();
   const [step, setStep] = useState<'intro' | 'playing' | 'final'>('intro');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -48,7 +48,7 @@ export default function ProblemasScreen() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
 
-  const backScreen = progress ? 'home' : 'setup';
+  const backScreen = cameFromLesson ? 'lesson' : (progress ? 'home' : 'setup');
 
   useEffect(() => {
     if (step !== 'playing' || isAnswered) return;

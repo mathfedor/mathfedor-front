@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useBook } from '../context/BookContext';
 import ExerciseView from '../shared/ExerciseView';
 import ExamplesPanel from '../shared/ExamplesPanel';
+import ProcedureModal from '../shared/ProcedureModal';
 import { computeGrade } from '@/services/gamification.service';
 import { dailyChallengeKey } from '@/services/daily-challenge.service';
 import { bookService } from '@/services/book.service';
@@ -130,6 +131,7 @@ export default function LessonScreen() {
   const [phase, setPhase] = useState<'examples' | 'exercises'>(isDaily ? 'exercises' : 'examples');
   const [combo, setCombo] = useState(0);
   const isGrade1 = book?.slug === 'libro-1ro';
+  const [procedureOpen, setProcedureOpen] = useState(false);
 
   // Reinicia el cronómetro cada vez que se muestra un ejercicio.
   useEffect(() => {
@@ -188,18 +190,56 @@ export default function LessonScreen() {
   // Fase de ejemplos: se muestra antes de la práctica (salvo reto diario).
   if (phase === 'examples') {
     if (!book || !currentLevel) return null;
+    const levelDesc = (meta.topic as any)?.levelDescs?.[currentLevel.levelIndex] || meta.topic?.desc || '';
 
     return (
       <div className="screen active" id="screen-lesson">
+        {isGrade1 && !isDaily && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '0 0.5rem 1rem' }}>
+            <div 
+              className="feat-btn" 
+              onClick={() => goScreen('estandares')} 
+              style={{ background: 'linear-gradient(135deg,#fff,#F0FDF9)', margin: 0 }}
+            >
+              <div 
+                className="feat-icon" 
+                style={{ 
+                  background: '#fff', 
+                  fontSize: '18px', 
+                  fontWeight: 900, 
+                  color: '#333', 
+                  border: '1.5px solid rgba(0,0,0,.08)',
+                  boxShadow: 'none' 
+                }}
+              >
+                CO
+              </div>
+              <div className="feat-info" style={{ textAlign: 'left' }}>
+                <div className="feat-name">Estándares MEN</div>
+                <div className="feat-sub" style={{ fontSize: '11px', color: 'rgba(20,60,100,.65)' }}>Programa de 1° Colombia</div>
+              </div>
+            </div>
+
+            <div 
+              className="feat-btn" 
+              onClick={() => goScreen('problemas')} 
+              style={{ background: 'linear-gradient(135deg,#fff,#E8FAF1)', margin: 0 }}
+            >
+              <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#0E5240,#34D399)' }}>🛒</div>
+              <div className="feat-info" style={{ textAlign: 'left' }}>
+                <div className="feat-name">Problemas Cotidianos</div>
+                <div className="feat-meta" style={{ fontSize: '11px', color: 'rgba(20,60,100,.65)' }}>Conteo de monedas + compras + 4 operaciones</div>
+              </div>
+              <div className="feat-arrow">→</div>
+            </div>
+          </div>
+        )}
         <div className="back-row" onClick={() => goScreen(meta.backTarget)}>← Volver a temas</div>
         {isGrade1 ? (
           <div style={{ textAlign: 'left', marginBottom: '1rem' }}>
             <div style={{ fontWeight: 900, fontSize: 16 }}>
               {meta.headerIcon} {meta.headerTitle}
-              {(() => {
-                const levelDesc = (meta.topic as any)?.levelDescs?.[currentLevel.levelIndex] || meta.topic?.desc || '';
-                return levelDesc ? ` · ${levelDesc}` : '';
-              })()}
+              {levelDesc ? ` · ${levelDesc}` : ''}
             </div>
             <div style={{ display: 'inline-block', fontSize: '11px', fontWeight: 900, padding: '2px 7px', borderRadius: '8px', background: meta.level?.bg || '#EEEDFE', color: meta.level?.color || '#3D1468', marginTop: '6px' }}>
               {meta.level?.short || 'N1'}
@@ -274,10 +314,15 @@ export default function LessonScreen() {
 
         <ExamplesPanel
           examples={examples}
+          exercisesCount={exercises.length}
           levelIndex={currentLevel.levelIndex}
           topicTitle={meta.topicTitle}
+          levelDesc={levelDesc}
           conceptText={book.units[currentLevel.unitIndex]?.std ?? ''}
           onStart={() => setPhase('exercises')}
+          firstExerciseQuestion={exercises[0]?.q}
+          firstExerciseAnswer={exercises[0]?.type === 'seq' ? (exercises[0] as any).items?.filter((it: any) => it.t === 'b').map((it: any) => it.a ?? '').join(', ') : (exercises[0] as any)?.ans || ''}
+          firstExerciseExplain={(exercises[0] as any)?.explain}
         />
       </div>
     );
@@ -331,6 +376,46 @@ export default function LessonScreen() {
 
   return (
     <div className="screen active" id="screen-lesson">
+      {isGrade1 && !isDaily && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '0 0.5rem 1rem' }}>
+          <div 
+            className="feat-btn" 
+            onClick={() => goScreen('estandares')} 
+            style={{ background: 'linear-gradient(135deg,#fff,#F0FDF9)', margin: 0 }}
+          >
+            <div 
+              className="feat-icon" 
+              style={{ 
+                background: '#fff', 
+                fontSize: '18px', 
+                fontWeight: 900, 
+                color: '#333', 
+                border: '1.5px solid rgba(0,0,0,.08)',
+                boxShadow: 'none' 
+              }}
+            >
+              CO
+            </div>
+            <div className="feat-info" style={{ textAlign: 'left' }}>
+              <div className="feat-name">Estándares MEN</div>
+              <div className="feat-sub" style={{ fontSize: '11px', color: 'rgba(20,60,100,.65)' }}>Programa de 1° Colombia</div>
+            </div>
+          </div>
+
+          <div 
+            className="feat-btn" 
+            onClick={() => goScreen('problemas')} 
+            style={{ background: 'linear-gradient(135deg,#fff,#E8FAF1)', margin: 0 }}
+          >
+            <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#0E5240,#34D399)' }}>🛒</div>
+            <div className="feat-info" style={{ textAlign: 'left' }}>
+              <div className="feat-name">Problemas Cotidianos</div>
+              <div className="feat-meta" style={{ fontSize: '11px', color: 'rgba(20,60,100,.65)' }}>Conteo de monedas + compras + 4 operaciones</div>
+            </div>
+            <div className="feat-arrow">→</div>
+          </div>
+        </div>
+      )}
       <div className="back-row" onClick={() => goScreen(meta.backTarget)}>
         {isDaily ? '← Salir del reto' : '← Volver a temas'}
       </div>
@@ -364,21 +449,26 @@ export default function LessonScreen() {
           </div>
         </div>
         {isGrade1 ? (
-          <div id="progTrack" style={{ margin: '0.85rem 0 0' }}>
-            {exercises.map((_, dotIdx) => {
-              let cls = 'pt-dot';
-              if (dotIdx === idx) cls += ' active';
-              else if (dotIdx < idx) {
-                const att = attempts.find(a => a.exerciseId === exercises[dotIdx].id);
-                cls += (att && att.isCorrect) ? ' done' : ' wrong';
-              }
-              return (
-                <div key={dotIdx} className={cls}>
-                  {dotIdx + 1}
-                </div>
-              );
-            })}
-          </div>
+          <>
+            <div id="progTrack" style={{ margin: '0.85rem 0 0' }}>
+              {exercises.map((_, dotIdx) => {
+                let cls = 'pt-dot';
+                if (dotIdx === idx) cls += ' active';
+                else if (dotIdx < idx) {
+                  const att = attempts.find(a => a.exerciseId === exercises[dotIdx].id);
+                  cls += (att && att.isCorrect) ? ' done' : ' wrong';
+                }
+                return (
+                  <div key={dotIdx} className={cls}>
+                    {dotIdx + 1}
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{ textAlign: 'right', fontSize: '12px', fontWeight: 'bold', color: '#6A20A8', marginTop: '0.45rem' }}>
+              Ejercicio {idx + 1} de {exercises.length}
+            </div>
+          </>
         ) : (
           <div className="pg-bar" style={{ marginTop: 8 }}>
             <div className="pg-fill" style={{ width: `${progressPct}%` }} />
@@ -393,7 +483,55 @@ export default function LessonScreen() {
         </div>
       )}
 
-      <ExerciseView key={exercise.id} exercise={exercise} index={idx} total={exercises.length} onAnswer={handleAnswer} />
+      {isGrade1 && !isDaily && (
+        <div style={{ background: '#fff', border: '2px solid #FF8C2A', borderRadius: '18px', padding: '1.25rem', marginBottom: '1.5rem', boxShadow: '0 8px 24px rgba(0,0,0,.05)', textAlign: 'left' }}>
+          {/* Question box */}
+          <div style={{ background: '#E8F5FF', border: '1.5px solid #BFE3FF', borderRadius: '12px', padding: '.75rem 1rem', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '.75rem' }}>
+            <span style={{ fontSize: '18px' }}>👋</span>
+            <div style={{ fontSize: '14px', fontWeight: 800, color: '#0A3A6A', textAlign: 'left' }}>
+              {exercise.q}
+            </div>
+          </div>
+
+          {/* Instruction box */}
+          <div style={{ background: '#FFFDF0', border: '1.5px solid #FFEFA8', borderRadius: '12px', padding: '.75rem 1rem', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '.75rem' }}>
+            <span style={{ fontSize: '16px' }}>📖</span>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: '#7A5C00', textAlign: 'left' }}>
+              Instrucción: Lee la pregunta y piensa paso a paso.
+            </div>
+          </div>
+
+          {/* Procedure button */}
+          <button 
+            onClick={() => setProcedureOpen(true)}
+            style={{
+              padding: '10px 20px',
+              background: '#24C496',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '10px',
+              fontSize: '13px',
+              fontWeight: 900,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            💡 Ver procedimiento
+          </button>
+        </div>
+      )}
+
+      <ExerciseView key={exercise.id} exercise={exercise} index={idx} total={exercises.length} onAnswer={handleAnswer} isGrade1={isGrade1} />
+
+      <ProcedureModal
+        isOpen={procedureOpen}
+        onClose={() => setProcedureOpen(false)}
+        question={exercise.q}
+        answer={exercise.type === 'seq' ? (exercise as any).items?.filter((it: any) => it.t === 'b').map((it: any) => it.a ?? '').join(', ') : (exercise as any)?.ans || ''}
+        explainHtml={exercise.explain}
+      />
     </div>
   );
 }

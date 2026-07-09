@@ -1,14 +1,21 @@
 'use client';
 
+import { useState } from 'react';
 import Starfield from './Starfield';
+import ProcedureModal from './ProcedureModal';
 import type { LevelExample } from '@/types/book.types';
 
 interface Props {
   examples: LevelExample[];
+  exercisesCount: number;
   levelIndex: number;
   topicTitle: string;
+  levelDesc: string;
   conceptText: string;
   onStart: () => void;
+  firstExerciseQuestion?: string;
+  firstExerciseAnswer?: string;
+  firstExerciseExplain?: string;
 }
 
 const LEVEL_META = [
@@ -26,12 +33,82 @@ const CHARS = [
 ];
 
 /** Panel de ejemplos resueltos — réplica fiel de `showExamplesPanel` del HTML. */
-export default function ExamplesPanel({ examples, levelIndex, topicTitle, conceptText, onStart }: Props) {
+export default function ExamplesPanel({ examples, exercisesCount, levelIndex, topicTitle, levelDesc, conceptText, onStart, firstExerciseQuestion, firstExerciseAnswer, firstExerciseExplain }: Props) {
+  const [modalOpen, setModalOpen] = useState(false);
   const lm = LEVEL_META[levelIndex] ?? LEVEL_META[0];
 
   return (
-    <div className=" exp2" style={{ background: lm.grad, borderRadius: 22, overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,.3)', marginBottom: '1rem', position: 'relative' }}>
+    <div className="exp2" style={{ background: lm.grad, borderRadius: 22, overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,.3)', marginBottom: '1rem', position: 'relative' }}>
       <Starfield count={22} />
+
+      {/* STYLES OVERRIDES */}
+      <style>{`
+        .examples-card-clean {
+          background: #fff !important;
+          border: 2.5px solid #FF8C2A !important;
+          color: #1a1a1a !important;
+          border-radius: 16px !important;
+          padding: 1rem !important;
+          margin-bottom: .75rem !important;
+          box-shadow: 0 4px 14px rgba(232,101,10,.18) !important;
+          text-align: left;
+        }
+        .examples-card-clean * {
+          color: #1a1a1a !important;
+        }
+        .examples-card-clean .ex-q-label {
+          font-size: 14px !important;
+          font-weight: 900 !important;
+          color: #1a1a1a !important;
+          line-height: 1.45 !important;
+        }
+        .examples-card-clean .ex-a-pill {
+          background: linear-gradient(135deg,#FFD699,#FF8C2A) !important;
+          color: #3d1d00 !important;
+          border: 1.5px solid #B84D00 !important;
+          font-weight: 900 !important;
+          font-family: 'Baloo 2', sans-serif !important;
+          padding: 4px 14px !important;
+          border-radius: 10px !important;
+          font-size: 20px !important;
+          flex-shrink: 0;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .examples-card-clean .ex-explain {
+          background: #FFF6E8 !important;
+          border-left: 4px solid #FF8C2A !important;
+          color: #3d1d00 !important;
+          font-size: 12px !important;
+          padding: .5rem .65rem !important;
+          border-radius: 8px !important;
+          margin-top: .5rem !important;
+          text-align: left;
+        }
+        .examples-card-clean .ex-explain * {
+          color: #3d1d00 !important;
+        }
+        .examples-card-clean .ex-vis {
+          background: #FFFBF2 !important;
+          border: 1.5px solid rgba(232,101,10,.35) !important;
+          color: #1a1a1a !important;
+          border-radius: 12px !important;
+          padding: .6rem !important;
+          margin: .5rem 0 !important;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 6px;
+          font-size: 42px !important;
+          line-height: 1.3 !important;
+        }
+        .examples-card-clean .ex-vis svg, .examples-card-clean .ex-vis img {
+          max-width: 100% !important;
+          height: auto !important;
+        }
+      `}</style>
 
       {/* HEADER */}
       <div style={{ padding: '1.5rem 1.25rem 1rem', position: 'relative', zIndex: 1 }}>
@@ -54,11 +131,11 @@ export default function ExamplesPanel({ examples, levelIndex, topicTitle, concep
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
           <div>
             <div style={{ fontFamily: "'Baloo 2',sans-serif", fontSize: 22, fontWeight: 900, color: '#fff', marginBottom: 2 }}>{lm.headerTxt}</div>
-            <div style={{ fontSize: 12, color: 'rgba(255,255,255,.65)' }}>{lm.sub} · {topicTitle}</div>
+            <div style={{ fontSize: 12, color: 'rgba(255,255,255,.65)' }}>{(levelDesc || lm.sub)} - {topicTitle}</div>
           </div>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: 11, color: 'rgba(255,255,255,.5)', fontWeight: 700 }}>EJERCICIOS</div>
-            <div style={{ fontSize: 22, fontWeight: 900, color: '#FF8C2A', fontFamily: "'Baloo 2',sans-serif" }}>{examples.length}</div>
+            <div style={{ fontSize: 22, fontWeight: 900, color: '#FF8C2A', fontFamily: "'Baloo 2',sans-serif" }}>{exercisesCount}</div>
           </div>
         </div>
       </div>
@@ -75,54 +152,109 @@ export default function ExamplesPanel({ examples, levelIndex, topicTitle, concep
 
       {/* CONCEPT */}
       <div style={{ margin: '0 1.25rem .75rem', padding: '.85rem 1rem', background: 'rgba(255,255,255,.1)', borderRadius: 14, borderLeft: `4px solid ${lm.accent}`, position: 'relative', zIndex: 1 }}>
-        <div style={{ fontSize: 13, color: 'rgba(255,255,255,.9)', fontWeight: 700, lineHeight: 1.6 }}>{conceptText || 'Aplica el método paso a paso.'}</div>
+        <div style={{ fontSize: 13, color: 'rgba(255,255,255,.9)', fontWeight: 700, lineHeight: 1.6, textAlign: 'left' }}>{conceptText || 'Aplica el método paso a paso.'}</div>
       </div>
 
       {/* EXAMPLE CARDS */}
       <div style={{ padding: '0 1.25rem .5rem', position: 'relative', zIndex: 1 }}>
-        <div style={{ fontSize: 11, fontWeight: 900, color: 'rgba(255,255,255,.6)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: '.65rem' }}>
+        <div style={{ fontSize: 11, fontWeight: 900, color: 'rgba(255,255,255,.6)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: '.65rem', textAlign: 'left' }}>
           ✨ {examples.length} ejemplos resueltos
         </div>
         {examples.map((e, i) => (
-          <ExampleCard key={i} ex={e} index={i} />
+          <ExampleCard key={i} ex={e} />
         ))}
       </div>
 
       {/* START BUTTON */}
-      <div style={{ padding: '.75rem 1.25rem 1.5rem', position: 'relative', zIndex: 1 }}>
+      <div style={{ padding: '.75rem 1.25rem 1.5rem', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'center' }}>
         <button
           onClick={onStart}
           style={{ width: '100%', padding: 14, fontSize: 16, fontWeight: 900, background: 'linear-gradient(135deg,#F5C518,#FF8C2A)', color: '#2A0F60', border: 'none', borderRadius: 16, cursor: 'pointer', fontFamily: "'Nunito',sans-serif", boxShadow: '0 8px 24px rgba(245,197,24,.4)' }}
         >
-          🎮 ¡Empezar {examples.length} ejercicios!
+          🎮 ¡Empezar {exercisesCount} ejercicios!
         </button>
+
+        {firstExerciseQuestion && (
+          <button
+            onClick={() => setModalOpen(true)}
+            style={{
+              background: 'linear-gradient(135deg, #6C28B4, #9B5CFF)',
+              color: '#fff',
+              border: '2px solid #fff',
+              borderRadius: '22px',
+              padding: '8px 20px',
+              fontSize: '13px',
+              fontWeight: 900,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 4px 10px rgba(108,40,180,0.3)',
+              fontFamily: "'Nunito', sans-serif",
+            }}
+          >
+            💡 Ver procedimiento
+          </button>
+        )}
       </div>
+
+      {firstExerciseQuestion && (
+        <ProcedureModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          question={firstExerciseQuestion || ''}
+          answer={firstExerciseAnswer || ''}
+          explainHtml={firstExerciseExplain}
+        />
+      )}
     </div>
   );
 }
 
-function ExampleCard({ ex, index }: { ex: LevelExample; index: number }) {
+function ExampleCard({ ex }: { ex: LevelExample }) {
   return (
-    <div style={{ background: '#fff', border: '2px solid #FF8C2A', borderRadius: 16, padding: '1rem', marginBottom: '.65rem', color: '#333', boxShadow: '0 6px 16px rgba(0,0,0,.08)', position: 'relative' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: ex.vis || ex.nl ? '.5rem' : 0, flexWrap: 'wrap' }}>
-        <div style={{ width: 28, height: 28, borderRadius: 8, background: '#FF8C2A', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 900, flexShrink: 0 }}>
-          {index + 1}
+    <div className="examples-card-clean">
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: ex.vis || ex.nl ? '.5rem' : '0' }}>
+        <div style={{
+          width: 34,
+          height: 34,
+          borderRadius: 10,
+          background: '#FF8C2A',
+          color: '#fff',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 18,
+          flexShrink: 0,
+          boxShadow: '0 2px 6px rgba(232,101,10,.4)'
+        }}>
+          {ex.icon || '⭐'}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 14, fontWeight: 800, color: '#2A0F60', lineHeight: 1.45, wordWrap: 'break-word' }}>{ex.q}</div>
+          <div className="ex-q-label">{ex.q}</div>
         </div>
-        <div style={{ fontSize: 18, fontWeight: 900, color: '#fff', background: '#FF8C2A', padding: '4px 12px', borderRadius: 8, flexShrink: 0 }}>
+        <div className="ex-a-pill">
           {ex.a}
         </div>
       </div>
 
-      {ex.vis && <div className="ex2-vis" style={{ color: '#333', margin: '.5rem 0' }} dangerouslySetInnerHTML={{ __html: ex.vis }} />}
-      {ex.nl && <NumberLine min={ex.nl.min} max={ex.nl.max} ans={ex.nl.ans} />}
+      {ex.vis && (
+        <div
+          className="ex-vis"
+          dangerouslySetInnerHTML={{ __html: ex.vis }}
+        />
+      )}
+
+      {ex.nl && (
+        <div className="ex-vis">
+          <NumberLine min={ex.nl.min} max={ex.nl.max} ans={ex.nl.ans} />
+        </div>
+      )}
 
       {ex.explain && (
         <div
-          style={{ fontSize: 14, color: '#1A0A3C', marginTop: '.7rem', padding: '.85rem 1rem', background: '#FFF8DC', borderRadius: 10, border: '2px solid rgba(245,197,24,.5)', lineHeight: 1.6 }}
-          dangerouslySetInnerHTML={{ __html: ex.explain }}
+          className="ex-explain"
+          dangerouslySetInnerHTML={{ __html: `💡 ${ex.explain}` }}
         />
       )}
     </div>
@@ -132,15 +264,24 @@ function ExampleCard({ ex, index }: { ex: LevelExample; index: number }) {
 function NumberLine({ min, max, ans }: { min: number; max: number; ans: number }) {
   const ticks = Array.from({ length: max - min + 1 }, (_, i) => min + i);
   return (
-    <div style={{ overflowX: 'auto', margin: '.5rem 0', padding: '.65rem', background: 'rgba(0,0,0,.2)', borderRadius: 12 }}>
-      <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+    <div style={{ overflowX: 'auto', width: '100%' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-end', minWidth: 'max-content' }}>
         {ticks.map((n, i) => (
           <div key={n} style={{ display: 'flex', alignItems: 'flex-end' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, minWidth: 28 }}>
-              <span style={{ fontSize: 11, fontWeight: 900, color: 'rgba(255,255,255,.85)' }}>{n}</span>
-              <div style={{ width: 18, height: 18, borderRadius: '50%', background: n === ans ? '#FF8C2A' : 'rgba(255,255,255,.15)', border: `2px solid ${n === ans ? '#FFE066' : 'rgba(255,255,255,.3)'}` }} />
+              <span style={{ fontSize: 11, fontWeight: 900, color: '#1a1a1a' }}>{n}</span>
+              <div style={{
+                width: 18,
+                height: 18,
+                borderRadius: '50%',
+                background: n === ans ? '#FF8C2A' : '#FFE9C8',
+                border: `2px solid ${n === ans ? '#B84D00' : 'rgba(232,101,10,.35)'}`,
+                boxShadow: n === ans ? '0 0 12px rgba(232,101,10,.55)' : 'none'
+              }} />
             </div>
-            {i < ticks.length - 1 && <div style={{ height: 2, background: 'rgba(255,255,255,.2)', flex: 1, minWidth: 10, marginBottom: 10 }} />}
+            {i < ticks.length - 1 && (
+              <div style={{ height: 2, background: 'rgba(232,101,10,.35)', flex: 1, minWidth: 10, marginBottom: 10 }} />
+            )}
           </div>
         ))}
       </div>

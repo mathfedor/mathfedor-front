@@ -1,0 +1,9 @@
+- `[x]` port 3D Galaxy Map scene to raw Three.js inside `GalaxyScene.tsx`
+- `[x]` update `GalaxyMapScreen.tsx` to handle top bar HUD, XP, bottom panel UI, and navigation
+- `[x]` update `ExamplesPanel.tsx` to match the HTML design for Nivel 1 - Basico examples
+- `[x]` fix exerciseCount and levelDesc in ExamplesPanel to match HTML exactly
+- `[x]` override and sanitize corrupted u0t0 (counting) level examples in `book.service.ts` to match original HTML sentences
+- `[x]` change bottom button text to display exercisesCount instead of examples.length
+- `[x]` implement the ProcedureModal component and inject the Ver procedimiento button below the examples/exercises start button
+- `[x]` support dynamic derivation of titles/instructions/procedures inside ProcedureModal to cover exercises without pre-written explain strings
+- `[x]` verify compilation and test in local environment
