@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Sidebar from '@/components/Sidebar';
 import { authService } from "@/services/auth.service";
 import { usersService } from "@/services/users.service";
@@ -292,12 +293,22 @@ export default function ProfilePage() {
             </div>
 
             {submitMessage && (
-              <div className={`mb-4 p-4 rounded-lg ${
-                submitMessage.type === 'success'
-                  ? 'bg-green-100 text-green-800 border border-green-200 dark:bg-green-900 dark:text-green-200'
-                  : 'bg-red-100 text-red-800 border border-red-200 dark:bg-red-900 dark:text-red-200'
-              }`}>
-                {submitMessage.message}
+              <div className="mb-4">
+                <div className={`p-4 rounded-lg ${
+                  submitMessage.type === 'success'
+                    ? 'bg-green-100 text-green-800 border border-green-200 dark:bg-green-900 dark:text-green-200'
+                    : 'bg-red-100 text-red-800 border border-red-200 dark:bg-red-900 dark:text-red-200'
+                }`}>
+                  {submitMessage.message}
+                </div>
+                {submitMessage.type === 'success' && (
+                  <Link
+                    href="/dashboard/downloads"
+                    className="mt-3 block text-center w-full px-4 py-2.5 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg shadow transition-colors"
+                  >
+                    📥 Ir a Descargas
+                  </Link>
+                )}
               </div>
             )}
           </div>
@@ -312,12 +323,22 @@ export default function ProfilePage() {
             </h2>
 
             {submitMessage && (
-              <div className={`mb-4 p-4 rounded-lg ${
-                submitMessage.type === 'success'
-                  ? 'bg-green-100 text-green-800 border border-green-200 dark:bg-green-900 dark:text-green-200'
-                  : 'bg-red-100 text-red-800 border border-red-200 dark:bg-red-900 dark:text-red-200'
-              }`}>
-                {submitMessage.message}
+              <div className="mb-4">
+                <div className={`p-4 rounded-lg ${
+                  submitMessage.type === 'success'
+                    ? 'bg-green-100 text-green-800 border border-green-200 dark:bg-green-900 dark:text-green-200'
+                    : 'bg-red-100 text-red-800 border border-red-200 dark:bg-red-900 dark:text-red-200'
+                }`}>
+                  {submitMessage.message}
+                </div>
+                {submitMessage.type === 'success' && (
+                  <Link
+                    href="/dashboard/downloads"
+                    className="mt-3 block text-center w-full px-4 py-2.5 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg shadow transition-colors"
+                  >
+                    📥 Ir a Descargas
+                  </Link>
+                )}
               </div>
             )}
 

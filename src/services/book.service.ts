@@ -9,7 +9,7 @@
 import type { Book, Unit, Topic, LevelRef, Level, LevelExample, LoreChapter, UnitTutorial, Exercise } from '@/types/book.types';
 import type { GamificationCatalog } from '@/types/gamification.types';
 import { mockBook, mockGamificationCatalog } from '@/mocks/book-curriculum.mock';
-import { mockLevelExamples } from '@/mocks/book-examples.mock';
+import { mockLevelExamples, mockLevelExamples1 } from '@/mocks/book-examples.mock';
 import { mockLoreChapters } from '@/mocks/book-lore.mock';
 import { mockUnitTutorials } from '@/mocks/book-unit-tuts.mock';
 import { BOOK_API_URL as API_URL, BOOK_SLUG, bookBackendEnabled, bookHeaders } from './book-http';
@@ -48,6 +48,7 @@ interface RawTopic {
   icon: string;
   desc: string;
   levels?: RawLevel[];
+  levelDescs?: string[];
 }
 
 interface RawUnit {
@@ -104,6 +105,7 @@ function mapTopic(raw: RawTopic, topicIndex: number, unitId: string): Topic {
     icon: raw.icon,
     desc: raw.desc,
     levels: (raw.levels || []).map((lv, i) => mapLevel(lv, i, id)),
+    levelDescs: raw.levelDescs,
   };
 }
 
@@ -177,7 +179,24 @@ export const bookService = {
    * Algunas unidades usan claves alternas en el original
    * (u1→`sub_`, u2→`mul_`, u3→`div_`); se resuelven por alias.
    */
-  getExamples(levelKey: string): LevelExample[] {
+  getExamples(levelKey: string, slug: string = BOOK_SLUG): LevelExample[] {
+    const isBook1 = slug === 'libro-1ro' || slug === 'matematicas-fedor-1';
+    if (isBook1) {
+      const m = /^u(\d+)t(\d+)-n(\d+)$/.exec(levelKey);
+      if (m) {
+        const uIdx = parseInt(m[1], 10);
+        const tIdx = parseInt(m[2], 10);
+        const lNum = parseInt(m[3], 10);
+        const topic = mockBook1.units[uIdx]?.topics[tIdx];
+        if (topic) {
+          const topicKey = `${topic.id}-n${lNum}`;
+          const ex = mockLevelExamples1[topicKey];
+          if (ex && ex.length > 0) return ex;
+        }
+      }
+      return [];
+    }
+
     const cleanCounting: Record<string, LevelExample[]> = {
       'u0t0-n1': [
         { icon: "1️⃣", q: "¿Cuántos elementos hay? 🐉", a: "1", explain: "Un dragón = el número 1", vis: "🐉" },

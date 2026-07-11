@@ -88,6 +88,7 @@ export interface ExerciseAttempt {
   /** Respuesta correcta. */
   correctAnswer: string;
   isCorrect: boolean;
+  q?: string;
 }
 
 /** Resultado de una lección recién terminada (entrada a la pantalla de resultados). */

@@ -107,6 +107,7 @@ export interface Topic {
   icon: string;
   desc: string;
   levels: Level[];
+  levelDescs?: string[];
 }
 
 /** Unidad de aprendizaje del libro. */

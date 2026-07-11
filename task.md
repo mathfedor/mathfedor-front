@@ -6,4 +6,4 @@
 - `[x]` change bottom button text to display exercisesCount instead of examples.length
 - `[x]` implement the ProcedureModal component and inject the Ver procedimiento button below the examples/exercises start button
 - `[x]` support dynamic derivation of titles/instructions/procedures inside ProcedureModal to cover exercises without pre-written explain strings
-- `[x]` verify compilation and test in local environment
+- `[x]` Verify compilation and page navigation local environment

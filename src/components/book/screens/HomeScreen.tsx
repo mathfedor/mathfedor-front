@@ -8,6 +8,8 @@ import UnitCard from '../shared/UnitCard';
 import LaunchIntro from '../shared/LaunchIntro';
 import TutorialOverlay from '../shared/TutorialOverlay';
 import ConceptosFedorModal from '../shared/ConceptosFedorModal';
+import ShopModal from '../shared/ShopModal';
+import StickerAlbumModal from '../shared/StickerAlbumModal';
 import { globalProgressPct, unitProgressPct } from '../shared/progress.utils';
 import { dayKey } from '@/services/daily-challenge.service';
 
@@ -140,6 +142,8 @@ export default function HomeScreen() {
   const [showDailyModal, setShowDailyModal] = useState(false);
   const [showRankUpModal, setShowRankUpModal] = useState(false);
   const [showConceptos, setShowConceptos] = useState(false);
+  const [showShopModal, setShowShopModal] = useState(false);
+  const [showStickersModal, setShowStickersModal] = useState(false);
 
   const handleClaimDailyClick = () => {
     claimDaily();
@@ -469,7 +473,7 @@ export default function HomeScreen() {
           <button
             className="ab1-btn"
             style={{ background: 'linear-gradient(135deg,#9B0066,#FF1DAA)', color: '#fff' }}
-            onClick={() => goScreen('diary')}
+            onClick={() => setShowStickersModal(true)}
           >
             <span className="ab1-ico">📔</span>
             <span className="ab1-lbl">Stickers</span>
@@ -477,7 +481,7 @@ export default function HomeScreen() {
           <button
             className="ab1-btn"
             style={{ background: 'linear-gradient(135deg,#16876A,#24C496)', color: '#fff' }}
-            onClick={() => goScreen('shop')}
+            onClick={() => setShowShopModal(true)}
           >
             <span className="ab1-ico">🛒</span>
             <span className="ab1-lbl">Tienda</span>
@@ -1173,6 +1177,15 @@ export default function HomeScreen() {
 
       {showConceptos && (
         <ConceptosFedorModal onClose={() => setShowConceptos(false)} />
+      )}
+
+      <ShopModal 
+        isOpen={showShopModal} 
+        onClose={() => setShowShopModal(false)} 
+      />
+
+      {showStickersModal && (
+        <StickerAlbumModal onClose={() => setShowStickersModal(false)} />
       )}
     </div>
   );

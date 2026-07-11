@@ -15,26 +15,8 @@ import type { ExerciseAttempt, LessonResult } from '@/types/book-progress.types'
 
 const CONCEPT_TIPS: Record<string, string[]> = {
   addition: [
-    'Son los números naturales usados para contar elementos.',
-    'Uno',
-    'Dos',
-    'Cuadrado',
-    'Un dragón',
-    'Dos dragones',
-    'Una vaca',
-    'Dos vacas',
-    'Un toro',
-    'Dos toros',
-    'Un gris',
-    'Dos grises',
-    'Digita el número según la cantidad de elementos.',
-    'Uno, dos, tres y cuatro.',
-    'Uno, dos, tres, cuatro y cinco.',
-    'Digita el número según la cantidad de bolas.',
-    'Balón',
-    'Perro',
-    'Contemos, lee y cuenta',
-    'Uno, dos, tres, cuatro, cinco y seis.',
+    'Digite en cada cuadro el número de dragones siguiendo la correspondiente cantidad y luego el resultado de la adición.',
+    'Digite en el cuadro respectivo el número de bolas y luego el resultado de la adición.',
     'Adición o Suma sin llevar',
   ],
   subtraction: [
@@ -44,8 +26,8 @@ const CONCEPT_TIPS: Record<string, string[]> = {
     'Acciones de presente y pasado en la sustracción',
   ],
   multiplication: [
-    'La Propiedad Conmutativa de la Multiplicación',
-    'La multiplicación se representa con los signos: × o ·.',
+    'La Propiedad Conmutaiva de la Multiplicación',
+    'La multiplicación se representa con los signos: · o ×.',
     'Acciones de presente y pasado en la Multiplicación',
     'Tablas de Multiplicar',
   ],
@@ -57,7 +39,7 @@ const CONCEPT_TIPS: Record<string, string[]> = {
     'Dividir es repartir la unidad en una o más partes',
     'Son reparticiones en partes iguales donde el residuo es 0.',
     'Repartir chocolatines',
-    '¿Cuánto le toca a cada niño en cada repartición?',
+    '¿Cuánto le toca a cada niño en cada repartición ?',
   ],
   decena: [
     'La decena representa un conjunto de 10 elementos.',
@@ -115,6 +97,21 @@ function getConceptTip(topicId: string, levelIndex: number): { text: string; ico
   };
 }
 
+function deriveInstr(q: string): string {
+  const l = (q || '').toLowerCase();
+  if (/cu.ntos elementos|cuenta/.test(l)) return 'Lee con atención y cuenta cada elemento.';
+  if (/despu.s|antes|siguiente|sigue/.test(l)) return 'Seguimos la secuencia de los números.';
+  if (/entre/.test(l)) return 'Busca el número que está en medio.';
+  if (/mayor|menor|compara/.test(l)) return 'Compara las cantidades para escoger la correcta.';
+  if (/decena|docena|centena/.test(l)) return 'Recuerda el valor posicional.';
+  if (/\+|suma/.test(l)) return 'Suma con cuidado las cantidades.';
+  if (/\-|−|resta/.test(l)) return 'Resta con cuidado las cantidades.';
+  if (/x|veces/.test(l)) return 'Multiplica con orden, paso a paso.';
+  if (/÷|repart|divid/.test(l)) return 'Reparte en partes iguales.';
+  return 'Lee la pregunta y piensa paso a paso.';
+}
+
+
 /**
  * Motor de lección. Soporta dos modos:
  *  - `level`: recorre los ejercicios de un nivel concreto.
@@ -132,6 +129,12 @@ export default function LessonScreen() {
   const [combo, setCombo] = useState(0);
   const isGrade1 = book?.slug === 'libro-1ro';
   const [procedureOpen, setProcedureOpen] = useState(false);
+  const [tLeft, setTLeft] = useState(35);
+  const [answeredIdx, setAnsweredIdx] = useState<number | null>(null);
+
+  useEffect(() => {
+    setAnsweredIdx(null);
+  }, [idx]);
 
   // Reinicia el cronómetro cada vez que se muestra un ejercicio.
   useEffect(() => {
@@ -173,8 +176,8 @@ export default function LessonScreen() {
   }, [isDaily, dailyExercises, book, currentLevel]);
 
   const examples: LevelExample[] = useMemo(
-    () => (isDaily || !meta ? [] : bookService.getExamples(meta.key)),
-    [isDaily, meta]
+    () => (isDaily || !meta ? [] : bookService.getExamples(meta.key, book?.slug)),
+    [isDaily, meta, book?.slug]
   );
 
   const conceptTip = useMemo(() => {
@@ -182,9 +185,47 @@ export default function LessonScreen() {
     return getConceptTip(meta.topic.id, currentLevel.levelIndex);
   }, [isDaily, meta, currentLevel]);
 
+  useEffect(() => {
+    if (meta?.key) {
+      setIdx(0);
+      setAttempts([]);
+      setPts(0);
+      setCombo(0);
+      setAnsweredIdx(null);
+      setPhase(isDaily ? 'exercises' : 'examples');
+      fastestRef.current = Number.POSITIVE_INFINITY;
+    }
+  }, [meta?.key, isDaily]);
+
   if (!meta || meta.exercises.length === 0) return null;
   const exercises: Exercise[] = meta.exercises;
   const exercise = exercises[idx];
+
+  useEffect(() => {
+    if (phase !== 'exercises') return;
+    if (answeredIdx === idx) return;
+
+    setTLeft(35);
+
+    const interval = setInterval(() => {
+      setTLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          handleAnswer('timeout', (exercise as any)?.ans || '', false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [idx, phase, exercise?.id, answeredIdx]);
+
+  const getTimerColor = (t: number) => {
+    if (t < 10) return '#C94B22';
+    if (t < 20) return '#BA7517';
+    return '#6C28B4';
+  };
 
   // Fase de ejemplos: se muestra antes de la práctica (salvo reto diario).
   // Fase de ejemplos: se muestra antes de la práctica (salvo reto diario).
@@ -284,7 +325,7 @@ export default function LessonScreen() {
               <div style={{ background: '#FFFDF0', border: '1.5px solid #FFEFA8', borderRadius: '12px', padding: '.75rem 1rem', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '.75rem' }}>
                 <span style={{ fontSize: '16px' }}>📖</span>
                 <div style={{ fontSize: '13px', fontWeight: 700, color: '#7A5C00', textAlign: 'left' }}>
-                  Instrucción: Lee la pregunta y piensa paso a paso.
+                  Instrucción: {deriveInstr(exercises[0].q)}
                 </div>
               </div>
 
@@ -329,17 +370,18 @@ export default function LessonScreen() {
   }
 
   const handleAnswer = (userAnswer: string, correctAnswer: string, isCorrect: boolean) => {
+    setAnsweredIdx(idx);
     const elapsed = Date.now() - shownAtRef.current;
     if (isCorrect) fastestRef.current = Math.min(fastestRef.current, elapsed);
     setCombo((c) => (isCorrect ? c + 1 : 0));
-    setAttempts((a) => [...a, { exerciseId: exercise.id, userAnswer, correctAnswer, isCorrect }]);
+    setAttempts((a) => [...a, { exerciseId: exercise.id, userAnswer, correctAnswer, isCorrect, q: exercise.q }]);
     if (isCorrect) setPts((p) => p + exercise.pts);
 
     setTimeout(() => {
       if (idx + 1 < exercises.length) {
         setIdx((i) => i + 1);
       } else {
-        complete([...attempts, { exerciseId: exercise.id, userAnswer, correctAnswer, isCorrect }], pts + (isCorrect ? exercise.pts : 0));
+        complete([...attempts, { exerciseId: exercise.id, userAnswer, correctAnswer, isCorrect, q: exercise.q }], pts + (isCorrect ? exercise.pts : 0));
       }
     }, 900);
   };
@@ -476,6 +518,19 @@ export default function LessonScreen() {
         )}
       </div>
 
+      {phase === 'exercises' && (
+        <div className="timer-track" style={{ marginBottom: '1.25rem', borderRadius: '4px' }}>
+          <div 
+            className="timer-fill" 
+            style={{ 
+              width: `${(tLeft / 35) * 100}%`,
+              background: getTimerColor(tLeft),
+              transition: 'width 1s linear, background 0.4s'
+            }} 
+          />
+        </div>
+      )}
+
       {isGrade1 && conceptTip && (
         <div id="f1LessonConceptBanner">
           <span className="ico">{conceptTip.icon}</span>
@@ -497,7 +552,7 @@ export default function LessonScreen() {
           <div style={{ background: '#FFFDF0', border: '1.5px solid #FFEFA8', borderRadius: '12px', padding: '.75rem 1rem', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '.75rem' }}>
             <span style={{ fontSize: '16px' }}>📖</span>
             <div style={{ fontSize: '13px', fontWeight: 700, color: '#7A5C00', textAlign: 'left' }}>
-              Instrucción: Lee la pregunta y piensa paso a paso.
+              Instrucción: {deriveInstr(exercise.q)}
             </div>
           </div>
 

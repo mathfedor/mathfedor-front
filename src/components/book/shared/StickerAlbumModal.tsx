@@ -124,8 +124,15 @@ export default function StickerAlbumModal({ onClose }: StickerAlbumModalProps) {
                 }}
                 title={has ? s.name : 'Sticker bloqueado'}
               >
-                <div style={{ fontSize: '40px', lineHeight: 1, filter: has ? 'none' : 'grayscale(100%) opacity(0.35)' }}>
-                  {has ? s.e : '❓'}
+                <div 
+                  style={{ 
+                    fontSize: has ? '40px' : '48px', 
+                    lineHeight: 1, 
+                    color: has ? 'inherit' : 'rgba(0,0,0,0.12)',
+                    fontWeight: has ? '900' : 'bold',
+                  }}
+                >
+                  {has ? s.e : '?'}
                 </div>
                 <div
                   style={{
