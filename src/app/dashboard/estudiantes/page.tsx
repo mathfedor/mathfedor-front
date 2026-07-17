@@ -125,6 +125,54 @@ const downloadRowsAsExcel = (fileName: string, rows: Array<Array<string | number
 
 const buildStudentReportRows = (student: StudentRow) => {
   const result = student.result;
+  
+  if (result?.bookReport) {
+    const rows = [
+      ['Estudiante', student.name],
+      ['Email', student.email],
+      ['Institución', student.institutionName],
+      ['Salón', student.classroomName],
+      ['Libro', result.module?.title || result.group],
+      ['Niveles Completados', `${result.bookReport.completedLevels} de ${result.bookReport.totalLevels}`],
+      ['Promedio Global', `${result.bookReport.avgPct || 0}%`],
+      ['Mejor Unidad', result.bookReport.bestUnit || '—'],
+      ['Reforzar Unidad', result.bookReport.weakestUnit || '—'],
+      [],
+      ['Unidad', 'Tema', 'Nivel', 'Estado', 'Progreso', 'Estrellas', 'Nota', 'Intentos']
+    ];
+
+    result.bookReport.perUnit.forEach((unit: any) => {
+      unit.perTopic.forEach((topic: any) => {
+        topic.levels.forEach((lv: any) => {
+          const done = lv.pct !== null;
+          const stars = done && lv.pct >= 50 ? (lv.pct >= 95 ? 3 : lv.pct >= 80 ? 2 : 1) : 0;
+          const starsStr = '⭐'.repeat(stars) || '—';
+          
+          let gradeLabel = '—';
+          if (done) {
+            if (lv.grade === 'S') gradeLabel = 'Superior';
+            else if (lv.grade === 'A') gradeLabel = 'Alto';
+            else if (lv.grade === 'B') gradeLabel = 'Básico';
+            else if (lv.grade === 'L') gradeLabel = 'Bajo';
+          }
+
+          rows.push([
+            unit.unitName,
+            topic.topicTitle,
+            lv.levelLabel,
+            done ? 'Completado' : 'Pendiente',
+            done ? '100%' : '0%',
+            starsStr,
+            gradeLabel,
+            String(lv.attempts || 0)
+          ]);
+        });
+      });
+    });
+
+    return rows;
+  }
+
   const totals = getResultTotals(result);
 
   return [

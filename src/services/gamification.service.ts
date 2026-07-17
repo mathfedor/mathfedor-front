@@ -138,6 +138,20 @@ function isUnitComplete(book: Book, u: number, scores: ScoreMap): boolean {
 }
 
 /**
+ * Asegura que el estado de gamificación sea válido y tenga todas las propiedades
+ * necesarias (utiliza valores por defecto si está ausente o incompleto).
+ */
+export function ensureGamificationState(state?: any): GamificationState {
+  const defaults = createInitialGamificationState(state?.avatar || '🧑‍🚀');
+  if (!state) return defaults;
+  return {
+    ...defaults,
+    ...state,
+    shop: state.shop ? { ...defaults.shop, ...state.shop } : defaults.shop,
+  };
+}
+
+/**
  * Calcula el conjunto de insignias ganadas dado el estado y, opcionalmente,
  * el contexto de la lección recién terminada. Cubre las 11 insignias del HTML.
  */
@@ -146,21 +160,22 @@ export function evaluateBadges(
   state: GamificationState,
   ctx?: BadgeContext
 ): string[] {
-  const earned = new Set(state.earnedBadges);
+  const s = ensureGamificationState(state);
+  const earned = new Set(s.earnedBadges);
 
   // XP y rachas (no requieren contexto).
-  if (state.streak >= 3) earned.add('streak3');
-  if (state.streak >= 5) earned.add('streak5');
-  if (state.streak >= 10) earned.add('streak10');
-  if (state.totalXP >= 500) earned.add('xp_500');
-  if (state.totalXP >= 1000) earned.add('xp_1000');
-  if ((state.loginStreak ?? 0) >= 3) earned.add('daily_login');
+  if (s.streak >= 3) earned.add('streak3');
+  if (s.streak >= 5) earned.add('streak5');
+  if (s.streak >= 10) earned.add('streak10');
+  if (s.totalXP >= 500) earned.add('xp_500');
+  if (s.totalXP >= 1000) earned.add('xp_1000');
+  if ((s.loginStreak ?? 0) >= 3) earned.add('daily_login');
 
   if (ctx) {
     const { book, scores, justFinishedLevelKey, lessonPct, anyCorrectThisLesson, fastestMs } = ctx;
 
     // Primera respuesta correcta (de esta lección o de cualquier nivel previo).
-    const hadCorrectBefore = Object.values(scores).some((s) => s.ok > 0);
+    const hadCorrectBefore = Object.values(scores).some((sc) => sc.ok > 0);
     if (anyCorrectThisLesson || hadCorrectBefore) earned.add('first_correct');
 
     if (typeof fastestMs === 'number' && fastestMs > 0 && fastestMs < 5000) earned.add('speed_demon');
@@ -178,18 +193,19 @@ export function evaluateBadges(
 
 /** Actualiza la racha de login (días consecutivos). Devuelve nuevo estado. */
 export function registerLogin(state: GamificationState): GamificationState {
+  const s = ensureGamificationState(state);
   const today = new Date();
   const todayStr = today.toDateString();
-  if (state.lastLogin === todayStr) return state;
+  if (s.lastLogin === todayStr) return s;
 
   const yesterday = new Date(today);
   yesterday.setDate(today.getDate() - 1);
-  const consecutive = state.lastLogin === yesterday.toDateString();
+  const consecutive = s.lastLogin === yesterday.toDateString();
 
   return {
-    ...state,
+    ...s,
     lastLogin: todayStr,
-    loginStreak: consecutive ? (state.loginStreak ?? 0) + 1 : 1,
+    loginStreak: consecutive ? (s.loginStreak ?? 0) + 1 : 1,
   };
 }
 
@@ -203,13 +219,14 @@ export function applyLevelReward(
   state: GamificationState,
   reward: { xp: number; coins: number; stars: number; ok: number; wrong: number }
 ): GamificationState {
-  const streak = reward.wrong === 0 ? state.streak + reward.ok : 0;
+  const s = ensureGamificationState(state);
+  const streak = reward.wrong === 0 ? s.streak + reward.ok : 0;
   return {
-    ...state,
-    totalXP: state.totalXP + reward.xp,
-    coins: state.coins + reward.coins,
-    stars: state.stars + reward.stars,
+    ...s,
+    totalXP: s.totalXP + reward.xp,
+    coins: s.coins + reward.coins,
+    stars: s.stars + reward.stars,
     streak,
-    maxStreak: Math.max(state.maxStreak, streak),
+    maxStreak: Math.max(s.maxStreak, streak),
   };
 }

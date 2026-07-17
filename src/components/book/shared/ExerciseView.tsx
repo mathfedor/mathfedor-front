@@ -112,6 +112,9 @@ export default function ExerciseView({ exercise, index, total, onAnswer, isGrade
           </div>
         </div>
         {exercise.figure && <ExerciseFigure figure={exercise.figure} data={exercise.fig_data} />}
+        {exercise.svgFig && (
+          <div className="ex-figure" dangerouslySetInnerHTML={{ __html: exercise.svgFig }} />
+        )}
       </div>
 
       {exercise.type === 'mcq' && (

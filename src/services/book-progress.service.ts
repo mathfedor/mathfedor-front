@@ -64,14 +64,57 @@ class BookProgressService {
   /** Carga el progreso actual (backend → mock local). */
   async getProgress(slug: string = BOOK_SLUG): Promise<BookProgress | null> {
     if (backendEnabled()) {
-      try {
-        const res = await fetch(`${API_URL}/books/${slug}/progress`, {
-          headers: bookHeaders(),
-        });
-        if (res.ok) return (await res.json()) as BookProgress;
-      } catch (error) {
-        console.warn('[book-progress] fallback local:', error);
+      const res = await fetch(`${API_URL}/books/${slug}/progress`, {
+        headers: bookHeaders(),
+      });
+      if (res.status === 404) return null;
+      if (!res.ok) {
+        throw new Error(`Error del servidor al obtener progreso de ${slug}: HTTP ${res.status}`);
       }
+      const data = await res.json();
+      // El backend devuelve { exists: boolean, learningResult: any }
+      if (data && data.exists && data.learningResult) {
+        const lr = data.learningResult;
+        
+        // Reconstruir la estructura scores que espera el frontend
+        const scores: ScoreMap = {};
+        if (lr.bookScores) {
+          const rawScores = lr.bookScores instanceof Map 
+            ? Object.fromEntries(lr.bookScores) 
+            : lr.bookScores;
+          
+          Object.entries(rawScores).forEach(([key, val]: [string, any]) => {
+            scores[key] = {
+              key: val.key || key,
+              topicTitle: val.topicTitle || '',
+              levelLabel: val.levelLabel || '',
+              pts: val.pts || 0,
+              maxPts: val.maxPts || 0,
+              ok: val.ok || 0,
+              wrong: val.wrong || 0,
+              pct: val.pct || 0,
+              grade: val.grade || 'B',
+              attempts: val.attempts || 1,
+              ts: val.ts || new Date().toISOString(),
+            };
+          });
+        }
+
+        return {
+          id: lr._id || lr.id,
+          bookSlug: slug,
+          student: {
+            name: lr.student?.name || 'Estudiante',
+            school: lr.student?.school || 'Colegio',
+            city: lr.student?.city || 'Ciudad',
+            teacher: lr.student?.teacher || lr.teacher?.name || '',
+            avatar: lr.gamification?.avatar || '🧑‍🚀',
+          },
+          scores,
+          gamification: lr.gamification || createInitialGamificationState(lr.gamification?.avatar || '🧑‍🚀'),
+        };
+      }
+      return null;
     }
     return readLocal(slug);
   }
@@ -82,14 +125,26 @@ class BookProgressService {
     const slug = progress.bookSlug || BOOK_SLUG;
     writeLocal(next, slug);
     if (backendEnabled()) {
-      try {
-        await fetch(`${API_URL}/books/${slug}/progress`, {
-          method: 'PUT',
-          headers: bookHeaders(),
-          body: JSON.stringify(next),
-        });
-      } catch (error) {
-        console.warn('[book-progress] no se pudo sincronizar con backend:', error);
+      // Mapear al DTO esperado por el backend NestJS (learningResultModel)
+      const payload = {
+        student: {
+          name: next.student.name,
+          userId: next.student.email || '', 
+          school: next.student.school,
+          city: next.student.city,
+          teacher: next.student.teacher,
+        },
+        gamification: next.gamification,
+        bookScores: next.scores,
+      };
+
+      const res = await fetch(`${API_URL}/books/${slug}/progress`, {
+        method: 'PUT',
+        headers: bookHeaders(),
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        throw new Error(`Error del servidor al guardar progreso de ${slug}: HTTP ${res.status}`);
       }
     }
     return next;
@@ -119,14 +174,35 @@ class BookProgressService {
     const slug = progress.bookSlug || BOOK_SLUG;
 
     if (backendEnabled()) {
-      try {
-        await fetch(`${API_URL}/books/${slug}/results`, {
-          method: 'POST',
-          headers: bookHeaders(),
-          body: JSON.stringify(result),
-        });
-      } catch (error) {
-        console.warn('[book-progress] resultado guardado solo localmente:', error);
+      // Mapear al DTO de resultados que espera el backend
+      const coinsEarned = result.wrong === 0 ? Math.round(result.pts * 1.5) : result.pts;
+      const xpEarned = result.pts;
+      const starsEarned = result.grade.letter === 'S' ? 3 : result.grade.letter === 'A' ? 2 : 1;
+
+      const payload = {
+        xpEarned,
+        coinsEarned,
+        starsEarned,
+        score: {
+          key: result.levelKey,
+          topicTitle: result.topicTitle,
+          levelLabel: result.levelLabel,
+          pts: result.pts,
+          maxPts: result.maxPts,
+          ok: result.ok,
+          wrong: result.wrong,
+          pct: result.pct,
+          grade: result.grade.letter,
+        }
+      };
+
+      const res = await fetch(`${API_URL}/books/${slug}/results`, {
+        method: 'POST',
+        headers: bookHeaders(),
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        throw new Error(`Error del servidor al registrar resultado en ${slug}: HTTP ${res.status}`);
       }
     }
     return this.saveProgress(next);
@@ -139,6 +215,24 @@ class BookProgressService {
     if (slug === 'matematicas-fedor-2' || slug === BOOK_SLUG) {
       window.localStorage.removeItem('fedor2_progress_v1');
     }
+  }
+
+  /**
+   * Obtiene el reporte detallado jerarquico del backend.
+   * Incluye desglose por unidad, tema y nivel con colores y grades.
+   * Devuelve null si el backend no está habilitado o no hay datos.
+   */
+  async getReport(slug: string = BOOK_SLUG): Promise<any | null> {
+    if (!backendEnabled()) return null;
+    try {
+      const res = await fetch(`${API_URL}/books/${slug}/report`, {
+        headers: bookHeaders(),
+      });
+      if (res.ok) return await res.json();
+    } catch (error) {
+      console.warn('[book-progress] no se pudo obtener el reporte del backend:', error);
+    }
+    return null;
   }
 }
 

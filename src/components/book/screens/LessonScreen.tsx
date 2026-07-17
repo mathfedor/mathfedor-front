@@ -175,10 +175,15 @@ export default function LessonScreen() {
     };
   }, [isDaily, dailyExercises, book, currentLevel]);
 
-  const examples: LevelExample[] = useMemo(
-    () => (isDaily || !meta ? [] : bookService.getExamples(meta.key, book?.slug)),
-    [isDaily, meta, book?.slug]
-  );
+  const [examples, setExamples] = useState<LevelExample[]>([]);
+
+  useEffect(() => {
+    if (isDaily || !meta) {
+      setExamples([]);
+      return;
+    }
+    bookService.getExamples(meta.key, book?.slug).then(setExamples).catch(() => setExamples([]));
+  }, [isDaily, meta?.key, book?.slug]);
 
   const conceptTip = useMemo(() => {
     if (isDaily || !meta || !meta.topic || !currentLevel) return null;
@@ -364,6 +369,7 @@ export default function LessonScreen() {
           firstExerciseQuestion={exercises[0]?.q}
           firstExerciseAnswer={exercises[0]?.type === 'seq' ? (exercises[0] as any).items?.filter((it: any) => it.t === 'b').map((it: any) => it.a ?? '').join(', ') : (exercises[0] as any)?.ans || ''}
           firstExerciseExplain={(exercises[0] as any)?.explain}
+          isGrade1={isGrade1}
         />
       </div>
     );

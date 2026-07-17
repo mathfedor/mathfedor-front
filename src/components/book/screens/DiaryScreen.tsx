@@ -1,11 +1,12 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useBook } from '../context/BookContext';
 import { bookService } from '@/services/book.service';
 import { bookDiaryService } from '@/services/book-diary.service';
 import { bookReportService } from '@/services/book-report.service';
 import { globalProgressPct } from '../shared/progress.utils';
+import type { LoreChapter } from '@/types/book.types';
 
 /**
  * Mi Diario Espacial (réplica de `openDiario`): actividad semanal, estadísticas
@@ -14,8 +15,16 @@ import { globalProgressPct } from '../shared/progress.utils';
 export default function DiaryScreen() {
   const { book, progress, goScreen } = useBook();
   const week = useMemo(() => bookDiaryService.getWeek(), []);
-  const chapters = useMemo(() => bookService.getLore(), []);
+  const [chapters, setChapters] = useState<LoreChapter[]>([]);
   const summary = useMemo(() => (book && progress ? bookReportService.buildSummary(book, progress) : null), [book, progress]);
+
+  useEffect(() => {
+    if (!book) return;
+    bookService.getLore(book.slug).then(setChapters).catch(() => {
+      bookService.getLore().then(setChapters);
+    });
+  }, [book]);
+
   if (!book || !progress || !summary) return null;
 
   const { days, weekTotal, activeDays, streakDays, bestDay, totalEx, maxEx } = week;

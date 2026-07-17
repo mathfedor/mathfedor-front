@@ -56,6 +56,59 @@ export interface LearningResult {
   subjects: LearningResultSubject[];
   answers: LearningResultAnswer[];
   createdAt?: string;
+  bookScores?: Record<string, {
+    key: string;
+    topicTitle: string;
+    levelLabel: string;
+    pts: number;
+    maxPoints?: number;
+    maxPts: number;
+    ok: number;
+    wrong: number;
+    pct: number;
+    grade: 'S' | 'A' | 'B' | 'L';
+    attempts: number;
+    ts: string;
+  }>;
+  bookReport?: {
+    globalPct: number;
+    completedLevels: number;
+    totalLevels: number;
+    avgPct: number;
+    bestUnit: string | null;
+    weakestUnit: string | null;
+    perUnit: Array<{
+      unitId: string;
+      unitName: string;
+      unitShort: string;
+      unitIcon: string;
+      completedLevels: number;
+      totalLevels: number;
+      avgPct: number;
+      perTopic: Array<{
+        topicId: string;
+        topicTitle: string;
+        topicIcon: string;
+        completedLevels: number;
+        totalLevels: number;
+        avgPct: number;
+        levels: Array<{
+          levelKey: string;
+          levelLabel: string;
+          levelShort: string;
+          levelBg: string;
+          levelColor: string;
+          pts: number | null;
+          maxPts: number | null;
+          pct: number | null;
+          grade: 'S' | 'A' | 'B' | 'L' | null;
+          attempts: number;
+          ts: string | null;
+        }>;
+      }>;
+    }>;
+    lastUpdated?: string;
+  };
 }
 
 export type LearningResultPayload = Omit<LearningResult, 'id' | '_id' | 'createdAt'>;

@@ -203,7 +203,7 @@ export function BookProvider({ children, slug }: { children: ReactNode; slug: st
       if (p) {
         const withLogin = { ...p, gamification: registerLogin(p.gamification) };
         setProgress(withLogin);
-        if (withLogin.gamification.lastLogin !== p.gamification.lastLogin) {
+        if (withLogin.gamification.lastLogin !== p.gamification?.lastLogin) {
           void bookProgressService.saveProgress(withLogin);
         }
         setScreen('home');
@@ -349,7 +349,7 @@ export function BookProvider({ children, slug }: { children: ReactNode; slug: st
 
       const finalProgress = { ...withScore, gamification };
       setProgress(finalProgress);
-      if (fresh.length || ru) await bookProgressService.saveProgress(finalProgress);
+      await bookProgressService.saveProgress(finalProgress);
       setNewBadges(fresh);
       setRankUp(ru);
 

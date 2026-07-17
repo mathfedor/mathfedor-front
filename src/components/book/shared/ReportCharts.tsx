@@ -30,21 +30,6 @@ export default function ReportCharts({
   return (
     <div className="rc-wrap">
       <div className="rc-card">
-        <div className="rc-title">📈 Desempeño por unidad (%)</div>
-        <div className="rc-hbars">
-          {summary.perUnit.map((u) => (
-            <div className="rc-hbar-row" key={u.unit}>
-              <span className="rc-hbar-label">{u.unit}</span>
-              <div className="rc-hbar-track">
-                <div className="rc-hbar-fill" style={{ width: `${u.avgPct}%`, background: barColor(u.avgPct) }} />
-              </div>
-              <span className="rc-hbar-val">{u.avgPct}%</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="rc-card">
         <div className="rc-title">🎓 Distribución de calificaciones</div>
         {totalGraded === 0 ? (
           <div className="rc-empty">Completa niveles para ver la distribución.</div>

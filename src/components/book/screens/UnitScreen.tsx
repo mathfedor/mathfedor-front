@@ -17,9 +17,10 @@ export default function UnitScreen() {
 
   // Muestra el tutorial cada vez que se entra a una unidad (comportamiento del HTML original).
   useEffect(() => {
-    const t = bookService.getUnitTutorial(currentUnit);
-    if (t) setTut(t);
-  }, [currentUnit]);
+    bookService.getUnitTutorial(currentUnit, book?.slug).then((t) => {
+      if (t) setTut(t);
+    }).catch(() => { /* sin tutorial */ });
+  }, [currentUnit, book?.slug]);
 
   const closeTut = () => setTut(null);
 

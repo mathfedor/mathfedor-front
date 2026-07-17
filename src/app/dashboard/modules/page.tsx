@@ -198,7 +198,18 @@ export default function ModulesPage() {
                                                 <tr
                                                     key={mod._id}
                                                     className="hover:bg-gray-50/60 dark:hover:bg-white/5 transition-colors cursor-pointer"
-                                                    onClick={() => router.push(`/dashboard/modules/${mod._id}`)}
+                                                    onClick={() => {
+                                                        const slug = (mod as any).slug;
+                                                        const isBook = slug === 'libro-1ro' || 
+                                                                       slug === 'matematicas-fedor-2' || 
+                                                                       slug?.includes('fedor') || 
+                                                                       slug?.startsWith('libro-');
+                                                        if (isBook) {
+                                                            router.push(`/dashboard/curriculum?bookSlug=${slug}`);
+                                                        } else {
+                                                            router.push(`/dashboard/modules/${mod._id}`);
+                                                        }
+                                                    }}
                                                 >
                                                     {/* Título */}
                                                     <td className="px-5 py-4">

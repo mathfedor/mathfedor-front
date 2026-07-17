@@ -31,6 +31,7 @@ interface RawExercise {
   items?: Array<{ t: 'f' | 'b'; v?: string; a?: string }>;
   countEmoji?: string;
   countN?: number;
+  svgFig?: string;
 }
 
 interface RawLevel {
@@ -73,6 +74,7 @@ function mapExercise(raw: RawExercise, id: string): Exercise {
     fig_data: raw.fig_data,
     countEmoji: raw.countEmoji,
     countN: raw.countN,
+    svgFig: raw.svgFig,
   };
   if (raw.type === 'mcq') {
     return { ...base, type: 'mcq', opts: raw.opts ?? [], ans: raw.ans ?? '' };
@@ -144,11 +146,73 @@ async function safeFetchJson<T>(url: string, fallback: T): Promise<T> {
   }
 }
 
+/**
+ * Convierte la respuesta del backend (que devuelve bookCurriculum directamente)
+ * al tipo Book que usa el frontend. Las unidades, temas, niveles y ejercicios
+ * se mapean usando las mismas funciones de normalización existentes.
+ */
+function mapBookFromBackend(data: any, slug: string): Book {
+  const units: Unit[] = ((data.units || []) as RawUnit[]).map((u, i) => mapUnit(u, i));
+  return {
+    id: data.id || data._id || slug,
+    slug: data.slug || slug,
+    title: data.title || 'Matemáticas de Fedor',
+    grade: data.grade || '',
+    standard: data.standard || 'Pensamiento Numérico · MEN Colombia',
+    units,
+  };
+}
+
+/**
+ * Traduce una clave lógica de nivel (como "u0t0-n1") a la clave física del tema
+ * que está guardada en la base de datos (como "con_t0-n1" en 1° o "sub_t0-n1" en 2°).
+ */
+export function resolvePhysicalLevelKey(levelKey: string, slug: string, book?: Book): string {
+  const isBook1 = slug === 'libro-1ro' || slug === 'matematicas-fedor-1';
+  
+  const m = /^u(\d+)t(\d+)-n(\d+)$/.exec(levelKey);
+  if (!m) return levelKey;
+  
+  const uIdx = parseInt(m[1], 10);
+  const tIdx = parseInt(m[2], 10);
+  const lNum = parseInt(m[3], 10);
+
+  if (isBook1) {
+    if (book) {
+      const topic = book.units[uIdx]?.topics[tIdx];
+      if (topic) {
+        return `${topic.id}-n${lNum}`;
+      }
+    }
+    // Prefijos por unidad conocidos para Grado 1°
+    const prefixMap = ['con', 'sum', 'res', 'lec', 'geo', 'med', 'est'];
+    const prefix = prefixMap[uIdx] || `u${uIdx}`;
+    return `${prefix}_t${tIdx}-n${lNum}`;
+  } else {
+    // Alias para Grado 2°
+    const aliasMap: Record<string, string> = { u1: 'sub', u2: 'mul', u3: 'div' };
+    const prefix = `u${uIdx}`;
+    if (aliasMap[prefix]) {
+      return `${aliasMap[prefix]}_t${tIdx}-n${lNum}`;
+    }
+  }
+
+  return levelKey;
+}
+
 export const bookService = {
   /** Devuelve el libro completo (currículo + estructura). */
   async getBook(slug: string = BOOK_SLUG): Promise<Book> {
     if (bookBackendEnabled()) {
-      return safeFetchJson<Book>(`${API_URL}/books/${slug}`, mockBook);
+      const res = await fetch(`${API_URL}/books/${slug}`, { headers: bookHeaders() });
+      if (!res.ok) {
+        throw new Error(`Error del servidor al obtener el libro ${slug}: HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      if (data && Array.isArray(data.units) && data.units.length > 0) {
+        return mapBookFromBackend(data, slug);
+      }
+      throw new Error(`El libro retornado por el backend ${slug} no contiene unidades válidas`);
     }
     if (slug === 'libro-1ro' || slug === 'matematicas-fedor-1') {
       return mockBook1;
@@ -158,42 +222,73 @@ export const bookService = {
 
   /** Catálogo estático de gamificación (avatares, badges, rangos, tienda). */
   async getGamificationCatalog(slug: string = BOOK_SLUG): Promise<GamificationCatalog> {
-    return safeFetchJson<GamificationCatalog>(
-      `${API_URL}/books/${slug}/gamification`,
-      mockGamificationCatalog
-    );
+    if (bookBackendEnabled()) {
+      const res = await fetch(`${API_URL}/books/${slug}/gamification`, { headers: bookHeaders() });
+      if (!res.ok) {
+        throw new Error(`Error del servidor al obtener gamificación de ${slug}: HTTP ${res.status}`);
+      }
+      return (await res.json()) as GamificationCatalog;
+    }
+    return mockGamificationCatalog;
   },
 
   /** Capítulos narrativos del diario (lore). */
-  getLore(): LoreChapter[] {
+  async getLore(slug: string = BOOK_SLUG): Promise<LoreChapter[]> {
+    if (bookBackendEnabled()) {
+      const res = await fetch(`${API_URL}/books/${slug}/lore`, { headers: bookHeaders() });
+      if (!res.ok) {
+        throw new Error(`Error del servidor al obtener lore de ${slug}: HTTP ${res.status}`);
+      }
+      return (await res.json()) as LoreChapter[];
+    }
     return mockLoreChapters;
   },
 
   /** Tutorial introductorio de una unidad (solo unidades 0..3 lo tienen). */
-  getUnitTutorial(unitIndex: number): UnitTutorial | null {
+  async getUnitTutorial(unitIndex: number, slug: string = BOOK_SLUG): Promise<UnitTutorial | null> {
+    if (bookBackendEnabled()) {
+      const res = await fetch(`${API_URL}/books/${slug}/tutorials`, { headers: bookHeaders() });
+      if (!res.ok) {
+        throw new Error(`Error del servidor al obtener tutoriales de ${slug}: HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        return (data[unitIndex] as UnitTutorial) ?? null;
+      }
+      return null;
+    }
     return mockUnitTutorials[unitIndex] ?? null;
   },
 
   /**
    * Ejemplos didácticos de un nivel (`u{u}t{t}-n{n}`).
+   * Cuando el backend está habilitado los pide por nivel específico.
    * Algunas unidades usan claves alternas en el original
    * (u1→`sub_`, u2→`mul_`, u3→`div_`); se resuelven por alias.
    */
-  getExamples(levelKey: string, slug: string = BOOK_SLUG): LevelExample[] {
+  async getExamples(levelKey: string, slug: string = BOOK_SLUG): Promise<LevelExample[]> {
+    let bookObj: Book | undefined;
+    try {
+      // Intentamos resolver el libro síncronamente si ya está en caché o del mock
+      bookObj = slug === 'libro-1ro' || slug === 'matematicas-fedor-1' ? mockBook1 : mockBook;
+    } catch (_) {}
+
+    // Traducir a la clave real de MongoDB
+    const physicalKey = resolvePhysicalLevelKey(levelKey, slug, bookObj);
+
+    // Obtener del backend
+    if (bookBackendEnabled()) {
+      const res = await fetch(`${API_URL}/books/${slug}/examples/${encodeURIComponent(physicalKey)}`, { headers: bookHeaders() });
+      if (!res.ok) {
+        throw new Error(`Error del servidor al obtener ejemplos para ${physicalKey}: HTTP ${res.status}`);
+      }
+      return (await res.json()) as LevelExample[];
+    }
+
     const isBook1 = slug === 'libro-1ro' || slug === 'matematicas-fedor-1';
     if (isBook1) {
-      const m = /^u(\d+)t(\d+)-n(\d+)$/.exec(levelKey);
-      if (m) {
-        const uIdx = parseInt(m[1], 10);
-        const tIdx = parseInt(m[2], 10);
-        const lNum = parseInt(m[3], 10);
-        const topic = mockBook1.units[uIdx]?.topics[tIdx];
-        if (topic) {
-          const topicKey = `${topic.id}-n${lNum}`;
-          const ex = mockLevelExamples1[topicKey];
-          if (ex && ex.length > 0) return ex;
-        }
-      }
+      const ex = mockLevelExamples1[physicalKey];
+      if (ex && ex.length > 0) return ex;
       return [];
     }
 
@@ -210,65 +305,12 @@ export const bookService = {
         { icon: "🍬", q: "¿Cuántos elementos hay? 🍬🍬🍬🍬", a: "4", explain: "Cuatro dulces = el número 4", vis: "🍬🍬🍬🍬" },
         { icon: "📊", q: "¿Cuál número es Mayor: 1 o 5?", a: "5", explain: "5 está más adelante en la recta" }
       ],
-      'u0t0-n2': [
-        { icon: "6️⃣", q: "¿Cuántos elementos hay? ⚽⚽⚽⚽⚽⚽", a: "6", explain: "Seis balones = número 6", vis: "⚽⚽⚽⚽⚽⚽" },
-        { icon: "7️⃣", q: "¿Cuántos elementos hay? 🥭×7", a: "7", explain: "Siete mangos", vis: "🥭🥭🥭🥭🥭🥭🥭" },
-        { icon: "8️⃣", q: "¿Cuántos elementos hay? 🐟×8", a: "8", explain: "Ocho peces", vis: "🐟🐟🐟🐟🐟🐟🐟🐟" },
-        { icon: "9️⃣", q: "¿Cuántos elementos hay? 🍬×9", a: "9", explain: "Nueve dulces", vis: "🍬🍬🍬🍬🍬🍬🍬🍬🍬" },
-        { icon: "🔟", q: "¿Cuántos elementos hay? 🌸×10", a: "10", explain: "Diez flores = una decena", vis: "🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸" },
-        { icon: "🔢", q: "Cuenta: 1,2,3,4,5,?,7,8,9,10", a: "6", explain: "Entre 5 y 7 va el 6" },
-        { icon: "🔢", q: "Regresivo: 10,9,8,?,6,5", a: "7", explain: "Bajamos uno: 8→7→6" },
-        { icon: "⚖️", q: "¿Cuál número es Mayor: 7 o 9?", a: "9", explain: "9 > 7" },
-        { icon: "🌟", q: "¿Cuántos elementos hay? 🌟×8", a: "8", explain: "Ocho estrellas", vis: "🌟🌟🌟🌟🌟🌟🌟🌟" },
-        { icon: "📊", q: "De 2 en 2: 2,4,?,8", a: "6", explain: "+2 cada paso" }
-      ],
-      'u0t0-n3': [
-        { icon: "🔢", q: "¿Cuántos elementos hay? 🌟×12", a: "12", explain: "Doce estrellas = 10 + 2", vis: "🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟" },
-        { icon: "📊", q: "De 2 en 2: 2,4,6,8,?,12", a: "10", explain: "Sumamos 2 cada vez: 8+2=10" },
-        { icon: "📊", q: "De 5 en 5: 0,5,?,15", a: "10", explain: "Sumamos 5 cada vez: 10+5=15" },
-        { icon: "⚖️", q: "¿Cuál número es mayor? 13 u 8?", a: "13", explain: "13 > 8" },
-        { icon: "❓", q: "¿Cuál número falta? 11, 12, 14, 15", a: "13", explain: "Secuencia +1: el número entre 12 y 14 es 13" },
-        { icon: "📉", q: "Regresivo: 15,14,?,12", a: "13", explain: "−1 cada paso" },
-        { icon: "🔢", q: "¿Cuántos elementos hay? 🐣×15", a: "15", explain: "1 decena + 5 unidades", vis: "🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣🐣" },
-        { icon: "🌌", q: "¿Cuál número es PAR? 11, 12, 13?", a: "12", explain: "Pares terminan en 0,2,4,6,8" },
-        { icon: "📊", q: "¿Cuál número es IMPAR? 10, 11, 12?", a: "11", explain: "Impares terminan en 1,3,5,7,9" },
-        { icon: "⚖️", q: "¿Cuál número es menor? 14 u 8?", a: "8", explain: "8 < 14" }
-      ],
-      'u0t0-n4': [
-        { icon: "🔢", q: "¿Cuántos elementos hay? 🌟×18", a: "18", explain: "1 decena + 8 unidades", vis: "🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟" },
-        { icon: "📊", q: "De 2 en 2: 10,12,?,16,18", a: "14", explain: "+2 cada vez" },
-        { icon: "📊", q: "De 5 en 5: 0,5,?,15", a: "10", explain: "+5 cada vez" },
-        { icon: "⚖️", q: "¿Cuál es el número MAYOR de 16,19,12,11", a: "19", explain: "El más grande" },
-        { icon: "❓", q: "¿Cuál número falta: 17,?,19?", a: "18", explain: "+1" },
-        { icon: "📉", q: "Regresivo: 20,19,?,17", a: "18", explain: "−1" },
-        { icon: "🌌", q: "¿Cuál número es PAR: 17,18,19?", a: "18", explain: "Pares terminan en 0,2,4,6,8" },
-        { icon: "⚖️", q: "¿Entre 18 y 20?", a: "19", explain: "18→19→20" },
-        { icon: "📊", q: "De 5 en 5: 5,10,15,?", a: "20", explain: "+5 cada paso" },
-        { icon: "📊", q: "De 2 en 2: 14,16,?,20", a: "18", explain: "+2" }
-      ],
-      'u0t0-n5': [
-        { icon: "📝", q: "¡Repaso! Cuenta y compara hasta 20", a: "📚", explain: "Recordamos: contar, antes/después, entre, mayor/menor, par, secuencias de 2 y 5" },
-        { icon: "🌟", q: "¿Cuántas? 🌟×3", a: "3", explain: "Tres estrellas", vis: "🌟🌟🌟" },
-        { icon: "🔢", q: "¿Después del 13?", a: "14", explain: "13→14" },
-        { icon: "⚖️", q: "¿Cuál número es mayor? 12 u 8?", a: "12", explain: "12>8" },
-        { icon: "📊", q: "2 → ? → 6 → ?", a: "4 y 8", explain: "De 2 en 2" },
-        { icon: "📉", q: "20,19,?,17", a: "18", explain: "−1" },
-        { icon: "📊", q: "¿Después del 17?", a: "18", explain: "17→18" },
-        { icon: "⚖️", q: "¿Cuál número es Mayor: 19 o 16?", a: "19", explain: "19>16" },
-        { icon: "🌟", q: "¿Cuál número es PAR: 14, 15, 17?", a: "14", explain: "14 termina en 4" },
-        { icon: "📊", q: "De 2 en 2: 16,?,20", a: "18", explain: "+2" }
-      ]
     };
 
-    if (cleanCounting[levelKey]) return cleanCounting[levelKey];
+    if (cleanCounting[physicalKey]) return cleanCounting[physicalKey];
 
-    const direct = mockLevelExamples[levelKey];
+    const direct = mockLevelExamples[physicalKey];
     if (direct) return direct;
-    const alias: Record<string, string> = { u1: 'sub', u2: 'mul', u3: 'div' };
-    const m = /^(u\d+)(t\d+-n\d+)$/.exec(levelKey);
-    if (m && alias[m[1]]) {
-      return mockLevelExamples[`${alias[m[1]]}_${m[2]}`] ?? [];
-    }
     return [];
   },
 
@@ -290,5 +332,24 @@ export const bookService = {
   /** Clave canónica de un nivel (compatible con el HTML original). */
   levelKey(ref: LevelRef): string {
     return `u${ref.unitIndex}t${ref.topicIndex}-n${ref.levelIndex + 1}`;
+  },
+
+  /** (Admin) Guarda las actualizaciones del nivel en el backend. */
+  async updateBookLevel(slug: string, levelData: any): Promise<{ success: boolean; slug: string; levelKey: string }> {
+    if (!bookBackendEnabled()) {
+      throw new Error('La integración de API en el libro interactivo no está configurada.');
+    }
+    const res = await fetch(`${API_URL}/books/${slug}/curriculum/level`, {
+      method: 'PUT',
+      headers: {
+        ...bookHeaders(),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(levelData),
+    });
+    if (!res.ok) {
+      throw new Error(`Error del servidor al guardar el nivel: HTTP ${res.status}`);
+    }
+    return res.json();
   },
 };

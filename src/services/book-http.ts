@@ -9,9 +9,9 @@ import { authService } from './auth.service';
 export const BOOK_API_URL = `${process.env.NEXT_PUBLIC_API_URL}/learning`;
 export const BOOK_SLUG = 'matematicas-fedor-2';
 
-/** ¿Operar contra el backend real? Requiere URL y flag explícito. */
+/** ¿Operar contra el backend real? Basta con tener definida la URL del backend. */
 export function bookBackendEnabled(): boolean {
-  return Boolean(BOOK_API_URL && process.env.NEXT_PUBLIC_BOOK_API === 'true');
+  return Boolean(process.env.NEXT_PUBLIC_API_URL);
 }
 
 /** Cabeceras JSON + Authorization si hay sesión. */

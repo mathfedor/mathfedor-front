@@ -59,6 +59,7 @@ interface ExerciseBase {
   explain?: string;
   countEmoji?: string;
   countN?: number;
+  svgFig?: string;
 }
 
 /** Ejercicio de opción múltiple. */

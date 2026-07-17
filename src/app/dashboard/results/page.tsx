@@ -47,6 +47,52 @@ const downloadRowsAsExcel = (fileName: string, rows: Array<Array<string | number
 };
 
 const downloadStudentExcel = (result: LearningResult) => {
+  if (result.bookReport) {
+    const rows = [
+      ['Estudiante', result.student.name],
+      ['Email', result.student.email || ''],
+      ['Libro', result.module?.title || result.group],
+      ['Niveles Completados', `${result.bookReport.completedLevels} de ${result.bookReport.totalLevels}`],
+      ['Promedio Global', `${result.bookReport.avgPct || 0}%`],
+      ['Mejor Unidad', result.bookReport.bestUnit || '—'],
+      ['Reforzar Unidad', result.bookReport.weakestUnit || '—'],
+      [],
+      ['Unidad', 'Tema', 'Nivel', 'Estado', 'Progreso', 'Estrellas', 'Nota', 'Intentos']
+    ];
+
+    result.bookReport.perUnit.forEach((unit: any) => {
+      unit.perTopic.forEach((topic: any) => {
+        topic.levels.forEach((lv: any) => {
+          const done = lv.pct !== null;
+          const stars = done && lv.pct >= 50 ? (lv.pct >= 95 ? 3 : lv.pct >= 80 ? 2 : 1) : 0;
+          const starsStr = '⭐'.repeat(stars) || '—';
+          
+          let gradeLabel = '—';
+          if (done) {
+            if (lv.grade === 'S') gradeLabel = 'Superior';
+            else if (lv.grade === 'A') gradeLabel = 'Alto';
+            else if (lv.grade === 'B') gradeLabel = 'Básico';
+            else if (lv.grade === 'L') gradeLabel = 'Bajo';
+          }
+
+          rows.push([
+            unit.unitName,
+            topic.topicTitle,
+            lv.levelLabel,
+            done ? 'Completado' : 'Pendiente',
+            done ? '100%' : '0%',
+            starsStr,
+            gradeLabel,
+            String(lv.attempts || 0)
+          ]);
+        });
+      });
+    });
+
+    downloadRowsAsExcel(`reporte-libro-${result.student.name.replace(/\s+/g, '-').toLowerCase()}.xls`, rows);
+    return;
+  }
+
   const totals = getTotals(result);
   const rows = [
     ['Estudiante', result.student.name],
@@ -218,58 +264,189 @@ function ResultsPageContent() {
               </button>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-3">
-              <div className="rounded-lg bg-white p-5 shadow-sm">
-                <p className="text-sm text-gray-500">Puntos</p>
-                <p className="mt-2 text-3xl font-bold text-gray-900">{selectedTotals?.points.toFixed(2)}</p>
-              </div>
-              <div className="rounded-lg bg-white p-5 shadow-sm">
-                <p className="text-sm text-gray-500">Porcentaje</p>
-                <p className="mt-2 text-3xl font-bold text-gray-900">{selectedTotals?.percentage.toFixed(2)}%</p>
-              </div>
-              <div className="rounded-lg bg-white p-5 shadow-sm">
-                <p className="text-sm text-gray-500">Máximo</p>
-                <p className="mt-2 text-3xl font-bold text-gray-900">{selectedTotals?.maxPoints.toFixed(2)}</p>
-              </div>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-3">
-              <div className="rounded-lg bg-white p-5 shadow-sm">
-                <p className="text-sm text-gray-500">Preguntas buenas</p>
-                <p className="mt-2 text-3xl font-bold text-green-600">{selectedResult.goodAnswers}</p>
-              </div>
-              <div className="rounded-lg bg-white p-5 shadow-sm">
-                <p className="text-sm text-gray-500">Preguntas malas</p>
-                <p className="mt-2 text-3xl font-bold text-red-600">{selectedResult.wrongAnswers}</p>
-              </div>
-              <div className="rounded-lg bg-white p-5 shadow-sm">
-                <p className="text-sm text-gray-500">Rating</p>
-                <p className="mt-2 text-xl font-bold text-gray-900">{getRatingMessage(selectedResult)}</p>
-              </div>
-            </div>
-
-            <div className="rounded-lg bg-white p-6 shadow-sm">
-              <div className="mb-5 flex items-center gap-3">
-                <FiBarChart2 className="text-orange-500" />
-                <h2 className="text-lg font-semibold text-gray-900">Nota por tópico</h2>
-              </div>
-              <div className="space-y-4">
-                {selectedResult.subjects.map((subject) => (
-                  <div key={subject.title}>
-                    <div className="mb-1 flex items-center justify-between text-sm">
-                      <span className="font-medium text-gray-800">{subject.title}</span>
-                      <span className="text-gray-500">{Number(subject.percentage || 0).toFixed(2)}%</span>
-                    </div>
-                    <div className="h-3 overflow-hidden rounded-full bg-gray-100">
-                      <div className="h-full rounded-full bg-orange-500" style={{ width: `${Math.min(100, Math.max(0, Number(subject.percentage || 0)))}%` }} />
-                    </div>
-                    <p className="mt-1 text-xs text-gray-500">
-                      {Number(subject.percentage || 0) >= 70 ? 'Fortaleza' : 'Reforzar'} · {Number(subject.points || 0).toFixed(2)} de {Number(subject.maxPoints || 0).toFixed(2)} puntos
+            {selectedResult.bookReport ? (
+              <>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="rounded-lg bg-white p-5 shadow-sm">
+                    <p className="text-sm text-gray-500">Niveles Completados</p>
+                    <p className="mt-2 text-3xl font-bold text-gray-900">
+                      {selectedResult.bookReport.completedLevels} / {selectedResult.bookReport.totalLevels}
                     </p>
                   </div>
-                ))}
-              </div>
-            </div>
+                  <div className="rounded-lg bg-white p-5 shadow-sm">
+                    <p className="text-sm text-gray-500">Promedio General</p>
+                    <p className="mt-2 text-3xl font-bold text-gray-900">{selectedResult.bookReport.avgPct}%</p>
+                  </div>
+                  <div className="rounded-lg bg-white p-5 shadow-sm">
+                    <p className="text-sm text-gray-500">Mejor Unidad</p>
+                    <p className="mt-2 text-xl font-bold text-gray-900 truncate">{selectedResult.bookReport.bestUnit || '—'}</p>
+                  </div>
+                </div>
+
+                <div className="rounded-lg bg-white p-6 shadow-sm overflow-hidden border border-gray-100">
+                  <div className="mb-5 flex items-center gap-3">
+                    <FiBarChart2 className="text-purple-600" />
+                    <h2 className="text-lg font-semibold text-gray-900">Seguimiento de Niveles</h2>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: 600 }}>
+                      <thead>
+                        <tr style={{ background: '#F8FAFC', borderBottom: '1.5px solid #E2E8F0' }}>
+                          <th style={{ padding: '10px 14px', fontSize: '11px', fontWeight: 900, color: '#64748B', textTransform: 'uppercase', width: '50%' }}>Tema / Nivel</th>
+                          <th style={{ padding: '10px 14px', fontSize: '11px', fontWeight: 900, color: '#64748B', textTransform: 'uppercase', textAlign: 'center', width: '12%' }}>Estado</th>
+                          <th style={{ padding: '10px 14px', fontSize: '11px', fontWeight: 900, color: '#64748B', textTransform: 'uppercase', width: '20%' }}>Progreso</th>
+                          <th style={{ padding: '10px 14px', fontSize: '11px', fontWeight: 900, color: '#64748B', textTransform: 'uppercase', textAlign: 'center', width: '8%' }}>⭐</th>
+                          <th style={{ padding: '10px 14px', fontSize: '11px', fontWeight: 900, color: '#64748B', textTransform: 'uppercase', textAlign: 'center', width: '10%' }}>Nota</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {selectedResult.bookReport.perUnit.flatMap((unit: any) => {
+                          const unitRow = (
+                            <tr key={`unit-${unit.unitId}`} style={{ borderBottom: '1px solid #E2E8F0' }}>
+                              <td colSpan={5} style={{ background: 'linear-gradient(90deg,#7C3AED,#6D28D9)', color: '#FFF', fontWeight: 900, padding: '10px 14px', fontSize: '13px' }}>
+                                <span style={{ marginRight: 8 }}>{unit.unitIcon}</span> {unit.unitName}
+                              </td>
+                            </tr>
+                          );
+
+                          const levelRows = (unit.perTopic || []).flatMap((topic: any) =>
+                            (topic.levels || []).map((lv: any, lvIdx: number) => {
+                              const done = lv.pct !== null;
+                              const stars = done && lv.pct >= 50 ? (lv.pct >= 95 ? 3 : lv.pct >= 80 ? 2 : 1) : 0;
+                              const starsStr = '⭐'.repeat(stars);
+
+                              const GRADE_COLORS: Record<string, string> = { S: '#06A570', A: '#1A6CB4', B: '#BA7517', L: '#C94B22' };
+                              const GRADE_LABELS: Record<string, string> = { S: 'Superior', A: 'Alto', B: 'Básico', L: 'Bajo' };
+
+                              return (
+                                <tr key={`level-${lv.levelKey}`} style={{ borderBottom: '1px solid #F1F5F9', background: lvIdx % 2 === 0 ? '#FFF' : '#FAFAFA' }}>
+                                  <td style={{ padding: '10px 14px', verticalAlign: 'middle' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                      <span style={{ fontSize: '16px' }}>{topic.topicIcon}</span>
+                                      <div>
+                                        <div style={{ fontSize: '12px', fontWeight: 800, color: '#1E293B' }}>{topic.topicTitle}</div>
+                                        <div style={{ fontSize: '10px', fontWeight: 700, color: done ? '#059669' : '#64748B', textTransform: 'capitalize' }}>
+                                          {lv.levelLabel.toLowerCase()}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td style={{ padding: '10px 14px', textAlign: 'center', verticalAlign: 'middle' }}>
+                                    <div style={{
+                                      width: 20,
+                                      height: 20,
+                                      borderRadius: 5,
+                                      background: done ? '#D1FAE5' : '#EEF2F6',
+                                      border: `1.5px solid ${done ? '#10B981' : '#CBD5E1'}`,
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      fontSize: '12px',
+                                      color: '#10B981',
+                                      fontWeight: 900
+                                    }}>
+                                      {done ? '✓' : ''}
+                                    </div>
+                                  </td>
+                                  <td style={{ padding: '10px 14px', verticalAlign: 'middle' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                      <div style={{ flex: 1, height: 6, background: '#E2E8F0', borderRadius: 3, overflow: 'hidden' }}>
+                                        <div style={{ height: '100%', width: `${done ? 100 : 0}%`, background: done ? '#10B981' : '#94A3B8', borderRadius: 3 }} />
+                                      </div>
+                                      <span style={{ fontSize: '11px', fontWeight: 900, color: done ? '#10B981' : '#64748B', minWidth: 28, textAlign: 'right' }}>
+                                        {done ? 100 : 0}%
+                                      </span>
+                                    </div>
+                                  </td>
+                                  <td style={{ padding: '10px 14px', textAlign: 'center', verticalAlign: 'middle', fontSize: '12px' }}>
+                                    {starsStr || '—'}
+                                  </td>
+                                  <td style={{ padding: '10px 14px', textAlign: 'center', verticalAlign: 'middle' }}>
+                                    {done ? (
+                                      <span style={{
+                                        fontSize: '9px',
+                                        fontWeight: 900,
+                                        background: GRADE_COLORS[lv.grade ?? 'B'] || '#BA7517',
+                                        color: '#FFF',
+                                        borderRadius: 6,
+                                        padding: '2px 6px',
+                                        textTransform: 'uppercase',
+                                        display: 'inline-block'
+                                      }}>
+                                        {GRADE_LABELS[lv.grade ?? 'B'] || lv.grade}
+                                      </span>
+                                    ) : (
+                                      <span style={{ color: '#94A3B8' }}>—</span>
+                                    )}
+                                  </td>
+                                </tr>
+                              );
+                            })
+                          );
+
+                          return [unitRow, ...levelRows];
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="rounded-lg bg-white p-5 shadow-sm">
+                    <p className="text-sm text-gray-500">Puntos</p>
+                    <p className="mt-2 text-3xl font-bold text-gray-900">{selectedTotals?.points.toFixed(2)}</p>
+                  </div>
+                  <div className="rounded-lg bg-white p-5 shadow-sm">
+                    <p className="text-sm text-gray-500">Porcentaje</p>
+                    <p className="mt-2 text-3xl font-bold text-gray-900">{selectedTotals?.percentage.toFixed(2)}%</p>
+                  </div>
+                  <div className="rounded-lg bg-white p-5 shadow-sm">
+                    <p className="text-sm text-gray-500">Máximo</p>
+                    <p className="mt-2 text-3xl font-bold text-gray-900">{selectedTotals?.maxPoints.toFixed(2)}</p>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="rounded-lg bg-white p-5 shadow-sm">
+                    <p className="text-sm text-gray-500">Preguntas buenas</p>
+                    <p className="mt-2 text-3xl font-bold text-green-600">{selectedResult.goodAnswers}</p>
+                  </div>
+                  <div className="rounded-lg bg-white p-5 shadow-sm">
+                    <p className="text-sm text-gray-500">Preguntas malas</p>
+                    <p className="mt-2 text-3xl font-bold text-red-600">{selectedResult.wrongAnswers}</p>
+                  </div>
+                  <div className="rounded-lg bg-white p-5 shadow-sm">
+                    <p className="text-sm text-gray-500">Rating</p>
+                    <p className="mt-2 text-xl font-bold text-gray-900">{getRatingMessage(selectedResult)}</p>
+                  </div>
+                </div>
+
+                <div className="rounded-lg bg-white p-6 shadow-sm">
+                  <div className="mb-5 flex items-center gap-3">
+                    <FiBarChart2 className="text-orange-500" />
+                    <h2 className="text-lg font-semibold text-gray-900">Nota por tópico</h2>
+                  </div>
+                  <div className="space-y-4">
+                    {selectedResult.subjects.map((subject) => (
+                      <div key={subject.title}>
+                        <div className="mb-1 flex items-center justify-between text-sm">
+                          <span className="font-medium text-gray-800">{subject.title}</span>
+                          <span className="text-gray-500">{Number(subject.percentage || 0).toFixed(2)}%</span>
+                        </div>
+                        <div className="h-3 overflow-hidden rounded-full bg-gray-100">
+                          <div className="h-full rounded-full bg-orange-500" style={{ width: `${Math.min(100, Math.max(0, Number(subject.percentage || 0)))}%` }} />
+                        </div>
+                        <p className="mt-1 text-xs text-gray-500">
+                          {Number(subject.percentage || 0) >= 70 ? 'Fortaleza' : 'Reforzar'} · {Number(subject.points || 0).toFixed(2)} de {Number(subject.maxPoints || 0).toFixed(2)} puntos
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         ) : (
           <div className="space-y-6">

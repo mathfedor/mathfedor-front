@@ -16,14 +16,23 @@ interface Props {
   firstExerciseQuestion?: string;
   firstExerciseAnswer?: string;
   firstExerciseExplain?: string;
+  isGrade1?: boolean;
 }
 
-const LEVEL_META = [
+const LEVEL_META_GRADE2 = [
   { grad: 'linear-gradient(155deg,#0A3D28,#16876A,#0E5240)', headerTxt: '🟢 Nivel Básico', sub: 'Construye las bases del concepto', accent: '#24C496' },
   { grad: 'linear-gradient(155deg,#6A3200,#E8650A,#BA5500)', headerTxt: '🟡 Nivel Medio', sub: 'Desarrolla el pensamiento matemático', accent: '#FF8C2A' },
   { grad: 'linear-gradient(155deg,#5A0A28,#C94B22,#8B1A00)', headerTxt: '🔴 Nivel Avanzado', sub: 'Domina la operación con precisión', accent: '#FF6B6B' },
   { grad: 'linear-gradient(155deg,#7A3200,#C25400,#FF8C2A)', headerTxt: '🟠 Nivel Experto', sub: 'Reta tus límites con problemas difíciles', accent: '#FF8C2A' },
   { grad: 'linear-gradient(155deg,#3D0A60,#6A1B9A,#9B5CFF)', headerTxt: '🟣 Nivel Pruebas SABER', sub: 'Prepárate para las pruebas oficiales', accent: '#9B5CFF' },
+];
+
+const LEVEL_META_GRADE1 = [
+  { grad: 'linear-gradient(155deg,#0A3D28,#16876A,#0E5240)', headerTxt: '🟢 Nivel Básico', sub: 'Construye las bases del concepto', accent: '#24C496' },
+  { grad: 'linear-gradient(155deg,#6A3200,#E8650A,#BA5500)', headerTxt: '🟡 Nivel Medio', sub: 'Desarrolla el pensamiento matemático', accent: '#FF8C2A' },
+  { grad: 'linear-gradient(155deg,#5A0A28,#C94B22,#8B1A00)', headerTxt: '🔴 Nivel Avanzado', sub: 'Domina la operación con precisión', accent: '#FF6B6B' },
+  { grad: 'linear-gradient(155deg,#2A0F60,#7B2FBE,#1A0848)', headerTxt: '🟣 Nivel Experto', sub: 'Reta tu mente con problemas más exigentes', accent: '#A864E8' },
+  { grad: 'linear-gradient(155deg,#7A4A00,#F5C518,#E8650A)', headerTxt: '🏆 Evaluación Final', sub: '20 preguntas que cubren los 4 niveles', accent: '#F5C518' },
 ];
 
 const CHARS = [
@@ -33,9 +42,10 @@ const CHARS = [
 ];
 
 /** Panel de ejemplos resueltos — réplica fiel de `showExamplesPanel` del HTML. */
-export default function ExamplesPanel({ examples, exercisesCount, levelIndex, topicTitle, levelDesc, conceptText, onStart, firstExerciseQuestion, firstExerciseAnswer, firstExerciseExplain }: Props) {
+export default function ExamplesPanel({ examples, exercisesCount, levelIndex, topicTitle, levelDesc, conceptText, onStart, firstExerciseQuestion, firstExerciseAnswer, firstExerciseExplain, isGrade1 }: Props) {
   const [modalOpen, setModalOpen] = useState(false);
-  const lm = LEVEL_META[levelIndex] ?? LEVEL_META[0];
+  const metaList = isGrade1 ? LEVEL_META_GRADE1 : LEVEL_META_GRADE2;
+  const lm = metaList[levelIndex] ?? metaList[0];
 
   return (
     <div className="exp2" style={{ background: lm.grad, borderRadius: 22, overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,.3)', marginBottom: '1rem', position: 'relative' }}>
@@ -54,7 +64,7 @@ export default function ExamplesPanel({ examples, exercisesCount, levelIndex, to
           text-align: left;
         }
         .examples-card-clean * {
-          color: #1a1a1a !important;
+          color: inherit;
         }
         .examples-card-clean .ex-q-label {
           font-size: 14px !important;
@@ -87,7 +97,7 @@ export default function ExamplesPanel({ examples, exercisesCount, levelIndex, to
           text-align: left;
         }
         .examples-card-clean .ex-explain * {
-          color: #3d1d00 !important;
+          color: inherit;
         }
         .examples-card-clean .ex-vis {
           background: #FFFBF2 !important;
@@ -251,12 +261,16 @@ function ExampleCard({ ex }: { ex: LevelExample }) {
         </div>
       )}
 
-      {ex.explain && (
-        <div
-          className="ex-explain"
-          dangerouslySetInnerHTML={{ __html: `💡 ${ex.explain}` }}
-        />
-      )}
+      {ex.explain && (() => {
+        const isHtml = ex.explain.trim().startsWith('<');
+        return (
+          <div
+            className={isHtml ? "" : "ex-explain"}
+            style={isHtml ? { marginTop: '0.5rem' } : undefined}
+            dangerouslySetInnerHTML={{ __html: isHtml ? ex.explain : `💡 ${ex.explain}` }}
+          />
+        );
+      })()}
     </div>
   );
 }
