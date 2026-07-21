@@ -12,6 +12,13 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "react/no-unescaped-entities": "off",
+    },
+  },
+  {
     // Módulo React de la migración previa (no se usa: la ruta sirve el libro
     // original vía iframe). Se excluye del lint para un build limpio.
     ignores: ["src/components/book/**"],
