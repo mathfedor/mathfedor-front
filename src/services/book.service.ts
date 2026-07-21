@@ -156,7 +156,7 @@ function mapBookFromBackend(data: any, slug: string): Book {
  * Traduce una clave lógica de nivel (como "u0t0-n1") a la clave física del tema
  * que está guardada en la base de datos (como "con_t0-n1" en 1° o "sub_t0-n1" en 2°).
  */
-export function resolvePhysicalLevelKey(levelKey: string, slug: string): string {
+export function resolvePhysicalLevelKey(levelKey: string, slug: string, book?: Book): string {
   const isBook1 = slug === 'libro-1ro' || slug === 'matematicas-fedor-1';
   
   const m = /^u(\d+)t(\d+)-n(\d+)$/.exec(levelKey);
@@ -167,6 +167,12 @@ export function resolvePhysicalLevelKey(levelKey: string, slug: string): string 
   const lNum = parseInt(m[3], 10);
 
   if (isBook1) {
+    if (book) {
+      const topic = book.units[uIdx]?.topics[tIdx];
+      if (topic) {
+        return `${topic.id}-n${lNum}`;
+      }
+    }
     // Prefijos por unidad conocidos para Grado 1°
     const prefixMap = ['con', 'sum', 'res', 'lec', 'geo', 'med', 'est'];
     const prefix = prefixMap[uIdx] || `u${uIdx}`;
@@ -314,7 +320,8 @@ export const bookService = {
 
   /** Ejemplos didácticos de un nivel con deduplicación. */
   async getExamples(levelKey: string, slug: string = BOOK_SLUG): Promise<LevelExample[]> {
-    const physicalKey = resolvePhysicalLevelKey(levelKey, slug);
+    const bookObj = await this.getBook(slug);
+    const physicalKey = resolvePhysicalLevelKey(levelKey, slug, bookObj);
     const cacheKey = `${slug}_${physicalKey}`;
     if (examplesCache[cacheKey]) {
       return examplesCache[cacheKey];
