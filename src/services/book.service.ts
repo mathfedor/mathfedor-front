@@ -210,8 +210,12 @@ export const bookService = {
         if (!res.ok) {
           throw new Error(`Error del servidor al obtener el libro ${slug}: HTTP ${res.status}`);
         }
-        const data = await res.json();
-        console.log(`[book.service] getBook("${slug}") data:`, data);
+        const rawData = await res.json();
+        console.log(`[book.service] getBook("${slug}") data:`, rawData);
+        const data = rawData && rawData.bookCurriculum ? {
+          ...rawData,
+          ...rawData.bookCurriculum
+        } : rawData;
         const unitsArray = data ? (data.units || data.UNITS) : null;
         if (data && Array.isArray(unitsArray) && unitsArray.length > 0) {
           return mapBookFromBackend(data, slug);
