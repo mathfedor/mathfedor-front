@@ -134,17 +134,6 @@ const mockBook1: Book = {
   units: ((bookCurriculum1.UNITS || []) as unknown as RawUnit[]).map((u, i) => mapUnit(u, i)),
 };
 
-async function safeFetchJson<T>(url: string, fallback: T): Promise<T> {
-  if (!bookBackendEnabled()) return fallback;
-  try {
-    const res = await fetch(url, { headers: bookHeaders() });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return (await res.json()) as T;
-  } catch (error) {
-    console.warn('[book.service] usando mock por error de backend:', error);
-    return fallback;
-  }
-}
 
 /**
  * Convierte la respuesta del backend (que devuelve bookCurriculum directamente)
@@ -200,118 +189,191 @@ export function resolvePhysicalLevelKey(levelKey: string, slug: string, book?: B
   return levelKey;
 }
 
+// Caché de promesas para deduplicar peticiones concurrentes al backend
+const bookCache: Record<string, Promise<Book> | undefined> = {};
+const catalogCache: Record<string, Promise<GamificationCatalog> | undefined> = {};
+const loreCache: Record<string, Promise<LoreChapter[]> | undefined> = {};
+const tutorialsCache: Record<string, Promise<UnitTutorial | null> | undefined> = {};
+const examplesCache: Record<string, Promise<LevelExample[]> | undefined> = {};
+
 export const bookService = {
-  /** Devuelve el libro completo (currículo + estructura). */
+  /** Devuelve el libro completo (currículo + estructura) con deduplicación. */
   async getBook(slug: string = BOOK_SLUG): Promise<Book> {
-    if (bookBackendEnabled()) {
-      const res = await fetch(`${API_URL}/books/${slug}`, { headers: bookHeaders() });
-      if (!res.ok) {
-        throw new Error(`Error del servidor al obtener el libro ${slug}: HTTP ${res.status}`);
-      }
-      const data = await res.json();
-      if (data && Array.isArray(data.units) && data.units.length > 0) {
-        return mapBookFromBackend(data, slug);
-      }
-      throw new Error(`El libro retornado por el backend ${slug} no contiene unidades válidas`);
+    const cacheKey = slug;
+    if (bookCache[cacheKey]) {
+      return bookCache[cacheKey];
     }
-    if (slug === 'libro-1ro' || slug === 'matematicas-fedor-1') {
-      return mockBook1;
-    }
-    return mockBook;
+
+    const promise = (async () => {
+      if (bookBackendEnabled()) {
+        const res = await fetch(`${API_URL}/books/${slug}`, { headers: bookHeaders() });
+        if (!res.ok) {
+          throw new Error(`Error del servidor al obtener el libro ${slug}: HTTP ${res.status}`);
+        }
+        const data = await res.json();
+        console.log(`[book.service] getBook("${slug}") data:`, data);
+        const unitsArray = data ? (data.units || data.UNITS) : null;
+        if (data && Array.isArray(unitsArray) && unitsArray.length > 0) {
+          return mapBookFromBackend(data, slug);
+        }
+        throw new Error(`El libro retornado por el backend ${slug} no contiene unidades válidas`);
+      }
+      if (slug === 'libro-1ro' || slug === 'matematicas-fedor-1') {
+        return mockBook1;
+      }
+      return mockBook;
+    })();
+
+    bookCache[cacheKey] = promise;
+    promise.catch(() => {
+      delete bookCache[cacheKey];
+    });
+
+    return promise;
   },
 
-  /** Catálogo estático de gamificación (avatares, badges, rangos, tienda). */
+  /** Catálogo estático de gamificación con deduplicación. */
   async getGamificationCatalog(slug: string = BOOK_SLUG): Promise<GamificationCatalog> {
-    if (bookBackendEnabled()) {
-      const res = await fetch(`${API_URL}/books/${slug}/gamification`, { headers: bookHeaders() });
-      if (!res.ok) {
-        throw new Error(`Error del servidor al obtener gamificación de ${slug}: HTTP ${res.status}`);
-      }
-      return (await res.json()) as GamificationCatalog;
+    const cacheKey = slug;
+    if (catalogCache[cacheKey]) {
+      return catalogCache[cacheKey];
     }
-    return mockGamificationCatalog;
+
+    const promise = (async () => {
+      if (bookBackendEnabled()) {
+        const res = await fetch(`${API_URL}/books/${slug}/gamification`, { headers: bookHeaders() });
+        if (!res.ok) {
+          throw new Error(`Error del servidor al obtener gamificación de ${slug}: HTTP ${res.status}`);
+        }
+        return (await res.json()) as GamificationCatalog;
+      }
+      return mockGamificationCatalog;
+    })();
+
+    catalogCache[cacheKey] = promise;
+    promise.catch(() => {
+      delete catalogCache[cacheKey];
+    });
+
+    return promise;
   },
 
-  /** Capítulos narrativos del diario (lore). */
+  /** Capítulos narrativos del diario (lore) con deduplicación. */
   async getLore(slug: string = BOOK_SLUG): Promise<LoreChapter[]> {
-    if (bookBackendEnabled()) {
-      const res = await fetch(`${API_URL}/books/${slug}/lore`, { headers: bookHeaders() });
-      if (!res.ok) {
-        throw new Error(`Error del servidor al obtener lore de ${slug}: HTTP ${res.status}`);
-      }
-      return (await res.json()) as LoreChapter[];
+    const cacheKey = slug;
+    if (loreCache[cacheKey]) {
+      return loreCache[cacheKey];
     }
-    return mockLoreChapters;
+
+    const promise = (async () => {
+      if (bookBackendEnabled()) {
+        const res = await fetch(`${API_URL}/books/${slug}/lore`, { headers: bookHeaders() });
+        if (!res.ok) {
+          throw new Error(`Error del servidor al obtener lore de ${slug}: HTTP ${res.status}`);
+        }
+        return (await res.json()) as LoreChapter[];
+      }
+      return mockLoreChapters;
+    })();
+
+    loreCache[cacheKey] = promise;
+    promise.catch(() => {
+      delete loreCache[cacheKey];
+    });
+
+    return promise;
   },
 
-  /** Tutorial introductorio de una unidad (solo unidades 0..3 lo tienen). */
+  /** Tutorial introductorio de una unidad con deduplicación. */
   async getUnitTutorial(unitIndex: number, slug: string = BOOK_SLUG): Promise<UnitTutorial | null> {
-    if (bookBackendEnabled()) {
-      const res = await fetch(`${API_URL}/books/${slug}/tutorials`, { headers: bookHeaders() });
-      if (!res.ok) {
-        throw new Error(`Error del servidor al obtener tutoriales de ${slug}: HTTP ${res.status}`);
-      }
-      const data = await res.json();
-      if (Array.isArray(data)) {
-        return (data[unitIndex] as UnitTutorial) ?? null;
-      }
-      return null;
+    const cacheKey = `${slug}_${unitIndex}`;
+    if (tutorialsCache[cacheKey]) {
+      return tutorialsCache[cacheKey];
     }
-    return mockUnitTutorials[unitIndex] ?? null;
+
+    const promise = (async () => {
+      if (bookBackendEnabled()) {
+        const res = await fetch(`${API_URL}/books/${slug}/tutorials`, { headers: bookHeaders() });
+        if (!res.ok) {
+          throw new Error(`Error del servidor al obtener tutoriales de ${slug}: HTTP ${res.status}`);
+        }
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          return (data[unitIndex] as UnitTutorial) ?? null;
+        }
+        return null;
+      }
+      return mockUnitTutorials[unitIndex] ?? null;
+    })();
+
+    tutorialsCache[cacheKey] = promise;
+    promise.catch(() => {
+      delete tutorialsCache[cacheKey];
+    });
+
+    return promise;
   },
 
-  /**
-   * Ejemplos didácticos de un nivel (`u{u}t{t}-n{n}`).
-   * Cuando el backend está habilitado los pide por nivel específico.
-   * Algunas unidades usan claves alternas en el original
-   * (u1→`sub_`, u2→`mul_`, u3→`div_`); se resuelven por alias.
-   */
+  /** Ejemplos didácticos de un nivel con deduplicación. */
   async getExamples(levelKey: string, slug: string = BOOK_SLUG): Promise<LevelExample[]> {
     let bookObj: Book | undefined;
     try {
-      // Intentamos resolver el libro síncronamente si ya está en caché o del mock
       bookObj = slug === 'libro-1ro' || slug === 'matematicas-fedor-1' ? mockBook1 : mockBook;
-    } catch (_) {}
+    } catch {}
 
-    // Traducir a la clave real de MongoDB
     const physicalKey = resolvePhysicalLevelKey(levelKey, slug, bookObj);
+    const cacheKey = `${slug}_${physicalKey}`;
+    if (examplesCache[cacheKey]) {
+      return examplesCache[cacheKey];
+    }
 
-    // Obtener del backend
-    if (bookBackendEnabled()) {
-      const res = await fetch(`${API_URL}/books/${slug}/examples/${encodeURIComponent(physicalKey)}`, { headers: bookHeaders() });
-      if (!res.ok) {
-        throw new Error(`Error del servidor al obtener ejemplos para ${physicalKey}: HTTP ${res.status}`);
+    const getLocalExamples = () => {
+      const isBook1 = slug === 'libro-1ro' || slug === 'matematicas-fedor-1';
+      if (isBook1) {
+        const ex = mockLevelExamples1[physicalKey];
+        if (ex && ex.length > 0) return ex;
+        return [];
       }
-      return (await res.json()) as LevelExample[];
-    }
 
-    const isBook1 = slug === 'libro-1ro' || slug === 'matematicas-fedor-1';
-    if (isBook1) {
-      const ex = mockLevelExamples1[physicalKey];
-      if (ex && ex.length > 0) return ex;
+      const cleanCounting: Record<string, LevelExample[]> = {
+        'u0t0-n1': [
+          { icon: "1️⃣", q: "¿Cuántos elementos hay? 🐉", a: "1", explain: "Un dragón = el número 1", vis: "🐉" },
+          { icon: "2️⃣", q: "¿Cuántos elementos hay? 🐄🐄", a: "2", explain: "Dos vacas = el número 2", vis: "🐄🐄" },
+          { icon: "3️⃣", q: "¿Cuántos elementos hay? 🍎🍎🍎", a: "3", explain: "Tres manzanas = el número 3", vis: "🍎🍎🍎" },
+          { icon: "4️⃣", q: "¿Cuántos elementos hay? ⭐⭐⭐•", a: "4", explain: "Cuatro estrellas = el número 4", vis: "⭐⭐⭐⭐" },
+          { icon: "5️⃣", q: "¿Cuántos elementos hay? 🌸🌸🌸🌸🌸", a: "5", explain: "Cinco flores = el número 5", vis: "🌸🌸🌸🌸🌸" },
+          { icon: "🔢", q: "¿Qué número va DESPUÉS del 3?", a: "4", explain: "1, 2, 3, → 4" },
+          { icon: "🔢", q: "¿Qué número va ANTES del 5?", a: "4", explain: "3, 4, 5 → el anterior a 5 es 4" },
+          { icon: "🌙", q: "¿Qué número va ENTRE 2 y 4?", a: "3", explain: "2, 3, 4" },
+          { icon: "🍬", q: "¿Cuántos elementos hay? 🍬🍬🍬🍬", a: "4", explain: "Cuatro dulces = el número 4", vis: "🍬🍬🍬🍬" },
+          { icon: "📊", q: "¿Cuál número es Mayor: 1 o 5?", a: "5", explain: "5 está más adelante en la recta" }
+        ],
+      };
+
+      if (cleanCounting[physicalKey]) return cleanCounting[physicalKey];
+
+      const direct = mockLevelExamples[physicalKey];
+      if (direct) return direct;
       return [];
-    }
-
-    const cleanCounting: Record<string, LevelExample[]> = {
-      'u0t0-n1': [
-        { icon: "1️⃣", q: "¿Cuántos elementos hay? 🐉", a: "1", explain: "Un dragón = el número 1", vis: "🐉" },
-        { icon: "2️⃣", q: "¿Cuántos elementos hay? 🐄🐄", a: "2", explain: "Dos vacas = el número 2", vis: "🐄🐄" },
-        { icon: "3️⃣", q: "¿Cuántos elementos hay? 🍎🍎🍎", a: "3", explain: "Tres manzanas = el número 3", vis: "🍎🍎🍎" },
-        { icon: "4️⃣", q: "¿Cuántos elementos hay? ⭐⭐⭐•", a: "4", explain: "Cuatro estrellas = el número 4", vis: "⭐⭐⭐⭐" },
-        { icon: "5️⃣", q: "¿Cuántos elementos hay? 🌸🌸🌸🌸🌸", a: "5", explain: "Cinco flores = el número 5", vis: "🌸🌸🌸🌸🌸" },
-        { icon: "🔢", q: "¿Qué número va DESPUÉS del 3?", a: "4", explain: "1, 2, 3, → 4" },
-        { icon: "🔢", q: "¿Qué número va ANTES del 5?", a: "4", explain: "3, 4, 5 → el anterior a 5 es 4" },
-        { icon: "🌙", q: "¿Qué número va ENTRE 2 y 4?", a: "3", explain: "2, 3, 4" },
-        { icon: "🍬", q: "¿Cuántos elementos hay? 🍬🍬🍬🍬", a: "4", explain: "Cuatro dulces = el número 4", vis: "🍬🍬🍬🍬" },
-        { icon: "📊", q: "¿Cuál número es Mayor: 1 o 5?", a: "5", explain: "5 está más adelante en la recta" }
-      ],
     };
 
-    if (cleanCounting[physicalKey]) return cleanCounting[physicalKey];
+    const promise = (async () => {
+      if (bookBackendEnabled()) {
+        const res = await fetch(`${API_URL}/books/${slug}/examples/${encodeURIComponent(physicalKey)}`, { headers: bookHeaders() });
+        if (!res.ok) {
+          throw new Error(`Error del servidor al obtener ejemplos para ${physicalKey}: HTTP ${res.status}`);
+        }
+        return (await res.json()) as LevelExample[];
+      }
+      return getLocalExamples();
+    })();
 
-    const direct = mockLevelExamples[physicalKey];
-    if (direct) return direct;
-    return [];
+    examplesCache[cacheKey] = promise;
+    promise.catch(() => {
+      delete examplesCache[cacheKey];
+    });
+
+    return promise;
   },
 
   /** Atajo síncrono para acceder a una unidad ya cargada. */

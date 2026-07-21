@@ -6,7 +6,7 @@ import Sidebar from '@/components/Sidebar';
 import { FiBook, FiSave, FiLayers, FiSettings, FiCheckCircle, FiTrash2, FiPlus, FiAlertCircle } from 'react-icons/fi';
 import { authService } from '@/services/auth.service';
 import { bookService } from '@/services/book.service';
-import type { Book, Unit, Topic, Level } from '@/types/book.types';
+import type { Book } from '@/types/book.types';
 
 function CurriculumAdminContent() {
   const router = useRouter();
@@ -55,6 +55,7 @@ function CurriculumAdminContent() {
     }
     setIsAdmin(true);
     void loadBook();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, selectedBookSlug]);
 
   useEffect(() => {
