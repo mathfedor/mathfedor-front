@@ -903,7 +903,7 @@ export default function HomeScreen() {
           {/* Conceptos */}
           <div 
             className="feat-btn" 
-            onClick={() => setShowConceptos(true)} 
+            onClick={() => goScreen('conceptos')} 
             style={{ background: 'linear-gradient(135deg,#fff,#E8FAF1)' }}
           >
             <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#16876A,#34D399)' }}>📚</div>
@@ -928,8 +928,19 @@ export default function HomeScreen() {
             <div className="feat-arrow">→</div>
           </div>
 
-          {/* Separator / Spacer */}
-          <div style={{ height: '1.5rem' }} />
+          {/* Definiciones FEDOR */}
+          <div 
+            className="feat-btn" 
+            onClick={() => goScreen('definiciones')} 
+            style={{ background: 'linear-gradient(135deg,#fff,#F5F0FF)' }}
+          >
+            <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#7B2FBE,#A864E8)' }}>📚</div>
+            <div className="feat-info">
+              <div className="feat-name">Definiciones FEDOR</div>
+              <div className="feat-sub">Conceptos matemáticos claros para 1°</div>
+            </div>
+            <div className="feat-arrow">→</div>
+          </div>
 
           {/* Estándares MEN */}
           <div 
@@ -948,12 +959,13 @@ export default function HomeScreen() {
                 boxShadow: 'none' 
               }}
             >
-              CO
+              🇨🇴
             </div>
             <div className="feat-info">
               <div className="feat-name">Estándares MEN</div>
               <div className="feat-sub">Programa de 1° Colombia</div>
             </div>
+            <div className="feat-arrow">→</div>
           </div>
 
           {/* Problemas Cotidianos */}

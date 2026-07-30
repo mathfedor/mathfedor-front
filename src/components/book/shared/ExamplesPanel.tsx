@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Starfield from './Starfield';
 import ProcedureModal from './ProcedureModal';
 import type { LevelExample } from '@/types/book.types';
+import { fedorTTS } from '@/services/tts.service';
 
 interface Props {
   examples: LevelExample[];
@@ -222,8 +223,19 @@ export default function ExamplesPanel({ examples, exercisesCount, levelIndex, to
 }
 
 function ExampleCard({ ex }: { ex: LevelExample }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handleNarrate = () => {
+    fedorTTS.speak(`Ejemplo: ${ex.q}. Respuesta: ${ex.a}. ${ex.explain ? 'Explicación: ' + ex.explain.replace(/<[^>]+>/g, '') : ''}`);
+  };
+
+  const handleReplay = () => {
+    setIsPlaying(true);
+    fedorTTS.speak(`Ejemplo: ${ex.q}. Respuesta: ${ex.a}.`, () => setIsPlaying(false));
+  };
+
   return (
-    <div className="examples-card-clean">
+    <div className={`examples-card-clean ${isPlaying ? 'ring-2 ring-purple-400 animate-pulse' : ''}`}>
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: ex.vis || ex.nl ? '.5rem' : '0' }}>
         <div style={{
           width: 34,
@@ -271,6 +283,30 @@ function ExampleCard({ ex }: { ex: LevelExample }) {
           />
         );
       })()}
+
+      {/* Controls Bar: 🔊 Escuchar & ▶ Reproducir (Réplica de mv-controls del HTML) */}
+      <div className="flex items-center justify-between gap-2 mt-3 pt-2 border-t border-dashed border-amber-200">
+        <button
+          type="button"
+          onClick={handleNarrate}
+          className="bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm shadow-sm transition-transform active:scale-95 cursor-pointer"
+          title="Escuchar ejemplo"
+          aria-label="Escuchar el ejemplo"
+        >
+          🔊
+        </button>
+        <span className="text-[11px] font-bold text-amber-900/70">
+          {isPlaying ? '▶ Reproduciendo...' : 'Presiona ▶ para ver el ejemplo'}
+        </span>
+        <button
+          type="button"
+          onClick={handleReplay}
+          className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-black text-xs px-3.5 py-1.5 rounded-full shadow-sm flex items-center gap-1.5 transition-transform active:scale-95 cursor-pointer"
+        >
+          <span>▶</span>
+          <span>Reproducir</span>
+        </button>
+      </div>
     </div>
   );
 }

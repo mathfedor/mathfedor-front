@@ -1590,7 +1590,7 @@ button, .fedor-book .av-btn, .fedor-book .unit-card, .fedor-book .tc {
 /* Botón flotante de IA */
 .fedor-book .f1-aichat-btn {
   position: fixed;
-  bottom: 230px;
+  bottom: 24px;
   right: 14px;
   background: linear-gradient(135deg, #4F46E5, #06B6D4);
   color: #fff;

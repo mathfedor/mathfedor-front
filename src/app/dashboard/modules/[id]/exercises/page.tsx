@@ -4400,15 +4400,25 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     setIsMaterialOpen(false);
   };
 
-  const isBookModule = useMemo(() => {
+  const isGrade1Module = useMemo(() => {
+    if (resolvedParams.id === '1' || resolvedParams.id === 'libro-1ro') return true;
     if (!currentModule) return false;
-    return currentModule.group === 'Grado1' || currentModule.group === 'Grado2';
-  }, [currentModule]);
+    const group = (currentModule.group || '').toLowerCase();
+    const title = (currentModule.title || '').toLowerCase();
+    return group === 'grado1' || group === '1ro' || group === '1' || group.includes('primero') || title.includes('primero') || title.includes('1ro') || title.includes('1°');
+  }, [currentModule, resolvedParams.id]);
+
+  const isBookModule = useMemo(() => {
+    if (isGrade1Module) return true;
+    if (!currentModule) return false;
+    return currentModule.group === 'Grado2';
+  }, [currentModule, isGrade1Module]);
 
   const bookSlug = useMemo(() => {
+    if (isGrade1Module) return 'libro-1ro';
     if (!currentModule) return '';
     return currentModule.group === 'Grado1' ? 'libro-1ro' : 'matematicas-fedor-2';
-  }, [currentModule]);
+  }, [currentModule, isGrade1Module]);
 
   if (isBookModule) {
     return (

@@ -9,6 +9,8 @@ import { levelKey, topicCompletedLevels } from '../shared/progress.utils';
 import type { UnitTutorial } from '@/types/book.types';
 import { computeGrade } from '@/services/gamification.service';
 
+import { fedorTTS } from '@/services/tts.service';
+
 /** Detalle de una unidad: temas y sus niveles desbloqueables. */
 export default function UnitScreen() {
   const { book, progress, currentUnit, openLesson, goScreen } = useBook();
@@ -104,7 +106,20 @@ export default function UnitScreen() {
                     >
                       <div className="tc-icon" style={{ background: level.bg }}>{emoji}</div>
                       <div className="tc-body" style={{ textAlign: 'left', flex: 1 }}>
-                        <div className="tc-name" style={{ fontWeight: 900 }}>{level.label}</div>
+                        <div className="tc-name" style={{ fontWeight: 900, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span>{level.label}</span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              fedorTTS.speak(`${level.label}. ${topic.desc || ''}`);
+                            }}
+                            className="bg-purple-100 hover:bg-purple-200 text-purple-800 rounded-full w-6 h-6 flex items-center justify-center text-xs shadow-xs border border-purple-200 transition-transform active:scale-90"
+                            title="Escuchar título"
+                          >
+                            🔊
+                          </button>
+                        </div>
                         <div className="tc-desc" style={{ fontSize: '11px', color: done ? 'rgba(255,255,255,.92)' : 'var(--muted)' }}>{topic.desc}</div>
                         <div className="level-indicator">
                           <div className={`lv-dot ${li >= 0 ? 'fill-1' : ''}`}></div>

@@ -1,0 +1,4762 @@
+{
+  "add_conteo_n1_v1": [
+    {
+      "t": 0,
+      "text": "Conteo, nivel 1."
+    },
+    {
+      "t": 1.8,
+      "text": "Vamos a contar manzanas, del uno hasta el cinco."
+    },
+    {
+      "t": 5.5,
+      "text": "Contamos una por una, sin saltarnos ninguna."
+    },
+    {
+      "t": 9.5,
+      "text": "En total tenemos cinco manzanas."
+    }
+  ],
+  "add_conteo_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuántas manzanas hay?"
+    },
+    {
+      "t": 2,
+      "text": "Vamos a contar una por una."
+    },
+    {
+      "t": 4.5,
+      "text": "Uno, dos, y seguimos hasta el dos."
+    },
+    {
+      "t": 8.5,
+      "text": "Hay dos manzanas en total."
+    }
+  ],
+  "add_conteo_n2_v1": [
+    {
+      "t": 0,
+      "text": "Conteo, nivel 2."
+    },
+    {
+      "t": 1.8,
+      "text": "Vamos a contar estrellas, del uno hasta el diez."
+    },
+    {
+      "t": 5.5,
+      "text": "Contamos una por una, sin saltarnos ninguna."
+    },
+    {
+      "t": 12,
+      "text": "En total tenemos diez estrellas."
+    }
+  ],
+  "add_conteo_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuántas estrellas hay?"
+    },
+    {
+      "t": 2,
+      "text": "Vamos a contar una por una."
+    },
+    {
+      "t": 4.5,
+      "text": "Uno, dos, y seguimos hasta el cuatro."
+    },
+    {
+      "t": 8.5,
+      "text": "Hay cuatro estrellas en total."
+    }
+  ],
+  "add_conteo_n3_v1": [
+    {
+      "t": 0,
+      "text": "Conteo, nivel 3."
+    },
+    {
+      "t": 1.8,
+      "text": "Vamos a contar pollitos, del uno hasta el diez."
+    },
+    {
+      "t": 5.5,
+      "text": "Contamos una por una, sin saltarnos ninguna."
+    },
+    {
+      "t": 12,
+      "text": "En total tenemos diez pollitos."
+    }
+  ],
+  "add_conteo_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuántos pollitos hay?"
+    },
+    {
+      "t": 2,
+      "text": "Vamos a contar una por una."
+    },
+    {
+      "t": 4.5,
+      "text": "Uno, dos, y seguimos hasta el seis."
+    },
+    {
+      "t": 8.5,
+      "text": "Hay seis pollitos en total."
+    }
+  ],
+  "add_conteo_n4_v1": [
+    {
+      "t": 0,
+      "text": "Conteo, nivel 4."
+    },
+    {
+      "t": 1.8,
+      "text": "Vamos a contar globos, del uno hasta el diez."
+    },
+    {
+      "t": 5.5,
+      "text": "Contamos una por una, sin saltarnos ninguna."
+    },
+    {
+      "t": 12,
+      "text": "En total tenemos diez globos."
+    }
+  ],
+  "add_conteo_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuántos globos hay?"
+    },
+    {
+      "t": 2,
+      "text": "Vamos a contar una por una."
+    },
+    {
+      "t": 4.5,
+      "text": "Uno, dos, y seguimos hasta el ocho."
+    },
+    {
+      "t": 8.5,
+      "text": "Hay ocho globos en total."
+    }
+  ],
+  "add_conteo_n5_v1": [
+    {
+      "t": 0,
+      "text": "Conteo, nivel 5."
+    },
+    {
+      "t": 1.8,
+      "text": "Vamos a contar manzanas, del uno hasta el diez."
+    },
+    {
+      "t": 5.5,
+      "text": "Contamos una por una, sin saltarnos ninguna."
+    },
+    {
+      "t": 12,
+      "text": "En total tenemos diez manzanas."
+    }
+  ],
+  "add_conteo_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuántas manzanas hay?"
+    },
+    {
+      "t": 2,
+      "text": "Vamos a contar una por una."
+    },
+    {
+      "t": 4.5,
+      "text": "Uno, dos, y seguimos hasta el cinco."
+    },
+    {
+      "t": 8.5,
+      "text": "Hay cinco manzanas en total."
+    }
+  ],
+  "add_saltos_n1_v1": [
+    {
+      "t": 0,
+      "text": "Saltos, nivel 1."
+    },
+    {
+      "t": 2,
+      "text": "El sapo salta de dos en dos."
+    },
+    {
+      "t": 4.5,
+      "text": "Empezamos en cero y saltamos."
+    },
+    {
+      "t": 7.5,
+      "text": "Cero, dos, cuatro, y seguimos."
+    },
+    {
+      "t": 11,
+      "text": "Al final llegamos al seis."
+    }
+  ],
+  "add_saltos_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Sigue la secuencia."
+    },
+    {
+      "t": 2,
+      "text": "Cero, dos, cuatro, seis."
+    },
+    {
+      "t": 5.5,
+      "text": "El sapo va sumando dos cada salto."
+    },
+    {
+      "t": 8.5,
+      "text": "El siguiente número es cuatro."
+    }
+  ],
+  "add_saltos_n2_v1": [
+    {
+      "t": 0,
+      "text": "Saltos, nivel 2."
+    },
+    {
+      "t": 2,
+      "text": "El sapo salta de dos en dos."
+    },
+    {
+      "t": 4.5,
+      "text": "Empezamos en cero y saltamos."
+    },
+    {
+      "t": 7.5,
+      "text": "Cero, dos, cuatro, y seguimos."
+    },
+    {
+      "t": 11,
+      "text": "Al final llegamos al diez."
+    }
+  ],
+  "add_saltos_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Sigue la secuencia."
+    },
+    {
+      "t": 2,
+      "text": "Cero, dos, cuatro, seis."
+    },
+    {
+      "t": 5.5,
+      "text": "El sapo va sumando dos cada salto."
+    },
+    {
+      "t": 8.5,
+      "text": "El siguiente número es ocho."
+    }
+  ],
+  "add_saltos_n3_v1": [
+    {
+      "t": 0,
+      "text": "Saltos, nivel 3."
+    },
+    {
+      "t": 2,
+      "text": "El sapo salta de tres en tres."
+    },
+    {
+      "t": 4.5,
+      "text": "Empezamos en cero y saltamos."
+    },
+    {
+      "t": 7.5,
+      "text": "Cero, tres, seis, y seguimos."
+    },
+    {
+      "t": 11,
+      "text": "Al final llegamos al doce."
+    }
+  ],
+  "add_saltos_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Sigue la secuencia."
+    },
+    {
+      "t": 2,
+      "text": "Cero, tres, seis, nueve."
+    },
+    {
+      "t": 5.5,
+      "text": "El sapo va sumando tres cada salto."
+    },
+    {
+      "t": 8.5,
+      "text": "El siguiente número es nueve."
+    }
+  ],
+  "add_saltos_n4_v1": [
+    {
+      "t": 0,
+      "text": "Saltos, nivel 4."
+    },
+    {
+      "t": 2,
+      "text": "El sapo salta de cinco en cinco."
+    },
+    {
+      "t": 4.5,
+      "text": "Empezamos en cero y saltamos."
+    },
+    {
+      "t": 7.5,
+      "text": "Cero, cinco, diez, y seguimos."
+    },
+    {
+      "t": 11,
+      "text": "Al final llegamos al veinte."
+    }
+  ],
+  "add_saltos_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Sigue la secuencia."
+    },
+    {
+      "t": 2,
+      "text": "Cero, cinco, diez, quince."
+    },
+    {
+      "t": 5.5,
+      "text": "El sapo va sumando cinco cada salto."
+    },
+    {
+      "t": 8.5,
+      "text": "El siguiente número es quince."
+    }
+  ],
+  "add_saltos_n5_v1": [
+    {
+      "t": 0,
+      "text": "Saltos, nivel 5."
+    },
+    {
+      "t": 2,
+      "text": "El sapo salta de diez en diez."
+    },
+    {
+      "t": 4.5,
+      "text": "Empezamos en cero y saltamos."
+    },
+    {
+      "t": 7.5,
+      "text": "Cero, diez, veinte, y seguimos."
+    },
+    {
+      "t": 11,
+      "text": "Al final llegamos al treinta."
+    }
+  ],
+  "add_saltos_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Sigue la secuencia."
+    },
+    {
+      "t": 2,
+      "text": "Cero, diez, veinte, treinta."
+    },
+    {
+      "t": 5.5,
+      "text": "El sapo va sumando diez cada salto."
+    },
+    {
+      "t": 8.5,
+      "text": "El siguiente número es veinte."
+    }
+  ],
+  "add_linea_n1_v1": [
+    {
+      "t": 0,
+      "text": "Línea numérica, nivel 1."
+    },
+    {
+      "t": 2,
+      "text": "Los números van en orden desde el cero."
+    },
+    {
+      "t": 4.5,
+      "text": "Cero, uno, dos, tres, cuatro, y siguen."
+    },
+    {
+      "t": 8,
+      "text": "Cada número es uno más que el anterior."
+    },
+    {
+      "t": 11,
+      "text": "Al final llegamos al cinco."
+    }
+  ],
+  "add_linea_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Qué número va después del dos?"
+    },
+    {
+      "t": 2.5,
+      "text": "Buscamos en la línea el dos."
+    },
+    {
+      "t": 5,
+      "text": "El siguiente es su vecino de la derecha."
+    },
+    {
+      "t": 7.5,
+      "text": "Después del dos va el tres."
+    }
+  ],
+  "add_linea_n2_v1": [
+    {
+      "t": 0,
+      "text": "Línea numérica, nivel 2."
+    },
+    {
+      "t": 2,
+      "text": "Los números van en orden desde el cero."
+    },
+    {
+      "t": 4.5,
+      "text": "Cero, uno, dos, tres, cuatro, y siguen."
+    },
+    {
+      "t": 8,
+      "text": "Cada número es uno más que el anterior."
+    },
+    {
+      "t": 11,
+      "text": "Al final llegamos al diez."
+    }
+  ],
+  "add_linea_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Qué número va después del cinco?"
+    },
+    {
+      "t": 2.5,
+      "text": "Buscamos en la línea el cinco."
+    },
+    {
+      "t": 5,
+      "text": "El siguiente es su vecino de la derecha."
+    },
+    {
+      "t": 7.5,
+      "text": "Después del cinco va el seis."
+    }
+  ],
+  "add_linea_n3_v1": [
+    {
+      "t": 0,
+      "text": "Línea numérica, nivel 3."
+    },
+    {
+      "t": 2,
+      "text": "Los números van en orden desde el cero."
+    },
+    {
+      "t": 4.5,
+      "text": "Cero, uno, dos, tres, cuatro, y siguen."
+    },
+    {
+      "t": 8,
+      "text": "Cada número es uno más que el anterior."
+    },
+    {
+      "t": 11,
+      "text": "Al final llegamos al quince."
+    }
+  ],
+  "add_linea_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Qué número va después del ocho?"
+    },
+    {
+      "t": 2.5,
+      "text": "Buscamos en la línea el ocho."
+    },
+    {
+      "t": 5,
+      "text": "El siguiente es su vecino de la derecha."
+    },
+    {
+      "t": 7.5,
+      "text": "Después del ocho va el nueve."
+    }
+  ],
+  "add_linea_n4_v1": [
+    {
+      "t": 0,
+      "text": "Línea numérica, nivel 4."
+    },
+    {
+      "t": 2,
+      "text": "Los números van en orden desde el cero."
+    },
+    {
+      "t": 4.5,
+      "text": "Cero, uno, dos, tres, cuatro, y siguen."
+    },
+    {
+      "t": 8,
+      "text": "Cada número es uno más que el anterior."
+    },
+    {
+      "t": 11,
+      "text": "Al final llegamos al veinte."
+    }
+  ],
+  "add_linea_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Qué número va después del once?"
+    },
+    {
+      "t": 2.5,
+      "text": "Buscamos en la línea el once."
+    },
+    {
+      "t": 5,
+      "text": "El siguiente es su vecino de la derecha."
+    },
+    {
+      "t": 7.5,
+      "text": "Después del once va el doce."
+    }
+  ],
+  "add_linea_n5_v1": [
+    {
+      "t": 0,
+      "text": "Línea numérica, nivel 5."
+    },
+    {
+      "t": 2,
+      "text": "Los números van en orden desde el cero."
+    },
+    {
+      "t": 4.5,
+      "text": "Cero, uno, dos, tres, cuatro, y siguen."
+    },
+    {
+      "t": 8,
+      "text": "Cada número es uno más que el anterior."
+    },
+    {
+      "t": 11,
+      "text": "Al final llegamos al veinte."
+    }
+  ],
+  "add_linea_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Qué número va después del catorce?"
+    },
+    {
+      "t": 2.5,
+      "text": "Buscamos en la línea el catorce."
+    },
+    {
+      "t": 5,
+      "text": "El siguiente es su vecino de la derecha."
+    },
+    {
+      "t": 7.5,
+      "text": "Después del catorce va el quince."
+    }
+  ],
+  "add_decena_n1_v1": [
+    {
+      "t": 0,
+      "text": "La decena, nivel 1."
+    },
+    {
+      "t": 2,
+      "text": "Diez unidades sueltas las juntamos."
+    },
+    {
+      "t": 4.5,
+      "text": "Todas juntas forman una decena."
+    },
+    {
+      "t": 7.5,
+      "text": "Una decena es igual a diez unidades."
+    },
+    {
+      "t": 10.5,
+      "text": "Diez unidades igual a diez."
+    }
+  ],
+  "add_decena_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos uno decena."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada decena tiene diez unidades."
+    },
+    {
+      "t": 5,
+      "text": "Sumamos: uno por diez."
+    },
+    {
+      "t": 8,
+      "text": "La respuesta es diez."
+    }
+  ],
+  "add_decena_n2_v1": [
+    {
+      "t": 0,
+      "text": "La decena, nivel 2."
+    },
+    {
+      "t": 2,
+      "text": "Diez unidades sueltas las juntamos."
+    },
+    {
+      "t": 4.5,
+      "text": "Todas juntas forman una decena."
+    },
+    {
+      "t": 7.5,
+      "text": "Una decena es igual a diez unidades."
+    },
+    {
+      "t": 10.5,
+      "text": "Diez unidades igual a diez."
+    }
+  ],
+  "add_decena_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos dos decenas."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada decena tiene diez unidades."
+    },
+    {
+      "t": 5,
+      "text": "Sumamos: dos por diez."
+    },
+    {
+      "t": 8,
+      "text": "La respuesta es veinte."
+    }
+  ],
+  "add_decena_n3_v1": [
+    {
+      "t": 0,
+      "text": "La decena, nivel 3."
+    },
+    {
+      "t": 2,
+      "text": "Diez unidades sueltas las juntamos."
+    },
+    {
+      "t": 4.5,
+      "text": "Todas juntas forman una decena."
+    },
+    {
+      "t": 7.5,
+      "text": "Una decena es igual a diez unidades."
+    },
+    {
+      "t": 10.5,
+      "text": "Diez unidades igual a diez."
+    }
+  ],
+  "add_decena_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos tres decenas."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada decena tiene diez unidades."
+    },
+    {
+      "t": 5,
+      "text": "Sumamos: tres por diez."
+    },
+    {
+      "t": 8,
+      "text": "La respuesta es treinta."
+    }
+  ],
+  "add_decena_n4_v1": [
+    {
+      "t": 0,
+      "text": "La decena, nivel 4."
+    },
+    {
+      "t": 2,
+      "text": "Diez unidades sueltas las juntamos."
+    },
+    {
+      "t": 4.5,
+      "text": "Todas juntas forman una decena."
+    },
+    {
+      "t": 7.5,
+      "text": "Una decena es igual a diez unidades."
+    },
+    {
+      "t": 10.5,
+      "text": "Diez unidades igual a diez."
+    }
+  ],
+  "add_decena_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos cuatro decenas."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada decena tiene diez unidades."
+    },
+    {
+      "t": 5,
+      "text": "Sumamos: cuatro por diez."
+    },
+    {
+      "t": 8,
+      "text": "La respuesta es cuarenta."
+    }
+  ],
+  "add_decena_n5_v1": [
+    {
+      "t": 0,
+      "text": "La decena, nivel 5."
+    },
+    {
+      "t": 2,
+      "text": "Diez unidades sueltas las juntamos."
+    },
+    {
+      "t": 4.5,
+      "text": "Todas juntas forman una decena."
+    },
+    {
+      "t": 7.5,
+      "text": "Una decena es igual a diez unidades."
+    },
+    {
+      "t": 10.5,
+      "text": "Diez unidades igual a diez."
+    }
+  ],
+  "add_decena_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos cinco decenas."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada decena tiene diez unidades."
+    },
+    {
+      "t": 5,
+      "text": "Sumamos: cinco por diez."
+    },
+    {
+      "t": 8,
+      "text": "La respuesta es cincuenta."
+    }
+  ],
+  "add_sl_n1_v1": [
+    {
+      "t": 0,
+      "text": "Suma sin llevar. tres más dos."
+    },
+    {
+      "t": 2.5,
+      "text": "Ponemos tres arriba y dos abajo."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos las unidades primero."
+    },
+    {
+      "t": 8.5,
+      "text": "tres más dos es igual a cinco."
+    }
+  ],
+  "add_sl_n2_v1": [
+    {
+      "t": 0,
+      "text": "Suma sin llevar. cuatro más tres."
+    },
+    {
+      "t": 2.5,
+      "text": "Ponemos cuatro arriba y tres abajo."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos las unidades primero."
+    },
+    {
+      "t": 8.5,
+      "text": "cuatro más tres es igual a siete."
+    }
+  ],
+  "add_sl_n3_v1": [
+    {
+      "t": 0,
+      "text": "Suma sin llevar. doce más cinco."
+    },
+    {
+      "t": 2.5,
+      "text": "Ponemos doce arriba y cinco abajo."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos las unidades primero."
+    },
+    {
+      "t": 8.5,
+      "text": "doce más cinco es igual a diecisiete."
+    }
+  ],
+  "add_sl_n4_v1": [
+    {
+      "t": 0,
+      "text": "Suma sin llevar. veintitres más cuatro."
+    },
+    {
+      "t": 2.5,
+      "text": "Ponemos veintitres arriba y cuatro abajo."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos las unidades primero."
+    },
+    {
+      "t": 8.5,
+      "text": "veintitres más cuatro es igual a 27."
+    }
+  ],
+  "add_sl_n5_v1": [
+    {
+      "t": 0,
+      "text": "Suma sin llevar. 34 más cinco."
+    },
+    {
+      "t": 2.5,
+      "text": "Ponemos 34 arriba y cinco abajo."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos las unidades primero."
+    },
+    {
+      "t": 8.5,
+      "text": "34 más cinco es igual a 39."
+    }
+  ],
+  "add_sl_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. cuatro más uno."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos en columna, dígito por dígito."
+    },
+    {
+      "t": 5.5,
+      "text": "cuatro más uno es igual a cinco."
+    }
+  ],
+  "add_sl_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. cinco más cuatro."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos en columna, dígito por dígito."
+    },
+    {
+      "t": 5.5,
+      "text": "cinco más cuatro es igual a nueve."
+    }
+  ],
+  "add_sl_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. trece más seis."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos en columna, dígito por dígito."
+    },
+    {
+      "t": 5.5,
+      "text": "trece más seis es igual a diecinueve."
+    }
+  ],
+  "add_sl_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. veinticinco más tres."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos en columna, dígito por dígito."
+    },
+    {
+      "t": 5.5,
+      "text": "veinticinco más tres es igual a 28."
+    }
+  ],
+  "add_sl_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. 41 más siete."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos en columna, dígito por dígito."
+    },
+    {
+      "t": 5.5,
+      "text": "41 más siete es igual a cuarenta y ocho."
+    }
+  ],
+  "add_docena_n1_v1": [
+    {
+      "t": 0,
+      "text": "La docena, nivel 1."
+    },
+    {
+      "t": 2,
+      "text": "Doce objetos forman una docena."
+    },
+    {
+      "t": 4.5,
+      "text": "Como los huevos que vienen en cartón."
+    },
+    {
+      "t": 7.5,
+      "text": "Contamos: uno, dos, tres, hasta doce."
+    },
+    {
+      "t": 10.5,
+      "text": "Una docena es igual a doce."
+    }
+  ],
+  "add_docena_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos uno docena."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada docena tiene doce objetos."
+    },
+    {
+      "t": 5,
+      "text": "Sumamos: uno por doce."
+    },
+    {
+      "t": 8,
+      "text": "La respuesta es doce."
+    }
+  ],
+  "add_docena_n2_v1": [
+    {
+      "t": 0,
+      "text": "La docena, nivel 2."
+    },
+    {
+      "t": 2,
+      "text": "Doce objetos forman una docena."
+    },
+    {
+      "t": 4.5,
+      "text": "Como los huevos que vienen en cartón."
+    },
+    {
+      "t": 7.5,
+      "text": "Contamos: uno, dos, tres, hasta doce."
+    },
+    {
+      "t": 10.5,
+      "text": "Una docena es igual a doce."
+    }
+  ],
+  "add_docena_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos dos docenas."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada docena tiene doce objetos."
+    },
+    {
+      "t": 5,
+      "text": "Sumamos: dos por doce."
+    },
+    {
+      "t": 8,
+      "text": "La respuesta es veinticuatro."
+    }
+  ],
+  "add_docena_n3_v1": [
+    {
+      "t": 0,
+      "text": "La docena, nivel 3."
+    },
+    {
+      "t": 2,
+      "text": "Doce objetos forman una docena."
+    },
+    {
+      "t": 4.5,
+      "text": "Como los huevos que vienen en cartón."
+    },
+    {
+      "t": 7.5,
+      "text": "Contamos: uno, dos, tres, hasta doce."
+    },
+    {
+      "t": 10.5,
+      "text": "Una docena es igual a doce."
+    }
+  ],
+  "add_docena_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos tres docenas."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada docena tiene doce objetos."
+    },
+    {
+      "t": 5,
+      "text": "Sumamos: tres por doce."
+    },
+    {
+      "t": 8,
+      "text": "La respuesta es treinta y seis."
+    }
+  ],
+  "add_docena_n4_v1": [
+    {
+      "t": 0,
+      "text": "La docena, nivel 4."
+    },
+    {
+      "t": 2,
+      "text": "Doce objetos forman una docena."
+    },
+    {
+      "t": 4.5,
+      "text": "Como los huevos que vienen en cartón."
+    },
+    {
+      "t": 7.5,
+      "text": "Contamos: uno, dos, tres, hasta doce."
+    },
+    {
+      "t": 10.5,
+      "text": "Una docena es igual a doce."
+    }
+  ],
+  "add_docena_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos cuatro docenas."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada docena tiene doce objetos."
+    },
+    {
+      "t": 5,
+      "text": "Sumamos: cuatro por doce."
+    },
+    {
+      "t": 8,
+      "text": "La respuesta es cuarenta y ocho."
+    }
+  ],
+  "add_docena_n5_v1": [
+    {
+      "t": 0,
+      "text": "La docena, nivel 5."
+    },
+    {
+      "t": 2,
+      "text": "Doce objetos forman una docena."
+    },
+    {
+      "t": 4.5,
+      "text": "Como los huevos que vienen en cartón."
+    },
+    {
+      "t": 7.5,
+      "text": "Contamos: uno, dos, tres, hasta doce."
+    },
+    {
+      "t": 10.5,
+      "text": "Una docena es igual a doce."
+    }
+  ],
+  "add_docena_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos cuatro docenas."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada docena tiene doce objetos."
+    },
+    {
+      "t": 5,
+      "text": "Sumamos: cuatro por doce."
+    },
+    {
+      "t": 8,
+      "text": "La respuesta es cuarenta y ocho."
+    }
+  ],
+  "add_centena_n1_v1": [
+    {
+      "t": 0,
+      "text": "La centena, nivel 1."
+    },
+    {
+      "t": 2,
+      "text": "Cien unidades juntas forman una centena."
+    },
+    {
+      "t": 4.5,
+      "text": "También son diez decenas."
+    },
+    {
+      "t": 7.5,
+      "text": "Vamos llenando el cuadro de cien."
+    },
+    {
+      "t": 11,
+      "text": "Una centena es igual a cien."
+    }
+  ],
+  "add_centena_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos uno centena."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada centena tiene cien unidades."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos: uno por cien."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es cien."
+    }
+  ],
+  "add_centena_n2_v1": [
+    {
+      "t": 0,
+      "text": "La centena, nivel 2."
+    },
+    {
+      "t": 2,
+      "text": "Cien unidades juntas forman una centena."
+    },
+    {
+      "t": 4.5,
+      "text": "También son diez decenas."
+    },
+    {
+      "t": 7.5,
+      "text": "Vamos llenando el cuadro de cien."
+    },
+    {
+      "t": 11,
+      "text": "Una centena es igual a cien."
+    }
+  ],
+  "add_centena_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos dos centenas."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada centena tiene cien unidades."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos: dos por cien."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es doscientos."
+    }
+  ],
+  "add_centena_n3_v1": [
+    {
+      "t": 0,
+      "text": "La centena, nivel 3."
+    },
+    {
+      "t": 2,
+      "text": "Cien unidades juntas forman una centena."
+    },
+    {
+      "t": 4.5,
+      "text": "También son diez decenas."
+    },
+    {
+      "t": 7.5,
+      "text": "Vamos llenando el cuadro de cien."
+    },
+    {
+      "t": 11,
+      "text": "Una centena es igual a cien."
+    }
+  ],
+  "add_centena_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos tres centenas."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada centena tiene cien unidades."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos: tres por cien."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es trescientos."
+    }
+  ],
+  "add_centena_n4_v1": [
+    {
+      "t": 0,
+      "text": "La centena, nivel 4."
+    },
+    {
+      "t": 2,
+      "text": "Cien unidades juntas forman una centena."
+    },
+    {
+      "t": 4.5,
+      "text": "También son diez decenas."
+    },
+    {
+      "t": 7.5,
+      "text": "Vamos llenando el cuadro de cien."
+    },
+    {
+      "t": 11,
+      "text": "Una centena es igual a cien."
+    }
+  ],
+  "add_centena_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos cuatro centenas."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada centena tiene cien unidades."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos: cuatro por cien."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es cuatrocientos."
+    }
+  ],
+  "add_centena_n5_v1": [
+    {
+      "t": 0,
+      "text": "La centena, nivel 5."
+    },
+    {
+      "t": 2,
+      "text": "Cien unidades juntas forman una centena."
+    },
+    {
+      "t": 4.5,
+      "text": "También son diez decenas."
+    },
+    {
+      "t": 7.5,
+      "text": "Vamos llenando el cuadro de cien."
+    },
+    {
+      "t": 11,
+      "text": "Una centena es igual a cien."
+    }
+  ],
+  "add_centena_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Tenemos cuatro centenas."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada centena tiene cien unidades."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos: cuatro por cien."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es cuatrocientos."
+    }
+  ],
+  "add_ll_n1_v1": [
+    {
+      "t": 0,
+      "text": "Suma llevando. ocho más cinco."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos las unidades primero."
+    },
+    {
+      "t": 5,
+      "text": "Si pasan de nueve, llevamos uno a la decena."
+    },
+    {
+      "t": 8,
+      "text": "El resultado es trece."
+    }
+  ],
+  "add_ll_n2_v1": [
+    {
+      "t": 0,
+      "text": "Suma llevando. nueve más cuatro."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos las unidades primero."
+    },
+    {
+      "t": 5,
+      "text": "Si pasan de nueve, llevamos uno a la decena."
+    },
+    {
+      "t": 8,
+      "text": "El resultado es trece."
+    }
+  ],
+  "add_ll_n3_v1": [
+    {
+      "t": 0,
+      "text": "Suma llevando. diecisiete más seis."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos las unidades primero."
+    },
+    {
+      "t": 5,
+      "text": "Si pasan de nueve, llevamos uno a la decena."
+    },
+    {
+      "t": 8,
+      "text": "El resultado es veintitres."
+    }
+  ],
+  "add_ll_n4_v1": [
+    {
+      "t": 0,
+      "text": "Suma llevando. veinticinco más ocho."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos las unidades primero."
+    },
+    {
+      "t": 5,
+      "text": "Si pasan de nueve, llevamos uno a la decena."
+    },
+    {
+      "t": 8,
+      "text": "El resultado es 33."
+    }
+  ],
+  "add_ll_n5_v1": [
+    {
+      "t": 0,
+      "text": "Suma llevando. 46 más siete."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos las unidades primero."
+    },
+    {
+      "t": 5,
+      "text": "Si pasan de nueve, llevamos uno a la decena."
+    },
+    {
+      "t": 8,
+      "text": "El resultado es 53."
+    }
+  ],
+  "add_ll_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. siete más seis."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos las unidades."
+    },
+    {
+      "t": 5,
+      "text": "Llevamos uno a la decena."
+    },
+    {
+      "t": 8,
+      "text": "El total es trece."
+    }
+  ],
+  "add_ll_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. dieciocho más cinco."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos las unidades."
+    },
+    {
+      "t": 5,
+      "text": "Llevamos uno a la decena."
+    },
+    {
+      "t": 8,
+      "text": "El total es veintitres."
+    }
+  ],
+  "add_ll_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. diecinueve más cuatro."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos las unidades."
+    },
+    {
+      "t": 5,
+      "text": "Llevamos uno a la decena."
+    },
+    {
+      "t": 8,
+      "text": "El total es veintitres."
+    }
+  ],
+  "add_ll_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. 27 más nueve."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos las unidades."
+    },
+    {
+      "t": 5,
+      "text": "Llevamos uno a la decena."
+    },
+    {
+      "t": 8,
+      "text": "El total es 36."
+    }
+  ],
+  "add_ll_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. 38 más seis."
+    },
+    {
+      "t": 2.5,
+      "text": "Sumamos las unidades."
+    },
+    {
+      "t": 5,
+      "text": "Llevamos uno a la decena."
+    },
+    {
+      "t": 8,
+      "text": "El total es 44."
+    }
+  ],
+  "add_probs_n1_v1": [
+    {
+      "t": 0,
+      "text": "Problemas, nivel 1."
+    },
+    {
+      "t": 2,
+      "text": "Ana tiene tres flores."
+    },
+    {
+      "t": 4.5,
+      "text": "le regalan dos más."
+    },
+    {
+      "t": 7,
+      "text": "Sumamos para saber cuántos hay ahora."
+    },
+    {
+      "t": 10,
+      "text": "La respuesta es cinco."
+    }
+  ],
+  "add_probs_n2_v1": [
+    {
+      "t": 0,
+      "text": "Problemas, nivel 2."
+    },
+    {
+      "t": 2,
+      "text": "En el árbol hay cuatro pájaros."
+    },
+    {
+      "t": 4.5,
+      "text": "llegan cinco más."
+    },
+    {
+      "t": 7,
+      "text": "Sumamos para saber cuántos hay ahora."
+    },
+    {
+      "t": 10,
+      "text": "La respuesta es nueve."
+    }
+  ],
+  "add_probs_n3_v1": [
+    {
+      "t": 0,
+      "text": "Problemas, nivel 3."
+    },
+    {
+      "t": 2,
+      "text": "Luis tenía ocho caramelos."
+    },
+    {
+      "t": 4.5,
+      "text": "su papá le da seis más."
+    },
+    {
+      "t": 7,
+      "text": "Sumamos para saber cuántos hay ahora."
+    },
+    {
+      "t": 10,
+      "text": "La respuesta es catorce."
+    }
+  ],
+  "add_probs_n4_v1": [
+    {
+      "t": 0,
+      "text": "Problemas, nivel 4."
+    },
+    {
+      "t": 2,
+      "text": "En el estante hay doce libros."
+    },
+    {
+      "t": 4.5,
+      "text": "traen siete más."
+    },
+    {
+      "t": 7,
+      "text": "Sumamos para saber cuántos hay ahora."
+    },
+    {
+      "t": 10,
+      "text": "La respuesta es diecinueve."
+    }
+  ],
+  "add_probs_n5_v1": [
+    {
+      "t": 0,
+      "text": "Problemas, nivel 5."
+    },
+    {
+      "t": 2,
+      "text": "En la caja había quince lápices."
+    },
+    {
+      "t": 4.5,
+      "text": "agregan nueve más."
+    },
+    {
+      "t": 7,
+      "text": "Sumamos para saber cuántos hay ahora."
+    },
+    {
+      "t": 10,
+      "text": "La respuesta es veinticuatro."
+    }
+  ],
+  "add_probs_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. María vio dos mariposas."
+    },
+    {
+      "t": 2.5,
+      "text": "llegaron tres más."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos las dos cantidades."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es cinco."
+    }
+  ],
+  "add_probs_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Papá compró tres manzanas."
+    },
+    {
+      "t": 2.5,
+      "text": "mamá compró cuatro más."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos las dos cantidades."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es siete."
+    }
+  ],
+  "add_probs_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Hay siete patos en el lago."
+    },
+    {
+      "t": 2.5,
+      "text": "llegan cinco más."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos las dos cantidades."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es doce."
+    }
+  ],
+  "add_probs_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Juan tiene diez canicas."
+    },
+    {
+      "t": 2.5,
+      "text": "gana ocho más."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos las dos cantidades."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es dieciocho."
+    }
+  ],
+  "add_probs_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. El vaso trae catorce dulces."
+    },
+    {
+      "t": 2.5,
+      "text": "le echan ocho más."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos las dos cantidades."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es veintidos."
+    }
+  ],
+  "add_final_n1_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación final, nivel 1."
+    },
+    {
+      "t": 2,
+      "text": "Repasamos todo lo que aprendimos."
+    },
+    {
+      "t": 4.5,
+      "text": "Contamos hasta cinco sin equivocarnos."
+    },
+    {
+      "t": 10,
+      "text": "¡Muy bien! Terminamos el reto."
+    }
+  ],
+  "add_final_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. Saltos de dos en dos."
+    },
+    {
+      "t": 3,
+      "text": "El sapo salta desde cero."
+    },
+    {
+      "t": 6,
+      "text": "Cero, dos, cuatro, y seguimos."
+    },
+    {
+      "t": 9.5,
+      "text": "Llegamos al seis."
+    }
+  ],
+  "add_final_n2_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación final, nivel 2."
+    },
+    {
+      "t": 2,
+      "text": "Repasamos todo lo que aprendimos."
+    },
+    {
+      "t": 4.5,
+      "text": "Contamos hasta diez sin equivocarnos."
+    },
+    {
+      "t": 10,
+      "text": "¡Muy bien! Terminamos el reto."
+    }
+  ],
+  "add_final_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. Saltos de dos en dos."
+    },
+    {
+      "t": 3,
+      "text": "El sapo salta desde cero."
+    },
+    {
+      "t": 6,
+      "text": "Cero, dos, cuatro, y seguimos."
+    },
+    {
+      "t": 9.5,
+      "text": "Llegamos al ocho."
+    }
+  ],
+  "add_final_n3_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación final, nivel 3."
+    },
+    {
+      "t": 2,
+      "text": "Repasamos todo lo que aprendimos."
+    },
+    {
+      "t": 4.5,
+      "text": "Contamos hasta diez sin equivocarnos."
+    },
+    {
+      "t": 10,
+      "text": "¡Muy bien! Terminamos el reto."
+    }
+  ],
+  "add_final_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. Saltos de tres en tres."
+    },
+    {
+      "t": 3,
+      "text": "El sapo salta desde cero."
+    },
+    {
+      "t": 6,
+      "text": "Cero, tres, seis, y seguimos."
+    },
+    {
+      "t": 9.5,
+      "text": "Llegamos al doce."
+    }
+  ],
+  "add_final_n4_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación final, nivel 4."
+    },
+    {
+      "t": 2,
+      "text": "Repasamos todo lo que aprendimos."
+    },
+    {
+      "t": 4.5,
+      "text": "Contamos hasta diez sin equivocarnos."
+    },
+    {
+      "t": 10,
+      "text": "¡Muy bien! Terminamos el reto."
+    }
+  ],
+  "add_final_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. Saltos de cinco en cinco."
+    },
+    {
+      "t": 3,
+      "text": "El sapo salta desde cero."
+    },
+    {
+      "t": 6,
+      "text": "Cero, cinco, diez, y seguimos."
+    },
+    {
+      "t": 9.5,
+      "text": "Llegamos al veinte."
+    }
+  ],
+  "add_final_n5_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación final, nivel 5."
+    },
+    {
+      "t": 2,
+      "text": "Repasamos todo lo que aprendimos."
+    },
+    {
+      "t": 4.5,
+      "text": "Contamos hasta diez sin equivocarnos."
+    },
+    {
+      "t": 10,
+      "text": "¡Muy bien! Terminamos el reto."
+    }
+  ],
+  "add_final_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. Saltos de cinco en cinco."
+    },
+    {
+      "t": 3,
+      "text": "El sapo salta desde cero."
+    },
+    {
+      "t": 6,
+      "text": "Cero, cinco, diez, y seguimos."
+    },
+    {
+      "t": 9.5,
+      "text": "Llegamos al veinticinco."
+    }
+  ],
+  "sub_recta_n1_v1": [
+    {
+      "t": 0,
+      "text": "Recta numérica de resta, nivel 1."
+    },
+    {
+      "t": 2,
+      "text": "El sapo empieza en el ocho."
+    },
+    {
+      "t": 4.5,
+      "text": "Salta hacia atrás de dos en dos."
+    },
+    {
+      "t": 8.5,
+      "text": "Al final llega al cuatro."
+    }
+  ],
+  "sub_recta_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Restamos dos unidades."
+    },
+    {
+      "t": 3,
+      "text": "El sapo salta hacia atrás."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es cinco."
+    }
+  ],
+  "sub_recta_n2_v1": [
+    {
+      "t": 0,
+      "text": "Recta numérica de resta, nivel 2."
+    },
+    {
+      "t": 2,
+      "text": "El sapo empieza en el doce."
+    },
+    {
+      "t": 4.5,
+      "text": "Salta hacia atrás de tres en tres."
+    },
+    {
+      "t": 8.5,
+      "text": "Al final llega al seis."
+    }
+  ],
+  "sub_recta_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Restamos tres unidades."
+    },
+    {
+      "t": 3,
+      "text": "El sapo salta hacia atrás."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es ocho."
+    }
+  ],
+  "sub_recta_n3_v1": [
+    {
+      "t": 0,
+      "text": "Recta numérica de resta, nivel 3."
+    },
+    {
+      "t": 2,
+      "text": "El sapo empieza en el dieciocho."
+    },
+    {
+      "t": 4.5,
+      "text": "Salta hacia atrás de tres en tres."
+    },
+    {
+      "t": 8.5,
+      "text": "Al final llega al doce."
+    }
+  ],
+  "sub_recta_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Restamos tres unidades."
+    },
+    {
+      "t": 3,
+      "text": "El sapo salta hacia atrás."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es catorce."
+    }
+  ],
+  "sub_recta_n4_v1": [
+    {
+      "t": 0,
+      "text": "Recta numérica de resta, nivel 4."
+    },
+    {
+      "t": 2,
+      "text": "El sapo empieza en el treinta."
+    },
+    {
+      "t": 4.5,
+      "text": "Salta hacia atrás de cinco en cinco."
+    },
+    {
+      "t": 8.5,
+      "text": "Al final llega al veinte."
+    }
+  ],
+  "sub_recta_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Restamos cinco unidades."
+    },
+    {
+      "t": 3,
+      "text": "El sapo salta hacia atrás."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es veinticuatro."
+    }
+  ],
+  "sub_recta_n5_v1": [
+    {
+      "t": 0,
+      "text": "Recta numérica de resta, nivel 5."
+    },
+    {
+      "t": 2,
+      "text": "El sapo empieza en el 50."
+    },
+    {
+      "t": 4.5,
+      "text": "Salta hacia atrás de diez en diez."
+    },
+    {
+      "t": 8.5,
+      "text": "Al final llega al treinta."
+    }
+  ],
+  "sub_recta_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Restamos diez unidades."
+    },
+    {
+      "t": 3,
+      "text": "El sapo salta hacia atrás."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es 39."
+    }
+  ],
+  "sub_tienda_n1_v1": [
+    {
+      "t": 0,
+      "text": "La tienda, nivel 1."
+    },
+    {
+      "t": 2,
+      "text": "La compra cuesta cinco pesos."
+    },
+    {
+      "t": 5,
+      "text": "Pagamos con diez pesos."
+    },
+    {
+      "t": 8.5,
+      "text": "Recibimos cinco pesos de vuelto."
+    }
+  ],
+  "sub_tienda_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Pagamos quince pesos."
+    },
+    {
+      "t": 3,
+      "text": "La compra costó cinco pesos."
+    },
+    {
+      "t": 6,
+      "text": "El vuelto es diez pesos."
+    }
+  ],
+  "sub_tienda_n2_v1": [
+    {
+      "t": 0,
+      "text": "La tienda, nivel 2."
+    },
+    {
+      "t": 2,
+      "text": "La compra cuesta siete pesos."
+    },
+    {
+      "t": 5,
+      "text": "Pagamos con quince pesos."
+    },
+    {
+      "t": 8.5,
+      "text": "Recibimos ocho pesos de vuelto."
+    }
+  ],
+  "sub_tienda_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Pagamos veinte pesos."
+    },
+    {
+      "t": 3,
+      "text": "La compra costó siete pesos."
+    },
+    {
+      "t": 6,
+      "text": "El vuelto es trece pesos."
+    }
+  ],
+  "sub_tienda_n3_v1": [
+    {
+      "t": 0,
+      "text": "La tienda, nivel 3."
+    },
+    {
+      "t": 2,
+      "text": "La compra cuesta trece pesos."
+    },
+    {
+      "t": 5,
+      "text": "Pagamos con veinte pesos."
+    },
+    {
+      "t": 8.5,
+      "text": "Recibimos siete pesos de vuelto."
+    }
+  ],
+  "sub_tienda_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Pagamos veinticinco pesos."
+    },
+    {
+      "t": 3,
+      "text": "La compra costó trece pesos."
+    },
+    {
+      "t": 6,
+      "text": "El vuelto es doce pesos."
+    }
+  ],
+  "sub_tienda_n4_v1": [
+    {
+      "t": 0,
+      "text": "La tienda, nivel 4."
+    },
+    {
+      "t": 2,
+      "text": "La compra cuesta veinticinco pesos."
+    },
+    {
+      "t": 5,
+      "text": "Pagamos con treinta pesos."
+    },
+    {
+      "t": 8.5,
+      "text": "Recibimos cinco pesos de vuelto."
+    }
+  ],
+  "sub_tienda_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Pagamos 35 pesos."
+    },
+    {
+      "t": 3,
+      "text": "La compra costó veinticinco pesos."
+    },
+    {
+      "t": 6,
+      "text": "El vuelto es diez pesos."
+    }
+  ],
+  "sub_tienda_n5_v1": [
+    {
+      "t": 0,
+      "text": "La tienda, nivel 5."
+    },
+    {
+      "t": 2,
+      "text": "La compra cuesta 55 pesos."
+    },
+    {
+      "t": 5,
+      "text": "Pagamos con cien pesos."
+    },
+    {
+      "t": 8.5,
+      "text": "Recibimos 45 pesos de vuelto."
+    }
+  ],
+  "sub_tienda_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Pagamos 105 pesos."
+    },
+    {
+      "t": 3,
+      "text": "La compra costó 55 pesos."
+    },
+    {
+      "t": 6,
+      "text": "El vuelto es cincuenta pesos."
+    }
+  ],
+  "sub_sl_n1_v1": [
+    {
+      "t": 0,
+      "text": "Resta sin desagrupar. siete menos tres."
+    },
+    {
+      "t": 3,
+      "text": "Restamos cada columna por separado."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es cuatro."
+    }
+  ],
+  "sub_sl_n2_v1": [
+    {
+      "t": 0,
+      "text": "Resta sin desagrupar. nueve menos cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Restamos cada columna por separado."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es cinco."
+    }
+  ],
+  "sub_sl_n3_v1": [
+    {
+      "t": 0,
+      "text": "Resta sin desagrupar. quince menos cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Restamos cada columna por separado."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es once."
+    }
+  ],
+  "sub_sl_n4_v1": [
+    {
+      "t": 0,
+      "text": "Resta sin desagrupar. 28 menos seis."
+    },
+    {
+      "t": 3,
+      "text": "Restamos cada columna por separado."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es veintidos."
+    }
+  ],
+  "sub_sl_n5_v1": [
+    {
+      "t": 0,
+      "text": "Resta sin desagrupar. 45 menos tres."
+    },
+    {
+      "t": 3,
+      "text": "Restamos cada columna por separado."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es 42."
+    }
+  ],
+  "sub_sl_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ocho menos cinco."
+    },
+    {
+      "t": 3,
+      "text": "Restamos en columna."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es tres."
+    }
+  ],
+  "sub_sl_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. catorce menos tres."
+    },
+    {
+      "t": 3,
+      "text": "Restamos en columna."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es once."
+    }
+  ],
+  "sub_sl_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. diecisiete menos cinco."
+    },
+    {
+      "t": 3,
+      "text": "Restamos en columna."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es doce."
+    }
+  ],
+  "sub_sl_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. 35 menos cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Restamos en columna."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es 31."
+    }
+  ],
+  "sub_sl_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. 48 menos siete."
+    },
+    {
+      "t": 3,
+      "text": "Restamos en columna."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es 41."
+    }
+  ],
+  "sub_ll_n1_v1": [
+    {
+      "t": 0,
+      "text": "Resta desagrupando. doce menos cinco."
+    },
+    {
+      "t": 3,
+      "text": "La unidad de arriba es más chica."
+    },
+    {
+      "t": 6,
+      "text": "Prestamos diez de la decena."
+    },
+    {
+      "t": 9,
+      "text": "La respuesta es siete."
+    }
+  ],
+  "sub_ll_n2_v1": [
+    {
+      "t": 0,
+      "text": "Resta desagrupando. catorce menos seis."
+    },
+    {
+      "t": 3,
+      "text": "La unidad de arriba es más chica."
+    },
+    {
+      "t": 6,
+      "text": "Prestamos diez de la decena."
+    },
+    {
+      "t": 9,
+      "text": "La respuesta es ocho."
+    }
+  ],
+  "sub_ll_n3_v1": [
+    {
+      "t": 0,
+      "text": "Resta desagrupando. veintitres menos siete."
+    },
+    {
+      "t": 3,
+      "text": "La unidad de arriba es más chica."
+    },
+    {
+      "t": 6,
+      "text": "Prestamos diez de la decena."
+    },
+    {
+      "t": 9,
+      "text": "La respuesta es dieciseis."
+    }
+  ],
+  "sub_ll_n4_v1": [
+    {
+      "t": 0,
+      "text": "Resta desagrupando. 35 menos ocho."
+    },
+    {
+      "t": 3,
+      "text": "La unidad de arriba es más chica."
+    },
+    {
+      "t": 6,
+      "text": "Prestamos diez de la decena."
+    },
+    {
+      "t": 9,
+      "text": "La respuesta es 27."
+    }
+  ],
+  "sub_ll_n5_v1": [
+    {
+      "t": 0,
+      "text": "Resta desagrupando. 52 menos nueve."
+    },
+    {
+      "t": 3,
+      "text": "La unidad de arriba es más chica."
+    },
+    {
+      "t": 6,
+      "text": "Prestamos diez de la decena."
+    },
+    {
+      "t": 9,
+      "text": "La respuesta es 43."
+    }
+  ],
+  "sub_ll_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. trece menos siete."
+    },
+    {
+      "t": 3,
+      "text": "Con desagrupamiento."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es seis."
+    }
+  ],
+  "sub_ll_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. quince menos ocho."
+    },
+    {
+      "t": 3,
+      "text": "Con desagrupamiento."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es siete."
+    }
+  ],
+  "sub_ll_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. veinticuatro menos seis."
+    },
+    {
+      "t": 3,
+      "text": "Con desagrupamiento."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es dieciocho."
+    }
+  ],
+  "sub_ll_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. 41 menos siete."
+    },
+    {
+      "t": 3,
+      "text": "Con desagrupamiento."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es 34."
+    }
+  ],
+  "sub_ll_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. 63 menos ocho."
+    },
+    {
+      "t": 3,
+      "text": "Con desagrupamiento."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es 55."
+    }
+  ],
+  "sub_probs_n1_v1": [
+    {
+      "t": 0,
+      "text": "Problemas de resta, nivel 1."
+    },
+    {
+      "t": 2,
+      "text": "Leemos la historia con atención."
+    },
+    {
+      "t": 5,
+      "text": "Restamos las cantidades."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es tres."
+    }
+  ],
+  "sub_probs_n2_v1": [
+    {
+      "t": 0,
+      "text": "Problemas de resta, nivel 2."
+    },
+    {
+      "t": 2,
+      "text": "Leemos la historia con atención."
+    },
+    {
+      "t": 5,
+      "text": "Restamos las cantidades."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es cinco."
+    }
+  ],
+  "sub_probs_n3_v1": [
+    {
+      "t": 0,
+      "text": "Problemas de resta, nivel 3."
+    },
+    {
+      "t": 2,
+      "text": "Leemos la historia con atención."
+    },
+    {
+      "t": 5,
+      "text": "Restamos las cantidades."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es nueve."
+    }
+  ],
+  "sub_probs_n4_v1": [
+    {
+      "t": 0,
+      "text": "Problemas de resta, nivel 4."
+    },
+    {
+      "t": 2,
+      "text": "Leemos la historia con atención."
+    },
+    {
+      "t": 5,
+      "text": "Restamos las cantidades."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es dieciseis."
+    }
+  ],
+  "sub_probs_n5_v1": [
+    {
+      "t": 0,
+      "text": "Problemas de resta, nivel 5."
+    },
+    {
+      "t": 2,
+      "text": "Leemos la historia con atención."
+    },
+    {
+      "t": 5,
+      "text": "Restamos las cantidades."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es 27."
+    }
+  ],
+  "sub_probs_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Historia con resta."
+    },
+    {
+      "t": 2.5,
+      "text": "Restamos para encontrar cuántos quedan."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es dos."
+    }
+  ],
+  "sub_probs_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Historia con resta."
+    },
+    {
+      "t": 2.5,
+      "text": "Restamos para encontrar cuántos quedan."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es cinco."
+    }
+  ],
+  "sub_probs_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Historia con resta."
+    },
+    {
+      "t": 2.5,
+      "text": "Restamos para encontrar cuántos quedan."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es once."
+    }
+  ],
+  "sub_probs_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Historia con resta."
+    },
+    {
+      "t": 2.5,
+      "text": "Restamos para encontrar cuántos quedan."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es diecisiete."
+    }
+  ],
+  "sub_probs_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Historia con resta."
+    },
+    {
+      "t": 2.5,
+      "text": "Restamos para encontrar cuántos quedan."
+    },
+    {
+      "t": 6.5,
+      "text": "La respuesta es 35."
+    }
+  ],
+  "sub_final_n1_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación de resta, nivel 1."
+    },
+    {
+      "t": 2.5,
+      "text": "Tenemos seis objetos."
+    },
+    {
+      "t": 5.5,
+      "text": "Quitamos dos."
+    },
+    {
+      "t": 8.5,
+      "text": "Quedan cuatro."
+    }
+  ],
+  "sub_final_n2_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación de resta, nivel 2."
+    },
+    {
+      "t": 2.5,
+      "text": "Tenemos nueve objetos."
+    },
+    {
+      "t": 5.5,
+      "text": "Quitamos cuatro."
+    },
+    {
+      "t": 8.5,
+      "text": "Quedan cinco."
+    }
+  ],
+  "sub_final_n3_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación de resta, nivel 3."
+    },
+    {
+      "t": 2.5,
+      "text": "Tenemos doce objetos."
+    },
+    {
+      "t": 5.5,
+      "text": "Quitamos cinco."
+    },
+    {
+      "t": 8.5,
+      "text": "Quedan siete."
+    }
+  ],
+  "sub_final_n4_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación de resta, nivel 4."
+    },
+    {
+      "t": 2.5,
+      "text": "Tenemos dieciocho objetos."
+    },
+    {
+      "t": 5.5,
+      "text": "Quitamos siete."
+    },
+    {
+      "t": 8.5,
+      "text": "Quedan once."
+    }
+  ],
+  "sub_final_n5_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación de resta, nivel 5."
+    },
+    {
+      "t": 2.5,
+      "text": "Tenemos veinticinco objetos."
+    },
+    {
+      "t": 5.5,
+      "text": "Quitamos diez."
+    },
+    {
+      "t": 8.5,
+      "text": "Quedan quince."
+    }
+  ],
+  "sub_final_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. ocho menos tres."
+    },
+    {
+      "t": 3,
+      "text": "Restamos en columna."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es cinco."
+    }
+  ],
+  "sub_final_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. once menos cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Restamos en columna."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es siete."
+    }
+  ],
+  "sub_final_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. quince menos siete."
+    },
+    {
+      "t": 3,
+      "text": "Restamos en columna."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es ocho."
+    }
+  ],
+  "sub_final_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. veintitres menos ocho."
+    },
+    {
+      "t": 3,
+      "text": "Restamos en columna."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es quince."
+    }
+  ],
+  "sub_final_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. 40 menos quince."
+    },
+    {
+      "t": 3,
+      "text": "Restamos en columna."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es veinticinco."
+    }
+  ],
+  "mul_t0_n1_v1": [
+    {
+      "t": 0,
+      "text": "Tablas fáciles, nivel 1. dos por tres."
+    },
+    {
+      "t": 3,
+      "text": "Formamos dos filas y tres columnas."
+    },
+    {
+      "t": 6.5,
+      "text": "Contamos todos los puntos."
+    },
+    {
+      "t": 10,
+      "text": "dos por tres es igual a seis."
+    }
+  ],
+  "mul_t0_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. dos por cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Contamos la cuadrícula."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es ocho."
+    }
+  ],
+  "mul_t0_n2_v1": [
+    {
+      "t": 0,
+      "text": "Tablas fáciles, nivel 2. dos por cinco."
+    },
+    {
+      "t": 3,
+      "text": "Formamos dos filas y cinco columnas."
+    },
+    {
+      "t": 6.5,
+      "text": "Contamos todos los puntos."
+    },
+    {
+      "t": 10,
+      "text": "dos por cinco es igual a diez."
+    }
+  ],
+  "mul_t0_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. dos por seis."
+    },
+    {
+      "t": 3,
+      "text": "Contamos la cuadrícula."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es doce."
+    }
+  ],
+  "mul_t0_n3_v1": [
+    {
+      "t": 0,
+      "text": "Tablas fáciles, nivel 3. cinco por tres."
+    },
+    {
+      "t": 3,
+      "text": "Formamos cinco filas y tres columnas."
+    },
+    {
+      "t": 6.5,
+      "text": "Contamos todos los puntos."
+    },
+    {
+      "t": 10,
+      "text": "cinco por tres es igual a quince."
+    }
+  ],
+  "mul_t0_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. cinco por cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Contamos la cuadrícula."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es veinte."
+    }
+  ],
+  "mul_t0_n4_v1": [
+    {
+      "t": 0,
+      "text": "Tablas fáciles, nivel 4. diez por cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Formamos diez filas y cuatro columnas."
+    },
+    {
+      "t": 6.5,
+      "text": "Contamos todos los puntos."
+    },
+    {
+      "t": 10,
+      "text": "diez por cuatro es igual a 40."
+    }
+  ],
+  "mul_t0_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. diez por cinco."
+    },
+    {
+      "t": 3,
+      "text": "Contamos la cuadrícula."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es 50."
+    }
+  ],
+  "mul_t0_n5_v1": [
+    {
+      "t": 0,
+      "text": "Tablas fáciles, nivel 5. cinco por seis."
+    },
+    {
+      "t": 3,
+      "text": "Formamos cinco filas y seis columnas."
+    },
+    {
+      "t": 6.5,
+      "text": "Contamos todos los puntos."
+    },
+    {
+      "t": 10,
+      "text": "cinco por seis es igual a treinta."
+    }
+  ],
+  "mul_t0_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. cinco por siete."
+    },
+    {
+      "t": 3,
+      "text": "Contamos la cuadrícula."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es 35."
+    }
+  ],
+  "mul_t1_n1_v1": [
+    {
+      "t": 0,
+      "text": "Tablas retadoras. tres por cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Sumamos cuatro tantas veces como diga tres."
+    },
+    {
+      "t": 7,
+      "text": "Multiplicar es sumar el mismo número varias veces."
+    },
+    {
+      "t": 10.5,
+      "text": "La respuesta es doce."
+    }
+  ],
+  "mul_t1_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. cuatro por cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Contamos la cuadrícula fila por fila."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es dieciseis."
+    }
+  ],
+  "mul_t1_n2_v1": [
+    {
+      "t": 0,
+      "text": "Tablas retadoras. cuatro por tres."
+    },
+    {
+      "t": 3,
+      "text": "Sumamos tres tantas veces como diga cuatro."
+    },
+    {
+      "t": 7,
+      "text": "Multiplicar es sumar el mismo número varias veces."
+    },
+    {
+      "t": 10.5,
+      "text": "La respuesta es doce."
+    }
+  ],
+  "mul_t1_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. cinco por tres."
+    },
+    {
+      "t": 3,
+      "text": "Contamos la cuadrícula fila por fila."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es quince."
+    }
+  ],
+  "mul_t1_n3_v1": [
+    {
+      "t": 0,
+      "text": "Tablas retadoras. seis por cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Sumamos cuatro tantas veces como diga seis."
+    },
+    {
+      "t": 7,
+      "text": "Multiplicar es sumar el mismo número varias veces."
+    },
+    {
+      "t": 10.5,
+      "text": "La respuesta es veinticuatro."
+    }
+  ],
+  "mul_t1_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. siete por cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Contamos la cuadrícula fila por fila."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es 28."
+    }
+  ],
+  "mul_t1_n4_v1": [
+    {
+      "t": 0,
+      "text": "Tablas retadoras. siete por tres."
+    },
+    {
+      "t": 3,
+      "text": "Sumamos tres tantas veces como diga siete."
+    },
+    {
+      "t": 7,
+      "text": "Multiplicar es sumar el mismo número varias veces."
+    },
+    {
+      "t": 10.5,
+      "text": "La respuesta es veintiuno."
+    }
+  ],
+  "mul_t1_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ocho por tres."
+    },
+    {
+      "t": 3,
+      "text": "Contamos la cuadrícula fila por fila."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es veinticuatro."
+    }
+  ],
+  "mul_t1_n5_v1": [
+    {
+      "t": 0,
+      "text": "Tablas retadoras. ocho por cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Sumamos cuatro tantas veces como diga ocho."
+    },
+    {
+      "t": 7,
+      "text": "Multiplicar es sumar el mismo número varias veces."
+    },
+    {
+      "t": 10.5,
+      "text": "La respuesta es 32."
+    }
+  ],
+  "mul_t1_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. nueve por cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Contamos la cuadrícula fila por fila."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es 36."
+    }
+  ],
+  "mul_abrev_n1_v1": [
+    {
+      "t": 0,
+      "text": "Multiplicación por diez."
+    },
+    {
+      "t": 2.5,
+      "text": "Cuando multiplicamos por diez, añadimos ceros."
+    },
+    {
+      "t": 6,
+      "text": "tres por diez es igual a 30."
+    }
+  ],
+  "mul_abrev_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. cuatro por diez."
+    },
+    {
+      "t": 3,
+      "text": "Añadimos los ceros."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es 40."
+    }
+  ],
+  "mul_abrev_n2_v1": [
+    {
+      "t": 0,
+      "text": "Multiplicación por diez."
+    },
+    {
+      "t": 2.5,
+      "text": "Cuando multiplicamos por diez, añadimos ceros."
+    },
+    {
+      "t": 6,
+      "text": "cinco por diez es igual a 50."
+    }
+  ],
+  "mul_abrev_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. seis por diez."
+    },
+    {
+      "t": 3,
+      "text": "Añadimos los ceros."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es 60."
+    }
+  ],
+  "mul_abrev_n3_v1": [
+    {
+      "t": 0,
+      "text": "Multiplicación por cien."
+    },
+    {
+      "t": 2.5,
+      "text": "Cuando multiplicamos por cien, añadimos ceros."
+    },
+    {
+      "t": 6,
+      "text": "cuatro por cien es igual a 400."
+    }
+  ],
+  "mul_abrev_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. cinco por cien."
+    },
+    {
+      "t": 3,
+      "text": "Añadimos los ceros."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es 500."
+    }
+  ],
+  "mul_abrev_n4_v1": [
+    {
+      "t": 0,
+      "text": "Multiplicación por cien."
+    },
+    {
+      "t": 2.5,
+      "text": "Cuando multiplicamos por cien, añadimos ceros."
+    },
+    {
+      "t": 6,
+      "text": "siete por cien es igual a 700."
+    }
+  ],
+  "mul_abrev_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ocho por cien."
+    },
+    {
+      "t": 3,
+      "text": "Añadimos los ceros."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es 800."
+    }
+  ],
+  "mul_abrev_n5_v1": [
+    {
+      "t": 0,
+      "text": "Multiplicación por 1000."
+    },
+    {
+      "t": 2.5,
+      "text": "Cuando multiplicamos por 1000, añadimos ceros."
+    },
+    {
+      "t": 6,
+      "text": "seis por 1000 es igual a 6000."
+    }
+  ],
+  "mul_abrev_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. siete por 1000."
+    },
+    {
+      "t": 3,
+      "text": "Añadimos los ceros."
+    },
+    {
+      "t": 6,
+      "text": "La respuesta es 7000."
+    }
+  ],
+  "mul_probs_n1_v1": [
+    {
+      "t": 0,
+      "text": "Problemas de multiplicación, nivel 1."
+    },
+    {
+      "t": 2.5,
+      "text": "Ana tiene dos cajas."
+    },
+    {
+      "t": 5,
+      "text": "con tres dulces cada una."
+    },
+    {
+      "t": 8,
+      "text": "Multiplicamos las dos cantidades."
+    },
+    {
+      "t": 10.5,
+      "text": "La respuesta es seis."
+    }
+  ],
+  "mul_probs_n2_v1": [
+    {
+      "t": 0,
+      "text": "Problemas de multiplicación, nivel 2."
+    },
+    {
+      "t": 2.5,
+      "text": "Hay tres nidos."
+    },
+    {
+      "t": 5,
+      "text": "con cuatro huevos cada uno."
+    },
+    {
+      "t": 8,
+      "text": "Multiplicamos las dos cantidades."
+    },
+    {
+      "t": 10.5,
+      "text": "La respuesta es doce."
+    }
+  ],
+  "mul_probs_n3_v1": [
+    {
+      "t": 0,
+      "text": "Problemas de multiplicación, nivel 3."
+    },
+    {
+      "t": 2.5,
+      "text": "Cuatro cajas."
+    },
+    {
+      "t": 5,
+      "text": "de cinco manzanas."
+    },
+    {
+      "t": 8,
+      "text": "Multiplicamos las dos cantidades."
+    },
+    {
+      "t": 10.5,
+      "text": "La respuesta es veinte."
+    }
+  ],
+  "mul_probs_n4_v1": [
+    {
+      "t": 0,
+      "text": "Problemas de multiplicación, nivel 4."
+    },
+    {
+      "t": 2.5,
+      "text": "Seis bolsas."
+    },
+    {
+      "t": 5,
+      "text": "de tres canicas."
+    },
+    {
+      "t": 8,
+      "text": "Multiplicamos las dos cantidades."
+    },
+    {
+      "t": 10.5,
+      "text": "La respuesta es dieciocho."
+    }
+  ],
+  "mul_probs_n5_v1": [
+    {
+      "t": 0,
+      "text": "Problemas de multiplicación, nivel 5."
+    },
+    {
+      "t": 2.5,
+      "text": "Siete estuches."
+    },
+    {
+      "t": 5,
+      "text": "de cuatro lápices."
+    },
+    {
+      "t": 8,
+      "text": "Multiplicamos las dos cantidades."
+    },
+    {
+      "t": 10.5,
+      "text": "La respuesta es 28."
+    }
+  ],
+  "mul_probs_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Luis tiene tres platos."
+    },
+    {
+      "t": 2.5,
+      "text": "con dos galletas cada uno."
+    },
+    {
+      "t": 5.5,
+      "text": "Multiplicamos."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es seis."
+    }
+  ],
+  "mul_probs_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Cuatro jarras."
+    },
+    {
+      "t": 2.5,
+      "text": "con tres flores cada una."
+    },
+    {
+      "t": 5.5,
+      "text": "Multiplicamos."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es doce."
+    }
+  ],
+  "mul_probs_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Cinco mesas."
+    },
+    {
+      "t": 2.5,
+      "text": "con cuatro sillas."
+    },
+    {
+      "t": 5.5,
+      "text": "Multiplicamos."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es veinte."
+    }
+  ],
+  "mul_probs_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Seis grupos."
+    },
+    {
+      "t": 2.5,
+      "text": "de cinco patos."
+    },
+    {
+      "t": 5.5,
+      "text": "Multiplicamos."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es treinta."
+    }
+  ],
+  "mul_probs_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Ocho filas."
+    },
+    {
+      "t": 2.5,
+      "text": "de tres alumnos."
+    },
+    {
+      "t": 5.5,
+      "text": "Multiplicamos."
+    },
+    {
+      "t": 8.5,
+      "text": "La respuesta es veinticuatro."
+    }
+  ],
+  "mul_final_n1_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación multiplicación, nivel 1."
+    },
+    {
+      "t": 2.5,
+      "text": "dos por cuatro."
+    },
+    {
+      "t": 6,
+      "text": "Contamos la cuadrícula."
+    },
+    {
+      "t": 9,
+      "text": "Es igual a ocho."
+    }
+  ],
+  "mul_final_n2_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación multiplicación, nivel 2."
+    },
+    {
+      "t": 2.5,
+      "text": "cinco por tres."
+    },
+    {
+      "t": 6,
+      "text": "Contamos la cuadrícula."
+    },
+    {
+      "t": 9,
+      "text": "Es igual a quince."
+    }
+  ],
+  "mul_final_n3_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación multiplicación, nivel 3."
+    },
+    {
+      "t": 2.5,
+      "text": "cuatro por cinco."
+    },
+    {
+      "t": 6,
+      "text": "Contamos la cuadrícula."
+    },
+    {
+      "t": 9,
+      "text": "Es igual a veinte."
+    }
+  ],
+  "mul_final_n4_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación multiplicación, nivel 4."
+    },
+    {
+      "t": 2.5,
+      "text": "seis por siete."
+    },
+    {
+      "t": 6,
+      "text": "Contamos la cuadrícula."
+    },
+    {
+      "t": 9,
+      "text": "Es igual a 42."
+    }
+  ],
+  "mul_final_n5_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación multiplicación, nivel 5."
+    },
+    {
+      "t": 2.5,
+      "text": "ocho por nueve."
+    },
+    {
+      "t": 6,
+      "text": "Contamos la cuadrícula."
+    },
+    {
+      "t": 9,
+      "text": "Es igual a 72."
+    }
+  ],
+  "mul_final_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. tres por tres."
+    },
+    {
+      "t": 3,
+      "text": "Sumamos tres tantas veces como tres."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es nueve."
+    }
+  ],
+  "mul_final_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. cuatro por cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Sumamos cuatro tantas veces como cuatro."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es dieciseis."
+    }
+  ],
+  "mul_final_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. cinco por cinco."
+    },
+    {
+      "t": 3,
+      "text": "Sumamos cinco tantas veces como cinco."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es veinticinco."
+    }
+  ],
+  "mul_final_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. seis por seis."
+    },
+    {
+      "t": 3,
+      "text": "Sumamos seis tantas veces como seis."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es treinta y seis."
+    }
+  ],
+  "mul_final_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. siete por siete."
+    },
+    {
+      "t": 3,
+      "text": "Sumamos siete tantas veces como siete."
+    },
+    {
+      "t": 7,
+      "text": "La respuesta es 49."
+    }
+  ],
+  "div_t0_n1_v1": [
+    {
+      "t": 0,
+      "text": "División, nivel 1. seis entre dos."
+    },
+    {
+      "t": 3,
+      "text": "Repartimos seis objetos en dos grupos."
+    },
+    {
+      "t": 6.5,
+      "text": "Cada grupo recibe partes iguales."
+    },
+    {
+      "t": 9.5,
+      "text": "A cada grupo le tocan tres."
+    }
+  ],
+  "div_t0_n2_v1": [
+    {
+      "t": 0,
+      "text": "División, nivel 2. diez entre dos."
+    },
+    {
+      "t": 3,
+      "text": "Repartimos diez objetos en dos grupos."
+    },
+    {
+      "t": 6.5,
+      "text": "Cada grupo recibe partes iguales."
+    },
+    {
+      "t": 9.5,
+      "text": "A cada grupo le tocan cinco."
+    }
+  ],
+  "div_t0_n3_v1": [
+    {
+      "t": 0,
+      "text": "División, nivel 3. doce entre tres."
+    },
+    {
+      "t": 3,
+      "text": "Repartimos doce objetos en tres grupos."
+    },
+    {
+      "t": 6.5,
+      "text": "Cada grupo recibe partes iguales."
+    },
+    {
+      "t": 9.5,
+      "text": "A cada grupo le tocan cuatro."
+    }
+  ],
+  "div_t0_n4_v1": [
+    {
+      "t": 0,
+      "text": "División, nivel 4. veinte entre cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Repartimos veinte objetos en cuatro grupos."
+    },
+    {
+      "t": 6.5,
+      "text": "Cada grupo recibe partes iguales."
+    },
+    {
+      "t": 9.5,
+      "text": "A cada grupo le tocan cinco."
+    }
+  ],
+  "div_t0_n5_v1": [
+    {
+      "t": 0,
+      "text": "División, nivel 5. treinta entre cinco."
+    },
+    {
+      "t": 3,
+      "text": "Repartimos treinta objetos en cinco grupos."
+    },
+    {
+      "t": 6.5,
+      "text": "Cada grupo recibe partes iguales."
+    },
+    {
+      "t": 9.5,
+      "text": "A cada grupo le tocan seis."
+    }
+  ],
+  "div_t0_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ocho entre dos."
+    },
+    {
+      "t": 3,
+      "text": "Reparto equitativo."
+    },
+    {
+      "t": 6.5,
+      "text": "Cada uno recibe cuatro."
+    }
+  ],
+  "div_t0_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. quince entre tres."
+    },
+    {
+      "t": 3,
+      "text": "Reparto equitativo."
+    },
+    {
+      "t": 6.5,
+      "text": "Cada uno recibe cinco."
+    }
+  ],
+  "div_t0_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. veinte entre cinco."
+    },
+    {
+      "t": 3,
+      "text": "Reparto equitativo."
+    },
+    {
+      "t": 6.5,
+      "text": "Cada uno recibe cuatro."
+    }
+  ],
+  "div_t0_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. veinticuatro entre seis."
+    },
+    {
+      "t": 3,
+      "text": "Reparto equitativo."
+    },
+    {
+      "t": 6.5,
+      "text": "Cada uno recibe cuatro."
+    }
+  ],
+  "div_t0_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. 35 entre siete."
+    },
+    {
+      "t": 3,
+      "text": "Reparto equitativo."
+    },
+    {
+      "t": 6.5,
+      "text": "Cada uno recibe cinco."
+    }
+  ],
+  "div_final_n1_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación división, nivel 1."
+    },
+    {
+      "t": 2.5,
+      "text": "cuatro entre dos."
+    },
+    {
+      "t": 6,
+      "text": "Es igual a dos."
+    }
+  ],
+  "div_final_n2_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación división, nivel 2."
+    },
+    {
+      "t": 2.5,
+      "text": "nueve entre tres."
+    },
+    {
+      "t": 6,
+      "text": "Es igual a tres."
+    }
+  ],
+  "div_final_n3_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación división, nivel 3."
+    },
+    {
+      "t": 2.5,
+      "text": "dieciseis entre cuatro."
+    },
+    {
+      "t": 6,
+      "text": "Es igual a cuatro."
+    }
+  ],
+  "div_final_n4_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación división, nivel 4."
+    },
+    {
+      "t": 2.5,
+      "text": "veinticinco entre cinco."
+    },
+    {
+      "t": 6,
+      "text": "Es igual a cinco."
+    }
+  ],
+  "div_final_n5_v1": [
+    {
+      "t": 0,
+      "text": "Evaluación división, nivel 5."
+    },
+    {
+      "t": 2.5,
+      "text": "treinta y seis entre seis."
+    },
+    {
+      "t": 6,
+      "text": "Es igual a seis."
+    }
+  ],
+  "div_final_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. seis entre tres."
+    },
+    {
+      "t": 3,
+      "text": "Repartimos."
+    },
+    {
+      "t": 6,
+      "text": "Cada uno recibe dos."
+    }
+  ],
+  "div_final_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. doce entre cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Repartimos."
+    },
+    {
+      "t": 6,
+      "text": "Cada uno recibe tres."
+    }
+  ],
+  "div_final_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. dieciocho entre tres."
+    },
+    {
+      "t": 3,
+      "text": "Repartimos."
+    },
+    {
+      "t": 6,
+      "text": "Cada uno recibe seis."
+    }
+  ],
+  "div_final_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. 28 entre cuatro."
+    },
+    {
+      "t": 3,
+      "text": "Repartimos."
+    },
+    {
+      "t": 6,
+      "text": "Cada uno recibe siete."
+    }
+  ],
+  "div_final_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo final. cuarenta entre cinco."
+    },
+    {
+      "t": 3,
+      "text": "Repartimos."
+    },
+    {
+      "t": 6,
+      "text": "Cada uno recibe ocho."
+    }
+  ],
+  "geo_t0_n1_v1": [
+    {
+      "t": 0,
+      "text": "Líneas, nivel 1."
+    },
+    {
+      "t": 2,
+      "text": "Vamos a dibujar una línea recta."
+    },
+    {
+      "t": 5.5,
+      "text": "Observa cómo se traza."
+    },
+    {
+      "t": 8,
+      "text": "Ésta es una línea recta."
+    }
+  ],
+  "geo_t0_n2_v1": [
+    {
+      "t": 0,
+      "text": "Líneas, nivel 2."
+    },
+    {
+      "t": 2,
+      "text": "Vamos a dibujar una línea quebrada."
+    },
+    {
+      "t": 5.5,
+      "text": "Observa cómo se traza."
+    },
+    {
+      "t": 8,
+      "text": "Ésta es una línea quebrada."
+    }
+  ],
+  "geo_t0_n3_v1": [
+    {
+      "t": 0,
+      "text": "Líneas, nivel 3."
+    },
+    {
+      "t": 2,
+      "text": "Vamos a dibujar una línea vertical."
+    },
+    {
+      "t": 5.5,
+      "text": "Observa cómo se traza."
+    },
+    {
+      "t": 8,
+      "text": "Ésta es una línea vertical."
+    }
+  ],
+  "geo_t0_n4_v1": [
+    {
+      "t": 0,
+      "text": "Líneas, nivel 4."
+    },
+    {
+      "t": 2,
+      "text": "Vamos a dibujar una línea curva."
+    },
+    {
+      "t": 5.5,
+      "text": "Observa cómo se traza."
+    },
+    {
+      "t": 8,
+      "text": "Ésta es una línea curva."
+    }
+  ],
+  "geo_t0_n5_v1": [
+    {
+      "t": 0,
+      "text": "Líneas, nivel 5."
+    },
+    {
+      "t": 2,
+      "text": "Vamos a dibujar una línea recta."
+    },
+    {
+      "t": 5.5,
+      "text": "Observa cómo se traza."
+    },
+    {
+      "t": 8,
+      "text": "Ésta es una línea recta."
+    }
+  ],
+  "geo_t0_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Línea quebrada."
+    },
+    {
+      "t": 2.5,
+      "text": "Miramos su forma con atención."
+    },
+    {
+      "t": 6,
+      "text": "Es una línea quebrada."
+    }
+  ],
+  "geo_t0_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Línea curva."
+    },
+    {
+      "t": 2.5,
+      "text": "Miramos su forma con atención."
+    },
+    {
+      "t": 6,
+      "text": "Es una línea curva."
+    }
+  ],
+  "geo_t0_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Línea recta."
+    },
+    {
+      "t": 2.5,
+      "text": "Miramos su forma con atención."
+    },
+    {
+      "t": 6,
+      "text": "Es una línea recta."
+    }
+  ],
+  "geo_t0_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Línea vertical."
+    },
+    {
+      "t": 2.5,
+      "text": "Miramos su forma con atención."
+    },
+    {
+      "t": 6,
+      "text": "Es una línea vertical."
+    }
+  ],
+  "geo_t0_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Línea curva."
+    },
+    {
+      "t": 2.5,
+      "text": "Miramos su forma con atención."
+    },
+    {
+      "t": 6,
+      "text": "Es una línea curva."
+    }
+  ],
+  "geo_t1_n1_v1": [
+    {
+      "t": 0,
+      "text": "Figuras planas, nivel 1."
+    },
+    {
+      "t": 2.5,
+      "text": "Vamos a dibujar un triángulo."
+    },
+    {
+      "t": 5.5,
+      "text": "Contamos sus lados uno por uno."
+    },
+    {
+      "t": 8.5,
+      "text": "Tiene tres lados."
+    }
+  ],
+  "geo_t1_n2_v1": [
+    {
+      "t": 0,
+      "text": "Figuras planas, nivel 2."
+    },
+    {
+      "t": 2.5,
+      "text": "Vamos a dibujar un cuadrado."
+    },
+    {
+      "t": 5.5,
+      "text": "Contamos sus lados uno por uno."
+    },
+    {
+      "t": 8.5,
+      "text": "Tiene cuatro lados."
+    }
+  ],
+  "geo_t1_n3_v1": [
+    {
+      "t": 0,
+      "text": "Figuras planas, nivel 3."
+    },
+    {
+      "t": 2.5,
+      "text": "Vamos a dibujar un rectángulo."
+    },
+    {
+      "t": 5.5,
+      "text": "Contamos sus lados uno por uno."
+    },
+    {
+      "t": 8.5,
+      "text": "Tiene cuatro lados."
+    }
+  ],
+  "geo_t1_n4_v1": [
+    {
+      "t": 0,
+      "text": "Figuras planas, nivel 4."
+    },
+    {
+      "t": 2.5,
+      "text": "Vamos a dibujar un pentágono."
+    },
+    {
+      "t": 5.5,
+      "text": "Contamos sus lados uno por uno."
+    },
+    {
+      "t": 8.5,
+      "text": "Tiene cinco lados."
+    }
+  ],
+  "geo_t1_n5_v1": [
+    {
+      "t": 0,
+      "text": "Figuras planas, nivel 5."
+    },
+    {
+      "t": 2.5,
+      "text": "Vamos a dibujar un hexágono."
+    },
+    {
+      "t": 5.5,
+      "text": "Contamos sus lados uno por uno."
+    },
+    {
+      "t": 8.5,
+      "text": "Tiene seis lados."
+    }
+  ],
+  "geo_t1_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Un cuadrado."
+    },
+    {
+      "t": 2.5,
+      "text": "Contamos sus lados."
+    },
+    {
+      "t": 6,
+      "text": "Tiene cuatro lados."
+    }
+  ],
+  "geo_t1_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Un triángulo."
+    },
+    {
+      "t": 2.5,
+      "text": "Contamos sus lados."
+    },
+    {
+      "t": 6,
+      "text": "Tiene tres lados."
+    }
+  ],
+  "geo_t1_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Un pentágono."
+    },
+    {
+      "t": 2.5,
+      "text": "Contamos sus lados."
+    },
+    {
+      "t": 6,
+      "text": "Tiene cinco lados."
+    }
+  ],
+  "geo_t1_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. El círculo."
+    },
+    {
+      "t": 3,
+      "text": "Es una curva cerrada."
+    },
+    {
+      "t": 6,
+      "text": "No tiene lados rectos."
+    }
+  ],
+  "geo_t1_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Un rectángulo."
+    },
+    {
+      "t": 2.5,
+      "text": "Contamos sus lados."
+    },
+    {
+      "t": 6,
+      "text": "Tiene cuatro lados."
+    }
+  ],
+  "geo_final_n1_v1": [
+    {
+      "t": 0,
+      "text": "Perímetros, nivel 1."
+    },
+    {
+      "t": 2.5,
+      "text": "Tenemos un cuadrado con lado tres."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos todos los lados."
+    },
+    {
+      "t": 9,
+      "text": "El perímetro es doce."
+    }
+  ],
+  "geo_final_n2_v1": [
+    {
+      "t": 0,
+      "text": "Perímetros, nivel 2."
+    },
+    {
+      "t": 2.5,
+      "text": "Tenemos un triángulo con lado cuatro."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos todos los lados."
+    },
+    {
+      "t": 9,
+      "text": "El perímetro es doce."
+    }
+  ],
+  "geo_final_n3_v1": [
+    {
+      "t": 0,
+      "text": "Perímetros, nivel 3."
+    },
+    {
+      "t": 2.5,
+      "text": "Tenemos un cuadrado con lado cinco."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos todos los lados."
+    },
+    {
+      "t": 9,
+      "text": "El perímetro es veinte."
+    }
+  ],
+  "geo_final_n4_v1": [
+    {
+      "t": 0,
+      "text": "Perímetros, nivel 4."
+    },
+    {
+      "t": 2.5,
+      "text": "Tenemos un triángulo con lado seis."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos todos los lados."
+    },
+    {
+      "t": 9,
+      "text": "El perímetro es dieciocho."
+    }
+  ],
+  "geo_final_n5_v1": [
+    {
+      "t": 0,
+      "text": "Perímetros, nivel 5."
+    },
+    {
+      "t": 2.5,
+      "text": "Tenemos un rectángulo con lado siete."
+    },
+    {
+      "t": 5.5,
+      "text": "Sumamos todos los lados."
+    },
+    {
+      "t": 9,
+      "text": "El perímetro es veintidos."
+    }
+  ],
+  "geo_final_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Perímetro del cuadrado."
+    },
+    {
+      "t": 3,
+      "text": "Suma de todos los lados."
+    },
+    {
+      "t": 7,
+      "text": "El perímetro es dieciseis."
+    }
+  ],
+  "geo_final_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Perímetro del triángulo."
+    },
+    {
+      "t": 3,
+      "text": "Suma de todos los lados."
+    },
+    {
+      "t": 7,
+      "text": "El perímetro es quince."
+    }
+  ],
+  "geo_final_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Perímetro del rectángulo."
+    },
+    {
+      "t": 3,
+      "text": "Suma de todos los lados."
+    },
+    {
+      "t": 7,
+      "text": "El perímetro es dieciocho."
+    }
+  ],
+  "geo_final_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Perímetro del cuadrado."
+    },
+    {
+      "t": 3,
+      "text": "Suma de todos los lados."
+    },
+    {
+      "t": 7,
+      "text": "El perímetro es veinticuatro."
+    }
+  ],
+  "geo_final_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. Perímetro del triángulo."
+    },
+    {
+      "t": 3,
+      "text": "Suma de todos los lados."
+    },
+    {
+      "t": 7,
+      "text": "El perímetro es veinticuatro."
+    }
+  ],
+  "est_t0_n1_v1": [
+    {
+      "t": 0,
+      "text": "Tabla de datos, nivel 1."
+    },
+    {
+      "t": 2,
+      "text": "Hicimos una encuesta sobre frutas favoritas."
+    },
+    {
+      "t": 5.5,
+      "text": "Organizamos las respuestas en una tabla."
+    },
+    {
+      "t": 9,
+      "text": "En total participaron doce personas."
+    }
+  ],
+  "est_t0_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuál obtuvo más votos?"
+    },
+    {
+      "t": 3,
+      "text": "Buscamos el valor más grande."
+    },
+    {
+      "t": 7,
+      "text": "Manzana tuvo cinco votos."
+    }
+  ],
+  "est_t0_n2_v1": [
+    {
+      "t": 0,
+      "text": "Tabla de datos, nivel 2."
+    },
+    {
+      "t": 2,
+      "text": "Hicimos una encuesta sobre colores favoritos."
+    },
+    {
+      "t": 5.5,
+      "text": "Organizamos las respuestas en una tabla."
+    },
+    {
+      "t": 9,
+      "text": "En total participaron quince personas."
+    }
+  ],
+  "est_t0_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuál obtuvo más votos?"
+    },
+    {
+      "t": 3,
+      "text": "Buscamos el valor más grande."
+    },
+    {
+      "t": 7,
+      "text": "Rojo tuvo seis votos."
+    }
+  ],
+  "est_t0_n3_v1": [
+    {
+      "t": 0,
+      "text": "Tabla de datos, nivel 3."
+    },
+    {
+      "t": 2,
+      "text": "Hicimos una encuesta sobre deportes."
+    },
+    {
+      "t": 5.5,
+      "text": "Organizamos las respuestas en una tabla."
+    },
+    {
+      "t": 9,
+      "text": "En total participaron veintidos personas."
+    }
+  ],
+  "est_t0_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuál obtuvo más votos?"
+    },
+    {
+      "t": 3,
+      "text": "Buscamos el valor más grande."
+    },
+    {
+      "t": 7,
+      "text": "Fútbol tuvo diez votos."
+    }
+  ],
+  "est_t0_n4_v1": [
+    {
+      "t": 0,
+      "text": "Tabla de datos, nivel 4."
+    },
+    {
+      "t": 2,
+      "text": "Hicimos una encuesta sobre mascotas."
+    },
+    {
+      "t": 5.5,
+      "text": "Organizamos las respuestas en una tabla."
+    },
+    {
+      "t": 9,
+      "text": "En total participaron diecinueve personas."
+    }
+  ],
+  "est_t0_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuál obtuvo más votos?"
+    },
+    {
+      "t": 3,
+      "text": "Buscamos el valor más grande."
+    },
+    {
+      "t": 7,
+      "text": "Perro tuvo ocho votos."
+    }
+  ],
+  "est_t0_n5_v1": [
+    {
+      "t": 0,
+      "text": "Tabla de datos, nivel 5."
+    },
+    {
+      "t": 2,
+      "text": "Hicimos una encuesta sobre sabores de helado."
+    },
+    {
+      "t": 5.5,
+      "text": "Organizamos las respuestas en una tabla."
+    },
+    {
+      "t": 9,
+      "text": "En total participaron veinticuatro personas."
+    }
+  ],
+  "est_t0_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuál obtuvo más votos?"
+    },
+    {
+      "t": 3,
+      "text": "Buscamos el valor más grande."
+    },
+    {
+      "t": 7,
+      "text": "Chocolate tuvo nueve votos."
+    }
+  ],
+  "est_t1_n1_v1": [
+    {
+      "t": 0,
+      "text": "Gráfica de barras, nivel 1."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada barra representa los colores."
+    },
+    {
+      "t": 6,
+      "text": "La altura de la barra indica la cantidad."
+    },
+    {
+      "t": 9.5,
+      "text": "Comparamos alturas para ver el mayor."
+    }
+  ],
+  "est_t1_n1_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuál barra es más alta?"
+    },
+    {
+      "t": 3,
+      "text": "Miramos con atención cada barra."
+    },
+    {
+      "t": 6.5,
+      "text": "La más alta es rojo con cinco."
+    }
+  ],
+  "est_t1_n2_v1": [
+    {
+      "t": 0,
+      "text": "Gráfica de barras, nivel 2."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada barra representa los votos."
+    },
+    {
+      "t": 6,
+      "text": "La altura de la barra indica la cantidad."
+    },
+    {
+      "t": 9.5,
+      "text": "Comparamos alturas para ver el mayor."
+    }
+  ],
+  "est_t1_n2_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuál barra es más alta?"
+    },
+    {
+      "t": 3,
+      "text": "Miramos con atención cada barra."
+    },
+    {
+      "t": 6.5,
+      "text": "La más alta es A con seis."
+    }
+  ],
+  "est_t1_n3_v1": [
+    {
+      "t": 0,
+      "text": "Gráfica de barras, nivel 3."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada barra representa las ventas por mes."
+    },
+    {
+      "t": 6,
+      "text": "La altura de la barra indica la cantidad."
+    },
+    {
+      "t": 9.5,
+      "text": "Comparamos alturas para ver el mayor."
+    }
+  ],
+  "est_t1_n3_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuál barra es más alta?"
+    },
+    {
+      "t": 3,
+      "text": "Miramos con atención cada barra."
+    },
+    {
+      "t": 6.5,
+      "text": "La más alta es enero con ocho."
+    }
+  ],
+  "est_t1_n4_v1": [
+    {
+      "t": 0,
+      "text": "Gráfica de barras, nivel 4."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada barra representa las mascotas."
+    },
+    {
+      "t": 6,
+      "text": "La altura de la barra indica la cantidad."
+    },
+    {
+      "t": 9.5,
+      "text": "Comparamos alturas para ver el mayor."
+    }
+  ],
+  "est_t1_n4_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuál barra es más alta?"
+    },
+    {
+      "t": 3,
+      "text": "Miramos con atención cada barra."
+    },
+    {
+      "t": 6.5,
+      "text": "La más alta es perro con nueve."
+    }
+  ],
+  "est_t1_n5_v1": [
+    {
+      "t": 0,
+      "text": "Gráfica de barras, nivel 5."
+    },
+    {
+      "t": 2.5,
+      "text": "Cada barra representa los sabores."
+    },
+    {
+      "t": 6,
+      "text": "La altura de la barra indica la cantidad."
+    },
+    {
+      "t": 9.5,
+      "text": "Comparamos alturas para ver el mayor."
+    }
+  ],
+  "est_t1_n5_v2": [
+    {
+      "t": 0,
+      "text": "Ejemplo. ¿Cuál barra es más alta?"
+    },
+    {
+      "t": 3,
+      "text": "Miramos con atención cada barra."
+    },
+    {
+      "t": 6.5,
+      "text": "La más alta es chocolate con nueve."
+    }
+  ]
+}

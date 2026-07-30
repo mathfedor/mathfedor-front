@@ -55,7 +55,9 @@ export type BookScreen =
   | 'estandares'
   | 'problemas'
   | 'conteo'
-  | 'retos';
+  | 'retos'
+  | 'definiciones'
+  | 'conceptos';
 
 export type BookGameShortcut = 'tablas' | 'stats' | 'conteo' | 'retos1';
 

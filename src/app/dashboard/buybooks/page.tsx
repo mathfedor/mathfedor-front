@@ -110,28 +110,28 @@ export default function BuyBooksPage() {
                                 onClick={() => handleModuleClick(module._id)}
                             >
                                 <div className="bg-gradient-to-br from-orange-50 to-white p-5">
-                                    <div className="grid grid-cols-1 gap-5 md:grid-cols-[minmax(0,240px)_1fr] md:items-center">
-                                        <div className="relative h-72">
-                                            {module.image ? (
-                                                <>
-                                                    <Image
-                                                        src={module.image.startsWith('/') ? module.image : `/${module.image}`}
-                                                        alt={`${module.title} - Método Fedor`}
-                                                        fill
-                                                        className="object-contain px-2 pb-2 pt-16"
-                                                    />
-                                                    <div className="absolute -top-8 left-0 right-0 px-4">
-                                                        <p className="rounded-full bg-white/85 px-4 py-2 text-center text-2xl font-extrabold uppercase tracking-wide text-gray-900 shadow-sm backdrop-blur-sm">
-                                                            {module.group === 'Grado1' ? 'El módulo tiene 2 libros:' : 'El módulo tiene 3 libros:'}
-                                                        </p>
-                                                    </div>
-                                                </>
-                                            ) : (
-                                                <div className="flex h-full items-center justify-center">
-                                                    <span className="text-6xl text-orange-500">📚</span>
-                                                </div>
-                                            )}
-                                        </div>
+                                    <div className="mb-4 rounded-2xl bg-white/90 px-4 py-3 text-center shadow-sm border border-orange-100/80 backdrop-blur-sm">
+                                         <p className="text-sm sm:text-base font-extrabold uppercase tracking-wide text-gray-900 leading-snug">
+                                             {module.group === 'Grado1'
+                                                 ? 'El módulo tiene 2 libros para descargar y un libro digital gamificado en línea:'
+                                                 : 'El módulo tiene 3 libros para descargar y un libro digital gamificado en línea:'}
+                                         </p>
+                                     </div>
+                                     <div className="grid grid-cols-1 gap-5 md:grid-cols-[minmax(0,240px)_1fr] md:items-center">
+                                         <div className="relative h-64">
+                                             {module.image ? (
+                                                 <Image
+                                                     src={module.image.startsWith('/') ? module.image : `/${module.image}`}
+                                                     alt={`${module.title} - Método Fedor`}
+                                                     fill
+                                                     className="object-contain p-2"
+                                                 />
+                                             ) : (
+                                                 <div className="flex h-full items-center justify-center">
+                                                     <span className="text-6xl text-orange-500">📚</span>
+                                                 </div>
+                                             )}
+                                         </div>
 
                                         <div className="space-y-3">
                                             <button
