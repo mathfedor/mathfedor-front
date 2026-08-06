@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -14,6 +14,8 @@ import {
   CreateInstitutionData,
   Institution
 } from '@/types/institution.types';
+import { AssignedModules } from '@/components/institutions/AssignedModules';
+import { PurchaseModuleForInstitution } from '@/components/institutions/PurchaseModuleForInstitution';
 
 type MessageState = { type: 'success' | 'error'; message: string } | null;
 
@@ -425,12 +427,14 @@ export default function InstitutionsPage() {
                   Administra instituciones, sedes, salones y la asignación de profesores.
                 </p>
               </div>
-              <Button
-                onClick={() => setShowCreateInstitutionForm((prev) => !prev)}
-                className="mt-14 self-end bg-blue-500 hover:bg-blue-600 text-white"
-              >
-                {showCreateInstitutionForm ? 'Cerrar formulario' : 'Crear institución'}
-              </Button>
+              {getUserRole(user) === 'admin' && (
+                <Button
+                  onClick={() => setShowCreateInstitutionForm((prev) => !prev)}
+                  className="mt-14 self-end bg-blue-500 hover:bg-blue-600 text-white"
+                >
+                  {showCreateInstitutionForm ? 'Cerrar formulario' : 'Crear institución'}
+                </Button>
+              )}
             </div>
 
             {message && (
@@ -564,7 +568,8 @@ export default function InstitutionsPage() {
             </div>
 
             {selectedInstitution && (
-              <div className="grid gap-6 xl:grid-cols-[1.1fr_1fr]">
+              <>
+                <div className="grid gap-6 xl:grid-cols-[1.1fr_1fr]">
                 <section className="rounded-xl bg-white p-6 shadow-sm space-y-6">
                   <div>
                     <h2 className="text-xl font-semibold text-gray-900">Sedes de {selectedInstitution.name}</h2>
@@ -817,6 +822,20 @@ export default function InstitutionsPage() {
                   )}
                 </section>
               </div>
+
+              {/* Módulos Asignados (solo si hay una institución seleccionada) */}
+              {getUserRole(user) === 'admin' ? (
+                <PurchaseModuleForInstitution 
+                  institutionId={selectedInstitutionId} 
+                  adminUserId={getEntityId(user)} 
+                />
+              ) : (
+                <AssignedModules 
+                  institutionId={selectedInstitutionId} 
+                  classroomsByBranch={classroomsByBranch} 
+                />
+              )}
+              </>
             )}
           </div>
         </div>

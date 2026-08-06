@@ -11,7 +11,8 @@ const nextConfig = {
   webpack: (config) => {
     config.resolve.alias['@'] = __dirname + '/src';
     return config;
-  }
+  },
+  turbopack: {}
 }
 
 module.exports = nextConfig 

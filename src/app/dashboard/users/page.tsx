@@ -62,14 +62,23 @@ export default function UsersPage() {
     }
 
     setUser(currentUser);
-    void Promise.all([loadUsers(), loadInstitutions()]).finally(() => setLoading(false));
+    void Promise.all([loadUsers(), loadInstitutions(currentUser)]).finally(() => setLoading(false));
   }, [router]);
 
-  const loadInstitutions = async () => {
+  const loadInstitutions = async (currentUser: User) => {
     try {
       const response = await institutionService.getInstitutions('active');
       if (response.success && response.data) {
-        setInstitutions(response.data.map((institution) => ({ ...institution, id: getEntityId(institution) })));
+        let loadedInstitutions = response.data.map((institution) => ({ ...institution, id: getEntityId(institution) }));
+        
+        if (currentUser.role?.toLowerCase() === 'academy') {
+          const userInstitutionId = currentUser.institutionId || currentUser.student?.institutionId;
+          if (userInstitutionId) {
+            loadedInstitutions = loadedInstitutions.filter(inst => inst.id === userInstitutionId);
+          }
+        }
+        
+        setInstitutions(loadedInstitutions);
       }
     } catch (loadError) {
       console.error('Error al cargar instituciones:', loadError);

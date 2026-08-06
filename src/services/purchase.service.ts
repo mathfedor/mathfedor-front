@@ -26,6 +26,8 @@ export interface Purchase {
   user_id: string;
   transaction: PurchaseTransaction;
   purchase_date: string;
+  institutionId?: string;
+  amount?: number;
 }
 
 export interface UserPurchases {
@@ -39,13 +41,15 @@ interface ApiResponse<T> {
 }
 
 class PurchaseService {
-  async createPurchase(userId: string, moduleId: string, transaction: PurchaseTransaction): Promise<void> {
+  async createPurchase(userId: string, moduleId: string, transaction: PurchaseTransaction, institutionId?: string, amount?: number): Promise<void> {
     try {
       const purchase: Purchase = {
         user_id: userId,
         module_id: moduleId,
         transaction,
-        purchase_date: new Date().toISOString()
+        purchase_date: new Date().toISOString(),
+        ...(institutionId && { institutionId }),
+        ...(amount && { amount })
       };
 
       const token = localStorage.getItem('token');
@@ -77,11 +81,30 @@ class PurchaseService {
         }
       });
 
-      // Accedemos a response.data.data para obtener el array de compras
       return response.data.data || [];
     } catch (error) {
       console.error('Error al obtener las compras del usuario:', error);
-      return []; // Devolvemos un array vacío en caso de error
+      return []; 
+    }
+  }
+
+  async getInstitutionPurchases(institutionId: string): Promise<Purchase[]> {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No hay token de autenticación');
+      }
+
+      const response = await api.get<ApiResponse<Purchase[]>>(`${process.env.NEXT_PUBLIC_API_URL}/purchases/institution/${institutionId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      return response.data.data || [];
+    } catch (error) {
+      console.error('Error al obtener las compras de la institución:', error);
+      return []; 
     }
   }
 

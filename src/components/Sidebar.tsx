@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart, FiTag, FiHelpCircle } from 'react-icons/fi';
+import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart, FiTag, FiHelpCircle, FiLayers } from 'react-icons/fi';
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import { Tooltip } from '@/components/ui/tooltip';
 import { authService } from '@/services/auth.service';
@@ -39,11 +39,27 @@ const roleMenuItems: Record<string, MenuItem[]> = {
       href: '/dashboard/cursos',
       submenu: [] // Se llenará dinámicamente
     },
+    {
+      icon: <FiLayers className="w-5 h-5" />,
+      title: 'Módulos Institución',
+      href: '/dashboard/mis-modulos',
+    },
     { icon: <FiFileText className="w-5 h-5" />, title: 'Diagnóstico', href: '/dashboard/diagnostico' },
     { icon: <FiPackage className="w-5 h-5" />, title: 'Simulacro', href: '/dashboard/simulation' },
     { icon: <FiCode className="w-5 h-5" />, title: 'Simulador', href: '/dashboard/simulator' }
   ],
   teacher: [
+    {
+      icon: <FiBook className="w-5 h-5" />,
+      title: 'Mis Módulos',
+      href: '/dashboard/cursos',
+      submenu: [] // Se llenará dinámicamente
+    },
+    {
+      icon: <FiLayers className="w-5 h-5" />,
+      title: 'Módulos Institución',
+      href: '/dashboard/mis-modulos',
+    },
     { icon: <FiUser className="w-5 h-5" />, title: 'Estudiantes', href: '/dashboard/estudiantes' },
     { icon: <FiBarChart className="w-5 h-5" />, title: 'Resultados', href: '/dashboard/results' }
   ],
@@ -97,8 +113,8 @@ export default function Sidebar() {
       const currentUser = authService.getCurrentUser();
       setUser(currentUser);
 
-      // Cargar módulos si el usuario es estudiante
-      if (currentUser?.role?.toLowerCase() === 'student') {
+      // Cargar módulos si el usuario es estudiante o profesor
+      if (currentUser?.role?.toLowerCase() === 'student' || currentUser?.role?.toLowerCase() === 'teacher') {
         loadModules();
       }
     };
@@ -148,16 +164,18 @@ export default function Sidebar() {
   ];
 
   if (user) {
+    const isAcademy = user.role?.toLowerCase() === 'academy';
+    
     items = [
       ...items,
-      { icon: <FiShoppingCart className="w-5 h-5" />, title: 'Comprar', href: '/dashboard/buybooks' },
+      ...(isAcademy ? [] : [{ icon: <FiShoppingCart className="w-5 h-5" />, title: 'Comprar', href: '/dashboard/buybooks' }]),
       { icon: <FiUser className="w-5 h-5" />, title: 'Perfil', href: '/dashboard/profile' },
       { icon: <FiHelpCircle className="w-5 h-5" />, title: 'Ayuda', href: '/dashboard/help' }
     ];
   }
 
-  // Si el usuario es estudiante, actualizamos el submenu de módulos
-  if (user?.role?.toLowerCase() === 'student') {
+  // Si el usuario es estudiante o profesor, actualizamos el submenu de módulos
+  if (user?.role?.toLowerCase() === 'student' || user?.role?.toLowerCase() === 'teacher') {
     items = items.map(item => {
       if (item.title === 'Mis Módulos') {
         return {

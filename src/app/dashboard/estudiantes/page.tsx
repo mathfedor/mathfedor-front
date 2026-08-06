@@ -269,26 +269,22 @@ export default function EstudiantesPage() {
         try {
           data = await usersService.getMyStudents();
         } catch (studentsError) {
-          console.warn('Usando estudiantes desde resultados mock:', studentsError);
-          data = buildStudentsFromResults(resultsData);
+          console.error('Error al obtener estudiantes del profesor:', studentsError);
+          data = [];
         }
       } else if (currentUser.role === 'Academy' || currentUser.role === 'Admin') {
         try {
           const users = await usersService.getUsers();
           data = users.filter((entry) => entry.role === 'Student');
         } catch (studentsError) {
-          console.warn('Usando estudiantes desde resultados mock:', studentsError);
-          data = buildStudentsFromResults(resultsData);
+          console.error('Error al obtener todos los estudiantes:', studentsError);
+          data = [];
         }
       } else {
         setStudents([]);
         setError('Esta vista solo está disponible para usuarios con rol Teacher, Academy o Admin.');
         setLoading(false);
         return;
-      }
-
-      if (data.length === 0) {
-        data = buildStudentsFromResults(resultsData);
       }
 
       const classroomNamesById = await buildClassroomNameMap(data);
