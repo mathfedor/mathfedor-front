@@ -175,14 +175,23 @@ export default function LessonScreen() {
     };
   }, [isDaily, dailyExercises, book, currentLevel]);
 
-  const [examples, setExamples] = useState<LevelExample[]>([]);
+  const [examples, setExamples] = useState<LevelExample[]>(() => {
+    if (!meta?.key) return [];
+    return bookService.getExamplesSync(meta.key, book?.slug);
+  });
 
   useEffect(() => {
     if (isDaily || !meta) {
       setExamples([]);
       return;
     }
-    bookService.getExamples(meta.key, book?.slug).then(setExamples).catch(() => setExamples([]));
+    const syncEx = bookService.getExamplesSync(meta.key, book?.slug);
+    if (syncEx.length > 0) {
+      setExamples(syncEx);
+    }
+    bookService.getExamples(meta.key, book?.slug).then((ex) => {
+      if (ex && ex.length > 0) setExamples(ex);
+    }).catch(() => {});
   }, [isDaily, meta?.key, book?.slug]);
 
   const conceptTip = useMemo(() => {
@@ -281,81 +290,33 @@ export default function LessonScreen() {
           </div>
         )}
         <div className="back-row" onClick={() => goScreen(meta.backTarget)}>← Volver a temas</div>
-        {isGrade1 ? (
-          <div style={{ textAlign: 'left', marginBottom: '1rem' }}>
-            <div style={{ fontWeight: 900, fontSize: 16 }}>
-              {meta.headerIcon} {meta.headerTitle}
-              {levelDesc ? ` · ${levelDesc}` : ''}
-            </div>
-            <div style={{ display: 'inline-block', fontSize: '11px', fontWeight: 900, padding: '2px 7px', borderRadius: '8px', background: meta.level?.bg || '#EEEDFE', color: meta.level?.color || '#3D1468', marginTop: '6px' }}>
-              {meta.level?.short || 'N1'}
-            </div>
+        
+        <div style={{ textAlign: 'left', marginBottom: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '20px' }}>{meta.headerIcon}</span>
+            <span style={{ fontWeight: 900, fontSize: '18px', color: '#1A0A3C' }}>
+              {meta.headerTitle}
+            </span>
           </div>
-        ) : (
-          <div style={{ textAlign: 'left', marginBottom: '1.25rem' }}>
-            <div style={{ fontWeight: 900, fontSize: 16 }}>{meta.headerIcon} {meta.headerTitle}</div>
-            <div style={{ fontSize: 12, color: 'var(--muted)' }}>{meta.levelLabel}</div>
+          <div style={{ display: 'inline-block', fontSize: '11px', fontWeight: 900, padding: '2px 8px', borderRadius: '6px', background: meta.level?.bg || '#DCF5EE', color: meta.level?.color || '#074F3A', marginTop: '6px' }}>
+            {meta.level?.short || 'N1'}
           </div>
-        )}
+        </div>
+
+        {/* Timeline of dots for the level exercises */}
+        <div id="progTrack" style={{ margin: '0.5rem 0 1.25rem', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+          {exercises.map((_, dotIdx) => (
+            <div key={dotIdx} className="pt-dot" style={{ width: '28px', height: '28px', fontSize: '12px', fontWeight: 800 }}>
+              {dotIdx + 1}
+            </div>
+          ))}
+        </div>
 
         {conceptTip && (
           <div id="f1LessonConceptBanner" style={{ marginBottom: '1rem' }}>
             <span className="ico">{conceptTip.icon}</span>
             <span>{conceptTip.text}</span>
           </div>
-        )}
-
-        {isGrade1 && (
-          <>
-            {/* Timeline of dots */}
-            <div id="progTrack" style={{ margin: '0.85rem 0 1.25rem' }}>
-              {exercises.map((_, dotIdx) => (
-                <div key={dotIdx} className="pt-dot">
-                  {dotIdx + 1}
-                </div>
-              ))}
-            </div>
-
-            {/* Preview of the first exercise card */}
-            <div style={{ background: '#fff', border: '2px solid #FF8C2A', borderRadius: '18px', padding: '1.25rem', marginBottom: '1.5rem', boxShadow: '0 8px 24px rgba(0,0,0,.05)' }}>
-              {/* Question box */}
-              <div style={{ background: '#E8F5FF', border: '1.5px solid #BFE3FF', borderRadius: '12px', padding: '.75rem 1rem', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '.75rem' }}>
-                <span style={{ fontSize: '18px' }}>👋</span>
-                <div style={{ fontSize: '14px', fontWeight: 800, color: '#0A3A6A', textAlign: 'left' }}>
-                  {exercises[0].q}
-                </div>
-              </div>
-
-              {/* Instruction box */}
-              <div style={{ background: '#FFFDF0', border: '1.5px solid #FFEFA8', borderRadius: '12px', padding: '.75rem 1rem', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '.75rem' }}>
-                <span style={{ fontSize: '16px' }}>📖</span>
-                <div style={{ fontSize: '13px', fontWeight: 700, color: '#7A5C00', textAlign: 'left' }}>
-                  Instrucción: {deriveInstr(exercises[0].q)}
-                </div>
-              </div>
-
-              {/* Procedure button */}
-              <button 
-                disabled
-                style={{
-                  padding: '10px 20px',
-                  background: '#24C496',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '10px',
-                  fontSize: '13px',
-                  fontWeight: 900,
-                  cursor: 'not-allowed',
-                  opacity: 0.95,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}
-              >
-                💡 Ver procedimiento
-              </button>
-            </div>
-          </>
         )}
 
         <ExamplesPanel
@@ -370,6 +331,8 @@ export default function LessonScreen() {
           firstExerciseAnswer={exercises[0]?.type === 'seq' ? (exercises[0] as any).items?.filter((it: any) => it.t === 'b').map((it: any) => it.a ?? '').join(', ') : (exercises[0] as any)?.ans || ''}
           firstExerciseExplain={(exercises[0] as any)?.explain}
           isGrade1={isGrade1}
+          levelKey={meta.key}
+          slug={book?.slug}
         />
       </div>
     );

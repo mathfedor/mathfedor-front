@@ -328,8 +328,23 @@ export const bookService = {
     return promise;
   },
 
-  /** Ejemplos didácticos de un nivel con deduplicación. */
+  /** Obtiene ejemplos de forma síncrona/instantánea. */
+  getExamplesSync(levelKey: string, slug: string = BOOK_SLUG): LevelExample[] {
+    const isBook1 = slug === 'libro-1ro' || slug === 'matematicas-fedor-1';
+    const physicalKey = resolvePhysicalLevelKey(levelKey, slug);
+    if (isBook1) {
+      return mockLevelExamples1[levelKey] || mockLevelExamples1[physicalKey] || [];
+    }
+    return mockLevelExamples[levelKey] || mockLevelExamples[physicalKey] || [];
+  },
+
+  /** Ejemplos didácticos de un nivel con deduplicación y respuesta inmediata. */
   async getExamples(levelKey: string, slug: string = BOOK_SLUG): Promise<LevelExample[]> {
+    const local = this.getExamplesSync(levelKey, slug);
+    if (local.length > 0) {
+      return local;
+    }
+
     const bookObj = await this.getBook(slug);
     const physicalKey = resolvePhysicalLevelKey(levelKey, slug, bookObj);
     const cacheKey = `${slug}_${physicalKey}`;
@@ -340,7 +355,7 @@ export const bookService = {
     const getLocalExamples = () => {
       const isBook1 = slug === 'libro-1ro' || slug === 'matematicas-fedor-1';
       if (isBook1) {
-        const ex = mockLevelExamples1[physicalKey];
+        const ex = mockLevelExamples1[physicalKey] || mockLevelExamples1[levelKey];
         if (ex && ex.length > 0) return ex;
         return [];
       }

@@ -60,6 +60,7 @@ interface ExerciseBase {
   countEmoji?: string;
   countN?: number;
   svgFig?: string;
+  visObjs?: Array<{ e: string; n: number; label?: string }>;
 }
 
 /** Ejercicio de opción múltiple. */

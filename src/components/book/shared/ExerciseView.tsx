@@ -97,6 +97,42 @@ export default function ExerciseView({ exercise, index, total, onAnswer, isGrade
           </div>
         )}
 
+        {exercise.visObjs && exercise.visObjs.length > 0 && (
+          <div
+            style={{
+              background: '#FFF8E0',
+              border: '2.5px solid #FF8C2A',
+              borderRadius: '16px',
+              padding: '1.25rem',
+              marginBottom: '1.25rem',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              boxShadow: '0 4px 14px rgba(232,101,10,0.15)',
+            }}
+          >
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {exercise.visObjs.map((obj, oi) => (
+                <div key={oi} style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                  {Array.from({ length: obj.n }).map((_, ni) => (
+                    <span key={ni} style={{ fontSize: '38px', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.12))' }}>
+                      {obj.e}
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+            {exercise.visObjs[0]?.label && (
+              <div style={{ fontSize: '13px', fontWeight: 900, color: '#7A3200' }}>
+                {exercise.visObjs[0].label}
+              </div>
+            )}
+          </div>
+        )}
+
         <div style={{ 
           display: 'flex', 
           flexDirection: isGrade1 ? 'column' : 'row', 
