@@ -13,37 +13,41 @@ export default function EstandaresScreen() {
 
   return (
     <div className="screen active" id="screen-estandares-men">
-      {book?.slug === 'libro-1ro' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '0 0.5rem 1rem' }}>
-          <div
-            className="feat-btn"
-            style={{ background: 'linear-gradient(135deg,#fff,#F0FDF9)', margin: 0, cursor: 'default' }}
-          >
-            <div className="feat-icon" style={{ background: '#fff', fontSize: '26px', border: '1.5px solid #C5BFEE', boxShadow: 'none' }}>
-              🇨🇴
-            </div>
-            <div className="feat-info" style={{ textAlign: 'left' }}>
-              <div className="feat-name">Estándares MEN</div>
-              <div className="feat-sub" style={{ fontSize: '11px', color: 'rgba(20,60,100,.65)' }}>Programa de 1° Colombia</div>
-            </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '0 0.5rem 1rem' }}>
+        <div
+          className="feat-btn"
+          style={{ background: 'linear-gradient(135deg,#fff,#F0FDF9)', margin: 0, cursor: 'default' }}
+        >
+          <div className="feat-icon" style={{ background: '#fff', fontSize: '26px', border: '1.5px solid #C5BFEE', boxShadow: 'none' }}>
+            🇨🇴
           </div>
-
-          <div
-            className="feat-btn"
-            onClick={() => goScreen('problemas')}
-            style={{ background: 'linear-gradient(135deg,#fff,#E8FAF1)', margin: 0 }}
-          >
-            <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#0E5240,#34D399)', color: '#fff' }}>
-              🛒
+          <div className="feat-info" style={{ textAlign: 'left' }}>
+            <div className="feat-name">Estándares MEN</div>
+            <div className="feat-sub" style={{ fontSize: '11px', color: 'rgba(20,60,100,.65)' }}>
+              {book?.slug === 'libro-1ro' ? 'Programa de 1° Colombia' : 'Programa de 2° Colombia'}
             </div>
-            <div className="feat-info" style={{ textAlign: 'left' }}>
-              <div className="feat-name">Problemas Cotidianos</div>
-              <div className="feat-meta">Conteo de monedas + compras + 4 operaciones</div>
-            </div>
-            <div className="feat-arrow">→</div>
           </div>
         </div>
-      )}
+
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('problemas')}
+          style={{ background: 'linear-gradient(135deg,#fff,#E8FAF1)', margin: 0 }}
+        >
+          <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#0E5240,#34D399)', color: '#fff' }}>
+            🛒
+          </div>
+          <div className="feat-info" style={{ textAlign: 'left' }}>
+            <div className="feat-name">Problemas Cotidianos</div>
+            <div className="feat-meta">
+              {book?.slug === 'libro-1ro'
+                ? 'Conteo de monedas + compras + 4 operaciones'
+                : 'Conteo + compras + 4 operaciones + magnitudes + fracciones'}
+            </div>
+          </div>
+          <div className="feat-arrow">→</div>
+        </div>
+      </div>
 
       <div className="back-row" onClick={() => goScreen(backScreen)}>
         ← Volver al inicio
@@ -51,7 +55,7 @@ export default function EstandaresScreen() {
 
       <div className="men-hero">
         <div className="flag">🇨🇴</div>
-        <h2>📐 Estándares M.E.N. Colombia · 1° Primaria</h2>
+        <h2>📐 Estándares M.E.N. Colombia · {book?.slug === 'libro-1ro' ? '1° Primaria' : '2° Primaria'}</h2>
         <div className="sub">
           Pensamientos Matemáticos · Estándares · Competencias · DBA · Desempeño
         </div>

@@ -122,7 +122,7 @@ export default function ProblemasScreen() {
 
   return (
     <div className="screen active" id="screen-problemas-cotidianos">
-      {book?.slug === 'libro-1ro' && step === 'intro' && (
+      {step === 'intro' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '0 0.5rem 1rem' }}>
           <div
             className="feat-btn"
@@ -134,7 +134,9 @@ export default function ProblemasScreen() {
             </div>
             <div className="feat-info" style={{ textAlign: 'left' }}>
               <div className="feat-name">Estándares MEN</div>
-              <div className="feat-sub" style={{ fontSize: '11px', color: 'rgba(20,60,100,.65)' }}>Programa de 1° Colombia</div>
+              <div className="feat-sub" style={{ fontSize: '11px', color: 'rgba(20,60,100,.65)' }}>
+                {book?.slug === 'libro-1ro' ? 'Programa de 1° Colombia' : 'Programa de 2° Colombia'}
+              </div>
             </div>
           </div>
 
@@ -147,7 +149,11 @@ export default function ProblemasScreen() {
             </div>
             <div className="feat-info" style={{ textAlign: 'left' }}>
               <div className="feat-name">Problemas Cotidianos</div>
-              <div className="feat-meta">Conteo de monedas + compras + 4 operaciones</div>
+              <div className="feat-meta">
+                {book?.slug === 'libro-1ro'
+                  ? 'Conteo de monedas + compras + 4 operaciones'
+                  : 'Conteo + compras + 4 operaciones + magnitudes + fracciones'}
+              </div>
             </div>
             <div className="feat-arrow">→</div>
           </div>

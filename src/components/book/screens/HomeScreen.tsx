@@ -10,6 +10,8 @@ import TutorialOverlay from '../shared/TutorialOverlay';
 import ConceptosFedorModal from '../shared/ConceptosFedorModal';
 import ShopModal from '../shared/ShopModal';
 import StickerAlbumModal from '../shared/StickerAlbumModal';
+import FedorRankCard from '../shared/FedorRankCard';
+import CadeteIntroModal from '../shared/CadeteIntroModal';
 import { globalProgressPct, unitProgressPct } from '../shared/progress.utils';
 import { dayKey } from '@/services/daily-challenge.service';
 
@@ -86,7 +88,7 @@ export default function HomeScreen() {
       const today = new Date().toDateString();
       const raw = localStorage.getItem('fedor1_daily_mission');
       let state = raw ? JSON.parse(raw) : null;
-      
+
       const missionIndex = (new Date().getDate() + new Date().getMonth()) % DAILY_MISSIONS.length;
       const mission = DAILY_MISSIONS[missionIndex];
 
@@ -121,7 +123,7 @@ export default function HomeScreen() {
     const updated = { ...dailyMissionState, claimed: true };
     try {
       localStorage.setItem('fedor1_daily_mission', JSON.stringify(updated));
-    } catch {}
+    } catch { }
     setDailyMissionState(updated);
 
     grantReward(mission.xp, mission.coins);
@@ -144,6 +146,58 @@ export default function HomeScreen() {
   const [showConceptos, setShowConceptos] = useState(false);
   const [showShopModal, setShowShopModal] = useState(false);
   const [showStickersModal, setShowStickersModal] = useState(false);
+  const [showCadeteIntro, setShowCadeteIntro] = useState(false);
+
+  const handleExportCSV = () => {
+    if (!book || !progress) return;
+    const student = progress.student || { name: '', school: '', teacher: '', email: '' };
+    const rows: string[][] = [
+      ['Estudiante', student.name || ''],
+      ['Colegio', student.school || ''],
+      ['Docente', student.teacher || ''],
+      ['Email', student.email || ''],
+      ['Fecha', new Date().toLocaleString('es-CO')],
+      [''],
+      ['Unidad', 'Tema', 'Nivel', 'Puntos (XP)', 'Completado']
+    ];
+
+    book.units.forEach((u, ui) => {
+      u.topics.forEach((t, ti) => {
+        t.levels.forEach((lv, li) => {
+          const key = `u${u.index}t${ti}-n${li + 1}`;
+          const sc = progress.scores[key];
+          if (sc && sc.pts > 0) {
+            rows.push([u.name, t.title, lv.label || `Nivel ${li + 1}`, String(sc.pts), 'Sí']);
+          } else {
+            rows.push([u.name, t.title, lv.label || `Nivel ${li + 1}`, '0', 'No']);
+          }
+        });
+      });
+    });
+
+    const csvContent = rows
+      .map((r) =>
+        r
+          .map((c) => {
+            const s = String(c == null ? '' : c);
+            if (s.includes(',') || s.includes('"') || s.includes('\n')) {
+              return `"${s.replace(/"/g, '""')}"`;
+            }
+            return s;
+          })
+          .join(',')
+      )
+      .join('\n');
+
+    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `progreso_fedor_${student.name || 'estudiante'}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const handleClaimDailyClick = () => {
     claimDaily();
@@ -390,9 +444,8 @@ export default function HomeScreen() {
                       style={{
                         width: '14px',
                         height: 0,
-                        borderTop: `2px dotted rgba(245,214,107,${
-                          unlocked && hasStarted ? 0.55 : unlocked ? 0.25 : 0.12
-                        })`,
+                        borderTop: `2px dotted rgba(245,214,107,${unlocked && hasStarted ? 0.55 : unlocked ? 0.25 : 0.12
+                          })`,
                         flexShrink: 0,
                         alignSelf: 'center',
                         marginBottom: '12px',
@@ -410,103 +463,110 @@ export default function HomeScreen() {
         </div>
       </div>
 
-      {/* Grade 1: Laboratorio de Estadística */}
-      {isGrade1 && (
-        <div className="fedor-lab-card" onClick={() => openGameShortcut('stats')}>
-          <div className="flc-row">
-            <div className="flc-icon">🧪</div>
-            <div className="flc-info">
-              <div className="flc-title">Laboratorio de Estadística</div>
-              <div className="flc-sub">
-                ¡Crea tus propias encuestas! Mete datos, mira el gráfico cambiar en vivo
-                y genera preguntas para tus amigos.
-              </div>
-              <div className="flc-cta">🚀 ABRIR LABORATORIO →</div>
+      {/* Laboratorio de Estadística */}
+      <div className="fedor-lab-card" onClick={() => openGameShortcut('stats')}>
+        <div className="flc-row">
+          <div className="flc-icon">🧪</div>
+          <div className="flc-info">
+            <div className="flc-title">Laboratorio de Estadística</div>
+            <div className="flc-sub">
+              ¡Crea tus propias encuestas! Mete datos, mira el gráfico cambiar en vivo
+              y genera preguntas para tus amigos.
             </div>
-            <div className="flc-preview">
-              <svg viewBox="0 0 120 80" width={120} height={80}>
-                <rect x={10} y={50} width={18} height={22} fill="#FF1D4E" rx={2} />
-                <rect x={36} y={32} width={18} height={40} fill="#F5C518" rx={2} />
-                <rect x={62} y={20} width={18} height={52} fill="#3AA0FF" rx={2} />
-                <rect x={88} y={38} width={18} height={34} fill="#9B5CFF" rx={2} />
-                <line x1={6} y1={72} x2={114} y2={72} stroke="#fff" strokeWidth={1.5} />
-              </svg>
-            </div>
+            <div className="flc-cta">🚀 ABRIR LABORATORIO →</div>
+          </div>
+          <div className="flc-preview">
+            <svg viewBox="0 0 120 80" width={120} height={80}>
+              <rect x={10} y={50} width={18} height={22} fill="#FF1D4E" rx={2} />
+              <rect x={36} y={32} width={18} height={40} fill="#F5C518" rx={2} />
+              <rect x={62} y={20} width={18} height={52} fill="#3AA0FF" rx={2} />
+              <rect x={88} y={38} width={18} height={34} fill="#9B5CFF" rx={2} />
+              <line x1={6} y1={72} x2={114} y2={72} stroke="#fff" strokeWidth={1.5} />
+            </svg>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* Grade 1: Viaje a la Luna */}
+      {/* Viaje a la Luna (Grado 1) */}
       {isGrade1 && <MoonJourney />}
 
-      {/* Grade 1: Panel de Comando */}
-      {isGrade1 && (
-        <div className="f1-action-bar">
-          <div
-            style={{
-              position: 'absolute',
-              top: '-12px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              background: 'linear-gradient(135deg,#FF1D4E,#F5C518)',
-              color: '#fff',
-              fontSize: '11px',
-              fontWeight: 900,
-              padding: '4px 16px',
-              borderRadius: '14px',
-              letterSpacing: '.12em',
-              boxShadow: '0 4px 12px rgba(255,29,78,.5)',
-              whiteSpace: 'nowrap',
-              zIndex: 3,
-            }}
-          >
-            ⚡ PANEL DE COMANDO
-          </div>
-          <button
-            className="ab1-btn"
-            style={{ background: 'linear-gradient(135deg,#FF8C2A,#F5C518)', color: '#3A1A00' }}
-            onClick={() => setShowIntro(true)}
-          >
-            <span className="ab1-ico">🎬</span>
-            <span className="ab1-lbl">Despegue</span>
-          </button>
-          <button
-            className="ab1-btn"
-            style={{ background: 'linear-gradient(135deg,#9B0066,#FF1DAA)', color: '#fff' }}
-            onClick={() => setShowStickersModal(true)}
-          >
-            <span className="ab1-ico">📔</span>
-            <span className="ab1-lbl">Stickers</span>
-          </button>
-          <button
-            className="ab1-btn"
-            style={{ background: 'linear-gradient(135deg,#16876A,#24C496)', color: '#fff' }}
-            onClick={() => setShowShopModal(true)}
-          >
-            <span className="ab1-ico">🛒</span>
-            <span className="ab1-lbl">Tienda</span>
-          </button>
-          <button
-            className="ab1-btn"
-            style={{ background: 'linear-gradient(135deg,#0E6BA8,#3AA0FF)', color: '#fff' }}
-            onClick={() => goScreen('galaxy')}
-          >
-            <span className="ab1-ico">🌌</span>
-            <span className="ab1-lbl">Galaxia 3D</span>
-          </button>
-          <button
-            className="ab1-btn"
-            style={{ background: 'linear-gradient(135deg,#6C28B4,#9B5CFF)', color: '#fff' }}
-            onClick={handleFocusMascot}
-          >
-            <span className="ab1-ico">🐉</span>
-            <span className="ab1-lbl">Mascota</span>
-          </button>
-        </div>
-      )}
+      {/* Cadete Estelar / Sistema de Rangos (fedorRankCard) */}
+      <FedorRankCard onClick={() => setShowCadeteIntro(true)} />
 
-      {/* Grade 1: Concepto del día */}
-      {isGrade1 && conceptTip && (
+      {/* Panel de Comando */}
+      <div className="f1-action-bar">
+        <div
+          style={{
+            position: 'absolute',
+            top: '-12px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: 'linear-gradient(135deg,#FF1D4E,#F5C518)',
+            color: '#fff',
+            fontSize: '11px',
+            fontWeight: 900,
+            padding: '4px 16px',
+            borderRadius: '14px',
+            letterSpacing: '.12em',
+            boxShadow: '0 4px 12px rgba(255,29,78,.5)',
+            whiteSpace: 'nowrap',
+            zIndex: 3,
+          }}
+        >
+          ⚡ PANEL DE COMANDO
+        </div>
+        <button
+          className="ab1-btn"
+          style={{ background: 'linear-gradient(135deg,#FF8C2A,#F5C518)', color: '#3A1A00' }}
+          onClick={() => setShowIntro(true)}
+        >
+          <span className="ab1-ico">🎬</span>
+          <span className="ab1-lbl">Despegue</span>
+        </button>
+        <button
+          className="ab1-btn"
+          style={{ background: 'linear-gradient(135deg,#9B0066,#FF1DAA)', color: '#fff' }}
+          onClick={() => setShowStickersModal(true)}
+        >
+          <span className="ab1-ico">📔</span>
+          <span className="ab1-lbl">Stickers</span>
+        </button>
+        <button
+          className="ab1-btn"
+          style={{ background: 'linear-gradient(135deg,#FF1D4E,#FF8C2A)', color: '#fff' }}
+          onClick={() => openGameShortcut('stats')}
+        >
+          <span className="ab1-ico">🎮</span>
+          <span className="ab1-lbl">Juegos</span>
+        </button>
+        <button
+          className="ab1-btn"
+          style={{ background: 'linear-gradient(135deg,#0E6BA8,#3AA0FF)', color: '#fff' }}
+          onClick={() => goScreen('estandares')}
+        >
+          <span className="ab1-ico">🎓</span>
+          <span className="ab1-lbl">Estándares</span>
+        </button>
+        <button
+          className="ab1-btn"
+          style={{ background: 'linear-gradient(135deg,#A30041,#FF1D4E)', color: '#fff' }}
+          onClick={() => goScreen('retos')}
+        >
+          <span className="ab1-ico">⚔️</span>
+          <span className="ab1-lbl">Competencia 2P</span>
+        </button>
+        <button
+          className="ab1-btn"
+          style={{ background: 'linear-gradient(135deg,#3AA0FF,#06A570)', color: '#fff' }}
+          onClick={handleExportCSV}
+        >
+          <span className="ab1-ico">📥</span>
+          <span className="ab1-lbl">Exportar CSV</span>
+        </button>
+      </div>
+
+      {/* Concepto del día */}
+      {conceptTip && (
         <div className="f1-concept-tip">
           <div
             style={{
@@ -532,39 +592,37 @@ export default function HomeScreen() {
         </div>
       )}
 
-      {/* Grade 1: Pruebas SABER · Modo Maratón */}
-      {isGrade1 && (
-        <div className="f1-saber-card" onClick={() => goScreen('examen')}>
-          <div
-            style={{
-              position: 'absolute',
-              top: '-9px',
-              right: '14px',
-              background: 'linear-gradient(135deg,#fff,#FFE066)',
-              color: '#A30041',
-              fontSize: '10px',
-              fontWeight: 900,
-              padding: '3px 14px',
-              borderRadius: '12px',
-              letterSpacing: '.12em',
-              boxShadow: '0 4px 12px rgba(0,0,0,.25)',
-              zIndex: 3,
-            }}
-          >
-            PRUEBAS
-          </div>
-          <div className="f1sb-row">
-            <div className="f1sb-ic">📝</div>
-            <div className="f1sb-info">
-              <div className="f1sb-title">Pruebas SABER · Modo Maratón</div>
-              <div className="f1sb-sub">
-                20 preguntas mezcladas de todos los temas. ¡Demuestra lo que sabes!
-              </div>
-              <div className="f1sb-cta">▶ Empezar prueba</div>
+      {/* Pruebas SABER · Modo Maratón */}
+      <div className="f1-saber-card" onClick={() => goScreen('examen')}>
+        <div
+          style={{
+            position: 'absolute',
+            top: '-9px',
+            right: '14px',
+            background: 'linear-gradient(135deg,#fff,#FFE066)',
+            color: '#A30041',
+            fontSize: '10px',
+            fontWeight: 900,
+            padding: '3px 14px',
+            borderRadius: '12px',
+            letterSpacing: '.12em',
+            boxShadow: '0 4px 12px rgba(0,0,0,.25)',
+            zIndex: 3,
+          }}
+        >
+          PRUEBAS
+        </div>
+        <div className="f1sb-row">
+          <div className="f1sb-ic">📝</div>
+          <div className="f1sb-info">
+            <div className="f1sb-title">Pruebas SABER · Modo Maratón</div>
+            <div className="f1sb-sub">
+              20 preguntas mezcladas de todos los temas. ¡Demuestra lo que sabes!
             </div>
+            <div className="f1sb-cta">▶ Empezar prueba</div>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Centro de informes */}
       <div style={{ background: 'linear-gradient(135deg,#140830,#1E0848)', borderRadius: 18, padding: '1rem 1.1rem', marginBottom: '.85rem' }}>
@@ -608,23 +666,23 @@ export default function HomeScreen() {
         </div>
 
         {/* Botón Análisis IA Fedor */}
-        <button 
+        <button
           onClick={() => {
             goScreen('report');
             setTimeout(() => {
               document.getElementById('ai-report-btn')?.scrollIntoView({ behavior: 'smooth' });
             }, 300);
-          }} 
-          style={{ 
-            width: '100%', 
-            padding: '9px', 
-            fontSize: '12px', 
-            fontWeight: 900, 
-            background: 'rgba(245,197,24,.12)', 
-            color: '#F5C518', 
-            border: '1.5px solid rgba(245,197,24,.25)', 
-            borderRadius: '10px', 
-            cursor: 'pointer', 
+          }}
+          style={{
+            width: '100%',
+            padding: '9px',
+            fontSize: '12px',
+            fontWeight: 900,
+            background: 'rgba(245,197,24,.12)',
+            color: '#F5C518',
+            border: '1.5px solid rgba(245,197,24,.25)',
+            borderRadius: '10px',
+            cursor: 'pointer',
             fontFamily: "'Nunito',sans-serif",
             marginTop: '8px'
           }}
@@ -643,25 +701,25 @@ export default function HomeScreen() {
         <span className="dr-badge">{dailyAvailable ? '¡Disponible!' : 'Reclamada'}</span>
       </div>
 
-      {/* Grade 1: Brand banner (Matemáticas de Fedor) */}
-      {isGrade1 && (
-        <div className="fedor-brand" style={{ marginBottom: '.85rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div className="fedor-brand-logo"><span style={{ fontSize: 20 }}>🚀</span></div>
-            <div>
-              <div className="fedor-brand-txt">Matemáticas de Fedor</div>
-              <div className="fedor-brand-sub">Libro Interactivo · Grado 1° · Colombia</div>
+      {/* Brand banner (Matemáticas de Fedor) */}
+      <div className="fedor-brand" style={{ marginBottom: '.85rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div className="fedor-brand-logo"><span style={{ fontSize: 20 }}>🚀</span></div>
+          <div>
+            <div className="fedor-brand-txt">Matemáticas de Fedor</div>
+            <div className="fedor-brand-sub">
+              Libro Interactivo · {isGrade1 ? 'Grado 1°' : 'Grado 2°'} · Colombia
             </div>
           </div>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '11px', fontWeight: 700, color: '#999' }}>¿Tienes el libro Excel?</div>
-            <div style={{ fontSize: '11px', fontWeight: 900, color: '#FF8C2A' }}>Úsalos juntos 📊</div>
-          </div>
         </div>
-      )}
+        <div style={{ textAlign: 'right' }}>
+          <div style={{ fontSize: '11px', fontWeight: 700, color: '#999' }}>¿Tienes el libro Excel?</div>
+          <div style={{ fontSize: '11px', fontWeight: 900, color: '#FF8C2A' }}>Úsalos juntos 📊</div>
+        </div>
+      </div>
 
-      {/* Grade 1: Misión del día */}
-      {isGrade1 && dailyMissionState && (() => {
+      {/* Misión del día */}
+      {dailyMissionState && (() => {
         const activeMission = DAILY_MISSIONS.find((m) => m.id === dailyMissionState.missionId);
         if (!activeMission) return null;
         const pct = Math.min(100, Math.round((dailyMissionState.progress / activeMission.goal) * 100));
@@ -669,7 +727,7 @@ export default function HomeScreen() {
         const claimed = dailyMissionState.claimed;
 
         return (
-          <div 
+          <div
             className="daily-mission-card"
             style={{
               background: 'linear-gradient(135deg, #1E0848, #7B2FBE, #E8650A)',
@@ -684,18 +742,18 @@ export default function HomeScreen() {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', position: 'relative', zIndex: 1 }}>
-              <div 
-                style={{ 
-                  width: '48px', 
-                  height: '48px', 
-                  borderRadius: '14px', 
-                  background: 'rgba(0,0,0,.35)', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center', 
-                  fontSize: '26px', 
-                  flexShrink: 0, 
-                  border: '1.5px solid rgba(255,224,102,.4)' 
+              <div
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '14px',
+                  background: 'rgba(0,0,0,.35)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '26px',
+                  flexShrink: 0,
+                  border: '1.5px solid rgba(255,224,102,.4)'
                 }}
               >
                 🎯
@@ -707,51 +765,51 @@ export default function HomeScreen() {
                 <div style={{ fontFamily: "'Baloo 2', sans-serif", fontSize: '15px', fontWeight: 900, color: '#fff', lineHeight: 1.2, marginTop: '2px' }}>
                   {activeMission.txt}
                 </div>
-                
+
                 {/* Progress track */}
-                <div 
-                  style={{ 
-                    height: '8px', 
-                    background: 'rgba(255,255,255,0.18)', 
-                    borderRadius: '5px', 
-                    overflow: 'hidden', 
+                <div
+                  style={{
+                    height: '8px',
+                    background: 'rgba(255,255,255,0.18)',
+                    borderRadius: '5px',
+                    overflow: 'hidden',
                     marginTop: '10px',
                     position: 'relative'
                   }}
                 >
-                  <div 
-                    style={{ 
-                      height: '100%', 
-                      background: 'linear-gradient(90deg, #FFB066, #FF7300)', 
-                      borderRadius: '5px', 
+                  <div
+                    style={{
+                      height: '100%',
+                      background: 'linear-gradient(90deg, #FFB066, #FF7300)',
+                      borderRadius: '5px',
                       width: `${pct}%`,
                       transition: 'width 0.4s ease'
-                    }} 
+                    }}
                   />
                 </div>
-                
+
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', fontWeight: 800, color: 'rgba(255,255,255,.75)', marginTop: '6px' }}>
                   <span>{dailyMissionState.progress} / {activeMission.goal}</span>
                   <span style={{ color: '#F5C518' }}>+{activeMission.xp} XP · +{activeMission.coins} 🪙</span>
                 </div>
               </div>
-              
+
               <div style={{ flexShrink: 0, alignSelf: 'center', marginLeft: '8px' }}>
                 {done && !claimed ? (
-                  <button 
-                    onClick={handleClaimDailyMission} 
-                    style={{ 
-                      background: 'linear-gradient(135deg, #F5C518, #FF8C2A)', 
-                      color: '#2A0F60', 
-                      border: 'none', 
-                      borderRadius: '12px', 
-                      padding: '10px 14px', 
-                      fontSize: '12px', 
-                      fontWeight: 900, 
-                      cursor: 'pointer', 
-                      fontFamily: "'Nunito', sans-serif", 
+                  <button
+                    onClick={handleClaimDailyMission}
+                    style={{
+                      background: 'linear-gradient(135deg, #F5C518, #FF8C2A)',
+                      color: '#2A0F60',
+                      border: 'none',
+                      borderRadius: '12px',
+                      padding: '10px 14px',
+                      fontSize: '12px',
+                      fontWeight: 900,
+                      cursor: 'pointer',
+                      fontFamily: "'Nunito', sans-serif",
                       boxShadow: '0 4px 14px rgba(245,197,24,.5)',
-                      animation: 'pulse 1.6s ease-in-out infinite' 
+                      animation: 'pulse 1.6s ease-in-out infinite'
                     }}
                   >
                     🎁 RECLAMAR
@@ -779,54 +837,6 @@ export default function HomeScreen() {
         <span className="dc-badge">{challengeDone ? '✅' : '🏅 x2'}</span>
       </div>
 
-      {/* Mini-juegos */}
-      {!isGrade1 && (
-        <div className="daily-challenge" onClick={() => goScreen('games')} style={{ cursor: 'pointer', marginBottom: '.85rem' }}>
-          <span className="dc-icon">🎮</span>
-          <div className="dc-body">
-            <div className="dc-title">Mini-juegos</div>
-            <div className="dc-sub">Practica la división repartiendo chocolatinas</div>
-          </div>
-          <span className="dc-badge">Jugar →</span>
-        </div>
-      )}
-
-      {/* Diario narrativo */}
-      {!isGrade1 && (
-        <div className="daily-challenge" onClick={() => goScreen('diary')} style={{ cursor: 'pointer', marginBottom: '.85rem' }}>
-          <span className="dc-icon">📖</span>
-          <div className="dc-body">
-            <div className="dc-title">Diario del viaje</div>
-            <div className="dc-sub">La historia de Fedor se desbloquea con tu progreso</div>
-          </div>
-          <span className="dc-badge">Leer →</span>
-        </div>
-      )}
-
-      {/* Examen final */}
-      {!isGrade1 && (
-        <div className="daily-challenge" onClick={() => goScreen('examen')} style={{ cursor: 'pointer', marginBottom: '.85rem' }}>
-          <span className="dc-icon">🎓</span>
-          <div className="dc-body">
-            <div className="dc-title">Examen Final</div>
-            <div className="dc-sub">20 preguntas de todo el libro · aprueba con 14</div>
-          </div>
-          <span className="dc-badge">+300 🪙</span>
-        </div>
-      )}
-
-      {/* Reto espacial */}
-      {!isGrade1 && (
-        <div className="daily-challenge" onClick={() => goScreen('espacial')} style={{ cursor: 'pointer', marginBottom: '.85rem' }}>
-          <span className="dc-icon">🚀</span>
-          <div className="dc-body">
-            <div className="dc-title">Reto Espacial</div>
-            <div className="dc-sub">Reto diario extra · mantén tu racha espacial</div>
-          </div>
-          <span className="dc-badge">+50 🪙</span>
-        </div>
-      )}
-
       {/* Progreso global */}
       <div className="prog-global">
         <div className="pg-label">📚 Progreso total</div>
@@ -836,169 +846,147 @@ export default function HomeScreen() {
         <div className="pg-pct">{globalPct}%</div>
       </div>
 
-      {/* Grade 1: Mapa de progreso */}
-      {isGrade1 && <ProgressMap />}
+      {/* Mapa de progreso */}
+      <ProgressMap />
 
       <div className="sec-title">📦 UNIDADES DE APRENDIZAJE</div>
-      {isGrade1 ? (
-        <div style={{ display: 'grid', gap: '8px', marginBottom: '1.25rem' }}>
-          {book.units.map((unit) => (
-            <UnitCard 
-              key={unit.id} 
-              unit={unit} 
-              pct={unitProgressPct(unit, progress.scores)} 
-              onClick={() => openUnit(unit.index)} 
-              isGrade1={true}
-            />
-          ))}
-        </div>
-      ) : (
-        <>
-          <HomeSection icon="🧮" title="Operaciones Básicas" gradient="linear-gradient(135deg,#6C28B4,#9B5CE5)" defaultOpen>
-            {book.units.slice(0, 4).map((unit) => (
-              <UnitCard key={unit.id} unit={unit} pct={unitProgressPct(unit, progress.scores)} onClick={() => openUnit(unit.index)} />
-            ))}
-          </HomeSection>
-          {book.units.length > 4 && (
-            <HomeSection icon="📐" title="Magnitudes, Geometría y más" gradient="linear-gradient(135deg,#16876A,#24C496)">
-              {book.units.slice(4).map((unit) => (
-                <UnitCard key={unit.id} unit={unit} pct={unitProgressPct(unit, progress.scores)} onClick={() => openUnit(unit.index)} />
-              ))}
-            </HomeSection>
-          )}
-        </>
-      )}
+      <div style={{ display: 'grid', gap: '8px', marginBottom: '1.25rem' }}>
+        {book.units.map((unit) => (
+          <UnitCard
+            key={unit.id}
+            unit={unit}
+            pct={unitProgressPct(unit, progress.scores)}
+            onClick={() => openUnit(unit.index)}
+            isGrade1={isGrade1}
+          />
+        ))}
+      </div>
 
-      {/* Grade 1: Recursos extra */}
-      {isGrade1 && (
-        <div style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>
-          <div 
-            style={{ 
-              fontSize: '13px', 
-              fontWeight: 900, 
-              color: 'rgba(245,197,24,.85)', 
-              textTransform: 'uppercase', 
-              letterSpacing: '.08em', 
-              paddingLeft: '6px',
-              marginBottom: '.85rem'
+      {/* Recursos extra */}
+      <div style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>
+        <div
+          style={{
+            fontSize: '13px',
+            fontWeight: 900,
+            color: 'rgba(245,197,24,.85)',
+            textTransform: 'uppercase',
+            letterSpacing: '.08em',
+            paddingLeft: '6px',
+            marginBottom: '.85rem'
+          }}
+        >
+          ✨ Recursos extra
+        </div>
+
+        {/* Tablas de Conteo */}
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('conteo')}
+          style={{ background: 'linear-gradient(135deg,#fff,#F0F8FF)' }}
+        >
+          <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#1A6CB4,#4DA6FF)' }}>🔢</div>
+          <div className="feat-info">
+            <div className="feat-name">Tablas de Conteo</div>
+            <div className="feat-meta">Ranges 1-10, 1-20, 1-30, 1-50, 1-100</div>
+          </div>
+          <div className="feat-arrow">→</div>
+        </div>
+
+        {/* Conceptos */}
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('conceptos')}
+          style={{ background: 'linear-gradient(135deg,#fff,#E8FAF1)' }}
+        >
+          <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#16876A,#34D399)' }}>📚</div>
+          <div className="feat-info">
+            <div className="feat-name">Conceptos</div>
+            <div className="feat-meta">Definiciones técnicas de cada operación</div>
+          </div>
+          <div className="feat-arrow">→</div>
+        </div>
+
+        {/* Retos Matemáticos */}
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('retos')}
+          style={{ background: 'linear-gradient(135deg,#fff,#FFF6E6)' }}
+        >
+          <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#FF8A1F,#FFB066)' }}>🏆</div>
+          <div className="feat-info">
+            <div className="feat-name">Retos Matemáticos</div>
+            <div className="feat-meta">
+              {isGrade1 ? 'Desafíos para primer grado' : 'Desafíos para segundo grado'}
+            </div>
+          </div>
+          <div className="feat-arrow">→</div>
+        </div>
+
+        {/* Definiciones FEDOR */}
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('definiciones')}
+          style={{ background: 'linear-gradient(135deg,#fff,#F5F0FF)' }}
+        >
+          <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#7B2FBE,#A864E8)' }}>📚</div>
+          <div className="feat-info">
+            <div className="feat-name">Definiciones FEDOR</div>
+            <div className="feat-sub">
+              {isGrade1 ? 'Conceptos matemáticos claros para 1°' : 'Conceptos matemáticos claros para 2°'}
+            </div>
+          </div>
+          <div className="feat-arrow">→</div>
+        </div>
+
+        {/* Estándares MEN */}
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('estandares')}
+          style={{ background: 'linear-gradient(135deg,#fff,#F0FDF9)' }}
+        >
+          <div
+            className="feat-icon"
+            style={{
+              background: '#fff',
+              fontSize: '18px',
+              fontWeight: 900,
+              color: '#333',
+              border: '1.5px solid rgba(0,0,0,.08)',
+              boxShadow: 'none'
             }}
           >
-            ✨ Recursos extra
+            🇨🇴
           </div>
-
-          {/* Tablas de Conteo */}
-          <div 
-            className="feat-btn" 
-            onClick={() => goScreen('conteo')} 
-            style={{ background: 'linear-gradient(135deg,#fff,#F0F8FF)' }}
-          >
-            <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#1A6CB4,#4DA6FF)' }}>🔢</div>
-            <div className="feat-info">
-              <div className="feat-name">Tablas de Conteo</div>
-              <div className="feat-meta">Ranges 1-10, 1-20, 1-30, 1-50, 1-100</div>
+          <div className="feat-info">
+            <div className="feat-name">Estándares MEN</div>
+            <div className="feat-sub">
+              {isGrade1 ? 'Programa de 1° Colombia' : 'Programa de 2° Colombia'}
             </div>
-            <div className="feat-arrow">→</div>
           </div>
-
-          {/* Conceptos */}
-          <div 
-            className="feat-btn" 
-            onClick={() => goScreen('conceptos')} 
-            style={{ background: 'linear-gradient(135deg,#fff,#E8FAF1)' }}
-          >
-            <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#16876A,#34D399)' }}>📚</div>
-            <div className="feat-info">
-              <div className="feat-name">Conceptos</div>
-              <div className="feat-meta">Definiciones técnicas de cada operación</div>
-            </div>
-            <div className="feat-arrow">→</div>
-          </div>
-
-          {/* Retos Matemáticos */}
-          <div 
-            className="feat-btn" 
-            onClick={() => goScreen('retos')} 
-            style={{ background: 'linear-gradient(135deg,#fff,#FFF6E6)' }}
-          >
-            <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#FF8A1F,#FFB066)' }}>🏆</div>
-            <div className="feat-info">
-              <div className="feat-name">Retos Matemáticos</div>
-              <div className="feat-meta">Desafíos para primer grado</div>
-            </div>
-            <div className="feat-arrow">→</div>
-          </div>
-
-          {/* Definiciones FEDOR */}
-          <div 
-            className="feat-btn" 
-            onClick={() => goScreen('definiciones')} 
-            style={{ background: 'linear-gradient(135deg,#fff,#F5F0FF)' }}
-          >
-            <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#7B2FBE,#A864E8)' }}>📚</div>
-            <div className="feat-info">
-              <div className="feat-name">Definiciones FEDOR</div>
-              <div className="feat-sub">Conceptos matemáticos claros para 1°</div>
-            </div>
-            <div className="feat-arrow">→</div>
-          </div>
-
-          {/* Estándares MEN */}
-          <div 
-            className="feat-btn" 
-            onClick={() => goScreen('estandares')} 
-            style={{ background: 'linear-gradient(135deg,#fff,#F0FDF9)' }}
-          >
-            <div 
-              className="feat-icon" 
-              style={{ 
-                background: '#fff', 
-                fontSize: '18px', 
-                fontWeight: 900, 
-                color: '#333', 
-                border: '1.5px solid rgba(0,0,0,.08)',
-                boxShadow: 'none' 
-              }}
-            >
-              🇨🇴
-            </div>
-            <div className="feat-info">
-              <div className="feat-name">Estándares MEN</div>
-              <div className="feat-sub">Programa de 1° Colombia</div>
-            </div>
-            <div className="feat-arrow">→</div>
-          </div>
-
-          {/* Problemas Cotidianos */}
-          <div 
-            className="feat-btn" 
-            onClick={() => goScreen('problemas')} 
-            style={{ background: 'linear-gradient(135deg,#fff,#E8FAF1)' }}
-          >
-            <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#0E5240,#34D399)' }}>🛒</div>
-            <div className="feat-info">
-              <div className="feat-name">Problemas Cotidianos</div>
-              <div className="feat-meta">Conteo de monedas + compras + 4 operaciones</div>
-            </div>
-            <div className="feat-arrow">→</div>
-          </div>
+          <div className="feat-arrow">→</div>
         </div>
-      )}
 
-      {/* For Grade 2, we can render fedor-brand at the bottom */}
-      {!isGrade1 && (
-        <div className="fedor-brand" style={{ marginTop: '1rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div className="fedor-brand-logo"><span style={{ fontSize: 20 }}>🚀</span></div>
-            <div>
-              <div className="fedor-brand-txt">Matemáticas de Fedor</div>
-              <div className="fedor-brand-sub">Libro Interactivo · Grado 2° · Colombia</div>
+        {/* Problemas Cotidianos */}
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('problemas')}
+          style={{ background: 'linear-gradient(135deg,#fff,#E8FAF1)' }}
+        >
+          <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#0E5240,#34D399)' }}>🛒</div>
+          <div className="feat-info">
+            <div className="feat-name">Problemas Cotidianos</div>
+            <div className="feat-meta">
+              {isGrade1
+                ? 'Conteo de monedas + compras + 4 operaciones'
+                : 'Conteo + compras + 4 operaciones + magnitudes + fracciones'}
             </div>
           </div>
+          <div className="feat-arrow">→</div>
         </div>
-      )}
+      </div>
 
       {showDailyModal && (
-        <div 
+        <div
           style={{
             position: 'fixed',
             inset: 0,
@@ -1012,86 +1000,86 @@ export default function HomeScreen() {
           }}
         >
           <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: '340px', padding: '0 1rem', color: '#fff' }}>
-            <div 
-              style={{ 
-                fontSize: '11px', 
-                fontWeight: 900, 
-                color: '#F5C518', 
-                letterSpacing: '.2em', 
-                marginBottom: '.5rem', 
-                animation: 'fadeInDown .5s ease .2s both' 
+            <div
+              style={{
+                fontSize: '11px',
+                fontWeight: 900,
+                color: '#F5C518',
+                letterSpacing: '.2em',
+                marginBottom: '.5rem',
+                animation: 'fadeInDown .5s ease .2s both'
               }}
             >
               ★ MEDALLA DESBLOQUEADA ★
             </div>
-            <div 
-              style={{ 
-                fontSize: '130px', 
-                margin: '.5rem 0', 
-                filter: 'drop-shadow(0 0 35px rgba(245,197,24,.7))', 
+            <div
+              style={{
+                fontSize: '130px',
+                margin: '.5rem 0',
+                filter: 'drop-shadow(0 0 35px rgba(245,197,24,.7))',
                 animation: 'trophyPop 1.1s cubic-bezier(.34,1.56,.64,1) both, trophySpin 3s linear .8s infinite',
                 lineHeight: 1.1
               }}
             >
               📅
             </div>
-            <div 
-              style={{ 
-                fontFamily: "'Baloo 2', sans-serif", 
-                fontSize: '30px', 
-                fontWeight: 900, 
-                color: '#FFE066', 
-                marginBottom: '.4rem', 
-                textShadow: '0 0 20px rgba(245,197,24,.6)', 
-                animation: 'fadeInUp .5s ease .6s both' 
+            <div
+              style={{
+                fontFamily: "'Baloo 2', sans-serif",
+                fontSize: '30px',
+                fontWeight: 900,
+                color: '#FFE066',
+                marginBottom: '.4rem',
+                textShadow: '0 0 20px rgba(245,197,24,.6)',
+                animation: 'fadeInUp .5s ease .6s both'
               }}
             >
               Constante
             </div>
-            <div 
-              style={{ 
-                fontSize: '13px', 
-                fontWeight: 700, 
-                color: 'rgba(255,255,255,.85)', 
-                lineHeight: 1.5, 
-                marginBottom: '1rem', 
-                animation: 'fadeInUp .5s ease .8s both' 
+            <div
+              style={{
+                fontSize: '13px',
+                fontWeight: 700,
+                color: 'rgba(255,255,255,.85)',
+                lineHeight: 1.5,
+                marginBottom: '1rem',
+                animation: 'fadeInUp .5s ease .8s both'
               }}
             >
               Entraste {progress.gamification.loginStreak || 3} días seguidos
             </div>
-            <div 
-              style={{ 
-                display: 'inline-flex', 
-                gap: '14px', 
-                background: 'rgba(245,197,24,.15)', 
-                border: '1.5px solid rgba(245,197,24,.4)', 
-                borderRadius: '14px', 
-                padding: '8px 18px', 
-                marginBottom: '1.25rem', 
-                animation: 'fadeInUp .5s ease 1s both' 
+            <div
+              style={{
+                display: 'inline-flex',
+                gap: '14px',
+                background: 'rgba(245,197,24,.15)',
+                border: '1.5px solid rgba(245,197,24,.4)',
+                borderRadius: '14px',
+                padding: '8px 18px',
+                marginBottom: '1.25rem',
+                animation: 'fadeInUp .5s ease 1s both'
               }}
             >
               <span style={{ fontSize: '14px', fontWeight: 900, color: '#F5C518' }}>+50 XP</span>
               <span style={{ fontSize: '14px', fontWeight: 900, color: '#FF8C2A' }}>+25 🪙</span>
             </div>
-            <button 
+            <button
               onClick={handleCloseDailyModal}
-              style={{ 
-                display: 'block', 
-                width: '100%', 
-                padding: '14px', 
-                fontSize: '15px', 
-                fontWeight: 900, 
-                background: 'linear-gradient(135deg,#F5C518,#FF8C2A)', 
-                color: '#2A0F60', 
-                border: 'none', 
-                borderRadius: '14px', 
-                cursor: 'pointer', 
-                fontFamily: "'Nunito', sans-serif", 
-                letterSpacing: '.05em', 
-                boxShadow: '0 8px 28px rgba(245,197,24,.5)', 
-                animation: 'fadeInUp .5s ease 1.2s both' 
+              style={{
+                display: 'block',
+                width: '100%',
+                padding: '14px',
+                fontSize: '15px',
+                fontWeight: 900,
+                background: 'linear-gradient(135deg,#F5C518,#FF8C2A)',
+                color: '#2A0F60',
+                border: 'none',
+                borderRadius: '14px',
+                cursor: 'pointer',
+                fontFamily: "'Nunito', sans-serif",
+                letterSpacing: '.05em',
+                boxShadow: '0 8px 28px rgba(245,197,24,.5)',
+                animation: 'fadeInUp .5s ease 1.2s both'
               }}
             >
               ¡GENIAL! 🚀
@@ -1101,7 +1089,7 @@ export default function HomeScreen() {
       )}
 
       {showRankUpModal && (
-        <div 
+        <div
           style={{
             position: 'fixed',
             inset: 0,
@@ -1121,38 +1109,38 @@ export default function HomeScreen() {
             <div style={{ fontSize: '13px', fontWeight: 700, color: 'rgba(255,255,255,.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', marginBottom: '.4rem' }}>
               <span>🌱</span> Explorador
             </div>
-            <div 
-              style={{ 
-                fontSize: '90px', 
-                margin: '.5rem 0', 
-                filter: 'drop-shadow(0 0 40px rgba(168,100,232,.9))', 
+            <div
+              style={{
+                fontSize: '90px',
+                margin: '.5rem 0',
+                filter: 'drop-shadow(0 0 40px rgba(168,100,232,.9))',
                 animation: 'rankPulse 1.6s ease-in-out infinite',
                 lineHeight: 1.1
               }}
             >
               ⭐
             </div>
-            <div 
-              style={{ 
-                fontFamily: "'Baloo 2', sans-serif", 
-                fontSize: '52px', 
-                fontWeight: 900, 
-                color: '#fff', 
+            <div
+              style={{
+                fontFamily: "'Baloo 2', sans-serif",
+                fontSize: '52px',
+                fontWeight: 900,
+                color: '#fff',
                 marginBottom: '.5rem',
                 lineHeight: 1.1
               }}
             >
               Aprendiz
             </div>
-            <div 
-              style={{ 
-                display: 'inline-flex', 
+            <div
+              style={{
+                display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
-                background: 'rgba(245,197,24,.15)', 
-                border: '1.5px solid rgba(245,197,24,.4)', 
-                borderRadius: '14px', 
-                padding: '6px 16px', 
+                background: 'rgba(245,197,24,.15)',
+                border: '1.5px solid rgba(245,197,24,.4)',
+                borderRadius: '14px',
+                padding: '6px 16px',
                 marginBottom: '1.25rem',
                 color: '#FFE066',
                 fontWeight: 800,
@@ -1164,21 +1152,21 @@ export default function HomeScreen() {
             <div style={{ fontSize: '12px', color: 'rgba(255,255,255,.85)', fontWeight: 700, marginBottom: '1.5rem', lineHeight: 1.5, maxWidth: '280px', margin: '0 auto 1.5rem' }}>
               ¡Has subido al siguiente rango espacial! Sigue volando alto, astronauta.
             </div>
-            <button 
+            <button
               onClick={() => setShowRankUpModal(false)}
-              style={{ 
-                width: '100%', 
-                padding: '14px', 
-                fontSize: '15px', 
-                fontWeight: 900, 
-                background: 'linear-gradient(135deg, #7B2FBE, #A864E8)', 
-                color: '#fff', 
-                border: 'none', 
-                borderRadius: '14px', 
-                cursor: 'pointer', 
-                fontFamily: "'Nunito', sans-serif", 
-                letterSpacing: '.05em', 
-                boxShadow: '0 8px 28px rgba(123,47,190,.5)' 
+              style={{
+                width: '100%',
+                padding: '14px',
+                fontSize: '15px',
+                fontWeight: 900,
+                background: 'linear-gradient(135deg, #7B2FBE, #A864E8)',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '14px',
+                cursor: 'pointer',
+                fontFamily: "'Nunito', sans-serif",
+                letterSpacing: '.05em',
+                boxShadow: '0 8px 28px rgba(123,47,190,.5)'
               }}
             >
               CONTINUAR MISIÓN ✨
@@ -1191,13 +1179,21 @@ export default function HomeScreen() {
         <ConceptosFedorModal onClose={() => setShowConceptos(false)} />
       )}
 
-      <ShopModal 
-        isOpen={showShopModal} 
-        onClose={() => setShowShopModal(false)} 
+      <ShopModal
+        isOpen={showShopModal}
+        onClose={() => setShowShopModal(false)}
       />
 
       {showStickersModal && (
         <StickerAlbumModal onClose={() => setShowStickersModal(false)} />
+      )}
+
+      {showCadeteIntro && (
+        <CadeteIntroModal
+          studentName={progress.student.name}
+          onClose={() => setShowCadeteIntro(false)}
+          onWatchTakeoff={() => setShowIntro(true)}
+        />
       )}
     </div>
   );
@@ -1352,18 +1348,18 @@ function ProgressMap() {
       </div>
       <div className="pm-path">
         {unit1.topics.map((t, ti) => {
-          const isTopicDone = t.levels.every((l) => {
-            const key = `u0t${ti}-n${l.index}`;
+          const isTopicDone = t.levels.every((l, li) => {
+            const key = `u0t${ti}-n${li + 1}`;
             return progress.scores[key] && progress.scores[key].pts > 0;
           });
 
-          const isTopicStarted = t.levels.some((l) => {
-            const key = `u0t${ti}-n${l.index}`;
+          const isTopicStarted = t.levels.some((l, li) => {
+            const key = `u0t${ti}-n${li + 1}`;
             return progress.scores[key] && progress.scores[key].pts > 0;
           });
 
-          const bestL = t.levels.findIndex((l) => {
-            const key = `u0t${ti}-n${l.index}`;
+          const bestL = t.levels.findIndex((l, li) => {
+            const key = `u0t${ti}-n${li + 1}`;
             return !progress.scores[key] || progress.scores[key].pts === 0;
           });
           const bestLName = bestL >= 0 ? t.levels[bestL].label : '';

@@ -195,38 +195,42 @@ export default function SetupScreen() {
         </div>
       </div>
 
-      {book?.slug === 'libro-1ro' && (
-        <div style={{ marginTop: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '0 1rem 2rem' }}>
-          <div
-            className="feat-btn"
-            onClick={() => goScreen('estandares')}
-            style={{ background: 'linear-gradient(135deg,#fff,#F0FDF9)', margin: 0 }}
-          >
-            <div className="feat-icon" style={{ background: '#fff', fontSize: '26px', border: '1.5px solid #C5BFEE', boxShadow: 'none' }}>
-              🇨🇴
-            </div>
-            <div className="feat-info">
-              <div className="feat-name">Estándares MEN</div>
-              <div className="feat-sub" style={{ fontSize: '11px', color: 'rgba(20,60,100,.65)' }}>Programa de 1° Colombia</div>
-            </div>
+      <div style={{ marginTop: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '0 1rem 2rem' }}>
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('estandares')}
+          style={{ background: 'linear-gradient(135deg,#fff,#F0FDF9)', margin: 0 }}
+        >
+          <div className="feat-icon" style={{ background: '#fff', fontSize: '26px', border: '1.5px solid #C5BFEE', boxShadow: 'none' }}>
+            🇨🇴
           </div>
-
-          <div
-            className="feat-btn"
-            onClick={() => goScreen('problemas')}
-            style={{ background: 'linear-gradient(135deg,#fff,#E8FAF1)', margin: 0 }}
-          >
-            <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#0E5240,#34D399)', color: '#fff' }}>
-              🛒
+          <div className="feat-info">
+            <div className="feat-name">Estándares MEN</div>
+            <div className="feat-sub" style={{ fontSize: '11px', color: 'rgba(20,60,100,.65)' }}>
+              {book?.slug === 'libro-1ro' ? 'Programa de 1° Colombia' : 'Programa de 2° Colombia'}
             </div>
-            <div className="feat-info" style={{ textAlign: 'left' }}>
-              <div className="feat-name">Problemas Cotidianos</div>
-              <div className="feat-meta">Conteo de monedas + compras + 4 operaciones</div>
-            </div>
-            <div className="feat-arrow">→</div>
           </div>
         </div>
-      )}
+
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('problemas')}
+          style={{ background: 'linear-gradient(135deg,#fff,#E8FAF1)', margin: 0 }}
+        >
+          <div className="feat-icon" style={{ background: 'linear-gradient(135deg,#0E5240,#34D399)', color: '#fff' }}>
+            🛒
+          </div>
+          <div className="feat-info" style={{ textAlign: 'left' }}>
+            <div className="feat-name">Problemas Cotidianos</div>
+            <div className="feat-meta">
+              {book?.slug === 'libro-1ro'
+                ? 'Conteo de monedas + compras + 4 operaciones'
+                : 'Conteo + compras + 4 operaciones + magnitudes + fracciones'}
+            </div>
+          </div>
+          <div className="feat-arrow">→</div>
+        </div>
+      </div>
     </div>
   );
 }

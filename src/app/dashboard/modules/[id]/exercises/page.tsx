@@ -126,6 +126,30 @@ const normalizeText = (value: string) => value
   .trim()
   .toLowerCase();
 
+const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2) => {
+  const normalizedId = normalizeText(routeId);
+  if (grade === 1 && (normalizedId === '1' || normalizedId === 'libro-1ro' || normalizedId === 'matematicas-fedor-1')) {
+    return true;
+  }
+  if (grade === 2 && (normalizedId === '2' || normalizedId === 'libro-2do' || normalizedId === 'matematicas-fedor-2')) {
+    return true;
+  }
+  if (!module) return false;
+
+  const haystack = normalizeText([
+    module.group,
+    module.title,
+    module.description,
+    module.tags?.join(' '),
+  ].filter(Boolean).join(' '));
+
+  if (grade === 1) {
+    return /\bgrado\s*1\b|\bgrado1\b|\b1ro\b|\bprimero\b|\b1\s*°/.test(haystack);
+  }
+
+  return /\bgrado\s*2\b|\bgrado2\b|\b2do\b|\bsegundo\b|\b2\s*°/.test(haystack);
+};
+
 const isInformationalTopic = (topic?: Topic) => (
   normalizeText(topic?.title || '').includes('problemas resueltos')
 );
@@ -4401,24 +4425,22 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   };
 
   const isGrade1Module = useMemo(() => {
-    if (resolvedParams.id === '1' || resolvedParams.id === 'libro-1ro') return true;
-    if (!currentModule) return false;
-    const group = (currentModule.group || '').toLowerCase();
-    const title = (currentModule.title || '').toLowerCase();
-    return group === 'grado1' || group === '1ro' || group === '1' || group.includes('primero') || title.includes('primero') || title.includes('1ro') || title.includes('1°');
+    return moduleMatchesGrade(currentModule, resolvedParams.id, 1);
+  }, [currentModule, resolvedParams.id]);
+
+  const isGrade2Module = useMemo(() => {
+    return moduleMatchesGrade(currentModule, resolvedParams.id, 2) || currentModule?.group === 'Grado2';
   }, [currentModule, resolvedParams.id]);
 
   const isBookModule = useMemo(() => {
-    if (isGrade1Module) return true;
-    if (!currentModule) return false;
-    return currentModule.group === 'Grado2';
-  }, [currentModule, isGrade1Module]);
+    return isGrade1Module || isGrade2Module;
+  }, [isGrade1Module, isGrade2Module]);
 
   const bookSlug = useMemo(() => {
     if (isGrade1Module) return 'libro-1ro';
-    if (!currentModule) return '';
-    return currentModule.group === 'Grado1' ? 'libro-1ro' : 'matematicas-fedor-2';
-  }, [currentModule, isGrade1Module]);
+    if (isGrade2Module) return 'matematicas-fedor-2';
+    return '';
+  }, [isGrade1Module, isGrade2Module]);
 
   if (isBookModule) {
     return (

@@ -206,21 +206,23 @@ export const bookService = {
 
     const promise = (async () => {
       if (bookBackendEnabled()) {
-        const res = await fetch(`${API_URL}/books/${slug}`, { headers: bookHeaders() });
-        if (!res.ok) {
-          throw new Error(`Error del servidor al obtener el libro ${slug}: HTTP ${res.status}`);
+        try {
+          const res = await fetch(`${API_URL}/books/${slug}`, { headers: bookHeaders() });
+          if (res.ok) {
+            const rawData = await res.json();
+            console.log(`[book.service] getBook("${slug}") data:`, rawData);
+            const data = rawData && rawData.bookCurriculum ? {
+              ...rawData,
+              ...rawData.bookCurriculum
+            } : rawData;
+            const unitsArray = data ? (data.units || data.UNITS) : null;
+            if (data && Array.isArray(unitsArray) && unitsArray.length > 0) {
+              return mapBookFromBackend(data, slug);
+            }
+          }
+        } catch (err) {
+          console.warn(`[book.service] Fallback to local mock for book ${slug}:`, err);
         }
-        const rawData = await res.json();
-        console.log(`[book.service] getBook("${slug}") data:`, rawData);
-        const data = rawData && rawData.bookCurriculum ? {
-          ...rawData,
-          ...rawData.bookCurriculum
-        } : rawData;
-        const unitsArray = data ? (data.units || data.UNITS) : null;
-        if (data && Array.isArray(unitsArray) && unitsArray.length > 0) {
-          return mapBookFromBackend(data, slug);
-        }
-        throw new Error(`El libro retornado por el backend ${slug} no contiene unidades válidas`);
       }
       if (slug === 'libro-1ro' || slug === 'matematicas-fedor-1') {
         return mockBook1;
@@ -245,11 +247,14 @@ export const bookService = {
 
     const promise = (async () => {
       if (bookBackendEnabled()) {
-        const res = await fetch(`${API_URL}/books/${slug}/gamification`, { headers: bookHeaders() });
-        if (!res.ok) {
-          throw new Error(`Error del servidor al obtener gamificación de ${slug}: HTTP ${res.status}`);
+        try {
+          const res = await fetch(`${API_URL}/books/${slug}/gamification`, { headers: bookHeaders() });
+          if (res.ok) {
+            return (await res.json()) as GamificationCatalog;
+          }
+        } catch (err) {
+          console.warn(`[book.service] Fallback to local mock for gamification ${slug}:`, err);
         }
-        return (await res.json()) as GamificationCatalog;
       }
       return mockGamificationCatalog;
     })();
@@ -271,11 +276,14 @@ export const bookService = {
 
     const promise = (async () => {
       if (bookBackendEnabled()) {
-        const res = await fetch(`${API_URL}/books/${slug}/lore`, { headers: bookHeaders() });
-        if (!res.ok) {
-          throw new Error(`Error del servidor al obtener lore de ${slug}: HTTP ${res.status}`);
+        try {
+          const res = await fetch(`${API_URL}/books/${slug}/lore`, { headers: bookHeaders() });
+          if (res.ok) {
+            return (await res.json()) as LoreChapter[];
+          }
+        } catch (err) {
+          console.warn(`[book.service] Fallback to local mock for lore ${slug}:`, err);
         }
-        return (await res.json()) as LoreChapter[];
       }
       return mockLoreChapters;
     })();
@@ -297,15 +305,17 @@ export const bookService = {
 
     const promise = (async () => {
       if (bookBackendEnabled()) {
-        const res = await fetch(`${API_URL}/books/${slug}/tutorials`, { headers: bookHeaders() });
-        if (!res.ok) {
-          throw new Error(`Error del servidor al obtener tutoriales de ${slug}: HTTP ${res.status}`);
+        try {
+          const res = await fetch(`${API_URL}/books/${slug}/tutorials`, { headers: bookHeaders() });
+          if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data)) {
+              return (data[unitIndex] as UnitTutorial) ?? null;
+            }
+          }
+        } catch (err) {
+          console.warn(`[book.service] Fallback to local mock for tutorial ${slug}_${unitIndex}:`, err);
         }
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          return (data[unitIndex] as UnitTutorial) ?? null;
-        }
-        return null;
       }
       return mockUnitTutorials[unitIndex] ?? null;
     })();
@@ -335,35 +345,24 @@ export const bookService = {
         return [];
       }
 
-      const cleanCounting: Record<string, LevelExample[]> = {
-        'u0t0-n1': [
-          { icon: "1️⃣", q: "¿Cuántos elementos hay? 🐉", a: "1", explain: "Un dragón = el número 1", vis: "🐉" },
-          { icon: "2️⃣", q: "¿Cuántos elementos hay? 🐄🐄", a: "2", explain: "Dos vacas = el número 2", vis: "🐄🐄" },
-          { icon: "3️⃣", q: "¿Cuántos elementos hay? 🍎🍎🍎", a: "3", explain: "Tres manzanas = el número 3", vis: "🍎🍎🍎" },
-          { icon: "4️⃣", q: "¿Cuántos elementos hay? ⭐⭐⭐•", a: "4", explain: "Cuatro estrellas = el número 4", vis: "⭐⭐⭐⭐" },
-          { icon: "5️⃣", q: "¿Cuántos elementos hay? 🌸🌸🌸🌸🌸", a: "5", explain: "Cinco flores = el número 5", vis: "🌸🌸🌸🌸🌸" },
-          { icon: "🔢", q: "¿Qué número va DESPUÉS del 3?", a: "4", explain: "1, 2, 3, → 4" },
-          { icon: "🔢", q: "¿Qué número va ANTES del 5?", a: "4", explain: "3, 4, 5 → el anterior a 5 es 4" },
-          { icon: "🌙", q: "¿Qué número va ENTRE 2 y 4?", a: "3", explain: "2, 3, 4" },
-          { icon: "🍬", q: "¿Cuántos elementos hay? 🍬🍬🍬🍬", a: "4", explain: "Cuatro dulces = el número 4", vis: "🍬🍬🍬🍬" },
-          { icon: "📊", q: "¿Cuál número es Mayor: 1 o 5?", a: "5", explain: "5 está más adelante en la recta" }
-        ],
-      };
-
-      if (cleanCounting[physicalKey]) return cleanCounting[physicalKey];
+      const directExact = mockLevelExamples[levelKey];
+      if (directExact && directExact.length > 0) return directExact;
 
       const direct = mockLevelExamples[physicalKey];
-      if (direct) return direct;
+      if (direct && direct.length > 0) return direct;
       return [];
     };
 
     const promise = (async () => {
       if (bookBackendEnabled()) {
-        const res = await fetch(`${API_URL}/books/${slug}/examples/${encodeURIComponent(physicalKey)}`, { headers: bookHeaders() });
-        if (!res.ok) {
-          throw new Error(`Error del servidor al obtener ejemplos para ${physicalKey}: HTTP ${res.status}`);
+        try {
+          const res = await fetch(`${API_URL}/books/${slug}/examples/${encodeURIComponent(physicalKey)}`, { headers: bookHeaders() });
+          if (res.ok) {
+            return (await res.json()) as LevelExample[];
+          }
+        } catch (err) {
+          console.warn(`[book.service] Fallback to local mock for examples ${physicalKey}:`, err);
         }
-        return (await res.json()) as LevelExample[];
       }
       return getLocalExamples();
     })();

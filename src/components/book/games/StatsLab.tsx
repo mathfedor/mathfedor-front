@@ -340,6 +340,7 @@ export default function StatsLab({ onClose }: { onClose: () => void }) {
   });
 
   const [type, setType] = useState<ChartType>('bar');
+  const [selectedCatId, setSelectedCatId] = useState<number>(() => rows[0]?.id || 1);
 
   // --- Quiz States ---
   const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[] | null>(null);
@@ -355,6 +356,13 @@ export default function StatsLab({ onClose }: { onClose: () => void }) {
       localStorage.setItem('fedor1_stats_lab', JSON.stringify({ title, rows }));
     } catch (e) {}
   }, [title, rows]);
+
+  // Keep selectedCatId valid
+  useEffect(() => {
+    if (!rows.some((r) => r.id === selectedCatId) && rows.length > 0) {
+      setSelectedCatId(rows[0].id);
+    }
+  }, [rows, selectedCatId]);
 
   // Statistics values
   const total = useMemo(() => rows.reduce((s, r) => s + (r.value || 0), 0), [rows]);
@@ -372,6 +380,26 @@ export default function StatsLab({ onClose }: { onClose: () => void }) {
     return { maxRow: mxR, minRow: mnR, maxVal: maxV, minVal: minV, average: avg };
   }, [rows, total]);
 
+  // Frequency Table data (5 columns: Categoría, Frecuencia, Frec. Acumulada, Frec. Relativa, Frec. Porcentual)
+  const freqData = useMemo(() => {
+    let acc = 0;
+    return rows.map((r) => {
+      const val = r.value || 0;
+      acc += val;
+      const rel = total > 0 ? val / total : 0;
+      const pct = total > 0 ? (rel * 100).toFixed(1) : '0.0';
+      return {
+        id: r.id,
+        label: r.label,
+        value: val,
+        acc,
+        rel: rel.toFixed(3),
+        pct: pct + '%',
+        color: r.color,
+      };
+    });
+  }, [rows, total]);
+
   // Row manipulators
   const setVal = (id: number, val: number) => {
     setRows((rs) => rs.map((r) => (r.id === id ? { ...r, value: Math.max(0, Math.min(100, val)) } : r)));
@@ -379,6 +407,14 @@ export default function StatsLab({ onClose }: { onClose: () => void }) {
 
   const setLabel = (id: number, label: string) => {
     setRows((rs) => rs.map((r) => (r.id === id ? { ...r, label } : r)));
+  };
+
+  const incrementSelectedDato = () => {
+    setRows((rs) => rs.map((r) => r.id === selectedCatId ? { ...r, value: Math.min(100, (r.value || 0) + 1) } : r));
+  };
+
+  const decrementSelectedDato = () => {
+    setRows((rs) => rs.map((r) => r.id === selectedCatId ? { ...r, value: Math.max(0, (r.value || 0) - 1) } : r));
   };
 
   const cycleColor = (index: number) => {
@@ -397,7 +433,9 @@ export default function StatsLab({ onClose }: { onClose: () => void }) {
   const addRow = () => {
     if (rows.length >= 8) return;
     const nextColor = DEFAULT_COLORS[rows.length % DEFAULT_COLORS.length];
-    setRows((rs) => [...rs, { id: Date.now() + Math.random(), label: 'Nuevo', value: 1, color: nextColor }]);
+    const newId = Date.now() + Math.random();
+    setRows((rs) => [...rs, { id: newId, label: `Dato ${rs.length + 1}`, value: 1, color: nextColor }]);
+    setSelectedCatId(newId);
   };
 
   const removeRow = (id: number) => {
@@ -410,11 +448,13 @@ export default function StatsLab({ onClose }: { onClose: () => void }) {
 
   const clearData = () => {
     if (window.confirm('¿Borrar todos los datos?')) {
-      setRows([{ id: Date.now(), label: 'A', value: 0, color: DEFAULT_COLORS[0] }]);
+      const resetId = Date.now();
+      setRows([{ id: resetId, label: 'Categoría 1', value: 0, color: DEFAULT_COLORS[0] }]);
+      setSelectedCatId(resetId);
     }
   };
 
-  // Dynamic Quiz Generator
+  // Dynamic Quiz Generator (with Frequency Table questions)
   const generateQuiz = () => {
     const validRows = rows.filter((r) => r.label.trim() && r.value > 0);
     if (validRows.length < 2) {
@@ -432,38 +472,38 @@ export default function StatsLab({ onClose }: { onClose: () => void }) {
 
     const questions: QuizQuestion[] = [];
 
-    // Q1: Highest
+    // Q1: Highest (Moda)
     questions.push({
-      q: `Mirando tu gráfico "${title}", ¿cuál tiene la barra más alta / el valor más alto?`,
+      q: `Mirando tu gráfico y tabla "${title}", ¿cuál es la categoría con MAYOR frecuencia?`,
       opts: validRows.slice(0, 4).map((r) => r.label),
       ans: mxRow.label,
     });
 
     // Q2: Max value count
     questions.push({
-      q: `¿Cuántos votos o datos tiene "${mxRow.label}"?`,
+      q: `En la tabla de frecuencia, ¿cuál es la frecuencia de "${mxRow.label}"?`,
       opts: [String(mxVal), String(mxVal + 1), String(Math.max(0, mxVal - 1)), String(mxVal + 2)],
       ans: String(mxVal),
     });
 
     // Q3: Lowest
     questions.push({
-      q: `¿Cuál tuvo el valor más BAJO en tu gráfico?`,
+      q: `¿Cuál es la categoría con MENOR frecuencia en tu tabla?`,
       opts: validRows.slice(0, 4).map((r) => r.label),
       ans: mnRow.label,
     });
 
     // Q4: Total
     questions.push({
-      q: `¿Cuál es el TOTAL si sumas todos los valores del gráfico?`,
+      q: `¿Cuál es el TOTAL de frecuencias (N) de la encuesta?`,
       opts: [String(tot), String(tot + 2), String(Math.max(0, tot - 3)), String(tot + 1)],
       ans: String(tot),
     });
 
-    // Q5: Sum of top 2
+    // Q5: Sum of top 2 or cumulative
     if (validRows.length >= 2) {
       questions.push({
-        q: `¿Cuánto suman "${validRows[0].label}" y "${validRows[1].label}" juntos?`,
+        q: `¿Cuánto suman las frecuencias de "${validRows[0].label}" y "${validRows[1].label}"?`,
         opts: [String(sumTopTwo), String(sumTopTwo + 1), String(Math.max(0, sumTopTwo - 1)), String(validRows[0].value)],
         ans: String(sumTopTwo),
       });
@@ -908,6 +948,76 @@ export default function StatsLab({ onClose }: { onClose: () => void }) {
               ))}
             </div>
 
+            {/* Quick Add / Remove Dato Bar (CFBA14) */}
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', margin: '0.9rem 0 0.5rem', fontFamily: 'Nunito, sans-serif' }}>
+              <button
+                type="button"
+                onClick={incrementSelectedDato}
+                style={{
+                  minHeight: '42px',
+                  padding: '8px 16px',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontWeight: 900,
+                  fontSize: '14px',
+                  cursor: 'pointer',
+                  background: 'linear-gradient(135deg,#06A570,#16876A)',
+                  color: '#fff',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: '0 3px 8px rgba(6,165,112,.25)',
+                  transition: 'transform 0.15s'
+                }}
+              >
+                ➕ Agregar dato (+1)
+              </button>
+              <button
+                type="button"
+                onClick={decrementSelectedDato}
+                style={{
+                  minHeight: '42px',
+                  padding: '8px 16px',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontWeight: 900,
+                  fontSize: '14px',
+                  cursor: 'pointer',
+                  background: 'linear-gradient(135deg,#A30041,#FF1D4E)',
+                  color: '#fff',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: '0 3px 8px rgba(163,0,65,.25)',
+                  transition: 'transform 0.15s'
+                }}
+              >
+                ➖ Eliminar dato (-1)
+              </button>
+              <select
+                value={selectedCatId}
+                onChange={(e) => setSelectedCatId(Number(e.target.value))}
+                style={{
+                  minHeight: '42px',
+                  padding: '8px 14px',
+                  borderRadius: '12px',
+                  border: '2px solid #7B2FBE',
+                  background: '#FFF',
+                  color: '#3D1054',
+                  fontWeight: 900,
+                  fontSize: '14px',
+                  cursor: 'pointer',
+                  fontFamily: 'Nunito, sans-serif'
+                }}
+              >
+                {rows.map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.label} ({r.value})
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {/* Toolbar */}
             <div className="stats-lab-toolbar">
               <button type="button" className="stats-lab-tool-btn add" onClick={addRow} disabled={rows.length >= 8}>
@@ -929,10 +1039,51 @@ export default function StatsLab({ onClose }: { onClose: () => void }) {
               {renderActiveChart()}
             </div>
 
+            {/* Tabla de Frecuencia (5 Columnas) */}
+            <div style={{ margin: '1.2rem 0', background: '#FFFBE8', border: '3px solid #F5C518', borderRadius: '16px', padding: '14px', fontFamily: 'Nunito, sans-serif', boxShadow: '0 6px 16px rgba(245,197,24,.15)' }}>
+              <div style={{ textAlign: 'center', fontFamily: "'Baloo 2', sans-serif", fontWeight: 900, fontSize: '18px', color: '#7A3200', marginBottom: '10px' }}>
+                📋 Tabla de frecuencia
+              </div>
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', background: '#FFF', borderRadius: '10px', overflow: 'hidden' }}>
+                  <thead>
+                    <tr style={{ background: 'linear-gradient(90deg,#7B2FBE,#A864E8)', color: '#fff' }}>
+                      <th style={{ padding: '9px 12px', textAlign: 'left' }}>Categoría</th>
+                      <th style={{ padding: '9px 12px', textAlign: 'center' }}>Frecuencia (f)</th>
+                      <th style={{ padding: '9px 12px', textAlign: 'center' }}>Frec. acumulada (F)</th>
+                      <th style={{ padding: '9px 12px', textAlign: 'center' }}>Frec. relativa (fr)</th>
+                      <th style={{ padding: '9px 12px', textAlign: 'center' }}>Frec. porcentual (%)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {freqData.map((d) => (
+                      <tr key={d.id} style={{ borderBottom: '1px solid #F5C518' }}>
+                        <td style={{ padding: '7px 12px', fontWeight: 800, color: '#3D1054', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span style={{ width: 12, height: 12, borderRadius: '50%', background: d.color, display: 'inline-block' }} />
+                          {d.label}
+                        </td>
+                        <td style={{ padding: '7px 12px', textAlign: 'center', fontWeight: 900, color: '#16876A' }}>{d.value}</td>
+                        <td style={{ padding: '7px 12px', textAlign: 'center', fontWeight: 800, color: '#7A3200' }}>{d.acc}</td>
+                        <td style={{ padding: '7px 12px', textAlign: 'center', color: '#6C28B4', fontWeight: 700 }}>{d.rel}</td>
+                        <td style={{ padding: '7px 12px', textAlign: 'center', color: '#A30041', fontWeight: 800 }}>{d.pct}</td>
+                      </tr>
+                    ))}
+                    <tr style={{ background: '#F0EDFF', fontWeight: 900, color: '#2A0F60' }}>
+                      <td style={{ padding: '9px 12px' }}>Total (N)</td>
+                      <td style={{ padding: '9px 12px', textAlign: 'center' }}>{total}</td>
+                      <td style={{ padding: '9px 12px', textAlign: 'center' }}>{total}</td>
+                      <td style={{ padding: '9px 12px', textAlign: 'center' }}>1.000</td>
+                      <td style={{ padding: '9px 12px', textAlign: 'center' }}>100.0%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
             {/* Statistics summary */}
             <div className="stats-lab-summary">
-              <div>🔢 <b>Total:</b> {total}</div>
-              <div>📈 <b>Máximo:</b> {maxVal} ({maxRow?.label || ''})</div>
+              <div>🔢 <b>Total (N):</b> {total}</div>
+              <div>📈 <b>Máximo (Moda):</b> {maxVal} ({maxRow?.label || ''})</div>
               <div>📉 <b>Mínimo:</b> {minVal} ({minRow?.label || ''})</div>
               <div>📊 <b>Promedio:</b> {average}</div>
             </div>
