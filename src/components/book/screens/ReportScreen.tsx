@@ -5,9 +5,11 @@ import { useBook } from '../context/BookContext';
 import { bookReportService } from '@/services/book-report.service';
 import { bookExportService } from '@/services/book-export.service';
 import { bookProgressService } from '@/services/book-progress.service';
+import { authService } from '@/services/auth.service';
 import ReportCharts, { countGrades } from '../shared/ReportCharts';
 import TeacherGuide from '../shared/TeacherGuide';
 import type { AIAnalysis } from '@/types/book-progress.types';
+import Swal from 'sweetalert2';
 
 const GRADE_COLORS: Record<string, string> = {
   S: '#16876A', A: '#1A6CB4', B: '#BA7517', L: '#C94B22',
@@ -27,6 +29,10 @@ export default function ReportScreen() {
   const [expandedTopics, setExpandedTopics] = useState<Record<string, boolean>>({});
 
   const bookSlug = book?.slug;
+  const isStudent = useMemo(() => {
+    const user = authService.getCurrentUser();
+    return user?.role?.toLowerCase() === 'student';
+  }, []);
 
   // Cargar reporte detallado del backend si está disponible
   useEffect(() => {
@@ -65,9 +71,32 @@ export default function ReportScreen() {
       </button>
 
       <div className="no-print" style={{ display: 'flex', gap: 8, marginBottom: '1rem' }}>
-        <button className="btn-secondary" style={{ flex: 1, fontSize: 13 }} onClick={() => bookExportService.printReport()}>
-          🖨️ Imprimir / PDF
-        </button>
+        {isStudent && (
+          <button
+            className="btn-secondary"
+            style={{
+              flex: 1,
+              fontSize: 13,
+              opacity: summary.completedLevels > 0 ? 1 : 0.6,
+              cursor: summary.completedLevels > 0 ? 'pointer' : 'not-allowed',
+            }}
+            onClick={() => {
+              if (summary.completedLevels > 0) {
+                bookExportService.printReport();
+              } else {
+                void Swal.fire({
+                  title: '¡Sigue estudiando!',
+                  text: 'Para poder descargar tu informe en PDF, primero debes completar al menos un nivel o unidad en el libro.',
+                  icon: 'info',
+                  confirmButtonColor: '#7C3AED',
+                  confirmButtonText: 'Entendido',
+                });
+              }
+            }}
+          >
+            🖨️ Descargar PDF
+          </button>
+        )}
         <button className="btn-secondary" style={{ flex: 1, fontSize: 13 }} onClick={() => bookExportService.exportProgressJson(progress)}>
           📤 Exportar JSON
         </button>

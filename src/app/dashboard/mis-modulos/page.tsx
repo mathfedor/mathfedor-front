@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -6,7 +6,13 @@ import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
 import { authService } from '@/services/auth.service';
 import { institutionModuleService, StudentModuleAccess } from '@/services/institution-module.service';
-import { FiBook, FiShoppingBag, FiArrowRight, FiRefreshCw, FiSearch, FiLayers } from 'react-icons/fi';
+import { FiBook, FiShoppingBag, FiArrowRight, FiRefreshCw, FiSearch, FiLayers, FiAlertCircle, FiClock } from 'react-icons/fi';
+import {
+  isModuleInFreeTrial,
+  isPurchaseExpired,
+  getPurchaseExpirationDate,
+  FREE_TRIAL_END_DATE,
+} from '@/constants/module-access.constants';
 
 export default function MisModulosPage() {
   const router = useRouter();
@@ -179,19 +185,48 @@ export default function MisModulosPage() {
 
 function ModuleCard({ module }: { module: StudentModuleAccess }) {
   const isInstitution = module.source === 'institution';
+  const isFreeTrialModule = isModuleInFreeTrial(module.group);
+  const expired = module.purchaseDate ? isPurchaseExpired(module.purchaseDate) : false;
+  const expirationDate = module.purchaseDate
+    ? getPurchaseExpirationDate(module.purchaseDate)
+    : null;
+
+  // Un módulo es accesible si:
+  // - Tiene compra activa (no expirada)
+  // - Es de trial gratuito (Grado1/Grado2 antes del 17/Sep/2026)
+  // - Es institucional
+  const canAccessExercises = (module.source === 'purchase' && !expired)
+    || isFreeTrialModule
+    || module.source === 'institution';
 
   return (
-    <div className="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:border-purple-500/40 hover:bg-white/8 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/10">
+    <div className={`group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:border-purple-500/40 hover:bg-white/8 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/10 ${expired && !isFreeTrialModule ? 'opacity-60' : ''}`}>
       {/* Badge de fuente */}
-      <div className="absolute top-3 right-3 z-10">
-        <span className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${
-          isInstitution
-            ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-            : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-        }`}>
-          {isInstitution ? <FiBook className="w-3 h-3" /> : <FiShoppingBag className="w-3 h-3" />}
-          {isInstitution ? 'Institución' : 'Comprado'}
-        </span>
+      <div className="absolute top-3 right-3 z-10 flex flex-col gap-1 items-end">
+        {isFreeTrialModule && module.source !== 'purchase' && (
+          <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/20 text-amber-300 border border-amber-500/30">
+            <FiClock className="w-3 h-3" />
+            Gratis hasta {FREE_TRIAL_END_DATE.toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' })}
+          </span>
+        )}
+        {expired && !isFreeTrialModule && (
+          <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-red-500/20 text-red-300 border border-red-500/30">
+            <FiAlertCircle className="w-3 h-3" />
+            Expirado
+          </span>
+        )}
+        {!expired && module.source === 'purchase' && (
+          <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            <FiShoppingBag className="w-3 h-3" />
+            Comprado
+          </span>
+        )}
+        {isInstitution && (
+          <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300 border border-blue-500/30">
+            <FiBook className="w-3 h-3" />
+            Institución
+          </span>
+        )}
       </div>
 
       {/* Imagen / Placeholder */}
@@ -214,13 +249,25 @@ function ModuleCard({ module }: { module: StudentModuleAccess }) {
         </h3>
 
         {module.purchaseDate && (
-          <p className="text-slate-500 text-xs mb-3">
+          <p className="text-slate-500 text-xs mb-1">
             Comprado: {new Date(module.purchaseDate).toLocaleDateString('es-CO')}
           </p>
         )}
 
+        {/* Vigencia */}
+        {expirationDate && !expired && (
+          <p className="text-emerald-400 text-xs mb-3">
+            Vigente hasta: {expirationDate.toLocaleDateString('es-CO')}
+          </p>
+        )}
+        {expirationDate && expired && !isFreeTrialModule && (
+          <p className="text-red-400 text-xs mb-3">
+            Venció el: {expirationDate.toLocaleDateString('es-CO')}
+          </p>
+        )}
+
         {/* Archivos descargables (solo B2C) */}
-        {module.gradeConfig?.downloadFiles?.length ? (
+        {module.gradeConfig?.downloadFiles?.length && !expired ? (
           <div className="flex items-center gap-1 text-xs text-slate-400 mb-3">
             <FiLayers className="w-3 h-3" />
             <span>{module.gradeConfig.downloadFiles.length} archivos disponibles</span>
@@ -228,13 +275,20 @@ function ModuleCard({ module }: { module: StudentModuleAccess }) {
         ) : null}
 
         {/* CTA */}
-        <Link
-          href={`/dashboard/modules/${module.module_id}/exercises`}
-          className="flex items-center justify-center gap-2 w-full py-2 bg-purple-600/80 hover:bg-purple-600 text-white rounded-xl text-sm font-medium transition-all group/btn"
-        >
-          <span>Ir a actividades</span>
-          <FiArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-        </Link>
+        {canAccessExercises ? (
+          <Link
+            href={`/dashboard/modules/${module.module_id}/exercises`}
+            className="flex items-center justify-center gap-2 w-full py-2 bg-purple-600/80 hover:bg-purple-600 text-white rounded-xl text-sm font-medium transition-all group/btn"
+          >
+            <span>Ir a actividades</span>
+            <FiArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+          </Link>
+        ) : (
+          <div className="flex items-center justify-center gap-2 w-full py-2 bg-gray-600/40 text-gray-400 rounded-xl text-sm font-medium cursor-not-allowed">
+            <FiAlertCircle className="w-4 h-4" />
+            <span>Acceso expirado</span>
+          </div>
+        )}
       </div>
     </div>
   );

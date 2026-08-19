@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 import Sidebar from '@/components/Sidebar';
 import { authService } from '@/services/auth.service';
 import { useRouter } from 'next/navigation';
-import { FiDownload, FiFile } from 'react-icons/fi';
+import { FiDownload, FiFile, FiAlertCircle } from 'react-icons/fi';
 import { AlertDialog } from '@/components/ui/alert-dialog';
 import { moduleService } from '@/services/module.service';
+import { isPurchaseExpired, getPurchaseExpirationDate } from '@/constants/module-access.constants';
 
 interface Module {
     module_id: string;
@@ -221,19 +222,31 @@ export default function DownloadsPage() {
                                         <tr className="bg-gray-100 dark:bg-[#232323] text-left">
                                             <th className="px-6 py-4 text-gray-700 dark:text-gray-300 font-medium">Módulo</th>
                                             <th className="px-6 py-4 text-gray-700 dark:text-gray-300 font-medium">Fecha de compra</th>
+                                            <th className="px-6 py-4 text-gray-700 dark:text-gray-300 font-medium">Vigencia</th>
                                             <th className="px-6 py-4 text-gray-700 dark:text-gray-300 font-medium">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                                        {modules.map((module, index) => (
+                                        {modules.map((module, index) => {
+                                            const expired = isPurchaseExpired(module.purchaseDate);
+                                            const expirationDate = module.purchaseDate
+                                                ? getPurchaseExpirationDate(module.purchaseDate)
+                                                : null;
+                                            return (
                                             <tr
                                                 key={index}
-                                                className="hover:bg-gray-50 dark:hover:bg-[#282828] transition-colors"
+                                                className={`hover:bg-gray-50 dark:hover:bg-[#282828] transition-colors ${expired ? 'opacity-60' : ''}`}
                                             >
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center gap-3">
-                                                        <FiFile className="text-blue-500 w-5 h-5" />
+                                                        <FiFile className={`w-5 h-5 ${expired ? 'text-gray-400' : 'text-blue-500'}`} />
                                                         <span className="text-black dark:text-white">{module.title}</span>
+                                                        {expired && (
+                                                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300">
+                                                                <FiAlertCircle className="w-3 h-3" />
+                                                                Expirado
+                                                            </span>
+                                                        )}
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
@@ -242,6 +255,25 @@ export default function DownloadsPage() {
                                                         : 'Sin fecha'}
                                                 </td>
                                                 <td className="px-6 py-4">
+                                                    {expired ? (
+                                                        <span className="text-sm text-red-600 dark:text-red-400">
+                                                            Venció el {expirationDate?.toLocaleDateString('es-CO') ?? '—'}
+                                                        </span>
+                                                    ) : expirationDate ? (
+                                                        <span className="text-sm text-emerald-600 dark:text-emerald-400">
+                                                            Hasta el {expirationDate.toLocaleDateString('es-CO')}
+                                                        </span>
+                                                    ) : (
+                                                        <span className="text-sm text-gray-400">—</span>
+                                                    )}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {expired ? (
+                                                        <div className="text-sm text-gray-400 dark:text-gray-500">
+                                                            <p>Tu acceso ha expirado.</p>
+                                                            <p className="text-xs">Renueva tu compra para descargar de nuevo.</p>
+                                                        </div>
+                                                    ) : (
                                                     <div className="flex flex-col gap-2">
                                                         {module.gradeConfig?.downloadFiles && module.gradeConfig.downloadFiles.length > 0 ? (
                                                             module.gradeConfig.downloadFiles.map((file, fileIndex) => (
@@ -305,9 +337,11 @@ export default function DownloadsPage() {
                                                             </button>
                                                         )}
                                                     </div>
+                                                    )}
                                                 </td>
                                             </tr>
-                                        ))}
+                                            );
+                                        })}
                                     </tbody>
                                 </table>
                             </div>

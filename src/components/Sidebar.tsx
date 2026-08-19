@@ -90,7 +90,7 @@ export default function Sidebar() {
   const [user, setUser] = useState<User | null>(null);
   const [isClient, setIsClient] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const { hasAccess } = useModuleAccess();
+  const { hasExerciseAccess } = useModuleAccess();
   const [modules, setModules] = useState<Module[]>([]);
   const isModuleDetailPage = /^\/dashboard\/modules\/(?!create(?:\/|$))[^/]+(?:\/.*)?$/.test(pathname ?? '');
   const isExpanded = pathname?.startsWith('/dashboard') && !isModuleDetailPage;
@@ -182,7 +182,7 @@ export default function Sidebar() {
           ...item,
           submenu: [
             ...modules
-              .filter(module => hasAccess(module._id))
+              .filter(module => hasExerciseAccess(module._id))
               .map(module => ({
                 title: module.title,
                 href: `/dashboard/modules/${module._id}/exercises`,
@@ -197,7 +197,7 @@ export default function Sidebar() {
   }
 
     return items;
-  }, [hasAccess, isClient, modules, user]);
+  }, [hasExerciseAccess, isClient, modules, user]);
 
   useEffect(() => {
     const activeSubmenu = menuItems.find(item => isSubmenuActive(item.submenu));

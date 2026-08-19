@@ -522,7 +522,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   const [user, setUser] = useState<User | null>(null);
   const [currentModule, setCurrentModule] = useState<Module | null>(null);
   const router = useRouter();
-  const { hasAccess } = useModuleAccess();
+  const { hasExerciseAccess } = useModuleAccess();
   const totalSteps = diagnosticConfigs[0]?.topics?.reduce((total, topic) => total + (topicHasExercises(topic) ? 2 : 1), 0) || 0;
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: string }>({});
   const [results, setResults] = useState<ModuleResultsState>(emptyResults);
@@ -586,7 +586,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         }
 
         // Verificar acceso al módulo usando el ID resuelto
-        if (!hasAccess(resolvedParams.id)) {
+        if (!hasExerciseAccess(resolvedParams.id)) {
           router.replace('/dashboard');
           return;
         }
@@ -603,7 +603,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     };
 
     checkAuthAndAccess();
-  }, [router, resolvedParams.id, hasAccess]);
+  }, [router, resolvedParams.id, hasExerciseAccess]);
 
   useEffect(() => {
     const fetchDiagnosticConfig = async () => {

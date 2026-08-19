@@ -1,4 +1,5 @@
 import api from "./api.config";
+import { isPurchaseExpired, getPurchaseExpirationDate } from "@/constants/module-access.constants";
 
 
 export interface PaymentMethod {
@@ -108,6 +109,10 @@ class PurchaseService {
     }
   }
 
+  /**
+   * Verifica si el usuario tiene acceso activo (no expirado) a un módulo.
+   * Una compra se considera activa si tiene status APPROVED y menos de 1 año de antigüedad.
+   */
   async hasAccessToModule(userId: string, moduleId: string): Promise<boolean> {
     try {
       const purchases = await this.getUserPurchases(userId);
@@ -115,10 +120,54 @@ class PurchaseService {
       return purchases.some(
         purchase =>
           purchase?.module_id === moduleId &&
-          purchase?.transaction?.status === 'APPROVED'
+          purchase?.transaction?.status === 'APPROVED' &&
+          !isPurchaseExpired(purchase?.purchase_date)
       );
     } catch (error) {
       console.error('Error al verificar acceso al módulo:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Devuelve la compra activa (no expirada) para un módulo, o null si no existe.
+   */
+  async getActivePurchaseForModule(userId: string, moduleId: string): Promise<(Purchase & { expiresAt: Date }) | null> {
+    try {
+      const purchases = await this.getUserPurchases(userId);
+
+      const activePurchase = purchases.find(
+        purchase =>
+          purchase?.module_id === moduleId &&
+          purchase?.transaction?.status === 'APPROVED' &&
+          !isPurchaseExpired(purchase?.purchase_date)
+      );
+
+      if (!activePurchase) return null;
+
+      return {
+        ...activePurchase,
+        expiresAt: getPurchaseExpirationDate(activePurchase.purchase_date)
+      };
+    } catch (error) {
+      console.error('Error al obtener compra activa:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Verifica si el usuario tiene alguna compra (activa o expirada) para un módulo.
+   */
+  async hasAnyPurchaseForModule(userId: string, moduleId: string): Promise<boolean> {
+    try {
+      const purchases = await this.getUserPurchases(userId);
+      return purchases.some(
+        purchase =>
+          purchase?.module_id === moduleId &&
+          purchase?.transaction?.status === 'APPROVED'
+      );
+    } catch (error) {
+      console.error('Error al verificar compras del módulo:', error);
       return false;
     }
   }

@@ -565,16 +565,16 @@ export default function StatsLab({ onClose }: { onClose: () => void }) {
 
     return (
       <svg viewBox={`0 0 ${W} ${H + 10}`} width="100%" height="auto" style={{ maxWidth: W, margin: '0 auto', display: 'block' }}>
-        <text x={W / 2} y={18} textAnchor="middle" fontSize="15" fontWeight="900" fill="#16876A" fontFamily="'Baloo 2', sans-serif">
+        <text x={W / 2} y={15} textAnchor="middle" fontSize="15" fontWeight="900" fill="#16876A" fontFamily="'Baloo 2', sans-serif">
           {title || 'Mi gráfico'}
         </text>
         <line x1={50} y1={H - 40} x2={W - 10} y2={H - 40} stroke="#444" strokeWidth={2} />
-        <line x1={50} y1={20} x2={50} y2={H - 40} stroke="#444" strokeWidth={2} />
+        <line x1={50} y1={30} x2={50} y2={H - 40} stroke="#444" strokeWidth={2} />
 
         {/* Y ticks */}
         {Array.from({ length: 5 }).map((_, t) => {
           const v = Math.round((maxV * t) / 4);
-          const ty = H - 40 - (t / 4) * (H - 70);
+          const ty = H - 40 - (t / 4) * (H - 85);
           return (
             <g key={t}>
               <line x1={45} y1={ty} x2={50} y2={ty} stroke="#888" strokeWidth={1.5} />
@@ -587,7 +587,7 @@ export default function StatsLab({ onClose }: { onClose: () => void }) {
 
         {/* Bars */}
         {rows.map((r, i) => {
-          const h = maxV > 0 ? Math.round((r.value / maxV) * (H - 70)) : 0;
+          const h = maxV > 0 ? Math.round((r.value / maxV) * (H - 85)) : 0;
           const x = 50 + i * (barW + 10);
           const y = H - 40 - h;
           const color = r.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length];
@@ -707,7 +707,7 @@ export default function StatsLab({ onClose }: { onClose: () => void }) {
 
     rows.forEach((d, i) => {
       const x = 45 + i * stepX;
-      const y = H - 40 - ((d.value || 0) / maxV) * (H - 70);
+      const y = H - 40 - ((d.value || 0) / maxV) * (H - 85);
       pts += `${i === 0 ? 'M' : 'L'} ${x} ${y} `;
 
       circles.push(
@@ -728,16 +728,16 @@ export default function StatsLab({ onClose }: { onClose: () => void }) {
 
     return (
       <svg viewBox={`0 0 ${W} ${H + 10}`} width="100%" height="auto" style={{ maxWidth: W, margin: '0 auto', display: 'block' }}>
-        <text x={W / 2} y={18} textAnchor="middle" fontSize="15" fontWeight="900" fill="#16876A" fontFamily="'Baloo 2', sans-serif">
+        <text x={W / 2} y={15} textAnchor="middle" fontSize="15" fontWeight="900" fill="#16876A" fontFamily="'Baloo 2', sans-serif">
           {title || 'Línea'}
         </text>
         <line x1={45} y1={H - 40} x2={W - 10} y2={H - 40} stroke="#444" strokeWidth={2} />
-        <line x1={45} y1={20} x2={45} y2={H - 40} stroke="#444" strokeWidth={2} />
+        <line x1={45} y1={30} x2={45} y2={H - 40} stroke="#444" strokeWidth={2} />
 
         {/* Y ticks */}
         {Array.from({ length: 5 }).map((_, t) => {
           const v = Math.round((maxV * t) / 4);
-          const ty = H - 40 - (t / 4) * (H - 70);
+          const ty = H - 40 - (t / 4) * (H - 85);
           return (
             <g key={t}>
               <line x1={40} y1={ty} x2={45} y2={ty} stroke="#888" strokeWidth={1.5} />
@@ -775,14 +775,14 @@ export default function StatsLab({ onClose }: { onClose: () => void }) {
 
     return (
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="auto" style={{ maxWidth: W, margin: '0 auto', display: 'block' }}>
-        <text x={W / 2} y={20} textAnchor="middle" fontSize="15" fontWeight="900" fill="#6C28B4" fontFamily="'Baloo 2', sans-serif">
+        <text x={W / 2} y={16} textAnchor="middle" fontSize="15" fontWeight="900" fill="#6C28B4" fontFamily="'Baloo 2', sans-serif">
           {title || 'Gráfico 3D'}
         </text>
         <line x1={40} y1={H - 50} x2={W - 10} y2={H - 50} stroke="#444" strokeWidth={2} />
-        <line x1={40} y1={30} x2={40} y2={H - 50} stroke="#444" strokeWidth={2} />
+        <line x1={40} y1={45} x2={40} y2={H - 50} stroke="#444" strokeWidth={2} />
 
         {rows.map((d, i) => {
-          const h = ((d.value || 0) / maxV) * (H - 90);
+          const h = ((d.value || 0) / maxV) * (H - 105);
           const x = startX + i * (barW + gap);
           const y = H - 50 - h;
           const color = d.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length];
