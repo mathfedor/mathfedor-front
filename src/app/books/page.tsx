@@ -14,6 +14,7 @@ const moduleBooksImages: Record<string, { src: string; alt: string }> = {
   Grado5: { src: '/fedor-modulo-5-libros.png', alt: 'Libros del módulo 5' },
   Grado6: { src: '/fedor-modulo-6-libros.png', alt: 'Libros del módulo 6' },
   Grado7: { src: '/fedor-modulo-7-libros.png', alt: 'Libros del módulo 7' },
+  Grado8: { src: '/fedor-modulo-8-libros.png', alt: 'Libros del módulo 8' },
   Grado10: { src: '/fedor-modulo-10-libros.png', alt: 'Libros del módulo 10' },
   Grado11: { src: '/fedor-modulo-11-libros.png', alt: 'Libros del módulo 11' },
 };
