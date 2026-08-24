@@ -146,7 +146,7 @@ export default function Sidebar() {
   const handleNavigation = (href: string) => {
     // Si es el enlace de ayuda, abrir WhatsApp en nueva pestaña
     if (href === 'whatsapp://help') {
-      window.open('https://wa.me/message/DY5UNLUUUA36J1?text=Hola%20amigos%20de%20Fedor%2C%20necesito%20ayuda.', '_blank');
+      window.open('https://wa.me/573107199897?text=Hola%20amigos%20de%20Fedor%2C%20necesito%20ayuda.', '_blank');
       return;
     }
     router.push(href);

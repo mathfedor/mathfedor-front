@@ -134,7 +134,7 @@ export default function RetosPage() {
       
       {/* Botón flotante de WhatsApp - Comentado temporalmente */}
       {/* <a
-        href="https://wa.me/573227496445?text=Hola%20amigos%20de%20Fedor%2C%20quisiera%20información%20sobre%20la%20Plataforma."
+        href="https://wa.me/573107199897?text=Hola%20amigos%20de%20Fedor%2C%20quisiera%20información%20sobre%20la%20Plataforma."
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 bg-white text-green-500 p-3 rounded-full shadow-lg hover:bg-green-600 transition-colors duration-200 z-50"

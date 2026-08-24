@@ -25,7 +25,7 @@ export default function HelpPage() {
                         </div>
                         <div className="pt-4">
                             <a
-                                href="https://wa.me/message/DY5UNLUUUA36J1?text=Hola%20amigos%20de%20Fedor%2C%20quisiera%20informaci%C3%B3n%20sobre%20los%20m%C3%B3dulos."
+                                href="https://wa.me/573107199897?text=Hola%20amigos%20de%20Fedor%2C%20quisiera%20informaci%C3%B3n%20sobre%20los%20m%C3%B3dulos."
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-2 px-6 py-3 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold rounded-full transition-colors shadow-lg"
