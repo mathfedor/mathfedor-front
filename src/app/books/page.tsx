@@ -730,7 +730,7 @@ export default function BooksPage() {
                 Cerrar
               </button>
               <iframe
-                src="/beneficiosdematematicasdefedorP%C3%A1gina.html"
+                src="/beneficiosdematematicasdefedorPagina.html"
                 title="Beneficios de Matemáticas de Fedor"
                 className="h-full w-full"
               />
