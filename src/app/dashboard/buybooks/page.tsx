@@ -14,6 +14,7 @@ const moduleBooksImages: Record<string, { src: string; alt: string }> = {
     Grado5: { src: '/fedor-modulo-5-libros.png', alt: 'Libros del módulo 5' },
     Grado6: { src: '/fedor-modulo-6-libros.png', alt: 'Libros del módulo 6' },
     Grado7: { src: '/fedor-modulo-7-libros.png', alt: 'Libros del módulo 7' },
+    Grado8: { src: '/fedor-modulo-8-libros.png', alt: 'Libros del módulo 8' },
     Grado10: { src: '/fedor-modulo-10-libros.png', alt: 'Libros del módulo 10' },
     Grado11: { src: '/fedor-modulo-11-libros.png', alt: 'Libros del módulo 11' },
 };
@@ -111,27 +112,27 @@ export default function BuyBooksPage() {
                             >
                                 <div className="bg-gradient-to-br from-orange-50 to-white p-5">
                                     <div className="mb-4 rounded-2xl bg-white/90 px-4 py-3 text-center shadow-sm border border-orange-100/80 backdrop-blur-sm">
-                                         <p className="text-sm sm:text-base font-extrabold uppercase tracking-wide text-gray-900 leading-snug">
-                                             {module.group === 'Grado1'
-                                                 ? 'El módulo tiene 2 libros para descargar y un libro digital gamificado en línea:'
-                                                 : 'El módulo tiene 3 libros para descargar y un libro digital gamificado en línea:'}
-                                         </p>
-                                     </div>
-                                     <div className="grid grid-cols-1 gap-5 md:grid-cols-[minmax(0,240px)_1fr] md:items-center">
-                                         <div className="relative h-64">
-                                             {module.image ? (
-                                                 <Image
-                                                     src={module.image.startsWith('/') ? module.image : `/${module.image}`}
-                                                     alt={`${module.title} - Método Fedor`}
-                                                     fill
-                                                     className="object-contain p-2"
-                                                 />
-                                             ) : (
-                                                 <div className="flex h-full items-center justify-center">
-                                                     <span className="text-6xl text-orange-500">📚</span>
-                                                 </div>
-                                             )}
-                                         </div>
+                                        <p className="text-sm sm:text-base font-extrabold uppercase tracking-wide text-gray-900 leading-snug">
+                                            {module.group === 'Grado1'
+                                                ? 'El módulo tiene 2 libros para descargar y un libro digital gamificado en línea:'
+                                                : 'El módulo tiene 3 libros para descargar y un libro digital gamificado en línea:'}
+                                        </p>
+                                    </div>
+                                    <div className="grid grid-cols-1 gap-5 md:grid-cols-[minmax(0,240px)_1fr] md:items-center">
+                                        <div className="relative h-64">
+                                            {module.image ? (
+                                                <Image
+                                                    src={module.image.startsWith('/') ? module.image : `/${module.image}`}
+                                                    alt={`${module.title} - Método Fedor`}
+                                                    fill
+                                                    className="object-contain p-2"
+                                                />
+                                            ) : (
+                                                <div className="flex h-full items-center justify-center">
+                                                    <span className="text-6xl text-orange-500">📚</span>
+                                                </div>
+                                            )}
+                                        </div>
 
                                         <div className="space-y-3">
                                             <button
