@@ -4425,7 +4425,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   };
 
   const isGrade1Module = useMemo(() => {
-    return moduleMatchesGrade(currentModule, resolvedParams.id, 1);
+    return moduleMatchesGrade(currentModule, resolvedParams.id, 1) || currentModule?.group === 'Grado1';
   }, [currentModule, resolvedParams.id]);
 
   const isGrade2Module = useMemo(() => {

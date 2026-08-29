@@ -42,13 +42,11 @@ export default function ConceptosFedorModal({ onClose }: ConceptosFedorModalProp
   };
 
   const snippets = topic?.snippets || [];
-
-  // Combine text for TTS
-  const fullTextToRead = topic ? `${topic.title}. ${snippets.join('. ')}` : '';
+  const fullTextToRead = topic ? `${topic.title}. ${snippets.slice(0, 25).join('. ')}` : '';
 
   return (
     <div
-      className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-5 bg-[#0E0830]/85 backdrop-blur-md animate-fade-in select-none font-nunito"
+      className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-5 bg-[#0E0830]/85 backdrop-blur-md animate-in fade-in select-none font-['Nunito',sans-serif]"
       onClick={onClose}
     >
       <div
@@ -56,20 +54,35 @@ export default function ConceptosFedorModal({ onClose }: ConceptosFedorModalProp
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Banner */}
-        <div className="bg-gradient-to-r from-[#BA7517] via-[#D97706] to-[#F5C518] text-white p-4 sm:p-5 flex items-center gap-3.5 shadow-md">
-          <span className="text-3xl sm:text-4xl filter drop-shadow">📚</span>
+        <div className="bg-gradient-to-r from-[#D97706] via-[#EAB308] to-[#FACC15] text-white p-4 sm:p-5 flex items-center gap-3.5 shadow-md">
+          <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center drop-shadow-sm">
+            <svg viewBox="0 0 64 64" className="w-9 h-9" fill="none">
+              {/* Green book */}
+              <rect x="14" y="18" width="11" height="26" rx="2" fill="#4ADE80" />
+              <rect x="14" y="41" width="11" height="3" fill="#E2E8F0" />
+              <line x1="16" y1="21" x2="16" y2="41" stroke="#22C55E" strokeWidth="1.5" />
+              {/* Red book */}
+              <rect x="27" y="14" width="11" height="30" rx="2" fill="#F43F5E" />
+              <rect x="27" y="41" width="11" height="3" fill="#E2E8F0" />
+              <line x1="29" y1="17" x2="29" y2="41" stroke="#BE123C" strokeWidth="1.5" />
+              {/* Blue book */}
+              <rect x="40" y="20" width="11" height="24" rx="2" fill="#38BDF8" />
+              <rect x="40" y="41" width="11" height="3" fill="#E2E8F0" />
+              <line x1="42" y1="23" x2="42" y2="41" stroke="#0284C7" strokeWidth="1.5" />
+            </svg>
+          </div>
           <div className="flex-1">
-            <h3 className="text-xl sm:text-2xl font-black font-baloo leading-tight">
+            <h3 className="text-xl sm:text-2xl font-black font-['Baloo_2',sans-serif] leading-tight text-white drop-shadow-xs">
               Conceptos Fedor
             </h3>
-            <p className="text-xs sm:text-sm font-bold text-white/90">
+            <p className="text-xs sm:text-sm font-bold text-white/95 mt-0.5">
               Tomado del libro original de 1° de primaria
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="w-9 h-9 rounded-full bg-white/25 hover:bg-white/40 text-white font-black text-xl flex items-center justify-center transition-transform active:scale-95 cursor-pointer"
+            className="w-9 h-9 rounded-full bg-white/80 hover:bg-white text-[#78350F] font-black text-xl flex items-center justify-center transition-transform hover:scale-105 active:scale-95 cursor-pointer shadow-xs"
             aria-label="Cerrar"
           >
             ×
@@ -91,14 +104,14 @@ export default function ConceptosFedorModal({ onClose }: ConceptosFedorModalProp
                     setActiveKey(k);
                     setIsSpeaking(false);
                   }}
-                  className={`px-3 py-2 rounded-2xl text-xs font-black transition-all cursor-pointer border-2 text-center leading-tight flex items-center justify-center gap-1.5 ${
+                  className={`px-3 py-2.5 rounded-2xl text-xs font-black transition-all cursor-pointer border-2 text-center leading-tight flex items-center justify-center gap-1.5 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#BA7517] to-[#F5C518] text-white border-[#BA7517] shadow-md scale-[1.02]'
-                      : 'bg-white/90 text-[#7A3200] border-[#E5C384] hover:bg-[#FFE4A8]'
+                      ? 'bg-gradient-to-r from-[#C27803] to-[#E59A18] text-white border-[#9A5A00] shadow-md scale-[1.02]'
+                      : 'bg-[#FDF3DE] text-[#7A3200] border-[#E9D5B5] hover:bg-[#FCECD0]'
                   }`}
                 >
                   <span className="text-base">{t.emoji}</span>
-                  <span>{t.title}</span>
+                  <span className="truncate">{t.title}</span>
                 </button>
               );
             })}
@@ -106,12 +119,12 @@ export default function ConceptosFedorModal({ onClose }: ConceptosFedorModalProp
 
           {/* Active Section Content Card */}
           {topic ? (
-            <div className="bg-white border-2 border-[#FFB066] rounded-2xl p-4 sm:p-6 shadow-sm mb-4">
+            <div className="bg-white border-2 border-[#FED7AA] rounded-2xl p-4 sm:p-6 shadow-sm mb-4">
               {/* Section Header with Audio Speaker Button */}
-              <div className="flex items-center justify-between border-b-2 border-dashed border-[#FFC58A] pb-3 mb-4">
+              <div className="flex items-center justify-between border-b-2 border-dashed border-[#FED7AA] pb-3 mb-4">
                 <div className="flex items-center gap-2">
                   <span className="text-xl">📖</span>
-                  <h4 className="font-baloo text-lg sm:text-xl font-black text-[#7A1B00]">
+                  <h4 className="font-['Baloo_2',sans-serif] text-lg sm:text-xl font-black text-[#7A1B00]">
                     Conceptos clave
                   </h4>
                 </div>
@@ -133,7 +146,7 @@ export default function ConceptosFedorModal({ onClose }: ConceptosFedorModalProp
               </div>
 
               {/* Snippets List */}
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2.5">
                 {snippets.map((s, idx) => {
                   const isTitleHeading =
                     idx < 3 ||
@@ -148,7 +161,7 @@ export default function ConceptosFedorModal({ onClose }: ConceptosFedorModalProp
                     return (
                       <div
                         key={idx}
-                        className="border-l-4 border-[#F59E0B] pl-3 py-1 font-black text-[#3D1468] text-base sm:text-lg mt-2"
+                        className="border-l-4 border-[#F59E0B] pl-3 py-1 font-black text-[#1E1B4B] text-base sm:text-lg mt-2"
                       >
                         {s}
                       </div>
@@ -158,7 +171,7 @@ export default function ConceptosFedorModal({ onClose }: ConceptosFedorModalProp
                   return (
                     <div
                       key={idx}
-                      className="bg-[#FFFDF0] border-l-4 border-[#F59E0B] border-t border-b border-r border-[#FDE68A] rounded-xl p-3.5 shadow-xs text-sm sm:text-base font-bold text-slate-800 leading-relaxed"
+                      className="bg-[#FFFBEB] border-l-4 border-[#EAB308] rounded-xl p-3 text-sm sm:text-base font-bold text-slate-800 leading-relaxed shadow-2xs"
                     >
                       {s}
                     </div>

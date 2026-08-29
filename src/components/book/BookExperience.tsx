@@ -35,6 +35,7 @@ import ColorPickerModal from './shared/ColorPickerModal';
 import ExplicacionModal from './shared/ExplicacionModal';
 import LoreModal from './shared/LoreModal';
 import MinijuegosPickerModal from './shared/MinijuegosPickerModal';
+import Juegos1roModal from './shared/Juegos1roModal';
 import ContenidosModal from './shared/ContenidosModal';
 import PwaRegister from './shared/PwaRegister';
 import InstallPrompt from './shared/InstallPrompt';
@@ -118,6 +119,7 @@ function BookShell() {
       <Grade1FloatingButtons
         onOpenAiChat={() => setShowAiChat(true)}
         onOpenIntro={() => setShowIntro(true)}
+        bookGroup={bookGroup}
       />
 
       {showFloatingChatButton && (
@@ -262,6 +264,7 @@ function FloatingQuickActions() {
     </div>
   );
 }
+
 const HouseIcon3D = () => (
   <svg viewBox="0 0 64 64" className="w-7 h-7 md:w-9 md:h-9 drop-shadow-sm">
     <ellipse cx="32" cy="55" rx="22" ry="5" fill="#4ADE80" />
@@ -299,43 +302,128 @@ const PaletteIcon3D = () => (
 );
 
 const BooksIcon3D = () => (
-  <svg viewBox="0 0 64 64" className="w-7 h-7 md:w-9 md:h-9 drop-shadow-sm">
-    <rect x="14" y="42" width="36" height="10" rx="3" fill="#3B82F6" />
-    <rect x="18" y="44" width="32" height="6" rx="1" fill="#EFF6FF" />
-    <rect x="12" y="42" width="6" height="10" rx="2" fill="#1D4ED8" />
-    <rect x="16" y="30" width="34" height="10" rx="3" fill="#F43F5E" />
-    <rect x="20" y="32" width="30" height="6" rx="1" fill="#FFF1F2" />
-    <rect x="14" y="30" width="6" height="10" rx="2" fill="#BE123C" />
-    <rect x="18" y="18" width="32" height="10" rx="3" fill="#10B981" />
-    <rect x="22" y="20" width="28" height="6" rx="1" fill="#ECFDF5" />
-    <rect x="16" y="18" width="6" height="10" rx="2" fill="#047857" />
+  <svg viewBox="0 0 64 64" className="w-8 h-8 md:w-9 md:h-9 drop-shadow-sm" fill="none">
+    {/* Green book (left) */}
+    <rect x="15" y="20" width="10" height="24" rx="2" fill="#4ADE80" />
+    <rect x="15" y="41" width="10" height="3" fill="#E2E8F0" />
+    <line x1="17" y1="23" x2="17" y2="41" stroke="#22C55E" strokeWidth="1.5" />
+
+    {/* Red/Pink book (middle) */}
+    <rect x="27" y="16" width="10" height="28" rx="2" fill="#F43F5E" />
+    <rect x="27" y="41" width="10" height="3" fill="#E2E8F0" />
+    <line x1="29" y1="19" x2="29" y2="41" stroke="#BE123C" strokeWidth="1.5" />
+
+    {/* Blue book (right) */}
+    <rect x="39" y="22" width="10" height="22" rx="2" fill="#38BDF8" />
+    <rect x="39" y="41" width="10" height="3" fill="#E2E8F0" />
+    <line x1="41" y1="25" x2="41" y2="41" stroke="#0284C7" strokeWidth="1.5" />
   </svg>
 );
 
 const GamepadIcon3D = () => (
-  <svg viewBox="0 0 64 64" className="w-7 h-7 md:w-9 md:h-9 drop-shadow-sm">
-    <path d="M 16 22 C 10 22 8 32 12 44 C 14 50 20 50 24 44 L 28 38 L 36 38 L 40 44 C 44 50 50 50 52 44 C 56 32 54 22 48 22 Z" fill="#7C3AED" />
-    <rect x="20" y="28" width="4" height="12" rx="1" fill="#374151" />
-    <rect x="16" y="32" width="12" height="4" rx="1" fill="#374151" />
-    <circle cx="44" cy="28" r="2.5" fill="#EF4444" />
-    <circle cx="48" cy="32" r="2.5" fill="#3B82F6" />
-    <circle cx="44" cy="36" r="2.5" fill="#10B981" />
-    <circle cx="40" cy="32" r="2.5" fill="#FACC15" />
+  <svg viewBox="0 0 64 64" className="w-8 h-8 md:w-9 md:h-9 drop-shadow-sm" fill="none">
+    {/* Purple gamepad body */}
+    <path
+      d="M 19 23 C 15 23 11 26 11 32 C 11 37 13 45 17 47 C 20 48 24 45 26 41 L 29 36 L 35 36 L 38 41 C 40 45 44 48 47 47 C 51 45 53 37 53 32 C 53 26 49 23 45 23 L 19 23 Z"
+      fill="#3730A3"
+    />
+    <path
+      d="M 20 24 C 17 24 13 27 13 32 C 13 37 14 44 18 45 C 20 46 23 43 25 40 L 28 35 L 36 35 L 39 40 C 41 43 44 46 46 45 C 50 44 51 37 51 32 C 51 27 47 24 44 24 L 20 24 Z"
+      fill="#4338CA"
+    />
+    {/* Grip highlight */}
+    <path
+      d="M 14 31 C 14 35 15 41 17 43 C 18 44 20 42 22 40"
+      stroke="#6366F1"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+
+    {/* Left D-pad */}
+    <rect x="18.5" y="28" width="3" height="8" rx="1" fill="#C7D2FE" />
+    <rect x="16" y="30.5" width="8" height="3" rx="1" fill="#C7D2FE" />
+
+    {/* Center subtle stick dots */}
+    <ellipse cx="28" cy="33" rx="1.5" ry="1.2" fill="#1E1B4B" />
+    <ellipse cx="36" cy="33" rx="1.5" ry="1.2" fill="#1E1B4B" />
+
+    {/* 4 Action buttons */}
+    <circle cx="44" cy="28" r="1.6" fill="#EF4444" />
+    <circle cx="47.5" cy="31.5" r="1.6" fill="#38BDF8" />
+    <circle cx="44" cy="35" r="1.6" fill="#22C55E" />
+    <circle cx="40.5" cy="31.5" r="1.6" fill="#FACC15" />
   </svg>
 );
 
 const DragonIcon3D = () => (
-  <svg viewBox="0 0 64 64" className="w-7 h-7 md:w-9 md:h-9 drop-shadow-sm">
-    <path d="M 42 16 L 48 10 L 48 22 Z" fill="#EC4899" />
-    <path d="M 46 24 L 52 18 L 52 30 Z" fill="#EC4899" />
-    <path d="M 16 34 C 16 20 28 16 42 20 C 48 22 50 28 48 34 C 46 42 38 48 28 48 C 20 48 16 42 16 34 Z" fill="#10B981" />
-    <path d="M 14 34 C 14 30 20 30 24 34 C 24 38 18 42 14 38 Z" fill="#34D399" />
-    <circle cx="18" cy="34" r="1.5" fill="#047857" />
-    <circle cx="32" cy="26" r="5" fill="#FFFFFF" />
-    <circle cx="31" cy="26" r="2.5" fill="#1E1B4B" />
-    <circle cx="32.5" cy="25" r="1" fill="#FFFFFF" />
-    <circle cx="28" cy="38" r="3" fill="#F472B6" opacity="0.6" />
-    <path d="M 22 20 C 18 16 16 10 20 8 C 24 10 24 16 25 20 Z" fill="#FACC15" />
+  <svg viewBox="0 0 64 64" className="w-8 h-8 md:w-9 md:h-9 drop-shadow-sm" fill="none">
+    {/* Pink/magenta crest/fins on the right */}
+    <path
+      d="M 44 22 C 49 21 53 24 53 28 C 53 31 51 33 48 34 C 52 35 54 38 53 42 C 52 45 49 48 45 48 L 42 34 Z"
+      fill="#E83D84"
+    />
+    <path
+      d="M 42 24 C 46 23 49 25 49 28 C 49 30 47 32 45 33 C 48 34 50 37 49 40 C 48 43 45 45 42 45 Z"
+      fill="#F472B6"
+    />
+
+    {/* Back straight horn */}
+    <path
+      d="M 33 16 C 35 11 41 9 44 10 C 45 11 43 15 39 18 C 36 20 34 19 33 16 Z"
+      fill="#E59A18"
+    />
+    <path
+      d="M 35 15 C 36 12 40 10 42 11 C 43 12 41 14 39 17 Z"
+      fill="#FBBF24"
+    />
+
+    {/* Yellow Curled front horn */}
+    <path
+      d="M 23 19 C 22 15 19 11 15 10 C 10 9 10 14 14 15 C 18 16 19 13 17 12 C 16 11 14 12 14 13 C 14 14 15 14 15 13 C 14 12 13 12 13 14 C 13 16 17 15 18 14 C 20 12 18 9 13 10 C 9 11 8 16 13 19 C 17 21 21 21 23 19 Z"
+      fill="#D97706"
+    />
+    <path
+      d="M 23 19 C 22 14 18 11 15 11 C 12 11 11 15 15 16 C 18 17 18 14 16 13 C 15 12 14 14 15 14 C 16 15 17 13 16 12 C 14 11 13 13 14 15 C 15 16 17 16 19 15 C 21 13 20 10 16 10 C 11 10 10 16 15 18 C 18 19 21 19 23 19 Z"
+      fill="#F59E0B"
+    />
+
+    {/* Main Green Dragon Head */}
+    <path
+      d="M 14 27 C 14 24 17 21 21 21 L 37 21 C 42 21 45 24 45 29 L 45 35 C 45 42 40 48 32 48 L 24 48 C 19 48 16 45 16 41 C 16 39 17 38 19 38 L 26 38 C 28 38 28 37 28 36 C 28 35 27 34 26 34 L 16 34 C 13 34 11 31 11 29 C 11 27 12 27 14 27 Z"
+      fill="#10B981"
+    />
+
+    {/* Snout highlight */}
+    <path
+      d="M 14 27 C 12 27 11 28 11 29 C 11 32 13 34 16 34 L 26 34 C 27 34 28 35 28 36 C 28 37 27 38 26 38 L 19 38 C 17 38 16 39 16 41 C 16 44 19 47 23 48 C 19 46 17 43 17 40 C 17 38 19 37 21 37 L 28 37 C 30 37 31 35 31 33 C 31 31 29 30 27 30 L 16 30 C 13 30 12 28 12 27 Z"
+      fill="#34D399"
+    />
+
+    {/* Nostril */}
+    <ellipse cx="14" cy="30" rx="1.5" ry="2.2" fill="#047857" />
+
+    {/* Mouth / Teeth */}
+    <path
+      d="M 16 34 L 26 34 C 27 34 27 35 27 35.5 C 27 36 27 36.5 26 36.5 L 17 36.5 C 16 36.5 16 36 16 35.5 Z"
+      fill="#064E3B"
+    />
+    <polygon points="17.5,34 18.8,36 20.1,34" fill="#FFFFFF" />
+    <polygon points="21,34 22.3,36 23.6,34" fill="#FFFFFF" />
+    <polygon points="24.5,34 25.8,36 27.1,34" fill="#FFFFFF" />
+
+    {/* Eye */}
+    <ellipse cx="28" cy="29" rx="2.5" ry="4" fill="#1E1B4B" />
+    <ellipse cx="27.6" cy="27.8" rx="0.9" ry="1.4" fill="#FFFFFF" />
+
+    {/* Throat underside / yellow-green gradient */}
+    <path
+      d="M 24 48 C 27 48 30 47 32 46 C 29 45 27 44 24 42 C 23 45 23 47 24 48 Z"
+      fill="#FDE047"
+    />
+    <path
+      d="M 32 46 C 37 44 40 40 41 35 C 39 36 36 37 34 39 C 33 42 32 44 32 46 Z"
+      fill="#6EE7B7"
+    />
   </svg>
 );
 
@@ -360,6 +448,8 @@ const ClapperboardIcon3D = () => (
     </g>
   </svg>
 );
+
+
 
 const MultiplyGridIcon3D = () => (
   <svg viewBox="0 0 64 64" className="w-7 h-7 md:w-9 md:h-9 drop-shadow-sm">
@@ -449,8 +539,10 @@ const ContenidosIcon3D = () => (
   </svg>
 );
 
-function Grade1FloatingButtons({ onOpenAiChat, onOpenIntro }: { onOpenAiChat?: () => void; onOpenIntro?: () => void }) {
-  const { book, screen, goScreen, openGameShortcut, grantReward } = useBook();
+const ASTRONAUT_AVATARS = ['🧑‍🚀', '👩‍🚀', '🦁', '🐯', '🦊', '🐸', '🦋', '🦄', '🐉', '🤖'];
+
+function Grade1FloatingButtons({ onOpenAiChat, onOpenIntro, bookGroup }: { onOpenAiChat?: () => void; onOpenIntro?: () => void; bookGroup?: string }) {
+  const { book, screen, goScreen, openGameShortcut, grantReward, progress, selectAvatar } = useBook();
   const [bubbleText, setBubbleText] = useState<string | null>(null);
   const [showJuegosPicker, setShowJuegosPicker] = useState(false);
   const [showStatsLab, setShowStatsLab] = useState(false);
@@ -468,19 +560,50 @@ function Grade1FloatingButtons({ onOpenAiChat, onOpenIntro }: { onOpenAiChat?: (
   const hidden = screen === 'lesson' || screen === 'galaxy';
   if (hidden) return null;
 
+  const isGrade1Internal =
+    bookGroup === 'Grado1' ||
+    book?.slug === 'libro-1ro' ||
+    book?.slug === 'matematicas-fedor-1' ||
+    book?.grade === '1' ||
+    book?.grade === '1°';
+
+  const tutorialClick = () => {
+    if (onOpenIntro) {
+      onOpenIntro();
+    } else {
+      goScreen('setup');
+    }
+  };
+
   const handleMascotClick = () => {
+    // 1. Cycle avatar through the list from 'Elige tu astronauta'
+    const currentAvatar = progress?.student?.avatar || '🧑‍🚀';
+    const currentIndex = ASTRONAUT_AVATARS.indexOf(currentAvatar);
+    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % ASTRONAUT_AVATARS.length;
+    const nextAvatar = ASTRONAUT_AVATARS[nextIndex];
+
+    selectAvatar(nextAvatar);
+
+    // 2. Play speech
+    try {
+      fedorTTS.speak(`Nuevo astronauta: ${nextAvatar}`);
+    } catch {
+      // ignore
+    }
+
+    // 3. Show dialog balloon
     const messages = [
-      "¡Hola! Soy Fedor, tu compañero de aprendizaje. 🐲",
-      "¡Intenta resolver los retos para ganar monedas! 🪙",
-      "¿Sabías que puedes personalizar tu astronauta en el perfil? 🧑‍🚀",
-      "¡Usa la recta numérica para sumar y restar más fácil! 📏",
-      "¡No olvides revisar tu reporte diario para ver tu progreso! 📊"
+      `¡Has cambiado tu astronauta a ${nextAvatar}! 🚀`,
+      `¡Genial! Tu nuevo astronauta es ${nextAvatar}. 🐲`,
+      `¡Nuevo look cósmico: ${nextAvatar}! ¡A resolver retos! 🌟`,
+      `¡Astronauta ${nextAvatar} listo para explorar! 🧑‍🚀`,
+      `¡Excelente elección: ${nextAvatar}! 🪙`,
     ];
     const randomMsg = messages[Math.floor(Math.random() * messages.length)];
     setBubbleText(randomMsg);
     setTimeout(() => {
       setBubbleText(null);
-    }, 5000);
+    }, 4000);
   };
 
   const handleScrollToUnits = () => {
@@ -495,16 +618,16 @@ function Grade1FloatingButtons({ onOpenAiChat, onOpenIntro }: { onOpenAiChat?: (
     }, 200);
   };
 
-  const handleGameSelect = (gameId: 'stats' | 'tablas' | 'conteo' | 'retos1') => {
+  const handleGameSelect = (gameId: 'stats' | 'tablas' | 'conteo' | 'retos') => {
     setShowJuegosPicker(false);
     if (gameId === 'stats') {
       setShowStatsLab(true);
     } else if (gameId === 'tablas') {
       setShowTablas(true);
     } else if (gameId === 'conteo') {
-      setShowConteo(true);
-    } else {
-      openGameShortcut(gameId);
+      goScreen('conteo');
+    } else if (gameId === 'retos') {
+      goScreen('retos');
     }
   };
 
@@ -530,7 +653,7 @@ function Grade1FloatingButtons({ onOpenAiChat, onOpenIntro }: { onOpenAiChat?: (
 
       {/* Balloon message for mascot */}
       {bubbleText && (
-        <div className="fixed bottom-24 left-24 md:left-32 bg-white border-2 border-amber-400 rounded-2xl p-3.5 shadow-2xl z-[9999] max-w-xs animate-bounce" style={{ animationDuration: '4s' }}>
+        <div className="fixed top-1/2 -translate-y-1/2 left-20 md:left-40 bg-white border-2 border-amber-400 rounded-2xl p-3.5 shadow-2xl z-[9999] max-w-xs animate-bounce" style={{ animationDuration: '4s' }}>
           <div className="text-sm font-black text-amber-900 leading-snug">{bubbleText}</div>
           {onOpenAiChat && (
             <button
@@ -547,232 +670,165 @@ function Grade1FloatingButtons({ onOpenAiChat, onOpenIntro }: { onOpenAiChat?: (
         </div>
       )}
 
-      {/* Botones flotantes verticales a la IZQUIERDA (5 botones exactos: Menú de unidades, Fedor tu compañero, Definiciones FEDOR, Panel de juegos, Tutorial) */}
-      <div className="fixed left-20 md:left-24 lg:left-28 top-1/2 -translate-y-1/2 z-[9996] flex flex-col gap-3 md:gap-4 select-none">
-        {/* 1. Menú de unidades (Clipboard/Menu) */}
-        <div className="relative group fedor-float-btn" style={{ animationDelay: '0s' }}>
-          <button
-            type="button"
-            onClick={handleScrollToUnits}
-            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
-            title="Menú de unidades"
-            aria-label="Menú de unidades"
-          >
-            <MenuUnitsIcon3D />
-          </button>
-          <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-            Menú de unidades
-          </span>
-        </div>
-
-        {/* 2. Dragón / Fedor tu compañero */}
-        <div className="relative group fedor-float-btn" style={{ animationDelay: '0.4s' }}>
-          <button
-            type="button"
-            onClick={handleMascotClick}
-            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
-            title="Fedor tu compañero"
-            aria-label="Fedor tu compañero"
-          >
-            <DragonIcon3D />
-          </button>
-          <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-            Fedor · tu compañero
-          </span>
-        </div>
-
-        {/* 3. Libros / Definiciones FEDOR */}
-        <div className="relative group fedor-float-btn" style={{ animationDelay: '0.8s' }}>
-          <button
-            type="button"
-            onClick={() => goScreen('definiciones')}
-            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
-            title="Definiciones FEDOR"
-            aria-label="Definiciones FEDOR"
-          >
-            <BooksIcon3D />
-          </button>
-          <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-            Definiciones FEDOR
-          </span>
-        </div>
-
-        {/* 4. Mando de Consola / Panel de juegos */}
-        <div className="relative group fedor-float-btn" style={{ animationDelay: '1.2s' }}>
-          <button
-            type="button"
-            onClick={() => setShowJuegosPicker(true)}
-            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
-            title="Panel de juegos"
-            aria-label="Panel de juegos"
-          >
-            <GamepadIcon3D />
-          </button>
-          <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-            Panel de juegos
-          </span>
-        </div>
-
-        {/* 5. Tutorial / Guía */}
-        <div className="relative group fedor-float-btn" style={{ animationDelay: '1.6s' }}>
-          <button
-            type="button"
-            onClick={() => {
-              if (onOpenIntro) {
-                onOpenIntro();
-              } else {
-                goScreen('setup');
-              }
-            }}
-            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
-            title="Tutorial"
-            aria-label="Tutorial"
-          >
-            <TutorialIcon3D />
-          </button>
-          <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-            Tutorial
-          </span>
-        </div>
-      </div>
-
-      {/* Botones flotantes verticales a la DERECHA (7 botones exactos: Tablas de multiplicar, Modulo de conteo, Videos del libro, Laboratorio estadistica, Explicacion, mini-juegos contenidos, historia Fedor) */}
-      <div className="fixed right-3 md:right-5 top-1/2 -translate-y-1/2 z-[9996] flex flex-col gap-2.5 md:gap-3 select-none">
-        {/* 1. Tablas de multiplicar */}
-        <div className="relative group fedor-float-btn" style={{ animationDelay: '0.2s' }}>
-          <button
-            type="button"
-            onClick={() => setShowTablas(true)}
-            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
-            title="Tablas de multiplicar"
-            aria-label="Tablas de multiplicar"
-          >
-            <MultiplyGridIcon3D />
-          </button>
-          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-            Tablas de multiplicar
-          </span>
-        </div>
-
-        {/* 2. Modulo de conteo */}
-        <div className="relative group fedor-float-btn" style={{ animationDelay: '0.6s' }}>
-          <button
-            type="button"
-            onClick={() => setShowConteo(true)}
-            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
-            title="Modulo de conteo"
-            aria-label="Modulo de conteo"
-          >
-            <NumbersGridIcon3D />
-          </button>
-          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-            Modulo de conteo
-          </span>
-        </div>
-
-        {/* 3. Videos del libro */}
-        <div className="relative group fedor-float-btn" style={{ animationDelay: '1.0s' }}>
-          <button
-            type="button"
-            onClick={() => setShowVideos(true)}
-            className="relative flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
-            title="Videos del libro"
-            aria-label="Videos del libro"
-          >
-            <ClapperboardIcon3D />
-            <span className="absolute -top-1 -right-1 bg-amber-400 text-amber-950 font-black text-[10px] md:text-[11px] px-1.5 py-0.5 rounded-full shadow border border-white">
-              222
+      {/* ── BOTONES FLOTANTES IZQUIERDOS: Mascota Fedor y Juegos para Grado 1 ── */}
+      {isGrade1Internal && (
+        <div className="fixed left-3 md:left-20 top-1/2 -translate-y-1/2 z-[9996] flex flex-col gap-4 select-none">
+          {/* 1. Mascota Fedor (Top) - Círculo con borde amarillo y dragón */}
+          <div className="relative group fedor-float-btn" style={{ animationDelay: '0s' }}>
+            <button
+              type="button"
+              onClick={handleMascotClick}
+              className="relative flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer"
+              style={{
+                background: 'radial-gradient(circle at 35% 35%, #FFFFFF 0%, #FEF9C3 60%, #FEF08A 100%)',
+                border: '3.5px solid #FACC15',
+                boxShadow: '0 8px 24px rgba(234, 179, 8, 0.4), 0 0 16px rgba(253, 224, 71, 0.5), inset 0 2px 4px rgba(255,255,255,0.8)',
+              }}
+              title="Toca tu mascota"
+              aria-label="Toca tu mascota"
+            >
+              <DragonIcon3D />
+            </button>
+            <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+              Toca tu mascota
             </span>
-          </button>
-          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-            Videos del libro
-          </span>
-        </div>
+          </div>
 
-        {/* 4. Laboratorio estadistica */}
-        <div className="relative group fedor-float-btn" style={{ animationDelay: '1.4s' }}>
-          <button
-            type="button"
-            onClick={() => setShowStatsLab(true)}
-            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
-            title="Laboratorio estadistica"
-            aria-label="Laboratorio estadistica"
-          >
-            <StatsLabIcon3D />
-          </button>
-          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-            Laboratorio estadistica
-          </span>
+          {/* 2. Juegos (Bottom) - Círculo con gradiente rojo-naranja y control púrpura */}
+          <div className="relative group fedor-float-btn" style={{ animationDelay: '0.4s' }}>
+            <button
+              type="button"
+              onClick={() => setShowJuegosPicker(true)}
+              className="relative flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer"
+              style={{
+                background: 'linear-gradient(135deg, #FF6B4A 0%, #FF334B 55%, #E60049 100%)',
+                border: '3px solid rgba(255, 255, 255, 0.65)',
+                boxShadow: '0 8px 25px rgba(230, 0, 73, 0.45), 0 0 18px rgba(255, 107, 74, 0.4), inset 0 2px 4px rgba(255,255,255,0.5)',
+              }}
+              title="Juegos de 1°"
+              aria-label="Juegos de 1°"
+            >
+              <GamepadIcon3D />
+            </button>
+            <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+              Juegos de 1°
+            </span>
+          </div>
         </div>
+      )}
 
-        {/* 5. Explicacion */}
-        <div className="relative group fedor-float-btn" style={{ animationDelay: '1.8s' }}>
-          <button
-            type="button"
-            onClick={() => setShowExplicacion(true)}
-            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
-            title="Explicacion"
-            aria-label="Explicacion"
-          >
-            <ExplicacionIcon3D />
-          </button>
-          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-            Explicacion
-          </span>
-        </div>
-
-        {/* 6. mini-juegos contenidos */}
-        <div className="relative group fedor-float-btn" style={{ animationDelay: '2.2s' }}>
-          <button
-            type="button"
-            onClick={() => setShowJuegosPicker(true)}
-            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
-            title="mini-juegos contenidos"
-            aria-label="mini-juegos contenidos"
-          >
-            <GamepadIcon3D />
-          </button>
-          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-            mini-juegos contenidos
-          </span>
-        </div>
-
-        {/* 7. Contenidos */}
-        <div className="relative group fedor-float-btn" style={{ animationDelay: '2.4s' }}>
-          <button
-            type="button"
-            onClick={() => setShowContenidos(true)}
-            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
-            title="Contenidos"
-            aria-label="Contenidos"
-          >
-            <ContenidosIcon3D />
-          </button>
-          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-            Contenidos
-          </span>
-        </div>
-
-        {/* 8. historia Fedor */}
-        <div className="relative group fedor-float-btn" style={{ animationDelay: '2.6s' }}>
-          <button
-            type="button"
-            onClick={() => setShowLore(true)}
-            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
-            title="historia Fedor"
-            aria-label="historia Fedor"
-          >
-            <LoreIcon3D />
-          </button>
-          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-            historia Fedor
-          </span>
-        </div>
+      {/* ── BOTONES FLOTANTES DERECHOS ── */}
+      <div className={`fixed right-3 md:right-5 top-1/2 -translate-y-1/2 z-[9996] flex flex-col select-none ${isGrade1Internal ? 'gap-3 md:gap-4' : 'gap-1.5 md:gap-2'}`}>
+        {(isGrade1Internal ? [
+          // GRADO 1: 4 BOTONES REDONDOS DERECHOS
+          {
+            key: 'g1-conceptos',
+            label: 'Conceptos',
+            icon: <BooksIcon3D />,
+            onClick: () => setShowConceptos(true),
+            s: {
+              border: '3.5px solid #FFFFFF',
+              background: 'linear-gradient(135deg, #FFC837 0%, #FF8008 100%)',
+              boxShadow: '0 8px 24px rgba(255, 140, 0, 0.5), 0 0 16px rgba(255, 200, 55, 0.6)',
+            },
+            delay: '0s',
+            badge: '',
+            extraClass: '',
+          },
+          {
+            key: 'g1-tablas',
+            label: 'Tablas de multiplicar',
+            icon: <NumbersGridIcon3D />,
+            onClick: () => setShowTablas(true),
+            s: {
+              border: '3.5px solid #FFFFFF',
+              background: 'linear-gradient(135deg, #FF512F 0%, #DD2476 100%)',
+              boxShadow: '0 8px 24px rgba(221, 36, 118, 0.5), 0 0 16px rgba(255, 81, 47, 0.6)',
+            },
+            delay: '0.2s',
+            badge: '',
+            extraClass: '',
+          },
+          {
+            key: 'g1-stats',
+            label: 'Laboratorio de Estadistica',
+            icon: <StatsLabIcon3D />,
+            onClick: () => setShowStatsLab(true),
+            s: {
+              border: '3.5px solid #FFFFFF',
+              background: 'linear-gradient(135deg, #11998E 0%, #38EF7D 100%)',
+              boxShadow: '0 8px 24px rgba(17, 153, 142, 0.5), 0 0 16px rgba(56, 239, 125, 0.6)',
+            },
+            delay: '0.4s',
+            badge: '',
+            extraClass: '',
+          },
+          {
+            key: 'g1-stickers',
+            label: 'Mi album de stickers',
+            icon: <StickerAlbumIcon3D />,
+            onClick: () => setShowStickers(true),
+            s: {
+              border: '3.5px solid #FFFFFF',
+              background: 'linear-gradient(135deg, #A855F7 0%, #EC4899 50%, #E11D48 100%)',
+              boxShadow: '0 8px 24px rgba(236, 72, 153, 0.5), 0 0 16px rgba(225, 29, 72, 0.6)',
+            },
+            delay: '0.6s',
+            badge: '',
+            extraClass: 'mt-10 md:mt-14',
+          },
+        ] : [
+          // GRADO 2: 13 BOTONES CUADRADOS (Estilo Imagen 2)
+          { key: 'g2-menu', label: 'Menú de unidades', icon: <NumbersGridIcon3D />, onClick: handleScrollToUnits, s: { border: '2px solid rgba(255,255,255,0.4)', background: 'linear-gradient(145deg,#FF9800,#F57C00)', boxShadow: '0 6px 14px rgba(245,124,0,0.4), inset 0 2px 2px rgba(255,255,255,0.4)' }, delay: '0s', badge: '', extraClass: '' },
+          { key: 'g2-tablas', label: 'Tablas de multiplicar', icon: <NumbersGridIcon3D />, onClick: () => setShowTablas(true), s: { border: '2px solid rgba(255,255,255,0.3)', background: 'linear-gradient(145deg,#7C3AED,#6D28D9)', boxShadow: '0 6px 14px rgba(109,40,217,0.4), inset 0 2px 2px rgba(255,255,255,0.3)' }, delay: '0.12s', badge: '', extraClass: '' },
+          { key: 'g2-vid', label: 'Videos del libro', icon: <ClapperboardIcon3D />, onClick: () => setShowVideos(true), s: { border: '2px solid rgba(255,255,255,0.8)', background: 'linear-gradient(145deg,#FFFFFF,#F1F5F9)', boxShadow: '0 6px 14px rgba(0,0,0,0.15), inset 0 2px 2px rgba(255,255,255,0.9)' }, delay: '0.24s', badge: '222', extraClass: '' },
+          { key: 'g2-stats', label: 'Laboratorio estadística', icon: <StatsLabIcon3D />, onClick: () => setShowStatsLab(true), s: { border: '2px solid rgba(255,255,255,0.2)', background: 'linear-gradient(145deg,#0F2B5C,#0A1C3E)', boxShadow: '0 6px 14px rgba(10,28,62,0.5), inset 0 2px 2px rgba(255,255,255,0.2)' }, delay: '0.36s', badge: '', extraClass: '' },
+          { key: 'g2-tut', label: 'Tutorial y Guía', icon: <TutorialIcon3D />, onClick: tutorialClick, s: { border: '2px solid rgba(255,255,255,0.4)', background: 'linear-gradient(145deg,#F59E0B,#D97706)', boxShadow: '0 6px 14px rgba(217,119,6,0.4), inset 0 2px 2px rgba(255,255,255,0.4)' }, delay: '0.48s', badge: '', extraClass: '' },
+          { key: 'g2-juegos', label: 'Panel de juegos', icon: <GamepadIcon3D />, onClick: () => setShowJuegosPicker(true), s: { border: '2px solid rgba(255,255,255,0.3)', background: 'linear-gradient(145deg,#8B5CF6,#7C3AED)', boxShadow: '0 6px 14px rgba(124,58,237,0.4), inset 0 2px 2px rgba(255,255,255,0.3)' }, delay: '0.6s', badge: '', extraClass: '' },
+          { key: 'g2-exp', label: 'Explicación y Fichas', icon: <ExplicacionIcon3D />, onClick: () => setShowExplicacion(true), s: { border: '2px solid rgba(255,255,255,0.8)', background: 'linear-gradient(145deg,#F8FAFC,#E2E8F0)', boxShadow: '0 6px 14px rgba(0,0,0,0.15), inset 0 2px 2px rgba(255,255,255,0.9)' }, delay: '0.72s', badge: '', extraClass: '' },
+          { key: 'g2-cont', label: 'Contenidos del libro', icon: <ContenidosIcon3D />, onClick: () => setShowContenidos(true), s: { border: '2px solid rgba(255,255,255,0.2)', background: 'linear-gradient(145deg,#1E3A8A,#172554)', boxShadow: '0 6px 14px rgba(23,37,84,0.5), inset 0 2px 2px rgba(255,255,255,0.2)' }, delay: '0.84s', badge: '', extraClass: '' },
+          { key: 'g2-def', label: 'Definiciones FEDOR', icon: <BooksIcon3D />, onClick: () => goScreen('definiciones'), s: { border: '2px solid rgba(255,255,255,0.3)', background: 'linear-gradient(145deg,#4F46E5,#4338CA)', boxShadow: '0 6px 14px rgba(67,56,202,0.4), inset 0 2px 2px rgba(255,255,255,0.3)' }, delay: '0.96s', badge: '', extraClass: '' },
+          { key: 'g2-conteo', label: 'Módulo de conteo', icon: <NumbersGridIcon3D />, onClick: () => setShowConteo(true), s: { border: '2px solid rgba(255,255,255,0.3)', background: 'linear-gradient(145deg,#0D9488,#0F766E)', boxShadow: '0 6px 14px rgba(15,118,110,0.4), inset 0 2px 2px rgba(255,255,255,0.3)' }, delay: '1.08s', badge: '', extraClass: '' },
+          { key: 'g2-fedor', label: 'Fedor · tu compañero', icon: <DragonIcon3D />, onClick: handleMascotClick, s: { border: '2px solid rgba(255,255,255,0.2)', background: 'linear-gradient(145deg,#1E1B4B,#0F0E2A)', boxShadow: '0 6px 14px rgba(15,14,42,0.5), inset 0 2px 2px rgba(255,255,255,0.2)' }, delay: '1.2s', badge: '', extraClass: '' },
+          { key: 'g2-lore', label: 'Historia Fedor', icon: <LoreIcon3D />, onClick: () => setShowLore(true), s: { border: '2px solid rgba(255,255,255,0.3)', background: 'linear-gradient(145deg,#6D28D9,#581C87)', boxShadow: '0 6px 14px rgba(88,28,135,0.4), inset 0 2px 2px rgba(255,255,255,0.3)' }, delay: '1.32s', badge: '', extraClass: '' },
+          { key: 'g2-mini', label: 'Mini-juegos adicionales', icon: <GamepadIcon3D />, onClick: () => setShowJuegosPicker(true), s: { border: '2px solid rgba(255,255,255,0.2)', background: 'linear-gradient(145deg,#18181B,#09090B)', boxShadow: '0 6px 14px rgba(0,0,0,0.5), inset 0 2px 2px rgba(255,255,255,0.2)' }, delay: '1.44s', badge: '', extraClass: '' },
+        ]).map((btn) => (
+          <div key={btn.key} className={`relative group fedor-float-btn ${btn.extraClass || ''}`} style={{ animationDelay: btn.delay }}>
+            <button
+              type="button"
+              onClick={btn.onClick}
+              className="relative flex items-center justify-center hover:scale-110 active:scale-95 transition-transform duration-200 cursor-pointer"
+              style={{
+                width: isGrade1Internal ? 56 : 46,
+                height: isGrade1Internal ? 56 : 46,
+                borderRadius: isGrade1Internal ? '50%' : 15,
+                ...btn.s,
+              }}
+              title={btn.label}
+              aria-label={btn.label}
+            >
+              {btn.icon}
+              {btn.badge && (
+                <span className="absolute -top-1.5 -right-1.5 bg-amber-400 text-amber-950 font-black text-[10px] px-1.5 py-0.5 rounded-full shadow border border-white">
+                  {btn.badge}
+                </span>
+              )}
+            </button>
+            <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+              {btn.label}
+            </span>
+          </div>
+        ))}
       </div>
-
-      {/* Modal Picker Mini-juegos de 2° */}
       {showJuegosPicker && (
-        <MinijuegosPickerModal onClose={() => setShowJuegosPicker(false)} />
+        isGrade1Internal ? (
+          <Juegos1roModal
+            onClose={() => setShowJuegosPicker(false)}
+            onSelectOption={handleGameSelect}
+          />
+        ) : (
+          <MinijuegosPickerModal onClose={() => setShowJuegosPicker(false)} />
+        )
       )}
       {showStatsLab && <StatsLab onClose={() => setShowStatsLab(false)} />}
       {showTablas && (
