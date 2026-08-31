@@ -41,6 +41,8 @@ import PwaRegister from './shared/PwaRegister';
 import InstallPrompt from './shared/InstallPrompt';
 import BookHeader from './shared/BookHeader';
 import LaunchIntro from './shared/LaunchIntro';
+import WelcomeIntroModal2do from './shared/WelcomeIntroModal2do';
+import Grade2FloatingButtons from './shared/Grade2FloatingButtons';
 import StatsLab from './games/StatsLab';
 import MultiplicationTables from './games/MultiplicationTables';
 import { fedorTTS } from '@/services/tts.service';
@@ -78,11 +80,13 @@ export default function BookExperience({ slug }: { slug: string }) {
 
 /** Aplica las preferencias de tema (modo oscuro) al contenedor raíz. */
 function BookShell() {
-  const { book, dark, loading, screen } = useBook();
+  const { book, dark, loading, screen, progress } = useBook();
   const [showIntro, setShowIntro] = useState(false);
+  const [showCadeteModal, setShowCadeteModal] = useState(false);
   const [showAiChat, setShowAiChat] = useState(false);
   const isGrade1 = book?.slug === 'libro-1ro';
-  const bookGroup = book?.slug === 'libro-1ro' ? 'Grado1' : 'Grado2';
+  const isGrade2 = book?.slug === 'libro-2do' || book?.slug === 'matematicas-fedor-2';
+  const bookGroup = isGrade1 ? 'Grado1' : 'Grado2';
 
   const prevScreenRef = useRef(screen);
   useEffect(() => {
@@ -91,6 +95,21 @@ function BookShell() {
     }
     prevScreenRef.current = screen;
   }, [screen]);
+
+  // Al ingresar a 2° grado por primera vez en la sesión, activar la intro de despegue
+  useEffect(() => {
+    if (isGrade2 && !loading && (screen === 'home' || screen === 'setup')) {
+      try {
+        const hasSeenIntro = sessionStorage.getItem('fedor2_session_intro_shown');
+        if (!hasSeenIntro) {
+          sessionStorage.setItem('fedor2_session_intro_shown', '1');
+          setShowIntro(true);
+        }
+      } catch {
+        // ignore
+      }
+    }
+  }, [isGrade2, loading, screen]);
 
   useEffect(() => {
     try {
@@ -116,11 +135,18 @@ function BookShell() {
         {!loading && <BookHeader onOpenIntro={() => setShowIntro(true)} />}
         <BookRouter />
       </div>
-      <Grade1FloatingButtons
-        onOpenAiChat={() => setShowAiChat(true)}
-        onOpenIntro={() => setShowIntro(true)}
-        bookGroup={bookGroup}
-      />
+      {isGrade1 ? (
+        <Grade1FloatingButtons
+          onOpenAiChat={() => setShowAiChat(true)}
+          onOpenIntro={() => setShowIntro(true)}
+          bookGroup={bookGroup}
+        />
+      ) : (
+        <Grade2FloatingButtons
+          onOpenAiChat={() => setShowAiChat(true)}
+          onOpenIntro={() => setShowIntro(true)}
+        />
+      )}
 
       {showFloatingChatButton && (
         <button
@@ -140,7 +166,21 @@ function BookShell() {
       />
 
       <InstallPrompt />
-      {showIntro && <LaunchIntro onClose={() => setShowIntro(false)} />}
+      {showIntro && (
+        <LaunchIntro
+          onClose={() => {
+            setShowIntro(false);
+            if (isGrade2) {
+              setShowCadeteModal(true);
+            }
+          }}
+        />
+      )}
+      {showCadeteModal && isGrade2 && (
+        <WelcomeIntroModal2do
+          onClose={() => setShowCadeteModal(false)}
+        />
+      )}
     </div>
   );
 }

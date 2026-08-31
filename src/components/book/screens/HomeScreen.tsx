@@ -7,11 +7,12 @@ import Starfield from '../shared/Starfield';
 import UnitCard from '../shared/UnitCard';
 import LaunchIntro from '../shared/LaunchIntro';
 import TutorialOverlay from '../shared/TutorialOverlay';
+import WelcomeTutorialModal from '../shared/WelcomeTutorialModal';
 import ConceptosFedorModal from '../shared/ConceptosFedorModal';
 import ShopModal from '../shared/ShopModal';
 import StickerAlbumModal from '../shared/StickerAlbumModal';
 import FedorRankCard from '../shared/FedorRankCard';
-import CadeteIntroModal from '../shared/CadeteIntroModal';
+import WelcomeIntroModal2do from '../shared/WelcomeIntroModal2do';
 import { globalProgressPct, unitProgressPct } from '../shared/progress.utils';
 import { dayKey } from '@/services/daily-challenge.service';
 
@@ -333,8 +334,24 @@ export default function HomeScreen() {
         )}
       </div>
 
-      {showIntro && <LaunchIntro onClose={() => setShowIntro(false)} />}
-      {showTutorial && <TutorialOverlay onClose={closeTutorial} />}
+      {showIntro && (
+        <LaunchIntro
+          onClose={() => {
+            setShowIntro(false);
+            if (!isGrade1) {
+              setShowCadeteIntro(true);
+            }
+          }}
+        />
+      )}
+      {showCadeteIntro && !showIntro && (
+        <WelcomeIntroModal2do
+          onClose={() => setShowCadeteIntro(false)}
+        />
+      )}
+      {showTutorial && !showIntro && isGrade1 && (
+        <TutorialOverlay onClose={() => setShowTutorial(false)} />
+      )}
 
       {/* Mapa galaxia 3D */}
       <div
@@ -1189,10 +1206,8 @@ export default function HomeScreen() {
       )}
 
       {showCadeteIntro && (
-        <CadeteIntroModal
-          studentName={progress.student.name}
+        <WelcomeIntroModal2do
           onClose={() => setShowCadeteIntro(false)}
-          onWatchTakeoff={() => setShowIntro(true)}
         />
       )}
     </div>
