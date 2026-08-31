@@ -32,6 +32,10 @@ interface RawExercise {
   countEmoji?: string;
   countN?: number;
   svgFig?: string;
+  vis?: string;
+  exp?: string;
+  explain?: string;
+  visObjs?: Array<{ e: string; n: number; label?: string }>;
 }
 
 interface RawLevel {
@@ -74,7 +78,9 @@ function mapExercise(raw: RawExercise, id: string): Exercise {
     fig_data: raw.fig_data,
     countEmoji: raw.countEmoji,
     countN: raw.countN,
-    svgFig: raw.svgFig,
+    svgFig: raw.vis || raw.svgFig,
+    explain: raw.exp || raw.explain,
+    visObjs: raw.visObjs,
   };
   if (raw.type === 'mcq') {
     return { ...base, type: 'mcq', opts: raw.opts ?? [], ans: raw.ans ?? '' };

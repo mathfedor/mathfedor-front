@@ -4,6 +4,7 @@ import { useState, type CSSProperties } from 'react';
 import type { Exercise } from '@/types/book.types';
 import ExerciseFigure from './ExerciseFigure';
 import { bookAudio } from '@/services/book-audio.service';
+import { fedorTTS } from '@/services/tts.service';
 import ProcedureModal from './ProcedureModal';
 
 interface Props {
@@ -61,50 +62,65 @@ export default function ExerciseView({ exercise, index, total, onAnswer, isGrade
         Ejercicio {index + 1} de {total}
       </div>
 
-      <div className="ex-q-card">
+      <div className="ex-q-card" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {exercise.badge && (
-          <span className="ex-badge" style={{ display: 'inline-block', padding: '3px 10px', borderRadius: 999, fontSize: 11, fontWeight: 800, marginBottom: 8, ...parseBst(exercise.bst) }}>
-            {exercise.badge}
-          </span>
-        )}
-
-        {exercise.countEmoji && exercise.countN !== undefined && (
-          <div 
-            style={{ 
-              background: '#F1EFFE', 
-              border: '1.5px solid #DCD8FC', 
-              borderRadius: '16px', 
-              padding: '1.25rem', 
-              marginBottom: '1.25rem', 
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px'
-            }}
-          >
-            <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
-              {Array.from({ length: exercise.countN }).map((_, i) => (
-                <span key={i} style={{ fontSize: '32px', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }}>
-                  {exercise.countEmoji}
-                </span>
-              ))}
-            </div>
-            <div style={{ fontSize: '11px', fontWeight: 800, color: '#5A3D8A' }}>
-              Cuenta cada {exercise.countEmoji} ➔ escribe el total abajo
-            </div>
+          <div style={{ marginBottom: 6 }}>
+            <span
+              className="ex-badge"
+              style={{
+                display: 'inline-block',
+                padding: '3px 12px',
+                borderRadius: 999,
+                fontSize: 11,
+                fontWeight: 800,
+                ...parseBst(exercise.bst),
+              }}
+            >
+              {exercise.badge}
+            </span>
           </div>
         )}
 
-        {exercise.visObjs && exercise.visObjs.length > 0 && (
+        {/* 1. Mascota / Emoji Superior */}
+        {exercise.mascot && (
+          <div
+            className="ex-mascot"
+            style={{
+              fontSize: '44px',
+              lineHeight: 1,
+              marginBottom: '0.6rem',
+              userSelect: 'none',
+              filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.08))',
+            }}
+          >
+            {exercise.mascot}
+          </div>
+        )}
+
+        {/* 2. Visualización Gráfica SVG */}
+        {exercise.svgFig && (
+          <div
+            className="ex-figure"
+            style={{
+              width: '100%',
+              maxWidth: '380px',
+              margin: '0.2rem auto 0.8rem',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+            dangerouslySetInnerHTML={{ __html: exercise.svgFig }}
+          />
+        )}
+
+        {/* 2b. Visualización de Objetos de Conteo */}
+        {exercise.visObjs && exercise.visObjs.length > 0 && !exercise.svgFig && (
           <div
             style={{
               background: '#FFF8E0',
               border: '2.5px solid #FF8C2A',
               borderRadius: '16px',
               padding: '1.25rem',
-              marginBottom: '1.25rem',
+              marginBottom: '1rem',
               textAlign: 'center',
               display: 'flex',
               flexDirection: 'column',
@@ -112,6 +128,8 @@ export default function ExerciseView({ exercise, index, total, onAnswer, isGrade
               justifyContent: 'center',
               gap: '10px',
               boxShadow: '0 4px 14px rgba(232,101,10,0.15)',
+              width: '100%',
+              maxWidth: '380px',
             }}
           >
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -133,28 +151,105 @@ export default function ExerciseView({ exercise, index, total, onAnswer, isGrade
           </div>
         )}
 
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: isGrade1 ? 'column' : 'row', 
-          alignItems: 'center', 
-          textAlign: isGrade1 ? 'center' : 'left', 
-          gap: 10,
-          justifyContent: 'center'
-        }}>
-          {exercise.mascot && <span style={{ fontSize: isGrade1 ? 40 : 30 }}>{exercise.mascot}</span>}
-          <div style={{ flex: 1, width: '100%' }}>
-            {exercise.ctx && <div className="ex-ctx" style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 6 }}>{exercise.ctx}</div>}
-            <div className="ex-q" style={{ fontSize: 18, fontWeight: 900, whiteSpace: 'pre-line' }}>{exercise.q}</div>
+        {exercise.countEmoji && exercise.countN !== undefined && !exercise.svgFig && (
+          <div 
+            style={{ 
+              background: '#F1EFFE', 
+              border: '1.5px solid #DCD8FC', 
+              borderRadius: '16px', 
+              padding: '1.25rem', 
+              marginBottom: '1rem', 
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              width: '100%',
+              maxWidth: '380px',
+            }}
+          >
+            <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {Array.from({ length: exercise.countN }).map((_, i) => (
+                <span key={i} style={{ fontSize: '32px', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }}>
+                  {exercise.countEmoji}
+                </span>
+              ))}
+            </div>
+            <div style={{ fontSize: '11px', fontWeight: 800, color: '#5A3D8A' }}>
+              Cuenta cada {exercise.countEmoji} ➔ escribe el total abajo
+            </div>
+          </div>
+        )}
+
+        {exercise.figure && <ExerciseFigure figure={exercise.figure} data={exercise.fig_data} />}
+
+        {/* 3. Enunciado / Pregunta Organizada debajo del gráfico con botón de audio TTS */}
+        <div style={{ width: '100%', marginTop: '0.4rem', textAlign: 'center' }}>
+          {exercise.ctx && (
+            <div className="ex-ctx" style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 6 }}>
+              {exercise.ctx}
+            </div>
+          )}
+          <div
+            className="ex-q"
+            style={{
+              fontSize: 21,
+              fontWeight: 900,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              fontFamily: "'Nunito', sans-serif",
+              color: '#1A0A3C',
+            }}
+          >
+            <span>{exercise.q}</span>
+            <button
+              type="button"
+              onClick={() => {
+                try {
+                  fedorTTS.speak(exercise.q.replace(/[\?¿=]/g, '').trim() || exercise.q);
+                } catch {
+                  // ignore
+                }
+              }}
+              title="Escuchar enunciado"
+              aria-label="Escuchar enunciado"
+              style={{
+                background: '#F1F5F9',
+                border: '1px solid #CBD5E1',
+                borderRadius: '6px',
+                padding: '2px 6px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'transform 0.1s ease',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.15)')}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+            >
+              🔊
+            </button>
           </div>
         </div>
-        {exercise.figure && <ExerciseFigure figure={exercise.figure} data={exercise.fig_data} />}
-        {exercise.svgFig && (
-          <div className="ex-figure" dangerouslySetInnerHTML={{ __html: exercise.svgFig }} />
-        )}
       </div>
 
       {exercise.type === 'mcq' && (
-        <div className="ex-mcq-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(120px,1fr))', gap: 10, marginTop: 14 }}>
+        <div
+          className="ex-mcq-grid"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: 12,
+            marginTop: 18,
+            width: '100%',
+            maxWidth: '560px',
+            margin: '18px auto 0',
+          }}
+        >
           {exercise.opts.map((opt) => {
             const isPick = selected === opt;
             const isAns = opt === exercise.ans;
@@ -166,13 +261,17 @@ export default function ExerciseView({ exercise, index, total, onAnswer, isGrade
                 disabled={answered}
                 onClick={() => submitMcq(opt)}
                 style={{
-                  padding: '14px',
-                  borderRadius: 14,
-                  fontWeight: 800,
-                  fontSize: 16,
+                  padding: '14px 18px',
+                  borderRadius: 16,
+                  fontWeight: 900,
+                  fontSize: 18,
                   cursor: answered ? 'default' : 'pointer',
-                  border: '2px solid var(--border)',
-                  background: answered && isAns ? '#DCF5EE' : answered && isPick ? '#FAECE7' : 'var(--white)',
+                  border: '2px solid #E0E7FF',
+                  background: answered && isAns ? '#DCF5EE' : answered && isPick ? '#FAECE7' : '#FFFFFF',
+                  color: answered && isAns ? '#065F46' : answered && isPick ? '#9F1239' : '#1E1B4B',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+                  transition: 'all 0.15s ease',
+                  fontFamily: "'Nunito', sans-serif",
                 }}
               >
                 {opt}

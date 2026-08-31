@@ -40,6 +40,13 @@ interface RawExercise {
   ans?: string;
   hint?: string;
   items?: Array<{ t: 'f' | 'b'; v?: string; a?: string }>;
+  vis?: string;
+  exp?: string;
+  explain?: string;
+  countEmoji?: string;
+  countN?: number;
+  svgFig?: string;
+  visObjs?: Array<{ e: string; n: number; label?: string }>;
 }
 
 interface RawLevel {
@@ -90,6 +97,11 @@ function mapExercise(raw: RawExercise, id: string): Exercise {
     ctx: raw.ctx,
     figure: raw.figure,
     fig_data: raw.fig_data,
+    countEmoji: raw.countEmoji,
+    countN: raw.countN,
+    svgFig: raw.vis || raw.svgFig,
+    explain: raw.exp || raw.explain,
+    visObjs: raw.visObjs,
   };
 
   switch (raw.type) {
