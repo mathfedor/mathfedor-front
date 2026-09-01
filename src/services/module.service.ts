@@ -68,8 +68,8 @@ export const moduleService = {
 
     // Agregar el archivo
     if (formData.file) {
-      if (formData.file.size > 10 * 1024 * 1024) {
-        throw new Error('El archivo excede el límite de 10MB');
+      if (formData.file.size > 30 * 1024 * 1024) {
+        throw new Error('El archivo excede el límite de 30MB');
       }
       formDataToSend.append('file', formData.file);
     }

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Torre de Bloques · Estación Fedor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --espacio:#0F1836;--espacio-hondo:#0A1028;--panel:#1A2650;--panel-claro:#243468;--borde:#070C1F;
+  --cristal:#4FD8CB;--dorado:#FFC94D;--coral:#FF6B5E;--lila:#9B7BFF;--verde:#5BD672;--azulito:#9CCBFF;
+  --hielo:#F2F6FF;--hielo-suave:#B9C4E8;
+  --display:'Baloo 2',system-ui,sans-serif;--texto:'Nunito',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%}
+body{font-family:var(--texto);color:var(--hielo);background:var(--espacio-hondo);overflow:hidden}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:3px solid var(--dorado);outline-offset:3px;border-radius:8px}
+.pantalla{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;transition:opacity .35s ease,visibility .35s}
+.pantalla.oculta{opacity:0;visibility:hidden;pointer-events:none}
+#p-inicio,#p-fin{background:
+  radial-gradient(1.6px 1.6px at 12% 18%,#fff 50%,transparent 51%),
+  radial-gradient(1.7px 1.7px at 55% 8%,#FFD98A 50%,transparent 51%),
+  radial-gradient(1.4px 1.4px at 84% 26%,#fff 50%,transparent 51%),
+  radial-gradient(ellipse at 50% -20%,#26377A 0%,var(--espacio) 55%,var(--espacio-hondo) 100%)}
+.logo-juego{text-align:center;animation:flotarLogo 4s ease-in-out infinite}
+@keyframes flotarLogo{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.logo-juego h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,7vw,58px);margin:8px 0 0;line-height:.98;text-transform:uppercase;letter-spacing:-1px;
+  background:linear-gradient(180deg,#CFE3FF,var(--azulito) 45%,#5C86C9);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 4px 0 rgba(0,0,0,.45))}
+.logo-juego .sub{font-weight:800;letter-spacing:4px;font-size:clamp(10px,2vw,13px);color:var(--dorado);text-transform:uppercase}
+.caja-inicio{margin-top:20px;display:grid;gap:14px;justify-items:center;width:min(560px,94vw)}
+#in-nombre{width:min(340px,86vw);background:var(--espacio-hondo);border:3.5px solid var(--borde);border-radius:999px;color:var(--hielo);font-weight:800;font-size:16px;text-align:center;padding:12px 18px;box-shadow:inset 0 3px 8px rgba(0,0,0,.4)}
+#in-nombre::placeholder{color:#5F6C99}
+.bandas{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.banda-btn{background:var(--panel-claro);border:3.5px solid var(--borde);border-radius:14px;padding:10px 16px;text-align:center;box-shadow:4px 4px 0 rgba(0,0,0,.42);transition:transform .12s ease}
+.banda-btn:hover{transform:translateY(-3px)}
+.banda-btn .g{font-family:var(--display);font-weight:800;font-size:16px;display:block}
+.banda-btn .e{font-size:11px;font-weight:800;color:var(--hielo-suave)}
+.banda-btn.on{background:var(--cristal);color:var(--espacio-hondo);box-shadow:4px 4px 0 rgba(0,0,0,.42),0 0 18px rgba(79,216,203,.5)}
+.banda-btn.on .e{color:#0A3E38}
+#btn-jugar{background:linear-gradient(180deg,#7FE394,var(--verde));color:#062A12;border:4px solid var(--borde);border-radius:999px;
+  font-family:var(--display);font-weight:800;font-size:clamp(20px,4.4vw,28px);padding:14px 52px;box-shadow:0 7px 0 #2E7D42,0 12px 22px rgba(0,0,0,.5);transition:transform .12s ease}
+#btn-jugar:hover{transform:translateY(-3px)}
+#btn-jugar:active{transform:translateY(3px);box-shadow:0 2px 0 #2E7D42}
+.nota-sonido{font-size:11.5px;font-weight:700;color:var(--hielo-suave)}
+
+/* ── OBRA ── */
+#p-juego{padding:0;justify-content:flex-start}
+#escena{position:relative;width:100%;height:100%;overflow:hidden;
+  background:linear-gradient(180deg,#0B1533 0%,#122048 52%,#1A2440 76%,#141B33 100%)}
+#suelo{position:absolute;left:0;right:0;bottom:0;height:22%;background:#141F45;border-top:6px solid var(--borde)}
+#zona-torre{position:absolute;left:50%;bottom:27%;transform:translateX(-62%);width:min(560px,72vw);perspective:900px}
+#zona-torre svg{width:100%;height:auto;display:block;transform:rotateX(10deg);transform-origin:50% 78%}
+.torre-flotante{animation:flotarTorre 4s ease-in-out infinite}
+@keyframes flotarTorre{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+#grua{transition:transform .8s cubic-bezier(.5,.1,.4,1)}
+.capa-nueva{animation:caerCapa .55s cubic-bezier(.4,.1,.5,1.2)}
+@keyframes caerCapa{from{transform:translateY(-90px);opacity:.4}to{transform:translateY(0);opacity:1}}
+#plano{position:absolute;right:2%;top:16%;width:min(230px,30vw);z-index:8;
+  background:rgba(79,216,203,.07);border:3.5px solid var(--cristal);border-radius:16px;padding:12px;
+  box-shadow:0 0 22px rgba(79,216,203,.25), inset 0 0 18px rgba(79,216,203,.12)}
+#plano h4{font-family:var(--display);font-weight:800;font-size:12.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--cristal);margin:0 0 8px;text-align:center}
+#plano-svg{width:100%;height:auto;display:block}
+#plano .dato-plano{text-align:center;font-weight:800;font-size:12.5px;color:var(--hielo-suave);margin-top:6px}
+#plano .dato-plano b{color:var(--hielo)}
+#sello{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%) rotate(-10deg) scale(0);z-index:14;
+  border:6px solid var(--verde);border-radius:14px;color:var(--verde);font-family:var(--display);font-weight:800;
+  font-size:clamp(26px,6vw,46px);padding:8px 26px;letter-spacing:2px;background:rgba(10,16,40,.75);pointer-events:none}
+#sello.vivo{animation:sellar .9s cubic-bezier(.2,.9,.3,1.4) both}
+@keyframes sellar{0%{transform:translate(-50%,-50%) rotate(-10deg) scale(0)}55%{transform:translate(-50%,-50%) rotate(-10deg) scale(1.18)}75%{transform:translate(-50%,-50%) rotate(-10deg) scale(.96)}100%{transform:translate(-50%,-50%) rotate(-10deg) scale(1)}}
+#panel-orden{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);width:min(620px,95vw);z-index:10;
+  background:linear-gradient(180deg,var(--panel-claro),var(--panel));border:4px solid var(--borde);border-radius:18px;padding:12px 14px;
+  box-shadow:0 0 0 2px rgba(79,216,203,.25),0 10px 24px rgba(0,0,0,.55)}
+#preg-torre{font-family:var(--display);font-weight:800;font-size:clamp(15px,3.2vw,20px);text-align:center;margin:0 0 10px;min-height:1.3em}
+#preg-torre .med{color:var(--cristal)}
+#ops-torre{display:flex;gap:10px}
+.op-btn{flex:1;background:var(--espacio-hondo);border:3.5px solid var(--borde);border-radius:14px;font-family:var(--display);font-weight:800;font-size:clamp(17px,4vw,24px);color:var(--hielo);padding:12px 4px;box-shadow:0 5px 0 rgba(0,0,0,.5);transition:transform .1s ease}
+.op-btn:hover{transform:translateY(-3px)}
+.op-btn.bien{background:var(--verde);color:#062A12;animation:latir .4s ease}
+.op-btn.mal{background:var(--coral);color:#fff;animation:sacudir .4s ease}
+.op-btn.revela{outline:4px solid var(--verde);outline-offset:-4px}
+@keyframes latir{0%{transform:scale(.85)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes sacudir{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+#hud{position:absolute;top:0;left:0;right:0;display:flex;gap:8px;align-items:center;padding:10px 12px;flex-wrap:wrap;z-index:12}
+.hud-chip{background:rgba(10,16,40,.88);border:3px solid var(--borde);border-radius:999px;padding:6px 13px;font-weight:800;font-size:12.5px;color:var(--hielo-suave)}
+.hud-chip b{color:var(--hielo)}
+.hud-chip.dorado b{color:var(--dorado)}
+#hud-racha{background:linear-gradient(180deg,#FFE9AE,var(--dorado));color:#5C3A00;border:3px solid var(--borde);font-family:var(--display);font-size:13.5px;display:none}
+#hud-racha.vivo{display:block;animation:latir .5s ease}
+.hud-btn{background:rgba(10,16,40,.88);border:3px solid var(--borde);border-radius:12px;width:40px;height:40px;display:grid;place-items:center;font-size:17px;color:var(--cristal);box-shadow:3px 3px 0 rgba(0,0,0,.4)}
+#velo-pausa{position:fixed;inset:0;background:rgba(7,10,26,.82);display:grid;place-items:center;z-index:20}
+#velo-pausa.oculta{display:none}
+.panel-pausa{background:linear-gradient(180deg,var(--panel-claro),var(--panel));border:5px solid var(--borde);border-radius:20px;padding:26px 30px;text-align:center;box-shadow:10px 10px 0 rgba(0,0,0,.5)}
+.panel-pausa h2{font-family:var(--display);margin:0 0 14px;font-size:24px}
+.btn-grande{background:linear-gradient(180deg,#7FE394,var(--verde));color:#062A12;border:4px solid var(--borde);border-radius:999px;font-family:var(--display);font-weight:800;font-size:18px;padding:11px 34px;box-shadow:0 5px 0 #2E7D42;margin:4px}
+.btn-secun{background:var(--espacio-hondo);color:var(--hielo-suave);border:3.5px solid var(--borde);border-radius:999px;font-family:var(--display);font-weight:800;font-size:15px;padding:10px 24px;box-shadow:0 4px 0 rgba(0,0,0,.5);margin:4px}
+#titulo-fin{font-family:var(--display);font-weight:800;font-size:clamp(26px,6vw,42px);margin:0 0 4px;text-align:center;
+  background:linear-gradient(90deg,var(--cristal),var(--dorado));-webkit-background-clip:text;background-clip:text;color:transparent}
+#sub-fin{font-weight:800;color:var(--hielo-suave);margin:0 0 16px;text-align:center}
+#medalla-dia{font-size:clamp(52px,11vw,84px);margin-bottom:8px;filter:drop-shadow(0 6px 0 rgba(0,0,0,.4));animation:flotarLogo 3.5s ease-in-out infinite}
+.stats{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:18px;max-width:640px}
+.stat-chip{background:rgba(10,16,40,.9);border:3px solid var(--borde);border-radius:999px;padding:7px 15px;font-weight:800;font-size:13px;color:var(--hielo-suave)}
+.stat-chip b{color:var(--dorado)}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+<!-- ═══════ INICIO ═══════ -->
+<section class="pantalla" id="p-inicio" aria-label="Inicio">
+  <div class="logo-juego">
+    <svg width="112" height="88" viewBox="0 0 112 88" aria-hidden="true">
+      <g stroke="#070C1F" stroke-width="3">
+        <path d="M30 72 l16 -9 16 9 -16 9 Z" fill="#9CCBFF"/><path d="M30 72 v-11 l16 -9 v11 Z" fill="#6FA8DC"/><path d="M62 72 v-11 l-16 -9 v11 Z" fill="#4A7FB5"/>
+        <path d="M38 54 l16 -9 16 9 -16 9 Z" fill="#FFC94D"/><path d="M38 54 v-11 l16 -9 v11 Z" fill="#F0A92E"/><path d="M70 54 v-11 l-16 -9 v11 Z" fill="#C9861D"/>
+        <path d="M46 36 l16 -9 16 9 -16 9 Z" fill="#FF8A78"/><path d="M46 36 v-11 l16 -9 v11 Z" fill="#E05B48"/><path d="M78 36 v-11 l-16 -9 v11 Z" fill="#B23A2C"/>
+      </g>
+      <path d="M8 8 h72 M80 8 v14" stroke="#FFC94D" stroke-width="5" stroke-linecap="round"/>
+      <path d="M8 8 v14 M2 22 h12" stroke="#FFC94D" stroke-width="5" stroke-linecap="round"/>
+      <path d="M80 26 l-6 4 h12 Z" fill="#FFC94D" stroke="#070C1F" stroke-width="2.4"/>
+    </svg>
+    <h1>Torre de<br>Bloques</h1>
+    <span class="sub">Estación Fedor · Las Pirámides</span>
+  </div>
+  <div class="caja-inicio">
+    <input id="in-nombre" type="text" maxlength="24" placeholder="✏️ Escribe tu nombre, constructor" autocomplete="off">
+    <div class="bandas" role="group" aria-label="Elige tu nivel">
+      <button class="banda-btn on" data-b="0"><span class="g">🧱 Aprendiz</span><span class="e">5–7 años · 1º</span></button>
+      <button class="banda-btn" data-b="1"><span class="g">👷 Constructor</span><span class="e">7–9 años · 2º·3º</span></button>
+      <button class="banda-btn" data-b="2"><span class="g">📐 Arquitecto</span><span class="e">9–11 años · pirámides</span></button>
+    </div>
+    <button id="btn-jugar">▶ ¡A CONSTRUIR!</button>
+    <span class="nota-sonido">🔊 Al entrar a la obra se enciende el sonido</span>
+  </div>
+</section>
+
+<!-- ═══════ LA OBRA ═══════ -->
+<section class="pantalla oculta" id="p-juego" aria-label="Obra">
+  <div id="escena">
+    <div id="suelo"></div>
+    <div id="zona-torre"><svg id="svg-torre" viewBox="0 0 560 470" aria-hidden="true"></svg></div>
+    <div id="plano">
+      <h4>📐 Plano · holograma</h4>
+      <svg id="plano-svg" viewBox="0 0 200 150"></svg>
+      <div class="dato-plano" id="plano-dato"></div>
+    </div>
+    <div id="hud">
+      <span class="hud-chip">👤 <b id="h-nombre">Constructor</b></span>
+      <span class="hud-chip">🏗️ Torre <b id="h-torre">1/3</b></span>
+      <span class="hud-chip">🧱 Cubos <b id="h-cubos">0</b></span>
+      <span class="hud-chip dorado">💎 <b id="h-puntos">0</b></span>
+      <span class="hud-chip" id="hud-racha">RACHA ×<span id="h-racha">2</span></span>
+      <span style="flex:1"></span>
+      <button class="hud-btn" id="btn-sonido" aria-label="Sonido">🔊</button>
+      <button class="hud-btn" id="btn-full" aria-label="Pantalla completa">⛶</button>
+      <button class="hud-btn" id="btn-pausa" aria-label="Pausa">⏸</button>
+    </div>
+    <div id="sello">¡APROBADO!</div>
+    <div id="panel-orden">
+      <p id="preg-torre"></p>
+      <div id="ops-torre"></div>
+    </div>
+  </div>
+  <div id="velo-pausa" class="oculta">
+    <div class="panel-pausa">
+      <h2>⏸ Pausa</h2>
+      <button class="btn-grande" id="btn-seguir">▶ Seguir construyendo</button><br>
+      <button class="btn-secun" id="btn-salir">🏠 Volver al inicio</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FIN ═══════ -->
+<section class="pantalla oculta" id="p-fin" aria-label="Resumen">
+  <div id="medalla-dia">🥇</div>
+  <h2 id="titulo-fin">¡Obra terminada!</h2>
+  <p id="sub-fin"></p>
+  <div class="stats" id="stats-fin"></div>
+  <div>
+    <button class="btn-grande" id="btn-otro-dia">🔁 Nueva obra</button>
+    <button class="btn-secun" id="btn-cambiar">🎚️ Cambiar nivel</button>
+  </div>
+</section>
+<script>
+"use strict";
+/* ════════════════════════════════════════════════════════════
+   TORRE DE BLOQUES · Juego 4 · Estación Fedor
+   De «Las Pirámides» (4º–5º): volumen por capas con grúa y plano.
+   ════════════════════════════════════════════════════════════ */
+const $=s=>document.querySelector(s);
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
+const az=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const mezclar=a=>{for(let i=a.length-1;i>0;i--){const j=az(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;};
+const MODO_PRUEBA=/(\?|&)test=1/.test(location.search);
+const reducida=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const NS="http://www.w3.org/2000/svg";
+
+let actx=null, sonidoOn=true;
+function armarAudio(){ if(actx)return; try{ actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){actx=null;} }
+function tono(f0,f1,dur,tipo,vol){
+  if(!actx||!sonidoOn)return;
+  try{
+    const o=actx.createOscillator(),g=actx.createGain();
+    o.type=tipo||"triangle";o.frequency.setValueAtTime(f0,actx.currentTime);
+    if(f1)o.frequency.exponentialRampToValueAtTime(f1,actx.currentTime+dur);
+    g.gain.setValueAtTime(vol||.15,actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+dur);
+    o.connect(g).connect(actx.destination);o.start();o.stop(actx.currentTime+dur);
+  }catch(e){}
+}
+const sClick=()=>tono(500,700,.08,"triangle",.1);
+const sGrua=()=>tono(320,240,.35,"sawtooth",.08);
+const sCapa=()=>{tono(200,130,.14,"square",.14);setTimeout(()=>tono(520,700,.1,"triangle",.12),90);};
+const sMal=()=>tono(240,150,.25,"square",.12);
+const sSello=()=>{tono(660,660,.1,"triangle",.16);setTimeout(()=>tono(990,1320,.22,"triangle",.16),100);};
+const sFanfarria=()=>{[[660,0],[880,110],[1100,220],[1320,330]].forEach(([f,d])=>setTimeout(()=>tono(f,f*1.2,.22,"triangle",.18),d));};
+function emitir(tipo,datos){
+  try{ if(window.parent!==window||MODO_PRUEBA) window.parent.postMessage(Object.assign({fuente:"torre-de-bloques",evento:tipo,ts:Date.now()},datos||{}),"*"); }catch(e){}
+}
+
+/* ════════ GENERADOR DE TORRES (verificable) ════════ */
+function opciones(corr,paso){
+  const set=new Set([corr]);
+  for(const d of mezclar([paso,-paso,paso*2,-paso*2,paso*3])){ if(set.size>=3)break; const v=corr+d; if(v>0&&!set.has(v))set.add(v); }
+  let k=1; while(set.size<3){ const v=corr+k*paso; if(v>0&&!set.has(v))set.add(v); else if(corr-k*paso>0)set.add(corr-k*paso); k++; }
+  return mezclar([...set]);
+}
+function genTorre(banda){
+  let w,d,pisos,tipo;
+  if(banda===0){ w=az(2,3); d=az(2,3); pisos=az(2,3); tipo="prisma"; }
+  else if(banda===1){ w=az(2,4); d=az(2,4); pisos=az(3,4); tipo="prisma"; }
+  else { w=az(3,5); d=az(3,5); pisos=Math.min(w,d,az(3,4)); tipo="piramide"; }
+  const capas=[];
+  for(let i=0;i<pisos;i++){
+    const wi=tipo==="piramide"?w-i:w, di=tipo==="piramide"?d-i:d;
+    capas.push({w:wi,d:di,cubos:wi*di});
+  }
+  const total=capas.reduce((a,c)=>a+c.cubos,0);
+  return {w,d,pisos,tipo,capas,total};
+}
+if(MODO_PRUEBA)window.__genTorre=genTorre;
+const TORRES_OBRA=3;
+const COLORES_T=[["#9CCBFF","#6FA8DC","#4A7FB5"],["#FFC94D","#F0A92E","#C9861D"],["#FF8A78","#E05B48","#B23A2C"],["#8FE8A5","#5BD672","#3A9C50"],["#C9B8FF","#9B7BFF","#6E4FD0"]];
+</script>
+<script>
+"use strict";
+/* ════════ ESTADO DE LA OBRA ════════ */
+const B={
+  nombre:"Constructor", banda:0, activo:false, pausa:false,
+  torreIdx:0, torre:null, capa:0, fase:"capa",
+  cubos:0, puntos:0, racha:0, mult:1, aciertos:0, intentos:0, mejorRacha:0, aprobadas:0
+};
+if(MODO_PRUEBA)window.__B=B;
+
+function irPantalla(id){
+  document.querySelectorAll(".pantalla").forEach(p=>p.classList.add("oculta"));
+  $(id).classList.remove("oculta");
+}
+document.querySelectorAll(".banda-btn").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".banda-btn").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on"); B.banda=Number(b.dataset.b); sClick();
+  });
+});
+$("#btn-jugar").addEventListener("click",()=>{
+  armarAudio(); sClick();
+  B.nombre=$("#in-nombre").value.trim()||"Constructor";
+  $("#h-nombre").textContent=B.nombre;
+  abrirObra();
+});
+$("#btn-otro-dia").addEventListener("click",()=>{sClick();abrirObra();});
+$("#btn-cambiar").addEventListener("click",()=>{sClick();irPantalla("#p-inicio");});
+$("#btn-pausa").addEventListener("click",()=>{sClick();B.pausa=true;$("#velo-pausa").classList.remove("oculta");});
+$("#btn-seguir").addEventListener("click",()=>{sClick();$("#velo-pausa").classList.add("oculta");B.pausa=false;});
+$("#btn-salir").addEventListener("click",()=>{sClick();$("#velo-pausa").classList.add("oculta");B.activo=false;irPantalla("#p-inicio");});
+$("#btn-sonido").addEventListener("click",()=>{sonidoOn=!sonidoOn;$("#btn-sonido").textContent=sonidoOn?"🔊":"🔇";sClick();});
+$("#btn-full").addEventListener("click",()=>{
+  try{ document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen(); }catch(e){}
+});
+addEventListener("keydown",e=>{
+  if(!B.activo||B.pausa)return;
+  const i={"1":0,"2":1,"3":2}[e.key];
+  if(i!=null){const b=$("#ops-torre").children[i];if(b)b.click();}
+});
+
+function abrirObra(){
+  Object.assign(B,{activo:true,pausa:false,torreIdx:0,capa:0,fase:"capa",
+    cubos:0,puntos:0,racha:0,mult:1,aciertos:0,intentos:0,mejorRacha:0,aprobadas:0});
+  $("#h-puntos").textContent="0";$("#h-cubos").textContent="0";
+  $("#hud-racha").classList.remove("vivo");
+  irPantalla("#p-juego");
+  emitir("juego_iniciado",{banda:B.banda,nombre:B.nombre,torres:TORRES_OBRA});
+  nuevaTorre();
+}
+function nuevaTorre(){
+  B.torre=genTorre(B.banda);
+  if(MODO_PRUEBA)window.__torre=B.torre;
+  B.capa=0;B.fase="capa";
+  $("#h-torre").textContent=(B.torreIdx+1)+"/"+TORRES_OBRA;
+  pintarPlano();
+  pintarTorre();
+  preguntaActual();
+  emitir("torre_iniciada",{torre:B.torreIdx+1,tipo:B.torre.tipo,base:B.torre.w+"×"+B.torre.d,pisos:B.torre.pisos});
+}
+
+/* ════════ PLANO HOLOGRAMA ════════ */
+function pintarPlano(){
+  const t=B.torre, svg=$("#plano-svg");
+  const cel=Math.min(26,120/Math.max(t.w,t.d));
+  const ox=100-t.w*cel/2, oy=132;
+  let h="";
+  /* vista frontal por pisos (siluetas) */
+  t.capas.forEach((c,i)=>{
+    const wpx=c.w*cel, x=100-wpx/2, y=oy-(i+1)*16;
+    h+='<rect x="'+x+'" y="'+y+'" width="'+wpx+'" height="14" rx="2.5" fill="rgba(79,216,203,.1)" stroke="#4FD8CB" stroke-width="1.8"'+(i<B.capa?' stroke-dasharray="0"':' stroke-dasharray="4 3"')+'/>';
+    for(let k=1;k<c.w;k++)h+='<line x1="'+(x+k*cel)+'" y1="'+y+'" x2="'+(x+k*cel)+'" y2="'+(y+14)+'" stroke="#4FD8CB" stroke-width="1.2" opacity=".6"/>';
+  });
+  /* base en cuadrícula */
+  const bx=100-t.w*7, by=8;
+  for(let i=0;i<t.w;i++)for(let j=0;j<t.d;j++)
+    h+='<rect x="'+(bx+i*14)+'" y="'+(by+j*10)+'" width="12" height="8" rx="1.5" fill="none" stroke="#4FD8CB" stroke-width="1.4" opacity=".8"/>';
+  svg.innerHTML=h;
+  $("#plano-dato").innerHTML="Base <b>"+t.w+" × "+t.d+"</b> · <b>"+t.pisos+" pisos</b> · "+(t.tipo==="piramide"?"pirámide (cada piso encoge 1)":"torre recta");
+}
+
+/* ════════ TORRE ISOMÉTRICA + GRÚA ════════ */
+const CX=280, CY=430, CU=34, LEVANTE=20;   /* celda isométrica · torre elevada 15-20% sobre el plano base */
+function cubo(x,y,z,cols){
+  const ix=CX+(x-y)*CU*.9, iy=CY-LEVANTE-(x+y)*CU*.45-z*CU*.78;
+  return '<g><path d="M'+(ix-CU*.9)+' '+iy+' L'+ix+' '+(iy-CU*.45)+' L'+(ix+CU*.9)+' '+iy+' L'+ix+' '+(iy+CU*.45)+' Z" fill="'+cols[0]+'" stroke="#070C1F" stroke-width="2.6"/>'+
+  '<path d="M'+(ix-CU*.9)+' '+iy+' v'+CU*.78+' L'+ix+' '+(iy+CU*.45+CU*.78)+' v-'+CU*.78+' Z" fill="'+cols[1]+'" stroke="#070C1F" stroke-width="2.6"/>'+
+  '<path d="M'+(ix+CU*.9)+' '+iy+' v'+CU*.78+' L'+ix+' '+(iy+CU*.45+CU*.78)+' v-'+CU*.78+' Z" fill="'+cols[2]+'" stroke="#070C1F" stroke-width="2.6"/></g>';
+}
+function pintarTorre(){
+  const t=B.torre, svg=$("#svg-torre");
+  const cols=COLORES_T[B.torreIdx%COLORES_T.length];
+  /* plataforma metálica de base brillante (doc de correcciones) */
+  const c0=t.capas[0], m=.68;
+  const py=(px,pq)=>[CX+(px-pq)*CU*.9, CY-(px+pq)*CU*.45];
+  const e1=py(-m,-m), e2=py(c0.w-1+m,-m), e3=py(c0.w-1+m,c0.d-1+m), e4=py(-m,c0.d-1+m);
+  const rxg=((c0.w+c0.d)/2)*CU*.9+22;
+  let h='<defs>'
+    +'<radialGradient id="resplandorAzul" cx="50%" cy="50%" r="50%">'
+    +'<stop offset="0%" stop-color="#4FD8CB" stop-opacity=".55"/>'
+    +'<stop offset="60%" stop-color="#4FD8CB" stop-opacity=".22"/>'
+    +'<stop offset="100%" stop-color="#4FD8CB" stop-opacity="0"/></radialGradient>'
+    +'<linearGradient id="metalPlata" x1="0" y1="0" x2="0" y2="1">'
+    +'<stop offset="0%" stop-color="#D7DEF2"/><stop offset="55%" stop-color="#9FB0D4"/><stop offset="100%" stop-color="#7688B2"/></linearGradient>'
+    +'</defs>'
+    +'<ellipse cx="'+CX+'" cy="'+(CY+30)+'" rx="150" ry="26" fill="rgba(0,0,0,.35)"/>'
+    /* base metálica con canto y borde luminoso */
+    +'<path class="plataforma" d="M'+e1[0]+' '+(e1[1]+10)+' L'+e2[0]+' '+(e2[1]+10)+' L'+e3[0]+' '+(e3[1]+10)+' L'+e4[0]+' '+(e4[1]+10)+' Z" fill="#3D4B72" stroke="#070C1F" stroke-width="3"/>'
+    +'<path class="plataforma" d="M'+e1[0]+' '+e1[1]+' L'+e2[0]+' '+e2[1]+' L'+e3[0]+' '+e3[1]+' L'+e4[0]+' '+e4[1]+' Z" fill="url(#metalPlata)" stroke="#070C1F" stroke-width="3.4"/>'
+    +'<path d="M'+e1[0]+' '+e1[1]+' L'+e2[0]+' '+e2[1]+' L'+e3[0]+' '+e3[1]+' L'+e4[0]+' '+e4[1]+' Z" fill="none" stroke="#4FD8CB" stroke-width="2" opacity=".9"/>'
+    /* resplandor inferior azul que separa los cubos del fondo */
+    +'<ellipse class="resplandor" cx="'+CX+'" cy="'+(CY-LEVANTE+6)+'" rx="'+rxg+'" ry="17" fill="url(#resplandorAzul)"/>';
+  /* grúa */
+  const alturaGancho=CY-LEVANTE-(B.capa)*CU*.78-120;
+  h+='<g id="grua" style="transform:translateY(0)">'
+    +'<path d="M60 26 H430 M430 26 V54" stroke="#FFC94D" stroke-width="9" stroke-linecap="round"/>'
+    +'<path d="M60 26 V'+(CY+18)+'" stroke="#FFC94D" stroke-width="9" stroke-linecap="round"/>'
+    +'<path d="M46 '+(CY+18)+' h28" stroke="#FFC94D" stroke-width="9" stroke-linecap="round"/>'
+    +'<line x1="'+CX+'" y1="26" x2="'+CX+'" y2="'+alturaGancho+'" stroke="#F2F6FF" stroke-width="3.4"/>'
+    +'<path d="M'+(CX-12)+' '+alturaGancho+' l12 10 12 -10 Z" fill="#FFC94D" stroke="#070C1F" stroke-width="2.6"/>'
+    +'</g>';
+  /* capas construidas (de abajo hacia arriba) · flotan suavemente sobre la base */
+  h+='<g class="torre-flotante">';
+  for(let z=0;z<B.capa;z++){
+    const c=t.capas[z];
+    const off=t.tipo==="piramide"?z*.5:0;
+    let capaH='<g'+(z===B.capa-1&&B._nueva?' class="capa-nueva"':'')+'>';
+    for(let y=c.d-1;y>=0;y--)for(let x2=0;x2<c.w;x2++)
+      capaH+=cubo(x2+off,y+off,z,cols);
+    capaH+='</g>';
+    h+=capaH;
+  }
+  h+='</g>';
+  B._nueva=false;
+  svg.innerHTML=h;
+}
+
+/* ════════ PREGUNTAS DE LA OBRA ════════ */
+function preguntaActual(){
+  const t=B.torre;
+  let q;
+  if(B.fase==="capa"){
+    const c=t.capas[B.capa];
+    q={texto:"🏗️ Piso "+(B.capa+1)+": la base es <span class='med'>"+c.w+" × "+c.d+"</span>. ¿Cuántos cubos lleva esta capa?",corr:c.cubos,ops:opciones(c.cubos,1)};
+  }else{
+    q={texto:"📐 Inspección final: ¿cuántos cubos tiene la torre <span class='med'>en total</span>?",corr:t.total,ops:opciones(t.total,B.banda===0?1:2)};
+  }
+  B.preg=q;
+  if(MODO_PRUEBA)window.__corr=q.corr;
+  $("#preg-torre").innerHTML=q.texto;
+  const z=$("#ops-torre"); z.innerHTML="";
+  q.ops.forEach(v=>{
+    const b=el("button","op-btn",String(v));
+    b.addEventListener("click",()=>{
+      if(!B.activo||B.pausa||!B.preg)return;
+      B.intentos++;
+      [...z.children].forEach(x=>x.disabled=true);
+      if(v===B.preg.corr){
+        B.aciertos++;B.racha++;B.mejorRacha=Math.max(B.mejorRacha,B.racha);
+        B.mult=B.racha>=6?3:(B.racha>=3?2:1);
+        if(B.mult>1){$("#hud-racha").classList.add("vivo");$("#h-racha").textContent=B.mult;}
+        B.puntos+=10*B.mult;$("#h-puntos").textContent=B.puntos;
+        b.classList.add("bien");
+        emitir("respuesta",{correcta:true,fase:B.fase,racha:B.racha});
+        setTimeout(()=>avanzar(), MODO_PRUEBA?10:340);
+      }else{
+        B.racha=0;B.mult=1;$("#hud-racha").classList.remove("vivo");
+        b.classList.add("mal");sMal();
+        [...z.children].find(x=>x.textContent===String(B.preg.corr)).classList.add("revela");
+        emitir("respuesta",{correcta:false,fase:B.fase,racha:0});
+        setTimeout(()=>preguntaActual(), MODO_PRUEBA?10:1000);
+      }
+    });
+    z.append(b);
+  });
+}
+function avanzar(){
+  const t=B.torre;
+  if(B.fase==="capa"){
+    sGrua();
+    B._nueva=true;
+    B.capa++;
+    B.cubos+=t.capas[B.capa-1].cubos;
+    $("#h-cubos").textContent=B.cubos;
+    pintarTorre();pintarPlano();
+    sCapa();
+    emitir("piso_construido",{torre:B.torreIdx+1,piso:B.capa,cubos:t.capas[B.capa-1].cubos});
+    if(B.capa>=t.pisos){B.fase="total";}
+    setTimeout(()=>preguntaActual(), MODO_PRUEBA?10:560);
+  }else{
+    /* torre aprobada */
+    sSello();
+    const s=$("#sello");
+    s.classList.remove("vivo");void s.offsetWidth;s.classList.add("vivo");
+    B.puntos+=40;$("#h-puntos").textContent=B.puntos;
+    B.aprobadas++;
+    emitir("torre_aprobada",{torre:B.torreIdx+1,total:t.total});
+    B.torreIdx++;
+    setTimeout(()=>{
+      if(B.torreIdx>=TORRES_OBRA)cerrarObra();
+      else nuevaTorre();
+    }, MODO_PRUEBA?40:1300);
+  }
+}
+function cerrarObra(){
+  B.activo=false;
+  const prec=B.intentos?Math.round(100*B.aciertos/B.intentos):0;
+  const perfecta=prec>=90;
+  $("#medalla-dia").textContent=perfecta?"🥇":(prec>=70?"🥈":"🥉");
+  $("#titulo-fin").textContent=perfecta?"¡Obra perfecta!":"¡Obra terminada!";
+  $("#sub-fin").textContent=B.nombre+", el inspector Fedor aprobó tus "+B.aprobadas+" torres.";
+  const st=$("#stats-fin"); st.innerHTML="";
+  [["🏗️ Torres aprobadas",B.aprobadas+" / "+TORRES_OBRA],
+   ["🧱 Cubos colocados",B.cubos],
+   ["🎯 Precisión",prec+"%"],
+   ["🔥 Mejor racha",B.mejorRacha],
+   ["💎 Puntos",B.puntos]].forEach(([k,v])=>{
+    const c=el("span","stat-chip");c.innerHTML=k+": <b>"+v+"</b>";st.append(c);
+  });
+  sFanfarria();
+  emitir("obra_terminada",{nombre:B.nombre,banda:B.banda,torres:B.aprobadas,cubos:B.cubos,precision:prec,mejorRacha:B.mejorRacha,puntos:B.puntos});
+  setTimeout(()=>irPantalla("#p-fin"), MODO_PRUEBA?30:700);
+}
+</script>
+</body>
+</html>

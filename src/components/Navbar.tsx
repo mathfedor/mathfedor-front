@@ -57,7 +57,7 @@ export default function Navbar() {
                   : 'text-white hover:bg-white hover:text-fedor-orange'
                 }`}
             >
-              Retos
+              Estación Fedor
             </Link>
             <Link
               href="/login"
@@ -130,7 +130,7 @@ export default function Navbar() {
                   : 'text-white hover:bg-white hover:text-fedor-orange'
                 }`}
             >
-              Retos
+              Estación Fedor
             </Link>
             <Link
               href="/login"

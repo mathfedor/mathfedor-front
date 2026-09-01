@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parqués Estelar · Estación Fedor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --espacio:#0F1836;--espacio-hondo:#0A1028;--panel:#1A2650;--panel-claro:#243468;--borde:#070C1F;
+  --cristal:#4FD8CB;--dorado:#FFC94D;--coral:#FF6B5E;--lila:#9B7BFF;--verde:#5BD672;--azulito:#9CCBFF;
+  --hielo:#F2F6FF;--hielo-suave:#B9C4E8;
+  --display:'Baloo 2',system-ui,sans-serif;--texto:'Nunito',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%}
+body{font-family:var(--texto);color:var(--hielo);background:var(--espacio-hondo);overflow:hidden}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:3px solid var(--dorado);outline-offset:3px;border-radius:8px}
+.pantalla{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;transition:opacity .35s ease,visibility .35s}
+.pantalla.oculta{opacity:0;visibility:hidden;pointer-events:none}
+#p-inicio,#p-fin{background:
+  radial-gradient(1.6px 1.6px at 12% 18%,#fff 50%,transparent 51%),
+  radial-gradient(1.7px 1.7px at 55% 8%,#FFD98A 50%,transparent 51%),
+  radial-gradient(1.4px 1.4px at 84% 26%,#fff 50%,transparent 51%),
+  radial-gradient(ellipse at 50% -20%,#26377A 0%,var(--espacio) 55%,var(--espacio-hondo) 100%)}
+.logo-juego{text-align:center;animation:flotarLogo 4s ease-in-out infinite}
+@keyframes flotarLogo{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.logo-juego h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,7vw,58px);margin:8px 0 0;line-height:.98;text-transform:uppercase;letter-spacing:-1px;
+  background:linear-gradient(180deg,#E4D8FF,var(--lila) 45%,#6E4FD0);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 4px 0 rgba(0,0,0,.45))}
+.logo-juego .sub{font-weight:800;letter-spacing:4px;font-size:clamp(10px,2vw,13px);color:var(--dorado);text-transform:uppercase}
+.caja-inicio{margin-top:20px;display:grid;gap:14px;justify-items:center;width:min(560px,94vw)}
+#in-nombre{width:min(340px,86vw);background:var(--espacio-hondo);border:3.5px solid var(--borde);border-radius:999px;color:var(--hielo);font-weight:800;font-size:16px;text-align:center;padding:12px 18px;box-shadow:inset 0 3px 8px rgba(0,0,0,.4)}
+#in-nombre::placeholder{color:#5F6C99}
+.bandas{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.banda-btn{background:var(--panel-claro);border:3.5px solid var(--borde);border-radius:14px;padding:10px 16px;text-align:center;box-shadow:4px 4px 0 rgba(0,0,0,.42);transition:transform .12s ease}
+.banda-btn:hover{transform:translateY(-3px)}
+.banda-btn .g{font-family:var(--display);font-weight:800;font-size:16px;display:block}
+.banda-btn .e{font-size:11px;font-weight:800;color:var(--hielo-suave)}
+.banda-btn.on{background:var(--cristal);color:var(--espacio-hondo);box-shadow:4px 4px 0 rgba(0,0,0,.42),0 0 18px rgba(79,216,203,.5)}
+.banda-btn.on .e{color:#0A3E38}
+#btn-jugar{background:linear-gradient(180deg,#7FE394,var(--verde));color:#062A12;border:4px solid var(--borde);border-radius:999px;
+  font-family:var(--display);font-weight:800;font-size:clamp(20px,4.4vw,28px);padding:14px 52px;box-shadow:0 7px 0 #2E7D42,0 12px 22px rgba(0,0,0,.5);transition:transform .12s ease}
+#btn-jugar:hover{transform:translateY(-3px)}
+#btn-jugar:active{transform:translateY(3px);box-shadow:0 2px 0 #2E7D42}
+.nota-sonido{font-size:11.5px;font-weight:700;color:var(--hielo-suave)}
+
+/* ── MESA 3D ── */
+#p-juego{padding:0;justify-content:flex-start}
+#salon{position:relative;width:100%;height:100%;overflow:hidden;
+  background:linear-gradient(180deg,#0B1533 0%,#141F45 58%,#1A2440 100%)}
+#mesa3d{position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);perspective:1150px;width:min(560px,92vw);height:min(560px,92vw)}
+#tablero{position:absolute;inset:6%;transform:rotateX(54deg) rotateZ(45deg);transform-style:preserve-3d;
+  background:linear-gradient(135deg,#22315F,#182450);border:6px solid var(--borde);border-radius:26px;
+  box-shadow:0 0 0 3px rgba(79,216,203,.3)}
+#tablero::before{content:"";position:absolute;inset:-6px;border-radius:26px;background:#0C142E;transform:translateZ(-26px);
+  box-shadow:0 40px 60px rgba(0,0,0,.65)}
+.casilla{position:absolute;width:11.5%;height:11.5%;border:2.5px solid var(--borde);border-radius:16%;
+  display:grid;place-items:center;background:#2A3A70}
+.casilla .num{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:clamp(8px,1.6vw,12px);color:rgba(242,246,255,.5);transform:rotateZ(-45deg)}
+.casilla .icono{transform:rotateZ(-45deg) rotateX(-54deg);font-size:clamp(11px,2.4vw,17px);filter:drop-shadow(1px 2px 0 rgba(0,0,0,.5))}
+.casilla.especial-estrella{background:#5C4A1E}.casilla.especial-agujero{background:#3A1E2A}
+.casilla.especial-dado{background:#1E4D3A}.casilla.especial-prob{background:#33285C}
+.casilla.salida{background:#0E4A44;box-shadow:inset 0 0 12px rgba(79,216,203,.5)}
+.casilla.destello{animation:destelloCas .7s ease}
+@keyframes destelloCas{0%,100%{box-shadow:none}50%{box-shadow:0 0 22px rgba(255,201,77,.9),inset 0 0 12px rgba(255,201,77,.6)}}
+#meta-centro{position:absolute;left:31%;top:31%;width:38%;height:38%;border:4px solid var(--dorado);border-radius:20%;
+  background:radial-gradient(circle,#2E3F7A 30%,#1A2650);display:grid;place-items:center}
+#meta-centro span{transform:rotateZ(-45deg) rotateX(-54deg);font-family:var(--display);font-weight:800;
+  font-size:clamp(13px,3vw,21px);color:var(--dorado);text-shadow:2px 2px 0 var(--borde);text-align:center;line-height:1.05}
+.ficha{position:absolute;width:9%;height:9%;margin:-4.5% 0 0 -4.5%;transition:left .3s ease,top .3s ease;z-index:5;transform-style:preserve-3d}
+.ficha .cuerpo{position:absolute;inset:0;transform:rotateZ(-45deg) rotateX(-54deg) translateY(-46%);transition:transform .3s}
+.ficha .cuerpo::before{content:"";position:absolute;left:12%;right:12%;bottom:-12%;height:26%;background:rgba(0,0,0,.4);border-radius:50%}
+.ficha .nave{width:100%;height:100%;display:block;filter:drop-shadow(2px 3px 0 rgba(0,0,0,.4))}
+.ficha.salta .cuerpo{animation:saltoFicha .3s ease}
+@keyframes saltoFicha{0%,100%{transform:rotateZ(-45deg) rotateX(-54deg) translateY(-46%)}50%{transform:rotateZ(-45deg) rotateX(-54deg) translateY(-96%)}}
+/* dados 3D reales */
+#zona-dados{position:absolute;right:3%;top:14%;display:flex;gap:20px;perspective:620px;z-index:9}
+.dado{width:56px;height:56px;position:relative;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.3,.9,.4,1.1)}
+.dado.girando{animation:rodarDado .5s linear infinite}
+@keyframes rodarDado{from{transform:rotateX(0) rotateY(0)}to{transform:rotateX(360deg) rotateY(360deg)}}
+.cara{position:absolute;inset:0;background:linear-gradient(160deg,#FFFDF5,#E8E2D0);border:3px solid var(--borde);border-radius:11px;display:grid;place-items:center;padding:9px}
+.cara i{width:9px;height:9px;background:#132347;border-radius:50%;box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}
+.p1c{display:grid}.p2c{display:grid;grid-template-columns:1fr 1fr;gap:16px}.p3c{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px}
+.p3c i:nth-child(2){margin-top:12px}.p3c i:nth-child(3){margin-top:24px}
+.p4c{display:grid;grid-template-columns:1fr 1fr;gap:14px}.p5c{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}
+.p6c{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px}
+.cara.f1{transform:translateZ(28px)}.cara.f2{transform:rotateY(90deg) translateZ(28px)}.cara.f3{transform:rotateY(180deg) translateZ(28px)}
+.cara.f4{transform:rotateY(-90deg) translateZ(28px)}.cara.f5{transform:rotateX(90deg) translateZ(28px)}.cara.f6{transform:rotateX(-90deg) translateZ(28px)}
+/* retratos de turno */
+#turnos{position:absolute;left:3%;top:14%;display:grid;gap:10px;z-index:9}
+.jugador-chip{display:flex;gap:9px;align-items:center;background:rgba(10,16,40,.9);border:3px solid var(--borde);border-radius:999px;padding:6px 14px 6px 7px;opacity:.55;transition:opacity .3s,box-shadow .3s}
+.jugador-chip.turno{opacity:1;box-shadow:0 0 16px rgba(255,201,77,.55);border-color:var(--dorado)}
+.jugador-chip .cara-j{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:18px;border:2.5px solid var(--borde)}
+.jugador-chip b{font-size:13px}
+.jugador-chip .pos-j{font-size:10.5px;color:var(--hielo-suave);display:block}
+#globo-fedor{position:absolute;left:3%;bottom:26%;max-width:220px;background:#fff;color:#123047;border:3.5px solid var(--borde);border-radius:14px;padding:9px 13px;font-weight:800;font-size:13px;z-index:9;box-shadow:4px 4px 0 rgba(0,0,0,.35);opacity:0;transition:opacity .3s}
+#globo-fedor.vivo{opacity:1}
+#globo-fedor::after{content:"";position:absolute;left:24px;top:100%;border:9px solid transparent;border-top-color:#fff}
+#panel-turno{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);width:min(620px,95vw);z-index:10;
+  background:linear-gradient(180deg,var(--panel-claro),var(--panel));border:4px solid var(--borde);border-radius:18px;padding:12px 14px;
+  box-shadow:0 0 0 2px rgba(79,216,203,.25),0 10px 24px rgba(0,0,0,.55)}
+#preg-parques{font-family:var(--display);font-weight:800;font-size:clamp(15px,3.2vw,20px);text-align:center;margin:0 0 10px;min-height:1.3em}
+#preg-parques .med{color:var(--cristal)}
+#ops-parques{display:flex;gap:10px}
+#btn-tirar{width:100%;background:linear-gradient(180deg,#B9A3FF,var(--lila));color:#1B1040;border:4px solid var(--borde);border-radius:14px;
+  font-family:var(--display);font-weight:800;font-size:clamp(18px,4vw,24px);padding:12px;box-shadow:0 6px 0 #4A2FA0;transition:transform .12s}
+#btn-tirar:hover{transform:translateY(-3px)}
+#btn-tirar:disabled{opacity:.5;transform:none}
+.op-btn{flex:1;background:var(--espacio-hondo);border:3.5px solid var(--borde);border-radius:14px;font-family:var(--display);font-weight:800;font-size:clamp(15px,3.4vw,21px);color:var(--hielo);padding:12px 4px;box-shadow:0 5px 0 rgba(0,0,0,.5);transition:transform .1s ease}
+.op-btn:hover{transform:translateY(-3px)}
+.op-btn.bien{background:var(--verde);color:#062A12;animation:latir .4s ease}
+.op-btn.mal{background:var(--coral);color:#fff;animation:sacudir .4s ease}
+.op-btn.revela{outline:4px solid var(--verde);outline-offset:-4px}
+@keyframes latir{0%{transform:scale(.85)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes sacudir{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+#hud{position:absolute;top:0;left:0;right:0;display:flex;gap:8px;align-items:center;padding:10px 12px;flex-wrap:wrap;z-index:12}
+.hud-chip{background:rgba(10,16,40,.88);border:3px solid var(--borde);border-radius:999px;padding:6px 13px;font-weight:800;font-size:12.5px;color:var(--hielo-suave)}
+.hud-chip b{color:var(--hielo)}
+.hud-chip.dorado b{color:var(--dorado)}
+#hud-racha{background:linear-gradient(180deg,#FFE9AE,var(--dorado));color:#5C3A00;border:3px solid var(--borde);font-family:var(--display);font-size:13.5px;display:none}
+#hud-racha.vivo{display:block;animation:latir .5s ease}
+.hud-btn{background:rgba(10,16,40,.88);border:3px solid var(--borde);border-radius:12px;width:40px;height:40px;display:grid;place-items:center;font-size:17px;color:var(--cristal);box-shadow:3px 3px 0 rgba(0,0,0,.4)}
+#aviso-parques{position:absolute;left:50%;top:26%;transform:translate(-50%,-50%) rotate(-6deg);font-family:var(--display);font-weight:800;
+  font-size:clamp(20px,5vw,38px);color:var(--dorado);text-shadow:3px 3px 0 var(--borde),0 0 26px rgba(255,201,77,.65);opacity:0;pointer-events:none;z-index:15}
+#aviso-parques.vivo{animation:popAviso 1s cubic-bezier(.2,.9,.3,1.3)}
+@keyframes popAviso{0%{opacity:0;transform:translate(-50%,-50%) rotate(-6deg) scale(.4)}25%{opacity:1;transform:translate(-50%,-50%) rotate(-6deg) scale(1.12)}70%{opacity:1}100%{opacity:0;transform:translate(-50%,-72%) rotate(-6deg) scale(1)}}
+#velo-pausa{position:fixed;inset:0;background:rgba(7,10,26,.82);display:grid;place-items:center;z-index:20}
+#velo-pausa.oculta{display:none}
+.panel-pausa{background:linear-gradient(180deg,var(--panel-claro),var(--panel));border:5px solid var(--borde);border-radius:20px;padding:26px 30px;text-align:center;box-shadow:10px 10px 0 rgba(0,0,0,.5)}
+.panel-pausa h2{font-family:var(--display);margin:0 0 14px;font-size:24px}
+.btn-grande{background:linear-gradient(180deg,#7FE394,var(--verde));color:#062A12;border:4px solid var(--borde);border-radius:999px;font-family:var(--display);font-weight:800;font-size:18px;padding:11px 34px;box-shadow:0 5px 0 #2E7D42;margin:4px}
+.btn-secun{background:var(--espacio-hondo);color:var(--hielo-suave);border:3.5px solid var(--borde);border-radius:999px;font-family:var(--display);font-weight:800;font-size:15px;padding:10px 24px;box-shadow:0 4px 0 rgba(0,0,0,.5);margin:4px}
+#titulo-fin{font-family:var(--display);font-weight:800;font-size:clamp(26px,6vw,42px);margin:0 0 4px;text-align:center;
+  background:linear-gradient(90deg,var(--cristal),var(--dorado));-webkit-background-clip:text;background-clip:text;color:transparent}
+#sub-fin{font-weight:800;color:var(--hielo-suave);margin:0 0 16px;text-align:center}
+#medalla-dia{font-size:clamp(52px,11vw,84px);margin-bottom:8px;filter:drop-shadow(0 6px 0 rgba(0,0,0,.4));animation:flotarLogo 3.5s ease-in-out infinite}
+.stats{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:18px;max-width:640px}
+.stat-chip{background:rgba(10,16,40,.9);border:3px solid var(--borde);border-radius:999px;padding:7px 15px;font-weight:800;font-size:13px;color:var(--hielo-suave)}
+.stat-chip b{color:var(--dorado)}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+@media (max-width:640px){#zona-dados{top:auto;bottom:32%;right:4%}.dado{width:44px;height:44px}.cara.f1,.cara.f2,.cara.f3,.cara.f4{--z:22px}#turnos{top:12%}}
+</style>
+</head>
+<body>
+<!-- ═══════ INICIO ═══════ -->
+<section class="pantalla" id="p-inicio" aria-label="Inicio">
+  <div class="logo-juego">
+    <svg width="116" height="86" viewBox="0 0 116 86" aria-hidden="true">
+      <g transform="translate(58 46)">
+        <path d="M-46 0 L0 -27 L46 0 L0 27 Z" fill="#243468" stroke="#070C1F" stroke-width="3.6"/>
+        <path d="M-46 0 v7 L0 34 v-7 Z" fill="#141F45" stroke="#070C1F" stroke-width="3.6"/>
+        <path d="M46 0 v7 L0 34 v-7 Z" fill="#0D142E" stroke="#070C1F" stroke-width="3.6"/>
+        <circle cx="-18" cy="-4" r="8" fill="#FF8A5C" stroke="#070C1F" stroke-width="2.8"/>
+        <circle cx="16" cy="8" r="8" fill="#4FD8CB" stroke="#070C1F" stroke-width="2.8"/>
+      </g>
+      <g transform="translate(88 20) rotate(12)"><rect x="-13" y="-13" width="26" height="26" rx="7" fill="#FFC94D" stroke="#070C1F" stroke-width="3"/><circle cx="-5" cy="-5" r="3" fill="#070C1F"/><circle cx="5" cy="5" r="3" fill="#070C1F"/></g>
+      <g transform="translate(24 16) rotate(-10)"><rect x="-11" y="-11" width="22" height="22" rx="6" fill="#F2F6FF" stroke="#070C1F" stroke-width="3"/><circle cx="0" cy="0" r="2.6" fill="#070C1F"/></g>
+    </svg>
+    <h1>Parqués<br>Estelar</h1>
+    <span class="sub">Estación Fedor · Parqués y Dominó</span>
+  </div>
+  <div class="caja-inicio">
+    <input id="in-nombre" type="text" maxlength="24" placeholder="✏️ Escribe tu nombre, jugador" autocomplete="off">
+    <div class="bandas" role="group" aria-label="Elige tu nivel">
+      <button class="banda-btn on" data-b="0"><span class="g">🎲 Novato</span><span class="e">5–7 · suma tus dados</span></button>
+      <button class="banda-btn" data-b="1"><span class="g">♟️ Jugador</span><span class="e">7–9 · ¿a qué casilla llegas?</span></button>
+      <button class="banda-btn" data-b="2"><span class="g">🏆 Campeón</span><span class="e">9–11 · estrategia y meta</span></button>
+    </div>
+    <button id="btn-jugar">▶ ¡A JUGAR CONTRA FEDOR!</button>
+    <span class="nota-sonido">🔊 Al sentarte a la mesa se enciende el sonido</span>
+  </div>
+</section>
+
+<!-- ═══════ LA MESA ═══════ -->
+<section class="pantalla oculta" id="p-juego" aria-label="Mesa de parqués">
+  <div id="salon">
+    <div id="mesa3d"><div id="tablero"></div></div>
+    <div id="zona-dados">
+      <div class="dado" id="dado-1">
+        <div class="cara f1 p1c"><i></i></div>
+        <div class="cara f2 p2c"><i></i><i></i></div>
+        <div class="cara f3 p3c"><i></i><i></i><i></i></div>
+        <div class="cara f4 p4c"><i></i><i></i><i></i><i></i></div>
+        <div class="cara f5 p5c"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="cara f6 p6c"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="dado" id="dado-2">
+        <div class="cara f1 p1c"><i></i></div>
+        <div class="cara f2 p2c"><i></i><i></i></div>
+        <div class="cara f3 p3c"><i></i><i></i><i></i></div>
+        <div class="cara f4 p4c"><i></i><i></i><i></i><i></i></div>
+        <div class="cara f5 p5c"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="cara f6 p6c"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+    <div id="turnos">
+      <div class="jugador-chip turno" id="chip-tu"><span class="cara-j" style="background:#5C3520">🚀</span><span><b id="chip-tu-nom">Tú</b><span class="pos-j" id="chip-tu-pos">Salida</span></span></div>
+      <div class="jugador-chip" id="chip-fedor"><span class="cara-j" style="background:#123047">🤖</span><span><b>Fedor</b><span class="pos-j" id="chip-fedor-pos">Salida</span></span></div>
+    </div>
+    <div id="globo-fedor"></div>
+    <div id="hud">
+      <span class="hud-chip">👤 <b id="h-nombre">Jugador</b></span>
+      <span class="hud-chip dorado">💎 <b id="h-puntos">0</b></span>
+      <span class="hud-chip" id="hud-racha">RACHA ×<span id="h-racha">2</span></span>
+      <span style="flex:1"></span>
+      <button class="hud-btn" id="btn-sonido" aria-label="Sonido">🔊</button>
+      <button class="hud-btn" id="btn-full" aria-label="Pantalla completa">⛶</button>
+      <button class="hud-btn" id="btn-pausa" aria-label="Pausa">⏸</button>
+    </div>
+    <div id="aviso-parques"></div>
+    <div id="panel-turno">
+      <p id="preg-parques"></p>
+      <div id="ops-parques"><button id="btn-tirar">🎲 ¡TIRAR LOS DADOS!</button></div>
+    </div>
+  </div>
+  <div id="velo-pausa" class="oculta">
+    <div class="panel-pausa">
+      <h2>⏸ Pausa</h2>
+      <button class="btn-grande" id="btn-seguir">▶ Seguir jugando</button><br>
+      <button class="btn-secun" id="btn-salir">🏠 Volver al inicio</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FIN ═══════ -->
+<section class="pantalla oculta" id="p-fin" aria-label="Resultado">
+  <div id="medalla-dia">🏆</div>
+  <h2 id="titulo-fin">¡Partida terminada!</h2>
+  <p id="sub-fin"></p>
+  <div class="stats" id="stats-fin"></div>
+  <div>
+    <button class="btn-grande" id="btn-otra">🔁 Revancha</button>
+    <button class="btn-secun" id="btn-cambiar">🎚️ Cambiar nivel</button>
+  </div>
+</section>
+<script>
+"use strict";
+/* ════════════════════════════════════════════════════════════
+   PARQUÉS ESTELAR · Juego 5 · Estación Fedor
+   De «Parqués y Dominó» (3º): tablero CSS 3D real, dados que
+   giran de verdad, turnos contra Fedor-bot y el vocabulario
+   de probabilidad del libro (seguro · posible · imposible).
+   ════════════════════════════════════════════════════════════ */
+const $=s=>document.querySelector(s);
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
+const az=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const mezclar=a=>{for(let i=a.length-1;i>0;i--){const j=az(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;};
+const MODO_PRUEBA=/(\?|&)test=1/.test(location.search);
+const reducida=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+let actx=null, sonidoOn=true;
+function armarAudio(){ if(actx)return; try{ actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){actx=null;} }
+function tono(f0,f1,dur,tipo,vol){
+  if(!actx||!sonidoOn)return;
+  try{
+    const o=actx.createOscillator(),g=actx.createGain();
+    o.type=tipo||"triangle";o.frequency.setValueAtTime(f0,actx.currentTime);
+    if(f1)o.frequency.exponentialRampToValueAtTime(f1,actx.currentTime+dur);
+    g.gain.setValueAtTime(vol||.15,actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+dur);
+    o.connect(g).connect(actx.destination);o.start();o.stop(actx.currentTime+dur);
+  }catch(e){}
+}
+const sClick=()=>tono(500,700,.08,"triangle",.1);
+const sDados=()=>{tono(300,900,.14,"square",.08);setTimeout(()=>tono(400,1000,.14,"square",.08),120);setTimeout(()=>tono(350,950,.14,"square",.08),240);};
+const sSalto=()=>tono(600,900,.09,"triangle",.11);
+const sBien=()=>{tono(560,840,.1,"triangle",.16);setTimeout(()=>tono(840,1120,.12,"triangle",.16),80);};
+const sMal=()=>tono(240,150,.25,"square",.12);
+const sEstrella=()=>{tono(880,1760,.28,"triangle",.15);};
+const sAgujero=()=>{tono(400,120,.4,"sawtooth",.12);};
+const sVictoria=()=>{[[660,0],[880,120],[1100,240],[1320,360],[1760,520]].forEach(([f,d])=>setTimeout(()=>tono(f,f*1.15,.24,"triangle",.18),d));};
+function emitir(tipo,datos){
+  try{ if(window.parent!==window||MODO_PRUEBA) window.parent.postMessage(Object.assign({fuente:"parques-estelar",evento:tipo,ts:Date.now()},datos||{}),"*"); }catch(e){}
+}
+
+/* ════════ EL RECORRIDO: anillo de 24 casillas (rejilla 7×7) ════════ */
+const CAS=[];
+(function(){
+  for(let c=0;c<=6;c++)CAS.push([c,6]);        /* 0-6  abajo → derecha  */
+  for(let r=5;r>=0;r--)CAS.push([6,r]);        /* 7-12 sube             */
+  for(let c=5;c>=0;c--)CAS.push([c,0]);        /* 13-18 arriba → izq    */
+  for(let r=1;r<=5;r++)CAS.push([0,r]);        /* 19-23 baja            */
+})();
+const META=24;
+const ESPECIALES={5:"estrella",11:"estrella",17:"estrella",8:"agujero",20:"agujero",14:"dado",3:"prob",22:"prob"};
+const ICONO={estrella:"⭐",agujero:"🕳️",dado:"🎲",prob:"❓"};
+
+/* ════════ PREGUNTAS DE MOVIMIENTO (por banda, verificables) ════════ */
+function opciones(corr,paso){
+  const set=new Set([corr]);
+  for(const d of mezclar([paso,-paso,paso*2,-paso*2])){ if(set.size>=3)break; const v=corr+d; if(v>=0&&!set.has(v))set.add(v); }
+  let k=1; while(set.size<3){ const v=corr+k; if(!set.has(v))set.add(v); else if(corr-k>=0)set.add(corr-k); k++; }
+  return mezclar([...set]);
+}
+function genMovimiento(banda,pos,d1,d2){
+  const suma=d1+d2;
+  if(banda===0||pos+suma>META&&banda===1){
+    return {tipo:"suma",texto:"🎲 Sacaste <span class='med'>"+d1+"</span> y <span class='med'>"+d2+"</span>. ¿Cuánto suman tus dados?",corr:suma,ops:opciones(suma,1)};
+  }
+  if(banda===1||pos+suma<=META){
+    return {tipo:"llegada",texto:"🎲 Estás en la casilla <span class='med'>"+pos+"</span> y avanzas <span class='med'>"+suma+"</span>. ¿A qué casilla llegas?",corr:pos+suma,ops:opciones(pos+suma,1)};
+  }
+  return {tipo:"sobra",texto:"🏁 Estás en la <span class='med'>"+pos+"</span>, la meta es la <span class='med'>24</span> y sacaste <span class='med'>"+suma+"</span>. ¿Cuántos pasos te sobran?",corr:pos+suma-META,ops:opciones(pos+suma-META,1)};
+}
+function genRescate(banda){
+  if(banda===0){const a=az(6,10),b=az(1,5);return {texto:"🕳️ ¡Agujero negro! Resuelve para salvarte: <span class='med'>"+a+" − "+b+"</span>",corr:a-b,ops:opciones(a-b,1)};}
+  if(banda===1){const a=az(12,20),b=az(4,9);return {texto:"🕳️ ¡Agujero negro! Sálvate: <span class='med'>"+a+" − "+b+"</span>",corr:a-b,ops:opciones(a-b,1)};}
+  const a=az(4,9),b=az(4,9);return {texto:"🕳️ ¡Agujero negro! Sálvate: <span class='med'>"+a+" × "+b+"</span>",corr:a*b,ops:opciones(a*b,3)};
+}
+/* Banco fijo VERIFICADO de vocabulario de probabilidad (del libro de 3º) */
+const PROB=[
+  {texto:"❓ Al tirar UN dado, ¿qué resultado es <span class='med'>IMPOSIBLE</span>?",ops:["2","5","9"],corr:"9"},
+  {texto:"❓ Al tirar DOS dados, ¿qué suma es <span class='med'>IMPOSIBLE</span>?",ops:["1","7","12"],corr:"1"},
+  {texto:"❓ ¿Qué es <span class='med'>SEGURO</span> al tirar un dado?",ops:["Sale un número del 1 al 6","Sale 6","Sale par"],corr:"Sale un número del 1 al 6"},
+  {texto:"❓ ¿Qué es <span class='med'>MÁS POSIBLE</span> al tirar dos dados?",ops:["Suma 7","Suma 2","Suma 12"],corr:"Suma 7"}
+];
+if(MODO_PRUEBA)window.__gen={genMovimiento,genRescate,PROB};
+</script>
+<script>
+"use strict";
+/* ════════ ESTADO DE LA PARTIDA ════════ */
+const P={
+  nombre:"Jugador", banda:0, activo:false, pausa:false, turno:"tu", ocupado:false,
+  pos:{tu:0,fedor:0}, puntos:0, racha:0, mult:1, aciertos:0, intentos:0, mejorRacha:0,
+  turnos:0, especiales:0, ganador:null
+};
+if(MODO_PRUEBA){window.__P=P;window.__forzarDados=null;}
+
+const MAPA_DADO={1:"rotateX(0deg) rotateY(0deg)",2:"rotateY(-90deg)",3:"rotateY(180deg)",4:"rotateY(90deg)",5:"rotateX(-90deg)",6:"rotateX(90deg)"};
+
+function irPantalla(id){
+  document.querySelectorAll(".pantalla").forEach(p=>p.classList.add("oculta"));
+  $(id).classList.remove("oculta");
+}
+document.querySelectorAll(".banda-btn").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".banda-btn").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on"); P.banda=Number(b.dataset.b); sClick();
+  });
+});
+$("#btn-jugar").addEventListener("click",()=>{
+  armarAudio(); sClick();
+  P.nombre=$("#in-nombre").value.trim()||"Jugador";
+  $("#h-nombre").textContent=P.nombre;
+  $("#chip-tu-nom").textContent=P.nombre;
+  empezarPartida();
+});
+$("#btn-otra").addEventListener("click",()=>{sClick();empezarPartida();});
+$("#btn-cambiar").addEventListener("click",()=>{sClick();irPantalla("#p-inicio");});
+$("#btn-pausa").addEventListener("click",()=>{sClick();P.pausa=true;$("#velo-pausa").classList.remove("oculta");});
+$("#btn-seguir").addEventListener("click",()=>{sClick();$("#velo-pausa").classList.add("oculta");P.pausa=false;});
+$("#btn-salir").addEventListener("click",()=>{sClick();$("#velo-pausa").classList.add("oculta");P.activo=false;irPantalla("#p-inicio");});
+$("#btn-sonido").addEventListener("click",()=>{sonidoOn=!sonidoOn;$("#btn-sonido").textContent=sonidoOn?"🔊":"🔇";sClick();});
+$("#btn-full").addEventListener("click",()=>{
+  try{ document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen(); }catch(e){}
+});
+addEventListener("keydown",e=>{
+  if(!P.activo||P.pausa)return;
+  const i={"1":0,"2":1,"3":2}[e.key];
+  if(i!=null){const b=$("#ops-parques").children[i];if(b&&b.classList.contains("op-btn"))b.click();}
+});
+
+/* ════════ MONTAR LA MESA ════════ */
+function montarTablero(){
+  const t=$("#tablero");
+  t.innerHTML="";
+  CAS.forEach(([c,r],i)=>{
+    const d=el("div","casilla");
+    d.style.left=(2.2+c*13.7)+"%";
+    d.style.top=(2.2+r*13.7)+"%";
+    d.dataset.i=i;
+    const esp=ESPECIALES[i];
+    if(esp){d.classList.add("especial-"+esp);d.innerHTML='<span class="icono">'+ICONO[esp]+"</span>";}
+    else if(i===0){d.classList.add("salida");d.innerHTML='<span class="num">SAL</span>';}
+    else d.innerHTML='<span class="num">'+i+"</span>";
+    t.append(d);
+  });
+  const meta=el("div"); meta.id="meta-centro";
+  meta.innerHTML="<span>🏁 META<br>ESTELAR</span>";
+  t.append(meta);
+  ["tu","fedor"].forEach(j=>{
+    const f=el("div","ficha"); f.id="ficha-"+j;
+    f.innerHTML='<div class="cuerpo"><svg class="nave" viewBox="0 0 60 60">'+
+      (j==="tu"
+        ?'<ellipse cx="30" cy="34" rx="24" ry="12" fill="#FF8A5C" stroke="#070C1F" stroke-width="3.4"/><circle cx="36" cy="28" r="8" fill="#F2F6FF" stroke="#070C1F" stroke-width="2.6"/><circle cx="34" cy="27" r="2.2" fill="#123047"/><circle cx="39" cy="27" r="2.2" fill="#123047"/><path d="M6 34 l-8 -4 v8 Z" fill="#FFC94D" stroke="#070C1F" stroke-width="2"/>'
+        :'<ellipse cx="30" cy="34" rx="24" ry="12" fill="#4FD8CB" stroke="#070C1F" stroke-width="3.4"/><rect x="22" y="18" width="18" height="14" rx="6" fill="#123047" stroke="#070C1F" stroke-width="2.4"/><circle cx="27" cy="25" r="2.4" fill="#4FD8CB"/><circle cx="35" cy="25" r="2.4" fill="#4FD8CB"/><line x1="30" y1="12" x2="30" y2="18" stroke="#070C1F" stroke-width="2.4"/><circle cx="30" cy="10" r="3" fill="#FFC94D" stroke="#070C1F" stroke-width="1.8"/>')+
+      "</svg></div>";
+    t.append(f);
+  });
+  ponerFicha("tu",0,false);ponerFicha("fedor",0,false);
+}
+function coordCasilla(pos){
+  const i=Math.min(pos,META-1+0)>=META?0:pos;   /* meta: vuelve al centro */
+  if(pos>=META)return [50,50];
+  const [c,r]=CAS[pos];
+  return [2.2+c*13.7+5.75, 2.2+r*13.7+5.75];
+}
+function ponerFicha(j,pos,salta){
+  const f=$("#ficha-"+j);
+  const [x,y]=coordCasilla(pos);
+  f.style.left=x+"%"; f.style.top=y+"%";
+  if(salta&&!reducida){f.classList.remove("salta");void f.offsetWidth;f.classList.add("salta");sSalto();}
+  const nombrePos=pos>=META?"🏁 ¡Meta!":(pos===0?"Salida":"Casilla "+pos);
+  $(j==="tu"?"#chip-tu-pos":"#chip-fedor-pos").textContent=nombrePos;
+}
+async function moverFicha(j,desde,hasta){
+  const paso=hasta>=desde?1:-1;
+  for(let p=desde+paso;paso>0?p<=hasta:p>=hasta;p+=paso){
+    ponerFicha(j,Math.min(p,META),true);
+    const cas=$('.casilla[data-i="'+Math.min(p,META-1)+'"]');
+    if(cas&&p<META){cas.classList.remove("destello");void cas.offsetWidth;cas.classList.add("destello");}
+    await espera(MODO_PRUEBA?15:330);
+  }
+  emitir("movimiento",{jugador:j,desde,hasta:Math.min(hasta,META)});
+}
+const espera=ms=>new Promise(r=>setTimeout(r,ms));
+function globo(txt){
+  const g=$("#globo-fedor");
+  g.textContent=txt; g.classList.add("vivo");
+  setTimeout(()=>g.classList.remove("vivo"), MODO_PRUEBA?60:2200);
+}
+function aviso(txt){
+  const a=$("#aviso-parques");
+  a.textContent=txt;
+  a.classList.remove("vivo");void a.offsetWidth;a.classList.add("vivo");
+}
+function marcarTurno(){
+  $("#chip-tu").classList.toggle("turno",P.turno==="tu");
+  $("#chip-fedor").classList.toggle("turno",P.turno==="fedor");
+}
+
+/* ════════ PARTIDA ════════ */
+function empezarPartida(){
+  Object.assign(P,{activo:true,pausa:false,turno:"tu",ocupado:false,puntos:0,racha:0,mult:1,
+    aciertos:0,intentos:0,mejorRacha:0,turnos:0,especiales:0,ganador:null});
+  P.pos={tu:0,fedor:0};
+  $("#h-puntos").textContent="0";
+  $("#hud-racha").classList.remove("vivo");
+  montarTablero();
+  marcarTurno();
+  panelTirar();
+  irPantalla("#p-juego");
+  emitir("juego_iniciado",{banda:P.banda,nombre:P.nombre});
+  globo("¡Hola, "+P.nombre+"! El primero en dar la vuelta completa gana. 🚀");
+}
+function panelTirar(){
+  $("#preg-parques").innerHTML="Tu turno, <span class='med'>"+P.nombre+"</span>: ¡tira los dados!";
+  const z=$("#ops-parques"); z.innerHTML="";
+  const b=el("button",null,"🎲 ¡TIRAR LOS DADOS!"); b.id="btn-tirar";
+  b.addEventListener("click",()=>{ if(!P.ocupado&&!P.pausa)turnoJugador(); });
+  z.append(b);
+}
+function tirarDados(){
+  const forz=MODO_PRUEBA&&window.__forzarDados&&window.__forzarDados.length?window.__forzarDados.shift():null;
+  const d1=forz?forz[0]:az(1,6), d2=forz?forz[1]:az(1,6);
+  const e1=$("#dado-1"),e2=$("#dado-2");
+  sDados();
+  e1.classList.add("girando");e2.classList.add("girando");
+  return new Promise(res=>{
+    setTimeout(()=>{
+      e1.classList.remove("girando");e2.classList.remove("girando");
+      e1.style.transform=MAPA_DADO[d1];
+      e2.style.transform=MAPA_DADO[d2];
+      setTimeout(()=>res([d1,d2]), MODO_PRUEBA?20:950);
+    }, MODO_PRUEBA?20:700);
+  });
+}
+function preguntar(q,alResponder){
+  if(MODO_PRUEBA)window.__corr=q.corr;
+  $("#preg-parques").innerHTML=q.texto;
+  const z=$("#ops-parques"); z.innerHTML="";
+  q.ops.forEach(v=>{
+    const b=el("button","op-btn",String(v));
+    b.addEventListener("click",()=>{
+      if(P.pausa)return;
+      P.intentos++;
+      [...z.children].forEach(x=>x.disabled=true);
+      const ok=String(v)===String(q.corr);
+      if(ok){
+        P.aciertos++;P.racha++;P.mejorRacha=Math.max(P.mejorRacha,P.racha);
+        P.mult=P.racha>=6?3:(P.racha>=3?2:1);
+        if(P.mult>1){$("#hud-racha").classList.add("vivo");$("#h-racha").textContent=P.mult;}
+        b.classList.add("bien");sBien();
+      }else{
+        P.racha=0;P.mult=1;$("#hud-racha").classList.remove("vivo");
+        b.classList.add("mal");sMal();
+        [...z.children].find(x=>x.textContent===String(q.corr)).classList.add("revela");
+      }
+      emitir("respuesta",{correcta:ok,racha:P.racha});
+      setTimeout(()=>alResponder(ok), MODO_PRUEBA?15:(ok?400:1100));
+    });
+    z.append(b);
+  });
+}
+async function turnoJugador(){
+  P.ocupado=true;P.turnos++;
+  const [d1,d2]=await tirarDados();
+  emitir("dados",{jugador:"tu",d1,d2});
+  const q=genMovimiento(P.banda,P.pos.tu,d1,d2);
+  preguntar(q,async ok=>{
+    if(ok){P.puntos+=10*P.mult;$("#h-puntos").textContent=P.puntos;}
+    const desde=P.pos.tu;
+    P.pos.tu=Math.min(META,P.pos.tu+d1+d2);
+    $("#preg-parques").innerHTML="✨ Avanzas <span class='med'>"+(d1+d2)+"</span> casillas…";
+    $("#ops-parques").innerHTML="";
+    await moverFicha("tu",desde,P.pos.tu);
+    if(P.pos.tu>=META){ganar("tu");return;}
+    await resolverEspecial();
+  });
+}
+async function resolverEspecial(){
+  const esp=ESPECIALES[P.pos.tu];
+  if(!esp){pasarTurno();return;}
+  P.especiales++;
+  emitir("casilla_especial",{jugador:"tu",casilla:P.pos.tu,tipo:esp});
+  if(esp==="estrella"){
+    sEstrella();aviso("⭐ ¡TURBO! +2 casillas · +15 💎");
+    P.puntos+=15;$("#h-puntos").textContent=P.puntos;
+    const desde=P.pos.tu;
+    P.pos.tu=Math.min(META,P.pos.tu+2);
+    await espera(MODO_PRUEBA?20:800);
+    await moverFicha("tu",desde,P.pos.tu);
+    if(P.pos.tu>=META){ganar("tu");return;}
+    pasarTurno();
+  }else if(esp==="agujero"){
+    sAgujero();
+    preguntar(genRescate(P.banda),async ok=>{
+      if(ok){
+        aviso("🛟 ¡Te salvaste! +10 💎");
+        P.puntos+=10;$("#h-puntos").textContent=P.puntos;
+        pasarTurno();
+      }else{
+        aviso("🕳️ Retrocedes 3 casillas…");
+        const desde=P.pos.tu;
+        P.pos.tu=Math.max(0,P.pos.tu-3);
+        await moverFicha("tu",desde,P.pos.tu);
+        pasarTurno();
+      }
+    });
+  }else if(esp==="dado"){
+    aviso("🎲 ¡DOBLE TURNO!");
+    await espera(MODO_PRUEBA?20:900);
+    P.ocupado=false;
+    panelTirar();
+  }else if(esp==="prob"){
+    const q=PROB[az(0,PROB.length-1)];
+    preguntar(q,ok=>{
+      if(ok){aviso("🧠 ¡Sabes de probabilidad! +20 💎");P.puntos+=20;$("#h-puntos").textContent=P.puntos;}
+      pasarTurno();
+    });
+  }
+}
+function pasarTurno(){
+  if(!P.activo)return;
+  P.turno="fedor";marcarTurno();
+  $("#preg-parques").innerHTML="🤖 Turno de <span class='med'>Fedor</span>…";
+  $("#ops-parques").innerHTML="";
+  setTimeout(turnoFedor, MODO_PRUEBA?30:900);
+}
+async function turnoFedor(){
+  if(!P.activo||P.pausa){setTimeout(turnoFedor,300);return;}
+  const [d1,d2]=await tirarDados();
+  emitir("dados",{jugador:"fedor",d1,d2});
+  globo("Fedor sacó "+d1+" + "+d2+" = "+(d1+d2));
+  const desde=P.pos.fedor;
+  P.pos.fedor=Math.min(META,P.pos.fedor+d1+d2);
+  await espera(MODO_PRUEBA?20:600);
+  await moverFicha("fedor",desde,P.pos.fedor);
+  if(P.pos.fedor>=META){ganar("fedor");return;}
+  const esp=ESPECIALES[P.pos.fedor];
+  if(esp){
+    P.especiales++;
+    emitir("casilla_especial",{jugador:"fedor",casilla:P.pos.fedor,tipo:esp});
+    if(esp==="estrella"){
+      globo("⭐ ¡Fedor cayó en turbo! Avanza 2.");
+      const d0=P.pos.fedor;P.pos.fedor=Math.min(META,P.pos.fedor+2);
+      await moverFicha("fedor",d0,P.pos.fedor);
+      if(P.pos.fedor>=META){ganar("fedor");return;}
+    }else if(esp==="agujero"){
+      globo("🕳️ ¡Fedor cayó al agujero! Retrocede 3.");
+      const d0=P.pos.fedor;P.pos.fedor=Math.max(0,P.pos.fedor-3);
+      await moverFicha("fedor",d0,P.pos.fedor);
+    }else if(esp==="dado"){
+      globo("🎲 Fedor repite turno.");
+      await espera(MODO_PRUEBA?20:900);
+      turnoFedor();return;
+    }else{
+      globo("❓ Fedor piensa: ¡sacar 7 es lo más posible!");
+    }
+  }
+  P.turno="tu";marcarTurno();
+  P.ocupado=false;
+  panelTirar();
+}
+function ganar(quien){
+  P.activo=false;P.ganador=quien;
+  const prec=P.intentos?Math.round(100*P.aciertos/P.intentos):0;
+  if(quien==="tu"){P.puntos+=100;sVictoria();}
+  $("#h-puntos").textContent=P.puntos;
+  $("#medalla-dia").textContent=quien==="tu"?"🏆":"🤖";
+  $("#titulo-fin").textContent=quien==="tu"?"¡GANASTE LA VUELTA ESTELAR!":"Ganó Fedor… ¡revancha!";
+  $("#sub-fin").textContent=quien==="tu"
+    ?P.nombre+", diste la vuelta completa antes que Fedor. Bono de victoria +100 💎"
+    :P.nombre+", Fedor llegó primero esta vez. ¡La próxima es tuya!";
+  const st=$("#stats-fin"); st.innerHTML="";
+  [["🎲 Turnos jugados",P.turnos],
+   ["✅ Respuestas correctas",P.aciertos+" / "+P.intentos],
+   ["🎯 Precisión",prec+"%"],
+   ["🔥 Mejor racha",P.mejorRacha],
+   ["✨ Casillas especiales",P.especiales],
+   ["💎 Puntos",P.puntos]].forEach(([k,v])=>{
+    const c=el("span","stat-chip");c.innerHTML=k+": <b>"+v+"</b>";st.append(c);
+  });
+  emitir("partida_terminada",{nombre:P.nombre,banda:P.banda,ganador:quien,turnos:P.turnos,
+    aciertos:P.aciertos,intentos:P.intentos,precision:prec,mejorRacha:P.mejorRacha,puntos:P.puntos});
+  setTimeout(()=>irPantalla("#p-fin"), MODO_PRUEBA?30:1200);
+}
+</script>
+</body>
+</html>
