@@ -1,39 +1,7 @@
 import { authService } from './auth.service';
-import { ModuleFormData } from '@/types/module.types';
+import { ModuleFormData, Module } from '@/types/module.types';
 
-export interface Module {
-  _id: string;
-  title: string;
-  description: string;
-  tags: string[];
-  duration: string;
-  group: string;
-  createdBy: string;
-  createdAt: string;
-  price: number;
-  status: string;
-  image: string;
-  published?: boolean;
-  topics: Array<{
-    title: string;
-    description: string;
-    image: string;
-    completed: boolean;
-    duration: string;
-    exercises: Array<{
-      statement: string;
-      options?: string[];
-      correctAnswer?: string;
-      explanation?: string;
-      type?: string;
-      image?: string;
-      template?: string;
-      variables?: string[];
-      defaultValues?: number[];
-      range?: number[];
-    }>;
-  }>;
-}
+export type { Module };
 
 export const moduleService = {
   async createModule(formData: ModuleFormData) {
@@ -87,6 +55,87 @@ export const moduleService = {
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || 'Error al crear el módulo');
+    }
+
+    return response.json();
+  },
+
+  async updateModule(moduleId: string, updateData: Partial<Module>): Promise<Module> {
+    const token = authService.getToken();
+    if (!token) {
+      throw new Error('No se encontró el token de autenticación');
+    }
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/learning/${moduleId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(updateData)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al actualizar el módulo');
+    }
+
+    const resJson = await response.json();
+    return resJson.data || resJson;
+  },
+
+  async reuploadPdf(
+    moduleId: string,
+    file: File,
+    extraData?: { group?: string; duration?: string; title?: string }
+  ) {
+    const token = authService.getToken();
+    if (!token) {
+      throw new Error('No se encontró el token de autenticación');
+    }
+
+    if (file.size > 35 * 1024 * 1024) {
+      throw new Error('El archivo PDF excede el límite de 35MB');
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    if (extraData?.group) formData.append('group', extraData.group);
+    if (extraData?.duration) formData.append('duration', extraData.duration);
+    if (extraData?.title) formData.append('title', extraData.title);
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/learning/${moduleId}/upload-pdf`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al procesar y vectorizar el PDF');
+    }
+
+    return response.json();
+  },
+
+  async deleteModule(moduleId: string) {
+    const token = authService.getToken();
+    if (!token) {
+      throw new Error('No se encontró el token de autenticación');
+    }
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/learning/${moduleId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al eliminar el módulo');
     }
 
     return response.json();

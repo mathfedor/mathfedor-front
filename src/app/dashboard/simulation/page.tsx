@@ -30,7 +30,7 @@ export default function SimulationPage() {
   const [modules, setModules] = useState<Module[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
-  const totalSteps = modules[0]?.topics?.[0]?.exercises?.length > 0 ? 3 : 1; // Descripción + tema (ejercicios están en el tema)
+  const totalSteps = (modules[0]?.topics?.[0]?.exercises?.length ?? 0) > 0 ? 3 : 1; // Descripción + tema (ejercicios están en el tema)
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: number }>({});
   const [results, setResults] = useState<{
     goodAnswers: number;
@@ -482,7 +482,7 @@ export default function SimulationPage() {
         title: currentTopic.title,
         content: (
           <div className="prose prose-sm dark:prose-invert max-w-none">
-            <p className="whitespace-pre-line" dangerouslySetInnerHTML={{ __html: currentTopic.description }} />
+            <p className="whitespace-pre-line" dangerouslySetInnerHTML={{ __html: currentTopic.description || '' }} />
           </div>
         )
       };

@@ -347,7 +347,7 @@ export default function SimulatorPage() {
     }
 
          if (isExerciseStep) {
-       const hasGraphableExercises = currentTopic.exercises.some((ex) => 
+       const hasGraphableExercises = (currentTopic.exercises || []).some((ex) => 
          ex.type === 'linear' || ex.type === 'quadratic'
        );
              
@@ -356,7 +356,7 @@ export default function SimulatorPage() {
              title: `Ejercicios - ${currentTopic.title}`,
              content: (
                <div className="space-y-6">
-                 {currentTopic.exercises.map((exercise, index) => {
+                 {(currentTopic.exercises || []).map((exercise, index) => {
                    const exerciseId = `${currentTopic.title}_ex${index + 1}`;
                    const hasGraph = exercise.type === 'linear' || exercise.type === 'quadratic';
                    
@@ -1334,7 +1334,7 @@ export default function SimulatorPage() {
           title: `Ejercicios - ${currentTopic.title}`,
           content: (
             <div className="space-y-6">
-              {currentTopic.exercises.map((exercise, index) => {
+              {(currentTopic.exercises || []).map((exercise, index) => {
                 const processStatement = (statement: string) => {
                   const imgRegex = /\{img_([^}]+)\}/g;
                   const images: string[] = [];
@@ -1408,7 +1408,7 @@ export default function SimulatorPage() {
         title: currentTopic.title,
         content: (
           <div className="prose prose-sm dark:prose-invert max-w-none">
-            <p className="whitespace-pre-line" dangerouslySetInnerHTML={{ __html: currentTopic.description }} />
+            <p className="whitespace-pre-line" dangerouslySetInnerHTML={{ __html: currentTopic.description || '' }} />
           </div>
         )
       };

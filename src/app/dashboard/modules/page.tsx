@@ -41,11 +41,18 @@ export default function ModulesPage() {
     const [search, setSearch] = useState('');
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
+    const [currentUser, setCurrentUser] = useState<any>(null);
+    const isAdmin = currentUser?.role?.toLowerCase() === 'admin';
+
     /* ── Auth ── */
     useEffect(() => {
         try {
             const user = authService.getCurrentUser();
-            if (!user) router.push('/login');
+            if (!user) {
+                router.push('/login');
+            } else {
+                setCurrentUser(user);
+            }
         } catch {
             router.push('/login');
         } finally {
@@ -104,7 +111,7 @@ export default function ModulesPage() {
             <div className="flex min-h-screen bg-[#F9F9F9] dark:bg-[#1C1D1F]">
                 <Sidebar />
 
-                <div className="flex-1 p-8 overflow-auto">
+                <div className="flex-1 pt-24 px-8 pb-8 overflow-auto">
                     {/* Header */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                         <div>
@@ -113,13 +120,15 @@ export default function ModulesPage() {
                                 Gestiona todos los módulos de aprendizaje
                             </p>
                         </div>
-                        <Link
-                            href="/dashboard/modules/create"
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm"
-                        >
-                            <FiPlus className="w-4 h-4" />
-                            Nuevo módulo
-                        </Link>
+                        {isAdmin && (
+                            <Link
+                                href="/dashboard/modules/create"
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm"
+                            >
+                                <FiPlus className="w-4 h-4" />
+                                Nuevo módulo
+                            </Link>
+                        )}
                     </div>
 
                     {/* Search + Refresh */}
@@ -163,7 +172,7 @@ export default function ModulesPage() {
                                 <p className="text-sm">
                                     {search ? 'Sin resultados para tu búsqueda.' : 'Aún no hay módulos creados.'}
                                 </p>
-                                {!search && (
+                                {!search && isAdmin && (
                                     <Link
                                         href="/dashboard/modules/create"
                                         className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
@@ -189,42 +198,72 @@ export default function ModulesPage() {
                                             <th className="px-5 py-3 font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs">
                                                 Estado
                                             </th>
+                                            <th className="px-5 py-3 font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs text-right">
+                                                Acciones
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-50 dark:divide-gray-700/50">
                                         {filtered.map((mod) => {
                                             const { label, className } = getStatusStyle(mod.status);
+                                            const slug = (mod as any).slug;
+                                            const isBook = slug === 'libro-1ro' || 
+                                                           slug === 'matematicas-fedor-2' || 
+                                                           slug?.includes('fedor') || 
+                                                           slug?.startsWith('libro-');
+                                            
+                                            const handleRowClick = () => {
+                                                if (isBook) {
+                                                    router.push(`/dashboard/curriculum?bookSlug=${slug}`);
+                                                } else if (isAdmin) {
+                                                    router.push(`/dashboard/modules/${mod._id}`);
+                                                } else {
+                                                    router.push(`/dashboard/modules/${mod._id}/exercises`);
+                                                }
+                                            };
+
                                             return (
                                                 <tr
                                                     key={mod._id}
                                                     className="hover:bg-gray-50/60 dark:hover:bg-white/5 transition-colors cursor-pointer"
-                                                    onClick={() => {
-                                                        const slug = (mod as any).slug;
-                                                        const isBook = slug === 'libro-1ro' || 
-                                                                       slug === 'matematicas-fedor-2' || 
-                                                                       slug?.includes('fedor') || 
-                                                                       slug?.startsWith('libro-');
-                                                        if (isBook) {
-                                                            router.push(`/dashboard/curriculum?bookSlug=${slug}`);
-                                                        } else {
-                                                            router.push(`/dashboard/modules/${mod._id}`);
-                                                        }
-                                                    }}
                                                 >
                                                     {/* Título */}
-                                                    <td className="px-5 py-4">
-                                                        <span className="font-medium text-gray-800 dark:text-white">
+                                                    <td 
+                                                        className="px-5 py-4"
+                                                        onClick={handleRowClick}
+                                                    >
+                                                        <span className="font-medium text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                                             {mod.title}
                                                         </span>
+                                                        {mod.tags && mod.tags.length > 0 && (
+                                                            <div className="flex flex-wrap gap-1 mt-1">
+                                                                {mod.tags.slice(0, 3).map((t, idx) => (
+                                                                    <span key={idx} className="text-[10px] bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 px-1.5 py-0.5 rounded">
+                                                                        {t}
+                                                                    </span>
+                                                                ))}
+                                                                {mod.tags.length > 3 && (
+                                                                    <span className="text-[10px] text-gray-400">+{mod.tags.length - 3}</span>
+                                                                )}
+                                                            </div>
+                                                        )}
                                                     </td>
 
                                                     {/* Grupo */}
-                                                    <td className="px-5 py-4 text-gray-600 dark:text-gray-300">
-                                                        {mod.group || '—'}
+                                                    <td 
+                                                        className="px-5 py-4 text-gray-600 dark:text-gray-300"
+                                                        onClick={handleRowClick}
+                                                    >
+                                                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/40">
+                                                            {mod.group || 'Sin grupo'}
+                                                        </span>
                                                     </td>
 
                                                     {/* Precio */}
-                                                    <td className="px-5 py-4 text-gray-600 dark:text-gray-300">
+                                                    <td 
+                                                        className="px-5 py-4 text-gray-600 dark:text-gray-300"
+                                                        onClick={handleRowClick}
+                                                    >
                                                         {mod.price != null
                                                             ? new Intl.NumberFormat('es-CO', {
                                                                 style: 'currency',
@@ -235,12 +274,57 @@ export default function ModulesPage() {
                                                     </td>
 
                                                     {/* Estado */}
-                                                    <td className="px-5 py-4">
+                                                    <td 
+                                                        className="px-5 py-4"
+                                                        onClick={handleRowClick}
+                                                    >
                                                         <span
                                                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${className}`}
                                                         >
                                                             {label}
                                                         </span>
+                                                    </td>
+
+                                                    {/* Acciones */}
+                                                    <td className="px-5 py-4 text-right whitespace-nowrap">
+                                                        <div className="inline-flex items-center gap-2">
+                                                            {isAdmin && (
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        router.push(`/dashboard/modules/${mod._id}`);
+                                                                    }}
+                                                                    className="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/40 dark:hover:bg-blue-900/70 text-blue-600 dark:text-blue-300 text-xs font-semibold rounded-md transition-colors"
+                                                                    title="Editar módulo y RAG"
+                                                                >
+                                                                    Editar / RAG
+                                                                </button>
+                                                            )}
+
+                                                            {isBook ? (
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        router.push(`/dashboard/curriculum?bookSlug=${slug}`);
+                                                                    }}
+                                                                    className="px-2.5 py-1.5 bg-purple-50 hover:bg-purple-100 dark:bg-purple-900/40 dark:hover:bg-purple-900/70 text-purple-600 dark:text-purple-300 text-xs font-semibold rounded-md transition-colors"
+                                                                    title="Ver Currículo Gamificado"
+                                                                >
+                                                                    Currículo
+                                                                </button>
+                                                            ) : (
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        router.push(`/dashboard/modules/${mod._id}/exercises`);
+                                                                    }}
+                                                                    className="px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-semibold rounded-md transition-colors"
+                                                                    title="Ver como estudiante"
+                                                                >
+                                                                    Ver
+                                                                </button>
+                                                            )}
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             );

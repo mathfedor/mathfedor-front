@@ -12,6 +12,7 @@ interface User {
   id: string;
   name: string;
   email: string;
+  role?: string;
 }
 
 interface ModalProps {
@@ -100,8 +101,12 @@ export default function CreateModulePage() {
   }, []);
 
   useEffect(() => {
-    if (!isCheckingAuth && !user) {
-      router.push('/login');
+    if (!isCheckingAuth) {
+      if (!user) {
+        router.push('/login');
+      } else if (user.role?.toLowerCase() !== 'admin') {
+        router.push('/dashboard/modules');
+      }
     }
   }, [user, isCheckingAuth, router]);
 
@@ -263,7 +268,7 @@ export default function CreateModulePage() {
     <div className="min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">
       <div className="flex min-h-screen bg-[#F9F9F9]">
         <Sidebar />
-        <div className="flex-1 p-8">
+        <div className="flex-1 pt-24 px-8 pb-8">
           <div className="max-w-3xl mx-auto">
             <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Crear Nuevo Módulo</h1>
 

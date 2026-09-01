@@ -74,6 +74,7 @@ const roleMenuItems: Record<string, MenuItem[]> = {
   ],
   admin: [
     { icon: <FiPlusCircle className="w-5 h-5" />, title: 'Crear Diagnóstico', href: '/dashboard/diagnosis' },
+    { icon: <FiLayers className="w-5 h-5" />, title: 'Gestionar Módulos', href: '/dashboard/modules' },
     { icon: <FiBook className="w-5 h-5" />, title: 'Crear Módulo', href: '/dashboard/modules/create' },
     { icon: <FiBook className="w-5 h-5" />, title: 'Editar Libros', href: '/dashboard/curriculum' },
     { icon: <FiBarChart className="w-5 h-5" />, title: 'Crear Simulador', href: '/dashboard/adminsimulator' },
