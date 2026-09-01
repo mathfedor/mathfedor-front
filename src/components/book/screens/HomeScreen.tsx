@@ -13,6 +13,7 @@ import ShopModal from '../shared/ShopModal';
 import StickerAlbumModal from '../shared/StickerAlbumModal';
 import FedorRankCard from '../shared/FedorRankCard';
 import WelcomeIntroModal2do from '../shared/WelcomeIntroModal2do';
+import ExamenIntegradorModal from '../shared/ExamenIntegradorModal';
 import { globalProgressPct, unitProgressPct } from '../shared/progress.utils';
 import { dayKey } from '@/services/daily-challenge.service';
 
@@ -82,6 +83,7 @@ export default function HomeScreen() {
   const rank = useRank();
 
   const [dailyMissionState, setDailyMissionState] = useState<DailyMissionState | null>(null);
+  const [showExamenIntegradorModal, setShowExamenIntegradorModal] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -610,7 +612,16 @@ export default function HomeScreen() {
       )}
 
       {/* Pruebas SABER · Modo Maratón */}
-      <div className="f1-saber-card" onClick={() => goScreen('examen')}>
+      <div
+        className="f1-saber-card"
+        onClick={() => {
+          if (!isGrade1) {
+            setShowExamenIntegradorModal(true);
+          } else {
+            goScreen('examen');
+          }
+        }}
+      >
         <div
           style={{
             position: 'absolute',
@@ -1210,6 +1221,15 @@ export default function HomeScreen() {
           onClose={() => setShowCadeteIntro(false)}
         />
       )}
+
+      <ExamenIntegradorModal
+        isOpen={showExamenIntegradorModal}
+        onClose={() => setShowExamenIntegradorModal(false)}
+        onStartExam={() => {
+          setShowExamenIntegradorModal(false);
+          goScreen('examen');
+        }}
+      />
     </div>
   );
 }
