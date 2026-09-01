@@ -39,9 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-public/estacion/atiende-la-tienda_1.html
-public/estacion/atiende-la-tienda_1.html
-public/estacion/carrera-cosmica_2.html
-public/estacion/cosecha-total_1.html
-public/estacion/parques-estelar_1.html
-public/estacion/torre-de-bloques_3.html
+
+# others
+public/estacion/*
