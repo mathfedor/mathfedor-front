@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart, FiTag, FiHelpCircle, FiLayers } from 'react-icons/fi';
+import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart, FiTag, FiHelpCircle, FiLayers, FiTarget } from 'react-icons/fi';
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import { Tooltip } from '@/components/ui/tooltip';
 import { authService } from '@/services/auth.service';
@@ -46,7 +46,8 @@ const roleMenuItems: Record<string, MenuItem[]> = {
     },
     { icon: <FiFileText className="w-5 h-5" />, title: 'Diagnóstico', href: '/dashboard/diagnostico' },
     { icon: <FiPackage className="w-5 h-5" />, title: 'Simulacro', href: '/dashboard/simulation' },
-    { icon: <FiCode className="w-5 h-5" />, title: 'Simulador', href: '/dashboard/simulator' }
+    { icon: <FiCode className="w-5 h-5" />, title: 'Simulador', href: '/dashboard/simulator' },
+    { icon: <FiTarget className="w-5 h-5" />, title: 'Estación Fedor', href: '/retos' }
   ],
   teacher: [
     {
@@ -61,19 +62,22 @@ const roleMenuItems: Record<string, MenuItem[]> = {
       href: '/dashboard/mis-modulos',
     },
     { icon: <FiUser className="w-5 h-5" />, title: 'Estudiantes', href: '/dashboard/estudiantes' },
-    { icon: <FiBarChart className="w-5 h-5" />, title: 'Resultados', href: '/dashboard/results' }
+    { icon: <FiBarChart className="w-5 h-5" />, title: 'Resultados', href: '/dashboard/results' },
+    { icon: <FiTarget className="w-5 h-5" />, title: 'Estación Fedor', href: '/retos' }
   ],
   academy: [
     { icon: <FiUser className="w-5 h-5" />, title: 'Estudiantes', href: '/dashboard/estudiantes' },
     { icon: <FiBarChart className="w-5 h-5" />, title: 'Resultados', href: '/dashboard/results' },
     { icon: <FiGlobe className="w-5 h-5" />, title: 'Instituciones', href: '/dashboard/institutions' },
-    { icon: <FiUsers className="w-5 h-5" />, title: 'Usuarios', href: '/dashboard/users' }
+    { icon: <FiUsers className="w-5 h-5" />, title: 'Usuarios', href: '/dashboard/users' },
+    { icon: <FiTarget className="w-5 h-5" />, title: 'Estación Fedor', href: '/retos' }
   ],
   admin: [
     { icon: <FiPlusCircle className="w-5 h-5" />, title: 'Crear Diagnóstico', href: '/dashboard/diagnosis' },
     { icon: <FiBook className="w-5 h-5" />, title: 'Crear Módulo', href: '/dashboard/modules/create' },
     { icon: <FiBook className="w-5 h-5" />, title: 'Editar Libros', href: '/dashboard/curriculum' },
     { icon: <FiBarChart className="w-5 h-5" />, title: 'Crear Simulador', href: '/dashboard/adminsimulator' },
+    { icon: <FiTarget className="w-5 h-5" />, title: 'Estación Fedor', href: '/retos' },
     { icon: <FiMonitor className="w-5 h-5" />, title: 'Crear Simulacro', href: '/dashboard/adminsimulation' },
     { icon: <FiGlobe className="w-5 h-5" />, title: 'Instituciones', href: '/dashboard/institutions' },
     { icon: <FiUsers className="w-5 h-5" />, title: 'Usuarios', href: '/dashboard/users' },

@@ -1,0 +1,2817 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estación Fedor · Matemáticas aplicadas 1º a 5º</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --espacio:#0F1836; --espacio-hondo:#0A1028; --panel:#1A2650; --panel-claro:#243468; --borde:#070C1F;
+  --cristal:#4FD8CB; --dorado:#FFC94D; --coral:#FF6B5E; --lila:#9B7BFF; --verde:#5BD672; --azulito:#9CCBFF; --rosa:#F5C6C0;
+  --hielo:#F2F6FF; --hielo-suave:#B9C4E8;
+  --display:'Baloo 2',system-ui,sans-serif; --texto:'Nunito',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--texto);color:var(--hielo);overflow-x:hidden;
+  background:var(--espacio);
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 22%, #fff 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 34% 8%, #fff 50%, transparent 51%),
+    radial-gradient(1.7px 1.7px at 58% 30%, #FFD98A 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 76% 12%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 90% 42%, #A7E9E2 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 22% 64%, #fff 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 48% 82%, #C9B8FF 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 84% 84%, #FFD98A 50%, transparent 51%),
+    radial-gradient(ellipse at 50% -20%, #21316B 0%, var(--espacio) 52%, var(--espacio-hondo) 100%);
+  min-height:100vh;
+}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:3px solid var(--dorado);outline-offset:3px;border-radius:6px}
+.envoltura{max-width:1040px;margin:0 auto;padding:0 16px 60px}
+
+/* HUD */
+.hud{
+  position:relative;margin-top:16px;
+  background:linear-gradient(180deg,var(--panel-claro),var(--panel));
+  border:4px solid var(--borde);border-radius:18px;
+  box-shadow:0 0 0 2px rgba(79,216,203,.25), 7px 8px 0 rgba(0,0,0,.45);
+  padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.hud::before{content:"";position:absolute;top:8px;left:18px;width:9px;height:9px;border-radius:50%;background:var(--verde);box-shadow:16px 0 0 var(--dorado),32px 0 0 var(--coral)}
+.hud h1{
+  font-family:var(--display);font-weight:800;margin:0;font-size:clamp(20px,4vw,30px);
+  line-height:1.05;letter-spacing:-.4px;text-transform:uppercase;padding-top:8px;
+  background:linear-gradient(90deg,var(--cristal),var(--dorado));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hud .sub{font-size:11px;font-weight:800;letter-spacing:2.4px;text-transform:uppercase;color:var(--hielo-suave);display:block;margin-top:8px}
+.hud .titulo-caja{margin-right:auto}
+.fedor-hud{width:88px;flex:none;filter:drop-shadow(3px 4px 0 rgba(0,0,0,.4));animation:flotar 3.6s ease-in-out infinite}
+@keyframes flotar{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.marcadores{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pastilla{background:var(--espacio-hondo);border:2.5px solid var(--borde);color:var(--dorado);border-radius:999px;padding:7px 14px;font-weight:800;font-size:14px;white-space:nowrap;box-shadow:inset 0 0 0 1.5px rgba(255,201,77,.3)}
+.pastilla b{font-family:var(--display);font-size:16px}
+.pastilla.saldo{color:var(--cristal);box-shadow:inset 0 0 0 1.5px rgba(79,216,203,.35)}
+.btn-icono{background:var(--espacio-hondo);border:2.5px solid var(--borde);color:var(--hielo);border-radius:999px;width:40px;height:40px;font-size:17px;display:grid;place-items:center;flex:none}
+.btn-icono.activo{color:var(--dorado)}
+.oculto{display:none !important}
+
+/* MAPA */
+.mapa-caja{
+  margin-top:18px;background:linear-gradient(180deg,var(--panel-claro),var(--panel));
+  border:4px solid var(--borde);border-radius:18px;padding:12px;
+  box-shadow:0 0 0 2px rgba(79,216,203,.2), 7px 8px 0 rgba(0,0,0,.45);
+}
+#mapa{width:100%;height:auto;display:block}
+.pod{cursor:pointer;transition:transform .15s ease;transform-box:fill-box;transform-origin:center}
+.pod:hover{transform:scale(1.04)}
+.leyenda{margin:14px 4px 0;font-size:13px;color:var(--hielo-suave);line-height:1.5}
+
+/* VISTA DE MÓDULO */
+.barra-nivel{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0}
+.volver{background:var(--panel-claro);color:var(--hielo);font-weight:800;font-size:14px;border:3px solid var(--borde);border-radius:999px;padding:7px 16px;box-shadow:3px 3px 0 rgba(0,0,0,.4)}
+.mod-cabecera{
+  display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:6px 0 16px;
+  background:linear-gradient(180deg,var(--panel-claro),var(--panel));
+  border:4px solid var(--borde);border-radius:18px;padding:16px 20px;
+  box-shadow:6px 6px 0 rgba(0,0,0,.42);
+}
+.mod-cabecera svg{width:80px;height:80px;flex:none;filter:drop-shadow(3px 3px 0 rgba(0,0,0,.4))}
+.mod-cabecera h2{font-family:var(--display);font-weight:800;font-size:clamp(20px,3.6vw,27px);margin:0}
+.mod-cabecera p{margin:3px 0 0;font-size:13.5px;color:var(--hielo-suave);line-height:1.5;max-width:60ch}
+.rejilla-niveles{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:15px}
+.mision{
+  position:relative;text-align:left;width:100%;
+  background:linear-gradient(180deg,var(--panel-claro),var(--panel));
+  border:3.5px solid var(--borde);border-radius:16px;padding:15px;color:var(--hielo);
+  box-shadow:5px 5px 0 rgba(0,0,0,.42);transition:transform .15s ease;
+  animation:aparecer .5s ease backwards;
+}
+.mision:nth-child(2){animation-delay:.07s}.mision:nth-child(3){animation-delay:.14s}
+@keyframes aparecer{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.mision:hover,.mision:focus-visible{transform:translate(-2px,-4px);box-shadow:7px 9px 0 rgba(0,0,0,.45), 0 0 16px rgba(79,216,203,.25)}
+.banda{display:inline-block;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:2px solid var(--borde);margin-bottom:7px}
+.banda.b0{background:#1E4D3A;color:#9FE8B4}.banda.b1{background:#1E3A5C;color:#9CCBFF}.banda.b2{background:#4A2A66;color:#D9B8FF}.banda.b3{background:#5C4A1E;color:#FFE2A0}.banda.b4{background:#0E4A44;color:#8FE8DD}
+.mision h3{font-family:var(--display);font-weight:800;font-size:18px;margin:0 0 4px;line-height:1.15}
+.mision p{font-size:12.5px;color:var(--hielo-suave);margin:0 0 10px;line-height:1.4}
+.mision .pie{display:flex;justify-content:space-between;align-items:center}
+.estrellas{font-size:15px;letter-spacing:1px;color:#3A4A80}
+.estrellas .on{color:var(--dorado);text-shadow:0 0 8px rgba(255,201,77,.6)}
+.recompensa{font-size:11px;font-weight:800;color:var(--dorado)}
+
+/* ESCENARIO DE NIVEL */
+.vidas{margin-left:auto;font-size:20px;letter-spacing:3px}
+.vidas .latido{display:inline-block;animation:latir 1s ease-in-out infinite}
+@keyframes latir{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+.chip{font-size:10.5px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;background:var(--espacio-hondo);color:var(--cristal);padding:4px 9px;border-radius:999px;border:2px solid var(--borde)}
+.escenario{display:grid;grid-template-columns:158px 1fr;gap:18px;align-items:start}
+@media (max-width:700px){.escenario{grid-template-columns:1fr}.lado-fedor{display:flex;justify-content:center;gap:14px}}
+.lado-fedor{position:sticky;top:14px}
+.fedor{width:150px;max-width:42vw;filter:drop-shadow(4px 5px 0 rgba(0,0,0,.45));transition:transform .2s ease}
+.fedor.feliz{animation:brinco .55s ease}
+.fedor.triste{animation:sacudir .5s ease}
+@keyframes brinco{0%{transform:none}30%{transform:translateY(-16px) rotate(-3deg)}60%{transform:translateY(0)}80%{transform:translateY(-6px)}100%{transform:none}}
+@keyframes sacudir{0%,100%{transform:none}25%{transform:translateX(-7px) rotate(-2deg)}75%{transform:translateX(7px) rotate(2deg)}}
+.globo{margin-top:10px;background:var(--hielo);color:var(--espacio-hondo);border:3px solid var(--borde);border-radius:12px;padding:10px 12px;font-size:13.5px;font-weight:700;line-height:1.35;position:relative;min-height:44px}
+.globo::before{content:"";position:absolute;top:-12px;left:26px;border:6px solid transparent;border-bottom-color:var(--borde)}
+.globo::after{content:"";position:absolute;top:-7px;left:28px;border:4px solid transparent;border-bottom-color:var(--hielo)}
+.btn-voz{margin-top:8px;width:100%;background:var(--panel-claro);border:3px solid var(--borde);border-radius:10px;padding:7px;font-weight:800;font-size:13px;color:var(--cristal);box-shadow:3px 3px 0 rgba(0,0,0,.4)}
+#n-juego>div{margin-left:auto;margin-right:auto}
+#n-juego{text-align:center}
+#n-juego .campo strong,#n-juego .aviso-msg{text-align:left}
+.tarjeta{
+  background:linear-gradient(180deg,var(--panel-claro),var(--panel));
+  border:4px solid var(--borde);border-radius:18px;
+  box-shadow:0 0 0 2px rgba(79,216,203,.2), 8px 8px 0 rgba(0,0,0,.45);
+  padding:22px;overflow:hidden;animation:aparecer .4s ease;
+}
+.consigna{font-family:var(--display);font-weight:800;font-size:clamp(19px,3.3vw,25px);line-height:1.22;margin:0 0 6px;text-align:center}
+.ayuda{font-size:14.5px;color:var(--hielo-suave);margin:0 0 14px;line-height:1.5;text-align:center}
+.progreso-rondas{display:flex;gap:7px;margin:0 0 16px;justify-content:center}
+.punto{width:13px;height:13px;border-radius:50%;border:2.5px solid var(--borde);background:var(--panel-claro)}
+.punto.hecha{background:var(--verde)}
+.punto.actual{background:var(--dorado);transform:scale(1.25);box-shadow:0 0 8px rgba(255,201,77,.6)}
+.escena-caja{margin:2px 0 16px;display:flex;justify-content:center}
+.escena-caja svg{max-width:100%;height:auto;display:block;margin:0 auto;filter:drop-shadow(3px 3px 0 rgba(0,0,0,.35))}
+.escena-caja>div{margin:0 auto}
+#n-juego>svg{display:block;margin:0 auto}
+
+.opciones{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin:8px auto 0;max-width:640px}
+.opcion{
+  background:var(--panel-claro);border:3px solid var(--borde);border-radius:12px;
+  padding:13px 8px;font-family:var(--display);font-weight:800;font-size:19px;color:var(--hielo);
+  box-shadow:4px 4px 0 rgba(0,0,0,.4);transition:transform .12s ease;text-align:center;
+}
+.opcion svg{display:block;margin:0 auto}
+.opcion:hover{transform:translate(-1px,-3px)}
+.opcion[disabled]{opacity:.35}
+
+.rejilla-dinero{display:flex;flex-wrap:wrap;gap:12px;margin:6px 0;justify-content:center}
+.pieza{padding:0;border-radius:14px;transition:transform .13s ease}
+.pieza svg{display:block;filter:drop-shadow(3px 3px 0 rgba(0,0,0,.42))}
+.pieza:hover{transform:translateY(-5px) rotate(-2deg)}
+.pieza.quieta{cursor:default}.pieza.quieta:hover{transform:none}
+.pieza[disabled]{opacity:.22}.pieza[disabled]:hover{transform:none}
+.bandeja{border:3px dashed var(--cristal);border-radius:14px;padding:13px;min-height:86px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;background:rgba(79,216,203,.06);margin:12px 0}
+.bandeja p{margin:0;color:var(--hielo-suave);font-size:14px;font-weight:600}
+.contador{
+  font-family:var(--display);font-weight:800;font-size:clamp(24px,5vw,36px);
+  background:var(--espacio-hondo);color:var(--cristal);display:inline-block;
+  padding:5px 18px;border-radius:12px;font-variant-numeric:tabular-nums;
+  border:2.5px solid var(--borde);transition:transform .15s ease;
+}
+.contador.tic{transform:scale(1.12)}
+.meta{font-family:var(--display);font-weight:800;font-size:clamp(20px,4.2vw,29px);color:var(--coral)}
+
+.campos{display:grid;gap:13px;max-width:470px;margin:6px auto 0}
+.campo{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
+.campo strong{font-size:14.5px}
+input.celda{width:130px;padding:9px 11px;font-family:var(--texto);font-weight:800;font-size:16px;border:3px solid var(--borde);border-radius:8px;background:var(--hielo);color:var(--espacio-hondo);font-variant-numeric:tabular-nums}
+input.celda.ok{background:#BFE8B4}
+input.celda.err{background:#F7B9B0;animation:sacudir .4s ease}
+input.celda::-webkit-outer-spin-button,input.celda::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+input.celda[type=number]{-moz-appearance:textfield}
+
+.fichas-orden{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px;justify-content:center}
+.ficha{
+  background:var(--panel-claro);border:3px solid var(--borde);border-radius:12px;
+  padding:14px 18px;font-family:var(--display);font-weight:800;font-size:20px;
+  box-shadow:4px 4px 0 rgba(0,0,0,.4);transition:transform .12s ease;
+}
+.ficha:hover{transform:translateY(-3px)}
+.ficha.puesta{background:#1E4D3A;color:#9FE8B4;opacity:.85;transform:none;cursor:default}
+.fila-orden{border:3px dashed var(--dorado);border-radius:14px;min-height:64px;display:flex;gap:10px;align-items:center;justify-content:center;padding:10px;flex-wrap:wrap;background:rgba(255,201,77,.05);margin-bottom:10px}
+.fila-orden .puesto{background:var(--dorado);color:var(--espacio-hondo);border:3px solid var(--borde);border-radius:10px;padding:10px 16px;font-family:var(--display);font-weight:800;font-size:18px}
+.fila-orden p{margin:0;color:var(--hielo-suave);font-size:13.5px;font-weight:700}
+
+.porcion{cursor:pointer;transition:opacity .12s ease}
+.porcion:hover{opacity:.85}
+
+.pie-nivel{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:20px;padding-top:16px;border-top:3px dashed rgba(185,196,232,.25)}
+.btn{
+  background:var(--coral);color:#fff;font-family:var(--display);font-weight:800;font-size:18px;
+  border:3px solid var(--borde);border-radius:12px;padding:11px 28px;
+  box-shadow:5px 5px 0 rgba(0,0,0,.45);transition:transform .12s ease;
+}
+.btn:hover{transform:translate(-1px,-2px)}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(0,0,0,.45)}
+.btn.cristal{background:var(--cristal);color:var(--espacio-hondo)}
+.aviso-msg{font-weight:800;font-size:15px;line-height:1.4}
+.aviso-msg.bien{color:var(--verde)}.aviso-msg.mal{color:var(--coral)}
+
+.velo{position:fixed;inset:0;background:rgba(7,12,31,.92);display:grid;place-items:center;padding:20px;z-index:50}
+.panel-modal{
+  background:linear-gradient(180deg,var(--panel-claro),var(--panel));color:var(--hielo);
+  border:5px solid var(--borde);border-radius:20px;
+  box-shadow:0 0 0 2px rgba(79,216,203,.3), 10px 10px 0 rgba(0,0,0,.5);
+  padding:30px 26px;text-align:center;max-width:420px;width:100%;
+  animation:entrarPanel .45s cubic-bezier(.2,.9,.3,1.25);
+}
+@keyframes entrarPanel{from{opacity:0;transform:scale(.7) translateY(30px)}to{opacity:1;transform:none}}
+.panel-modal h3{font-family:var(--display);font-weight:800;font-size:29px;margin:0 0 4px}
+.panel-modal .grandes{font-size:46px;letter-spacing:6px;color:var(--dorado);margin:8px 0 2px}
+.panel-modal .grandes .off{color:#3A4A80}
+.panel-modal .grandes span{display:inline-block}
+.panel-modal .grandes .gira{animation:girar .6s ease backwards}
+.panel-modal .grandes .gira:nth-child(2){animation-delay:.15s}
+.panel-modal .grandes .gira:nth-child(3){animation-delay:.3s}
+@keyframes girar{from{transform:scale(0) rotate(-180deg)}to{transform:scale(1) rotate(0)}}
+.panel-modal p{font-size:15px;color:var(--hielo-suave);margin:6px 0 18px;line-height:1.5}
+.panel-modal .fedor-mini{width:92px;margin:0 auto 4px;display:block}
+.premio{font-family:var(--display);font-weight:800;font-size:19px;color:var(--cristal);margin:2px 0 14px}
+canvas#confeti{position:fixed;inset:0;pointer-events:none;z-index:60}
+.nota{margin-top:42px;font-size:13px;color:rgba(185,196,232,.6);line-height:1.6;max-width:72ch}
+.nota code{background:rgba(0,0,0,.4);padding:2px 6px;border-radius:5px;font-size:12px}
+/* nav de zonas */
+.nav-estacion{display:flex;gap:10px;margin:16px 0 2px;flex-wrap:wrap}
+.puerta{background:var(--panel);border:3.5px solid var(--borde);border-radius:14px;padding:10px 18px;font-family:var(--display);font-weight:800;font-size:15px;color:var(--hielo-suave);box-shadow:4px 4px 0 rgba(0,0,0,.4);transition:transform .13s ease}
+.puerta:hover{transform:translateY(-2px)}
+.puerta.abierta{background:var(--cristal);color:var(--espacio-hondo);box-shadow:4px 4px 0 rgba(0,0,0,.4), 0 0 14px rgba(79,216,203,.45)}
+.puerta .numb{display:inline-grid;place-items:center;background:var(--espacio-hondo);color:var(--dorado);border-radius:999px;min-width:22px;height:22px;font-size:12px;margin-left:6px;padding:0 6px}
+.puerta.abierta .numb{background:rgba(7,12,31,.8)}
+/* tienda */
+.panel-seccion{background:linear-gradient(180deg,var(--panel-claro),var(--panel));border:4px solid var(--borde);border-radius:18px;box-shadow:0 0 0 2px rgba(79,216,203,.2), 8px 8px 0 rgba(0,0,0,.45);padding:22px;margin-top:16px}
+.panel-seccion h2{font-family:var(--display);font-weight:800;margin:0 0 4px;font-size:clamp(19px,3.4vw,26px)}
+.panel-seccion .sub2{font-size:13.5px;color:var(--hielo-suave);margin:0 0 16px;line-height:1.5}
+.vacio{border:3px dashed rgba(185,196,232,.3);border-radius:14px;padding:26px;text-align:center;color:var(--hielo-suave);font-weight:700}
+.pasos{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 18px}
+.paso{display:flex;align-items:center;gap:7px;font-weight:800;font-size:12px;color:var(--hielo-suave);background:var(--panel);border:2.5px solid var(--borde);border-radius:999px;padding:6px 13px 6px 7px}
+.paso .b{display:grid;place-items:center;width:21px;height:21px;border-radius:50%;background:var(--espacio-hondo);color:var(--hielo-suave);font-size:11px}
+.paso.actual{color:var(--espacio-hondo);background:var(--dorado)}
+.paso.actual .b{background:rgba(7,12,31,.85);color:var(--dorado)}
+.paso.hecho{color:var(--espacio-hondo);background:var(--verde)}
+.paso.hecho .b{background:rgba(7,12,31,.85);color:var(--verde)}
+.cajon{border:3px solid var(--borde);border-radius:14px;background:var(--espacio-hondo);padding:14px;margin-top:8px}
+.cajon h4{margin:0 0 10px;font-family:var(--display);font-size:15px;color:var(--cristal);letter-spacing:.5px}
+.productos{display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));gap:12px;margin:6px 0}
+.prod{position:relative;background:var(--panel-claro);border:3px solid var(--borde);border-radius:14px;padding:12px;text-align:center;box-shadow:3px 3px 0 rgba(0,0,0,.4);transition:transform .13s ease;color:var(--hielo)}
+.prod:hover{transform:translateY(-4px)}
+.prod svg{width:74px;height:74px;margin:0 auto 6px;display:block;filter:drop-shadow(3px 3px 0 rgba(0,0,0,.38))}
+.prod .n{font-weight:800;font-size:13.5px;display:block;line-height:1.25}
+.prod .p{font-family:var(--display);font-weight:800;font-size:17.5px;color:var(--dorado);font-variant-numeric:tabular-nums}
+.prod .tier{position:absolute;top:8px;left:8px;font-size:9.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:3px 7px;border-radius:999px;border:2px solid var(--borde)}
+.tier.eco{background:#1E4D3A;color:#9FE8B4}.tier.com{background:#1E3A5C;color:#9CCBFF}.tier.pre{background:#4A2A66;color:#D9B8FF}
+.prod.grande{max-width:260px}.prod.grande svg{width:110px;height:110px}
+.btn-meta{position:absolute;top:6px;right:6px;width:30px;height:30px;border-radius:50%;background:var(--espacio-hondo);border:2.5px solid var(--borde);color:var(--lila);font-size:14px;display:grid;place-items:center}
+.btn-meta:hover{transform:scale(1.12)}
+.btn.dorado{background:var(--dorado);color:var(--espacio-hondo)}
+.pieza.vuela{position:fixed;z-index:40;pointer-events:none;transition:transform .5s cubic-bezier(.3,.7,.3,1.1), opacity .5s}
+.envoltura-tabla{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.costos{border-collapse:collapse;width:100%;min-width:460px;font-variant-numeric:tabular-nums}
+table.costos th{background:var(--espacio-hondo);color:var(--cristal);font-size:11px;letter-spacing:1.4px;text-transform:uppercase;padding:10px 12px;text-align:left;font-weight:800;border-bottom:2.5px solid var(--borde)}
+table.costos td{border-bottom:2px solid rgba(185,196,232,.14);padding:8px 12px;font-size:15px;font-weight:600}
+table.costos td svg{width:32px;height:32px;vertical-align:middle;margin-right:8px}
+table.costos tr.total td{border-top:3px solid var(--cristal);border-bottom:0;font-weight:800;font-size:16.5px;font-family:var(--display);color:var(--dorado)}
+.barra-svg{transition:height .7s cubic-bezier(.2,.8,.3,1.1), y .7s cubic-bezier(.2,.8,.3,1.1)}
+.expres-strip{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 4px 2px;padding:12px 14px;border:3px dashed var(--cristal);border-radius:14px;background:rgba(79,216,203,.06)}
+.expres-t{font-size:13px;font-weight:800;color:var(--hielo-suave)}
+.btn-expres{font-size:14px !important;padding:8px 16px !important}
+.panel-reporte{background:#fff;color:#141414;border:5px solid var(--borde);border-radius:18px;box-shadow:10px 10px 0 rgba(0,0,0,.5);max-width:680px;width:100%;max-height:86vh;overflow:auto;padding:26px;font-family:Georgia,serif;animation:entrarPanel .4s ease}
+.panel-reporte h1{font-size:21px;margin:0 0 4px}
+.panel-reporte h2{font-size:15px;margin:16px 0 6px}
+.panel-reporte table{border-collapse:collapse;width:100%;font-size:13.5px}
+.panel-reporte th,.panel-reporte td{border:1px solid #444;padding:6px 8px;text-align:left}
+.panel-reporte .firma{margin-top:36px;display:flex;gap:50px;flex-wrap:wrap}
+.panel-reporte .firma div{border-top:1.5px solid #141414;padding-top:4px;width:190px;font-size:12px}
+.panel-reporte .pie-nivel .btn{font-family:var(--display)}
+#reporte-imprimible{display:none}
+@media print{
+  body{background:#fff !important;color:#000}
+  body > .envoltura, canvas, .velo{display:none !important}
+  #reporte-imprimible{display:block;font-family:Georgia,serif;color:#000;padding:24px}
+  #reporte-imprimible h1{font-size:22px;margin:0 0 2px}
+  #reporte-imprimible h2{font-size:15px;margin:18px 0 6px}
+  #reporte-imprimible table{border-collapse:collapse;width:100%;font-size:13px}
+  #reporte-imprimible th,#reporte-imprimible td{border:1px solid #333;padding:6px 8px;text-align:left}
+  #reporte-imprimible .firma{margin-top:46px;display:flex;gap:60px}
+  #reporte-imprimible .firma div{border-top:1px solid #000;padding-top:4px;width:200px;font-size:12px}
+}
+/* panel de recolección de datos */
+.panel-datos{background:linear-gradient(180deg,var(--panel-claro),var(--panel));color:var(--hielo);border:5px solid var(--borde);border-radius:20px;box-shadow:0 0 0 2px rgba(79,216,203,.3),10px 10px 0 rgba(0,0,0,.5);padding:24px;max-width:780px;width:100%;max-height:88vh;overflow:auto;animation:entrarPanel .4s ease}
+.rd-h{font-family:var(--display);font-weight:800;font-size:22px;margin:0 0 10px;text-align:center}
+.rd-sub{font-family:var(--display);font-weight:800;font-size:15px;color:var(--cristal);margin:18px 0 8px;text-align:center}
+.rd-chips{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin:0 0 14px}
+.rd-chips .pastilla{font-size:12.5px}
+#rd-graf{display:flex;justify-content:center}
+#rd-graf svg{max-width:100%;height:auto}
+.rd-leyenda{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;font-size:12.5px;font-weight:800}
+.rd-leyenda span i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;border:2px solid var(--borde);vertical-align:-1px}
+/* interfaz de ubicación (MOVIMIENTOS) */
+.ubicar-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;margin:0 0 14px;padding:10px 12px;background:var(--espacio-hondo);border:3px solid var(--borde);border-radius:14px}
+.ubicar-top .dato{font-weight:800;font-size:13px;color:var(--hielo-suave);background:var(--panel-claro);border:2.5px solid var(--borde);border-radius:999px;padding:6px 13px}
+.ubicar-top .dato b{color:var(--dorado)}
+.ubicar-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:16px;text-align:left}
+@media (max-width:760px){.ubicar-grid{grid-template-columns:1fr}}
+.zona-titulo{font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--cristal);margin:0 0 8px;text-align:center}
+.zona-elems{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;align-content:start;background:rgba(79,216,203,.05);border:3px dashed rgba(79,216,203,.4);border-radius:14px;padding:12px}
+.item-el{background:var(--panel-claro);border:3px solid var(--borde);border-radius:12px;padding:9px 6px;text-align:center;box-shadow:3px 3px 0 rgba(0,0,0,.4);transition:transform .12s ease;color:var(--hielo)}
+.item-el .em{font-size:27px;display:block;line-height:1.1}
+.item-el .em svg{display:block;margin:0 auto}
+.item-el .tx{font-size:11px;font-weight:800;display:block;margin-top:3px;line-height:1.15}
+.item-el:hover{transform:translateY(-3px)}
+.item-el.sel{outline:3px solid var(--dorado);outline-offset:2px;transform:translateY(-3px);box-shadow:3px 3px 0 rgba(0,0,0,.4),0 0 14px rgba(255,201,77,.5)}
+.item-el.puesto{opacity:.25;pointer-events:none}
+.item-el.err2{animation:sacudir .4s ease}
+.zona-slots{display:grid;gap:11px;align-content:start}
+.slot{border:3px dashed rgba(185,196,232,.45);border-radius:14px;padding:9px 12px;background:rgba(255,255,255,.03);transition:border-color .2s, box-shadow .2s}
+.slot .slot-nom{font-family:var(--display);font-weight:800;font-size:14px;display:flex;gap:8px;align-items:center}
+.slot .slot-items{display:flex;gap:8px;flex-wrap:wrap;min-height:34px;margin-top:6px;align-items:center}
+.slot.listo-ok{border-color:var(--verde);border-style:solid;box-shadow:0 0 12px rgba(91,214,114,.35)}
+.slot.brillo{animation:brilloSlot .5s ease}
+@keyframes brilloSlot{0%{box-shadow:0 0 0 rgba(91,214,114,0)}50%{box-shadow:0 0 22px rgba(91,214,114,.8)}100%{box-shadow:0 0 12px rgba(91,214,114,.35)}}
+.item-mini{background:var(--espacio-hondo);border:2.5px solid var(--borde);border-radius:10px;padding:4px 8px;font-size:16px;display:inline-flex;gap:5px;align-items:center;animation:aparecer .3s ease}
+.item-mini .pr{font-family:var(--display);font-weight:800;font-size:11px;color:var(--dorado);animation:popPrecio .45s cubic-bezier(.2,.9,.3,1.4)}
+@keyframes popPrecio{from{transform:scale(0)}to{transform:scale(1)}}
+.item-el.vuela2{position:fixed;z-index:45;pointer-events:none;transition:transform .45s cubic-bezier(.3,.7,.3,1.1),opacity .45s;margin:0}
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:70;
+  background:var(--espacio-hondo);color:var(--verde);border:3px solid var(--borde);
+  border-radius:999px;padding:10px 22px;font-weight:800;font-size:14.5px;
+  box-shadow:5px 5px 0 rgba(0,0,0,.45), 0 0 14px rgba(91,214,114,.35);
+  animation:aparecer .3s ease;
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+@media (max-width:520px){.tarjeta{padding:16px}.btn{width:100%;text-align:center}.rejilla-niveles{grid-template-columns:1fr}}
+</style>
+<style id="css-zona-juegos">
+#rejilla-juegos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:14px}
+.tarjeta-juego{background:linear-gradient(180deg,var(--panel-claro),var(--panel));border:4px solid var(--borde);border-radius:18px;padding:16px;box-shadow:6px 7px 0 rgba(0,0,0,.45);display:grid;gap:8px;justify-items:start;transition:transform .14s ease}
+.tarjeta-juego:hover{transform:translateY(-4px)}
+.tarjeta-juego .emoji-j{font-size:38px;filter:drop-shadow(2px 3px 0 rgba(0,0,0,.4))}
+.tarjeta-juego h3{font-family:var(--display);font-weight:800;font-size:18px;margin:0}
+.tarjeta-juego p{margin:0;font-size:12.5px;color:var(--hielo-suave);line-height:1.45}
+.tarjeta-juego .ruta-j{font-size:10.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--cristal)}
+.btn-jugar-z{background:linear-gradient(180deg,#7FE394,var(--verde));color:#062A12;border:3.5px solid var(--borde);border-radius:999px;font-family:var(--display);font-weight:800;font-size:15px;padding:8px 22px;box-shadow:0 4px 0 #2E7D42;cursor:pointer}
+.btn-jugar-z:hover{transform:translateY(-2px)}
+#velo-juego{position:fixed;inset:0;z-index:60;background:#070C1F;display:flex;flex-direction:column}
+#velo-juego.oculto{display:none}
+#barra-juego{display:flex;align-items:center;gap:12px;padding:8px 14px;background:linear-gradient(180deg,var(--panel-claro),var(--panel));border-bottom:4px solid var(--borde)}
+#barra-juego b{font-family:var(--display);font-size:16px}
+#barra-juego .premio-nota{font-size:11.5px;font-weight:800;color:var(--hielo-suave)}
+#btn-cerrar-juego{margin-left:auto;background:var(--coral);color:#fff;border:3.5px solid var(--borde);border-radius:999px;font-family:var(--display);font-weight:800;font-size:14px;padding:8px 20px;box-shadow:0 4px 0 rgba(0,0,0,.45);cursor:pointer}
+#marco-juego-z{flex:1;width:100%;border:0;background:#0A1028}
+</style>
+</head>
+<body>
+<div class="envoltura">
+
+<header class="hud">
+  <svg class="fedor-hud" viewBox="0 0 130 150" aria-hidden="true"><use href="#fx-feliz"/></svg>
+  <div class="titulo-caja">
+    <h1>Estación Fedor</h1>
+    <span class="sub">Matemáticas aplicadas · 8 módulos · 1º a 5º</span>
+  </div>
+  <div class="marcadores">
+    <span class="pastilla saldo">💎 <b id="m-saldo">$0</b></span>
+    <span class="pastilla oculto" id="m-meta"></span>
+    <span class="pastilla">★ <b id="m-estrellas">0</b>/<b id="m-total">72</b></span>
+    <button class="btn-icono activo" id="btn-sonido" aria-label="Activar o silenciar sonido" aria-pressed="true">🔊</button>
+    <button class="btn-icono activo" id="btn-voz-global" aria-label="Activar o desactivar la voz de Fedor" aria-pressed="true">🗣️</button>
+    <button class="btn-icono" id="btn-guardar" aria-label="Guardar progreso">💾</button>
+    <button class="btn-icono" id="btn-salir" aria-label="Salir del juego">🚪</button>
+    <button class="btn-icono" id="btn-docente" aria-label="Panel docente (requiere clave)">🔑</button>
+  </div>
+</header>
+
+<nav class="nav-estacion" aria-label="Zonas de la estación">
+  <button class="puerta abierta" data-z="mapa">🗺️ Mapa</button>
+  <button class="puerta" data-z="tienda">🛒 Tienda</button>
+  <button class="puerta" data-z="bitacora">📒 Bitácora <span class="numb" id="num-bitacora">0</span></button>
+  <button class="puerta" data-z="monitor">📊 Monitor</button>
+  <button class="puerta" data-z="juegos">🕹️ Juegos</button>
+</nav>
+
+<main>
+  <section id="sec-mapa">
+    <div class="mapa-caja">
+      <svg id="mapa" viewBox="0 0 1000 640" role="img" aria-label="Mapa de la Estación Fedor. Toca un módulo para entrar.">
+        <defs>
+          <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#4FD8CB" stop-opacity=".35"/><stop offset="100%" stop-color="#4FD8CB" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <g opacity=".92">
+          <circle cx="72" cy="78" r="24" fill="#9B7BFF" stroke="#070C1F" stroke-width="3.5"/>
+          <ellipse cx="72" cy="80" rx="40" ry="10" fill="none" stroke="#FFC94D" stroke-width="3" transform="rotate(-14 72 80)"/>
+          <circle cx="63" cy="70" r="5" fill="rgba(255,255,255,.35)"/>
+          <circle cx="946" cy="520" r="16" fill="#B9C4E8" stroke="#070C1F" stroke-width="3"/>
+          <circle cx="941" cy="515" r="3.5" fill="#8FA3D9"/><circle cx="951" cy="524" r="2.6" fill="#8FA3D9"/>
+          <g transform="rotate(14 662 34)">
+            <line x1="602" y1="31" x2="654" y2="31" stroke="#FFD98A" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+            <line x1="616" y1="38" x2="650" y2="38" stroke="#FFD98A" stroke-width="2.2" stroke-linecap="round" opacity=".5"/>
+            <circle cx="662" cy="34" r="6.5" fill="#FFC94D" stroke="#070C1F" stroke-width="2.5"/>
+          </g>
+          <g stroke="#F2F6FF" stroke-width="2.4" stroke-linecap="round" opacity=".85">
+            <path d="M655 505 v12 M649 511 h12"/>
+            <path d="M46 190 v10 M41 195 h10"/>
+            <path d="M950 180 v10 M945 185 h10"/>
+          </g>
+          <ellipse cx="500" cy="280" rx="150" ry="118" fill="none" stroke="rgba(79,216,203,.18)" stroke-width="2" stroke-dasharray="4 10"/>
+        </g>
+        <g stroke="#3A4A80" stroke-width="7" stroke-linecap="round" stroke-dasharray="1 14">
+          <line x1="500" y1="280" x2="500" y2="88"/><line x1="500" y1="280" x2="798" y2="112"/>
+          <line x1="500" y1="280" x2="905" y2="300"/><line x1="500" y1="280" x2="778" y2="486"/>
+          <line x1="500" y1="280" x2="500" y2="492"/><line x1="500" y1="280" x2="222" y2="486"/>
+          <line x1="500" y1="280" x2="95" y2="300"/><line x1="500" y1="280" x2="202" y2="112"/>
+        </g>
+        <circle cx="500" cy="280" r="86" fill="url(#halo)"/>
+        <circle cx="500" cy="280" r="62" fill="#243468" stroke="#070C1F" stroke-width="5"/>
+        <circle cx="500" cy="280" r="50" fill="none" stroke="#4FD8CB" stroke-width="2.5" stroke-dasharray="6 6"/>
+        <g id="nucleo-fedor"><use href="#fx-feliz" x="466" y="238" width="68" height="78"/></g>
+        <rect x="428" y="350" width="144" height="30" rx="15" fill="#0A1028" stroke="#070C1F" stroke-width="3.5"/>
+        <text x="500" y="370" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="14" fill="#4FD8CB" letter-spacing="1">NÚCLEO FEDOR</text>
+      </svg>
+      <p class="leyenda">💡 Toca cualquier módulo para entrar. Cada uno tiene 3 misiones: <span class="banda b0">5–7 · 1º</span> <span class="banda b1">7–9 · 2º·3º</span> <span class="banda b2">9–11 · 4º·5º</span> — cada estrella nueva paga $500 para gastar en la Tienda.</p>
+      <div class="expres-strip">
+        <span class="expres-t">⚡ Misiones exprés — ejercicios nuevos cada vez, pagan $300, repetibles siempre:</span>
+        <button class="btn cristal btn-expres" data-b="0">⚡ 5–7</button>
+        <button class="btn cristal btn-expres" data-b="1">⚡ 7–9</button>
+        <button class="btn cristal btn-expres" data-b="2">⚡ 9–11</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-modulo" class="oculto">
+    <div class="barra-nivel"><button class="volver" id="btn-volver-mapa">← Volver al mapa</button></div>
+    <div class="mod-cabecera" id="mod-cabecera"></div>
+    <div class="rejilla-niveles" id="rejilla-niveles"></div>
+  </section>
+
+  <section id="sec-nivel" class="oculto">
+    <div class="barra-nivel">
+      <button class="volver" id="btn-volver-mod">← Volver al módulo</button>
+      <span class="chip" id="n-chip"></span>
+      <span class="vidas" id="n-vidas"></span>
+    </div>
+    <div class="escenario">
+      <div class="lado-fedor">
+        <div>
+          <svg class="fedor" id="fedor" viewBox="0 0 130 150" aria-hidden="true"><use id="fedor-cara" href="#fx-feliz"/></svg>
+          <div class="globo" id="globo">¡Hola, cadete! Soy Fedor.</div>
+          <button class="btn-voz" id="btn-leer">🔊 Léemelo, Fedor</button>
+        </div>
+      </div>
+      <div class="tarjeta">
+        <h2 class="consigna" id="n-consigna"></h2>
+        <p class="ayuda" id="n-ayuda"></p>
+        <div class="progreso-rondas" id="n-progreso"></div>
+        <div class="escena-caja" id="n-escena"></div>
+        <div id="n-juego"></div>
+        <div class="pie-nivel">
+          <button class="btn" id="btn-comprobar">Comprobar</button>
+          <span class="aviso-msg" id="n-msg" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-tienda" class="oculto">
+    <div class="panel-seccion">
+      <h2>🛒 La Tienda Estelar</h2>
+      <p class="sub2">Gasta lo que ganaste en las misiones. Sigue el algoritmo del Contador Estelar: cada compra queda en tu Bitácora y sube tu gráfica del Monitor. Marca un producto con 🎯 como tu meta de ahorro.</p>
+      <div class="pasos" id="pasos-compra"></div>
+      <div id="compra-zona"></div>
+    </div>
+  </section>
+
+  <section id="sec-bitacora" class="oculto">
+    <div class="panel-seccion">
+      <h2>📒 Bitácora de Navegación Financiera</h2>
+      <p class="sub2">El registro del Contador Estelar: qué compró, cuánto costó, con cuánto pagó y cuánto cambio recibió.</p>
+      <div id="bitacora-zona"></div>
+      <div class="pie-nivel" style="border-top:none;padding-top:6px">
+        <button class="btn dorado" id="btn-reporte">🖨️ Generar reporte para el Comando Central</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-docente" class="oculto">
+    <div class="panel-seccion">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:4px">
+        <h2 style="margin:0">🔑 Panel Docente</h2>
+        <button class="volver" id="btn-salir-docente">← Volver al mapa</button>
+      </div>
+      <p class="sub2">Resumen de la sesión de este estudiante: estrellas, intentos, precisión y tiempo por misión. Los mismos datos llegan a la plataforma por <code style="background:rgba(0,0,0,.35);padding:1px 5px;border-radius:4px">postMessage</code> para el reporte del grupo.</p>
+      <div id="docente-resumen"></div>
+      <div id="docente-tabla"></div>
+      <div class="pie-nivel" style="border-top:none">
+        <button class="btn cristal" id="btn-exportar">📋 Copiar datos de la sesión (JSON)</button>
+        <span class="aviso-msg" id="msg-exportar" aria-live="polite"></span>
+      </div>
+      <textarea id="json-sesion" readonly style="width:100%;min-height:110px;margin-top:10px;background:var(--espacio-hondo);color:var(--hielo-suave);border:3px solid var(--borde);border-radius:12px;padding:12px;font-size:11.5px;font-family:monospace" aria-label="Datos de la sesión en formato JSON"></textarea>
+    </div>
+  </section>
+
+  <section id="sec-juegos" class="oculto">
+    <div class="panel-seccion">
+      <h2>🕹️ Zona de Juegos</h2>
+      <p class="nota" style="margin-top:0">Los 5 juegos gaming de la estación. Juega aquí mismo: al terminar cada partida, tus puntos se convierten en 💎 para el Mercado Estelar y quedan anotados en la Bitácora. <b>Los 5 archivos de juego deben estar en la misma carpeta que la estación.</b></p>
+      <div id="rejilla-juegos"></div>
+    </div>
+  </section>
+  <section id="sec-monitor" class="oculto">
+    <div class="panel-seccion">
+      <h2>📊 Monitor Financiero</h2>
+      <p class="sub2">Cada compra hace crecer la barra de su día. El día dorado es el de mayor gasto.</p>
+      <div id="monitor-zona"></div>
+    </div>
+  </section>
+</main>
+
+<p class="nota">
+  <b style="color:var(--cristal)">Versión 8 · Zona de Juegos integrada</b> — si este texto no aparece en tu pantalla, estás abriendo un archivo viejo: descarga el más reciente.<br>
+  Estación completa: 8 módulos × 5 misiones = 40 niveles, del contenido de los libros de 1º a 5º.
+  Motor por datos: <code>MODULOS</code> define todo; agregar niveles no requiere programar.
+  Progreso a la plataforma vía <code>postMessage</code>. El dinero ganado se comparte con el Mercado Estelar. Zona de Juegos: los 5 archivos (carrera, tienda, cosecha, torre, parqués) van en la misma carpeta; sus puntos entran como 💎 y quedan en la Bitácora.
+</p>
+</div>
+
+<div id="velo-juego" class="oculto" role="dialog" aria-label="Juego en curso">
+  <div id="barra-juego">
+    <span style="font-size:22px" id="emoji-juego-z">🕹️</span><b id="nombre-juego-z">Juego</b>
+    <span class="premio-nota">al terminar la partida, tus puntos llegan solos como 💎</span>
+    <button id="btn-cerrar-juego">✖ Volver a la estación</button>
+  </div>
+  <iframe id="marco-juego-z" src="about:blank" title="Juego de la Zona"></iframe>
+</div>
+<div id="velo" class="velo oculto">
+  <div class="panel-modal">
+    <svg class="fedor-mini" viewBox="0 0 130 150" aria-hidden="true"><use id="p-fedor" href="#fx-wow"/></svg>
+    <h3 id="p-titulo"></h3>
+    <div class="grandes" id="p-estrellas"></div>
+    <div class="premio" id="p-premio"></div>
+    <p id="p-texto"></p>
+    <button class="btn cristal" id="p-continuar">Continuar</button>
+  </div>
+</div>
+<div id="velo-reporte" class="velo oculto">
+  <div class="panel-reporte">
+    <div id="reporte-vista"></div>
+    <div class="pie-nivel" style="border:none;justify-content:center">
+      <button class="btn dorado" id="btn-imprimir">🖨️ Imprimir</button>
+      <button class="btn cristal" id="btn-cerrar-reporte">Cerrar</button>
+    </div>
+  </div>
+</div>
+<div id="velo-datos" class="velo oculto">
+  <div class="panel-datos">
+    <h3 id="rd-titulo" class="rd-h"></h3>
+    <div class="rd-chips" id="rd-chips"></div>
+    <div id="rd-tabla"></div>
+    <h4 class="rd-sub" id="rd-graf-titulo"></h4>
+    <div id="rd-graf"></div>
+    <div class="pie-nivel" style="border:none">
+      <button class="btn cristal" id="rd-cerrar">Cerrar</button>
+    </div>
+  </div>
+</div>
+<div id="velo-salida" class="velo oculto">
+  <div class="panel-modal">
+    <svg class="fedor-mini" viewBox="0 0 130 150" aria-hidden="true"><use href="#fx-feliz"/></svg>
+    <h3>¡Hasta pronto, cadete!</h3>
+    <p>Tu progreso quedó guardado y enviado al Comando Central. Puedes cerrar esta ventana con tranquilidad.</p>
+    <button class="btn cristal" id="btn-seguir">Seguir jugando</button>
+  </div>
+</div>
+<div id="toast" class="oculto" role="status" aria-live="polite"></div>
+<div id="reporte-imprimible"></div>
+<canvas id="confeti"></canvas>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<linearGradient id="gVerde" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FE8A5"/><stop offset="1" stop-color="#3FAE5C"/></linearGradient>
+<linearGradient id="gRojo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF9A8C"/><stop offset="1" stop-color="#E04B38"/></linearGradient>
+<linearGradient id="gAzul" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BBDCFF"/><stop offset="1" stop-color="#5E9AD6"/></linearGradient>
+<linearGradient id="gDorado" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE3A1"/><stop offset="1" stop-color="#F0A92E"/></linearGradient>
+<linearGradient id="gPurpura" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9B2FF"/><stop offset="1" stop-color="#7A55E0"/></linearGradient>
+<linearGradient id="gRosa" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD7E0"/><stop offset="1" stop-color="#F08FB2"/></linearGradient>
+<linearGradient id="gTeal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9FF0E6"/><stop offset="1" stop-color="#2FB3A4"/></linearGradient>
+<linearGradient id="gNaranja" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC08A"/><stop offset="1" stop-color="#F07830"/></linearGradient>
+<linearGradient id="gBlanco" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D9E2F5"/></linearGradient>
+<g id="fx-base">
+  <ellipse cx="65" cy="142" rx="36" ry="6" fill="rgba(0,0,0,.35)"/>
+  <rect x="52" y="96" width="10" height="26" rx="5" fill="#8FA3D9" stroke="#070C1F" stroke-width="4"/>
+  <rect x="68" y="96" width="10" height="26" rx="5" fill="#8FA3D9" stroke="#070C1F" stroke-width="4"/>
+  <ellipse cx="57" cy="126" rx="10" ry="6" fill="#FF6B5E" stroke="#070C1F" stroke-width="4"/>
+  <ellipse cx="73" cy="126" rx="10" ry="6" fill="#FF6B5E" stroke="#070C1F" stroke-width="4"/>
+  <rect x="20" y="70" width="18" height="10" rx="5" fill="#8FA3D9" stroke="#070C1F" stroke-width="4"/>
+  <rect x="92" y="70" width="18" height="10" rx="5" fill="#8FA3D9" stroke="#070C1F" stroke-width="4"/>
+  <circle cx="18" cy="75" r="8" fill="#FFC94D" stroke="#070C1F" stroke-width="4"/>
+  <circle cx="112" cy="75" r="8" fill="#FFC94D" stroke="#070C1F" stroke-width="4"/>
+  <rect x="34" y="58" width="62" height="48" rx="18" fill="#FF8A5C" stroke="#070C1F" stroke-width="4.5"/>
+  <rect x="50" y="70" width="30" height="22" rx="7" fill="#0F1836" stroke="#070C1F" stroke-width="4"/>
+  <circle cx="58" cy="81" r="3" fill="#4FD8CB"/>
+  <rect x="66" y="76" width="10" height="4" rx="2" fill="#FFC94D"/>
+  <rect x="66" y="84" width="10" height="4" rx="2" fill="#FF6B5E"/>
+  <circle cx="65" cy="30" r="26" fill="#F2F6FF" stroke="#070C1F" stroke-width="4.5"/>
+  <path d="M41 30 a24 24 0 0 1 48 0" fill="none" stroke="#C6D2F0" stroke-width="3"/>
+  <rect x="46" y="18" width="38" height="26" rx="12" fill="#123047" stroke="#070C1F" stroke-width="4"/>
+  <line x1="65" y1="4" x2="65" y2="-2" stroke="#070C1F" stroke-width="4"/>
+  <circle cx="65" cy="-4" r="5" fill="#4FD8CB" stroke="#070C1F" stroke-width="3.5"/>
+</g>
+<g id="fx-feliz"><use href="#fx-base"/><circle cx="57" cy="30" r="3.6" fill="#4FD8CB"/><circle cx="73" cy="30" r="3.6" fill="#4FD8CB"/><path d="M56 38 Q65 43 74 38" fill="none" stroke="#4FD8CB" stroke-width="3.4" stroke-linecap="round"/></g>
+<g id="fx-wow"><use href="#fx-base"/><circle cx="57" cy="30" r="4.6" fill="#FFC94D"/><circle cx="73" cy="30" r="4.6" fill="#FFC94D"/><circle cx="58.5" cy="28.5" r="1.5" fill="#123047"/><circle cx="74.5" cy="28.5" r="1.5" fill="#123047"/><ellipse cx="65" cy="39" rx="4.5" ry="5.5" fill="none" stroke="#FFC94D" stroke-width="3.2"/></g>
+<g id="fx-triste"><use href="#fx-base"/><path d="M53 32 L61 28 M77 32 L69 28" stroke="#FF6B5E" stroke-width="3.4" stroke-linecap="round"/><path d="M56 41 Q65 36 74 41" fill="none" stroke="#FF6B5E" stroke-width="3.4" stroke-linecap="round"/></g>
+
+<g id="m-mercado"><ellipse cx="32" cy="61" rx="22" ry="3" fill="rgba(7,12,31,.4)"/>
+ <rect x="7" y="13" width="30" height="18" rx="4" fill="url(#gVerde)" stroke="#070C1F" stroke-width="3" transform="rotate(-10 22 22)"/>
+ <circle cx="22" cy="21" r="5.5" fill="#FFF4DC" opacity=".85"/>
+ <path d="M25 44 L50 44 L54 30 L24 30 Z" fill="url(#gRojo)" stroke="#070C1F" stroke-width="3"/>
+ <path d="M13 24 L20 24 L25 44 M23 30 L55 30" fill="none" stroke="#070C1F" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+ <ellipse cx="31" cy="34" rx="6" ry="2.6" fill="#fff" opacity=".4"/>
+ <circle cx="31" cy="53" r="5.5" fill="url(#gDorado)" stroke="#070C1F" stroke-width="3"/>
+ <circle cx="46" cy="53" r="5.5" fill="url(#gDorado)" stroke="#070C1F" stroke-width="3"/>
+ <circle cx="52" cy="13" r="9" fill="url(#gDorado)" stroke="#070C1F" stroke-width="3"/>
+ <text x="52" y="17.5" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="11" fill="#070C1F">$</text>
+ <ellipse cx="48.5" cy="9.5" rx="3" ry="2" fill="#fff" opacity=".6"/>
+</g>
+<g id="m-planta"><ellipse cx="32" cy="61" rx="22" ry="3" fill="rgba(7,12,31,.4)"/>
+ <circle cx="52" cy="11" r="6.5" fill="url(#gDorado)" stroke="#070C1F" stroke-width="2.8"/>
+ <path d="M52 2 v-1 M52 21 v1 M43 11 h-1 M61 11 h1 M46 5 l-1-1 M58 17 l1 1 M58 5 l1-1 M46 17 l-1 1" stroke="#F0A92E" stroke-width="2.4" stroke-linecap="round"/>
+ <path d="M27 44 L27 22" stroke="#3FAE5C" stroke-width="4.5" stroke-linecap="round"/>
+ <path d="M27 32 Q13 30 11 16 Q25 18 27 32 Z" fill="url(#gVerde)" stroke="#070C1F" stroke-width="3"/>
+ <path d="M27 26 Q41 24 43 10 Q29 12 27 26 Z" fill="url(#gVerde)" stroke="#070C1F" stroke-width="3"/>
+ <path d="M13 44 L41 44 L37 60 L17 60 Z" fill="url(#gNaranja)" stroke="#070C1F" stroke-width="3.4"/>
+ <rect x="11" y="42" width="32" height="7" rx="3.5" fill="url(#gNaranja)" stroke="#070C1F" stroke-width="3"/>
+ <ellipse cx="20" cy="52" rx="3" ry="4.5" fill="#fff" opacity=".35"/>
+</g>
+<g id="m-crono"><ellipse cx="32" cy="61" rx="22" ry="3" fill="rgba(7,12,31,.4)"/>
+ <circle cx="28" cy="34" r="21" fill="url(#gBlanco)" stroke="#070C1F" stroke-width="3.4"/>
+ <circle cx="28" cy="34" r="14.5" fill="#fff" stroke="#B9C4E8" stroke-width="2"/>
+ <rect x="23" y="5" width="10" height="7" rx="2.5" fill="url(#gDorado)" stroke="#070C1F" stroke-width="2.8"/>
+ <path d="M41 16 l5 -5" stroke="#070C1F" stroke-width="3.4" stroke-linecap="round"/>
+ <line x1="28" y1="34" x2="28" y2="23" stroke="#E04B38" stroke-width="3.4" stroke-linecap="round"/>
+ <line x1="28" y1="34" x2="36" y2="38" stroke="#070C1F" stroke-width="3" stroke-linecap="round"/>
+ <circle cx="28" cy="34" r="2.4" fill="#070C1F"/>
+ <ellipse cx="21" cy="26" rx="4.5" ry="3" fill="#fff" opacity=".75"/>
+ <path d="M50 36 l4 9 h-9 Z" fill="#E04B38" stroke="#070C1F" stroke-width="2.6"/>
+ <circle cx="50" cy="52" r="8" fill="url(#gDorado)" stroke="#070C1F" stroke-width="3"/>
+ <text x="50" y="56" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="9.5" fill="#070C1F">1</text>
+</g>
+<g id="m-dado"><ellipse cx="32" cy="61" rx="22" ry="3" fill="rgba(7,12,31,.4)"/>
+ <rect x="5" y="18" width="28" height="28" rx="7" fill="url(#gDorado)" stroke="#070C1F" stroke-width="3.2" transform="rotate(-8 19 32)"/>
+ <g transform="rotate(-8 19 32)" fill="#070C1F"><circle cx="13" cy="26" r="3"/><circle cx="25" cy="38" r="3"/></g>
+ <ellipse cx="12" cy="23" rx="4" ry="2.6" fill="#fff" opacity=".55" transform="rotate(-8 19 32)"/>
+ <rect x="29" y="24" width="28" height="28" rx="7" fill="url(#gTeal)" stroke="#070C1F" stroke-width="3.2" transform="rotate(7 43 38)"/>
+ <g transform="rotate(7 43 38)" fill="#070C1F"><circle cx="36" cy="31" r="3"/><circle cx="43" cy="38" r="3"/><circle cx="50" cy="45" r="3"/></g>
+ <circle cx="49" cy="11" r="7" fill="url(#gRojo)" stroke="#070C1F" stroke-width="3"/>
+ <circle cx="47" cy="9" r="2.6" fill="#fff" opacity=".55"/>
+</g>
+<g id="m-piramide"><ellipse cx="32" cy="61" rx="22" ry="3" fill="rgba(7,12,31,.4)"/>
+ <path d="M32 6 L58 50 L32 50 Z" fill="#5E9AD6" stroke="#070C1F" stroke-width="3.2"/>
+ <path d="M32 6 L6 50 L32 50 Z" fill="url(#gAzul)" stroke="#070C1F" stroke-width="3.2"/>
+ <path d="M19 33 h9 M14 42 h13" stroke="rgba(7,12,31,.35)" stroke-width="2.4" stroke-linecap="round"/>
+ <ellipse cx="26" cy="20" rx="3.2" ry="6" fill="#fff" opacity=".4" transform="rotate(26 26 20)"/>
+ <rect x="43" y="51" width="11" height="11" rx="2.5" fill="url(#gDorado)" stroke="#070C1F" stroke-width="2.6"/>
+ <rect x="49" y="40" width="11" height="11" rx="2.5" fill="url(#gTeal)" stroke="#070C1F" stroke-width="2.6"/>
+</g>
+<g id="m-torta"><ellipse cx="32" cy="61" rx="22" ry="3" fill="rgba(7,12,31,.4)"/>
+ <path d="M10 38 L54 38 L50 58 L14 58 Z" fill="url(#gRosa)" stroke="#070C1F" stroke-width="3.4"/>
+ <path d="M10 38 Q32 30 54 38 L54 43 Q32 35 10 43 Z" fill="#fff" stroke="#070C1F" stroke-width="2.8"/>
+ <path d="M18 26 L46 26 L44 38 L20 38 Z" fill="url(#gRosa)" stroke="#070C1F" stroke-width="3"/>
+ <path d="M18 26 Q32 20 46 26 L46 30 Q32 25 18 30 Z" fill="#fff" stroke="#070C1F" stroke-width="2.6"/>
+ <rect x="30.5" y="10" width="3" height="10" rx="1.5" fill="#5E9AD6" stroke="#070C1F" stroke-width="2"/>
+ <ellipse cx="32" cy="6.5" rx="2.6" ry="3.6" fill="url(#gDorado)" stroke="#070C1F" stroke-width="2"/>
+ <circle cx="20" cy="48" r="2.2" fill="#F08FB2"/><circle cx="31" cy="52" r="2.2" fill="#F08FB2"/><circle cx="43" cy="49" r="2.2" fill="#F08FB2"/>
+ <ellipse cx="18" cy="42" rx="4" ry="2.2" fill="#fff" opacity=".5"/>
+</g>
+<g id="m-tele"><ellipse cx="32" cy="61" rx="22" ry="3" fill="rgba(7,12,31,.4)"/>
+ <path d="M7 6 l3 3 M60 4 l-2 2 M59 27 l3 1" stroke="#F2F6FF" stroke-width="2.2" stroke-linecap="round"/>
+ <circle cx="11" cy="17" r="4" fill="url(#gDorado)" stroke="#070C1F" stroke-width="2.4"/>
+ <rect x="13" y="19" width="38" height="14" rx="7" fill="url(#gPurpura)" stroke="#070C1F" stroke-width="3.2" transform="rotate(-16 32 26)"/>
+ <rect x="45" y="8" width="12" height="11" rx="4" fill="url(#gTeal)" stroke="#070C1F" stroke-width="3" transform="rotate(-16 51 13)"/>
+ <ellipse cx="23" cy="21" rx="6" ry="2.4" fill="#fff" opacity=".45" transform="rotate(-16 23 21)"/>
+ <path d="M29 35 L19 58 M33 35 L43 58" stroke="#070C1F" stroke-width="4" stroke-linecap="round"/>
+ <circle cx="31" cy="35" r="4" fill="url(#gDorado)" stroke="#070C1F" stroke-width="2.6"/>
+</g>
+<g id="m-reloj"><ellipse cx="32" cy="61" rx="22" ry="3" fill="rgba(7,12,31,.4)"/>
+ <circle cx="18" cy="11" r="6" fill="url(#gDorado)" stroke="#070C1F" stroke-width="2.8"/>
+ <circle cx="46" cy="11" r="6" fill="url(#gDorado)" stroke="#070C1F" stroke-width="2.8"/>
+ <circle cx="32" cy="34" r="22" fill="url(#gTeal)" stroke="#070C1F" stroke-width="3.4"/>
+ <circle cx="32" cy="34" r="15.5" fill="#fff" stroke="#070C1F" stroke-width="2.6"/>
+ <line x1="32" y1="34" x2="32" y2="24" stroke="#070C1F" stroke-width="3.2" stroke-linecap="round"/>
+ <line x1="32" y1="34" x2="40" y2="37" stroke="#E04B38" stroke-width="2.8" stroke-linecap="round"/>
+ <circle cx="32" cy="34" r="2" fill="#070C1F"/>
+ <path d="M16 52 l-4 6 M48 52 l4 6" stroke="#070C1F" stroke-width="4" stroke-linecap="round"/>
+ <ellipse cx="24" cy="25" rx="4.5" ry="3" fill="#fff" opacity=".65"/>
+</g>
+<!-- CATÁLOGO ESTELAR -->
+<g id="pv-manzana"><circle cx="32" cy="36" r="17" fill="#FF6B5E" stroke="#070C1F" stroke-width="3.5"/><path d="M32 20 Q30 12 36 8" fill="none" stroke="#5BD672" stroke-width="4" stroke-linecap="round"/><ellipse cx="26" cy="31" rx="4" ry="6" fill="rgba(255,255,255,.4)"/><circle cx="44" cy="18" r="2" fill="#FFC94D"/><circle cx="14" cy="24" r="1.6" fill="#F2F6FF"/></g>
+<g id="pv-banano"><path d="M14 16 Q12 44 40 48 Q54 50 52 41 Q48 45 39 43 Q19 39 21 16 Q19 10 14 16Z" fill="#FFC94D" stroke="#070C1F" stroke-width="3.5"/><path d="M46 12 L50 8 M52 18 L56 16" stroke="#4FD8CB" stroke-width="2.5" stroke-linecap="round"/></g>
+<g id="pv-galleta"><circle cx="32" cy="32" r="19" fill="#D9A25C" stroke="#070C1F" stroke-width="3.5"/><circle cx="25" cy="27" r="2.6" fill="#6B4527"/><circle cx="38" cy="24" r="2.6" fill="#6B4527"/><circle cx="30" cy="38" r="2.6" fill="#6B4527"/><circle cx="41" cy="37" r="2.6" fill="#6B4527"/><path d="M12 14 L18 14 M15 11 L15 17" stroke="#9B7BFF" stroke-width="2.5" stroke-linecap="round"/></g>
+<g id="pv-jugo"><rect x="18" y="12" width="28" height="40" rx="5" fill="#9B7BFF" stroke="#070C1F" stroke-width="3.5"/><rect x="18" y="12" width="28" height="11" rx="5" fill="#F2F6FF" stroke="#070C1F" stroke-width="3.5"/><rect x="38" y="3" width="6" height="11" rx="2" fill="#FF6B5E" stroke="#070C1F" stroke-width="3"/><circle cx="32" cy="37" r="8" fill="#C9B8FF" stroke="#070C1F" stroke-width="3"/><circle cx="32" cy="37" r="3" fill="#F2F6FF"/></g>
+<g id="pv-pelota"><circle cx="32" cy="32" r="19" fill="#B9C4E8" stroke="#070C1F" stroke-width="3.5"/><circle cx="24" cy="26" r="4" fill="#8FA3D9" stroke="#070C1F" stroke-width="2.5"/><circle cx="40" cy="36" r="6" fill="#8FA3D9" stroke="#070C1F" stroke-width="2.5"/><circle cx="34" cy="18" r="2.6" fill="#8FA3D9" stroke="#070C1F" stroke-width="2.2"/></g>
+<g id="pv-robot"><rect x="20" y="24" width="24" height="22" rx="6" fill="#4FD8CB" stroke="#070C1F" stroke-width="3.5"/><rect x="24" y="8" width="16" height="14" rx="5" fill="#F2F6FF" stroke="#070C1F" stroke-width="3.5"/><circle cx="29" cy="15" r="2" fill="#070C1F"/><circle cx="35" cy="15" r="2" fill="#070C1F"/><line x1="32" y1="8" x2="32" y2="4" stroke="#070C1F" stroke-width="3"/><circle cx="32" cy="3" r="2.4" fill="#FF6B5E"/><rect x="12" y="28" width="8" height="6" rx="3" fill="#FFC94D" stroke="#070C1F" stroke-width="3"/><rect x="44" y="28" width="8" height="6" rx="3" fill="#FFC94D" stroke="#070C1F" stroke-width="3"/><rect x="23" y="46" width="7" height="10" rx="3" fill="#8FA3D9" stroke="#070C1F" stroke-width="3"/><rect x="34" y="46" width="7" height="10" rx="3" fill="#8FA3D9" stroke="#070C1F" stroke-width="3"/><rect x="26" y="30" width="12" height="8" rx="2" fill="#0F1836"/></g>
+<g id="pv-carrito"><rect x="10" y="26" width="36" height="16" rx="8" fill="#FF6B5E" stroke="#070C1F" stroke-width="3.5"/><path d="M18 26 Q22 16 32 16 Q40 16 42 26" fill="#9CCBFF" stroke="#070C1F" stroke-width="3.5"/><circle cx="20" cy="46" r="6" fill="#123047" stroke="#070C1F" stroke-width="3"/><circle cx="38" cy="46" r="6" fill="#123047" stroke="#070C1F" stroke-width="3"/><path d="M46 32 L56 30 M46 36 L54 38" stroke="#FFC94D" stroke-width="2.5" stroke-linecap="round"/></g>
+<g id="pv-herramienta"><path d="M40 10 a12 12 0 1 0 10 18 L38 40 a6 6 0 0 1-8-8 L42 20 Z" fill="#8FA3D9" stroke="#070C1F" stroke-width="3.5" transform="rotate(8 32 32)"/><rect x="14" y="36" width="14" height="16" rx="4" fill="#FFC94D" stroke="#070C1F" stroke-width="3.5" transform="rotate(-24 21 44)"/></g>
+<g id="pv-casco"><circle cx="32" cy="30" r="20" fill="#F2F6FF" stroke="#070C1F" stroke-width="3.5"/><rect x="18" y="20" width="28" height="20" rx="9" fill="#123047" stroke="#070C1F" stroke-width="3.5"/><path d="M22 26 Q28 22 34 26" fill="none" stroke="#4FD8CB" stroke-width="2.5" stroke-linecap="round"/><rect x="24" y="48" width="16" height="7" rx="3.5" fill="#FF6B5E" stroke="#070C1F" stroke-width="3"/></g>
+<g id="pv-telescopio"><rect x="8" y="22" width="34" height="12" rx="6" fill="#9B7BFF" stroke="#070C1F" stroke-width="3.5" transform="rotate(-18 25 28)"/><rect x="38" y="12" width="12" height="10" rx="4" fill="#4FD8CB" stroke="#070C1F" stroke-width="3.5" transform="rotate(-18 44 17)"/><path d="M24 36 L16 54 M26 36 L34 54" stroke="#070C1F" stroke-width="4" stroke-linecap="round"/><circle cx="54" cy="8" r="2.4" fill="#FFC94D"/></g>
+<g id="pv-mochila"><rect x="18" y="14" width="28" height="36" rx="10" fill="#FF8A5C" stroke="#070C1F" stroke-width="3.5"/><rect x="24" y="22" width="16" height="12" rx="4" fill="#123047" stroke="#070C1F" stroke-width="3"/><path d="M22 52 Q18 62 26 60 M42 52 Q46 62 38 60" fill="none" stroke="#FFC94D" stroke-width="4" stroke-linecap="round"/><path d="M26 60 L24 56 M38 60 L40 56" stroke="#FF6B5E" stroke-width="5" stroke-linecap="round"/></g>
+<g id="pv-dulce"><circle cx="32" cy="30" r="12" fill="#FF6B5E" stroke="#070C1F" stroke-width="3.5"/><path d="M32 30 m-12 0 a12 12 0 0 1 24 0" fill="#FFC94D" stroke="#070C1F" stroke-width="3.5"/><path d="M20 30 L8 22 L12 34 L8 42 L20 34 M44 30 L56 22 L52 34 L56 42 L44 34" fill="#9B7BFF" stroke="#070C1F" stroke-width="3" stroke-linejoin="round"/></g>
+<g id="pv-planta"><path d="M32 52 L32 30" stroke="#5BD672" stroke-width="4" stroke-linecap="round"/><path d="M32 38 Q20 36 18 24 Q30 26 32 38 M32 32 Q44 30 46 18 Q34 20 32 32" fill="#5BD672" stroke="#070C1F" stroke-width="3"/><path d="M22 52 L42 52 L40 60 L24 60Z" fill="#FF8A5C" stroke="#070C1F" stroke-width="3.5"/></g>
+</defs>
+</svg>
+<script>
+"use strict";
+
+/* ============================================================
+   1. CONTENIDO — 8 módulos × 3 misiones. Todo editable.
+   Mecánicas: opciones | entradas | ordenar | armar | fraccion
+   ============================================================ */
+
+const BANDAS = ["5–7 · 1º","7–9 · 2º·3º","9–11 · 4º·5º","Misión especial"];
+const PAGO_ESTRELLA = 500;
+const PAGO_EXPRES = 300;
+const PAGO_AHORRO = 200;
+const CATALOGO = {
+  "manzana":     {n:"Manzana espacial",   p:500,  tier:"eco", ic:"pv-manzana"},
+  "banano":      {n:"Banano cometa",      p:600,  tier:"eco", ic:"pv-banano"},
+  "galleta":     {n:"Galleta meteorito",  p:700,  tier:"eco", ic:"pv-galleta"},
+  "jugo":        {n:"Jugo de nebulosa",   p:800,  tier:"eco", ic:"pv-jugo"},
+  "pelota":      {n:"Pelota lunar",       p:1000, tier:"com", ic:"pv-pelota"},
+  "dulce":       {n:"Dulce cósmico",      p:1200, tier:"com", ic:"pv-dulce"},
+  "robot":       {n:"Robot de juguete",   p:1200, tier:"com", ic:"pv-robot"},
+  "carrito":     {n:"Carrito estelar",    p:1500, tier:"com", ic:"pv-carrito"},
+  "herramienta": {n:"Herramienta lunar",  p:2000, tier:"pre", ic:"pv-herramienta"},
+  "casco":       {n:"Casco espacial",     p:2500, tier:"pre", ic:"pv-casco"},
+  "telescopio":  {n:"Telescopio",         p:3000, tier:"pre", ic:"pv-telescopio"},
+  "mochila":     {n:"Mochila propulsora", p:3500, tier:"pre", ic:"pv-mochila"}
+};
+const TIER_NOMBRE = {eco:"Cristal Económico", com:"Cristal Comercial", pre:"Cristal Premium"};
+
+const SVG_VALLA = '<svg viewBox="0 0 48 42" width="34" height="30" aria-hidden="true"><g stroke="#070C1F" stroke-width="2.5" stroke-linecap="round"><rect x="5" y="7" width="38" height="10" rx="2.5" fill="#FFFFFF"/><path d="M5 7 h9.5 v10 h-9.5 Z M24 7 h9.5 v10 h-9.5 Z" fill="#E04B38" stroke="none"/><rect x="5" y="7" width="38" height="10" rx="2.5" fill="none"/><line x1="10" y1="17" x2="10" y2="37"/><line x1="38" y1="17" x2="38" y2="37"/><line x1="3" y1="37" x2="17" y2="37"/><line x1="31" y1="37" x2="45" y2="37"/></g></svg>';
+const UBICAR = {
+mercado:{ t:"Centro Comercial Galáctico", et:"Ubicar y clasificar", o:"Ubica cada elemento en su espacio; al acertar se activa su precio",
+  frase:"¡La estantería galáctica está vacía! Ubica cada producto y mira aparecer su precio. Los puntos se gastan en la Tienda.",
+  contenedores:[{id:"fru",e:"🍎",n:"Frutas"},{id:"ver",e:"🥕",n:"Verduras"},{id:"lac",e:"🥛",n:"Lácteos"},{id:"car",e:"🍗",n:"Carnes"},{id:"esc",e:"✏️",n:"Escolares"},{id:"jug",e:"🧸",n:"Juguetes"}],
+  items:[{e:"🍎",t:"Manzana",c:"fru",p:500},{e:"🍌",t:"Banano",c:"fru",p:600},{e:"🥕",t:"Zanahoria",c:"ver",p:400},{e:"🥦",t:"Brócoli",c:"ver",p:700},{e:"🥛",t:"Leche",c:"lac",p:800},{e:"🧀",t:"Queso",c:"lac",p:1200},{e:"🍗",t:"Pollo",c:"car",p:2000},{e:"🥩",t:"Carne",c:"car",p:2500},{e:"✏️",t:"Lápiz",c:"esc",p:300},{e:"📓",t:"Cuaderno",c:"esc",p:900},{e:"🧸",t:"Peluche",c:"jug",p:1000},{e:"🤖",t:"Robot",c:"jug",p:1200}]},
+invernadero:{ t:"Cápsulas de Crecimiento Galáctico", et:"Ubicar por etapa", o:"Ubica cada elemento en la cápsula correcta según su etapa",
+  frase:"Cápsulas para sembrar, nutrir y observar. ¡Cada cosa en su etapa!",
+  contenedores:[{id:"sem",e:"🌰",n:"Semillas"},{id:"jov",e:"🌱",n:"Plantas jóvenes"},{id:"mad",e:"🌻",n:"Plantas maduras"},{id:"her",e:"🧰",n:"Herramientas de cultivo"},{id:"nut",e:"💧",n:"Nutrientes"}],
+  items:[{e:"🌰",t:"Semilla de girasol",c:"sem"},{e:"🥜",t:"Semilla de fríjol",c:"sem"},{e:"🌱",t:"Brote",c:"jov"},{e:"☘️",t:"Plántula",c:"jov"},{e:"🌻",t:"Girasol",c:"mad"},{e:"🌽",t:"Maíz maduro",c:"mad"},{e:"⛏️",t:"Pica",c:"her"},{e:"🪣",t:"Balde",c:"her"},{e:"💧",t:"Agua",c:"nut"},{e:"🧪",t:"Abono",c:"nut"}]},
+pista:{ t:"Circuito Estelar", et:"Arma la pista", o:"Construye la pista ubicando cada elemento en su espacio",
+  frase:"La ruta está vacía: ubica cada obstáculo y completa el circuito.",
+  contenedores:[{id:"obs",e:"🚧",n:"Obstáculos"},{id:"bar",e:"🧱",n:"Barreras"},{id:"tun",e:"🕳️",n:"Túneles"},{id:"sal",e:"🤸",n:"Saltos"},{id:"sen",e:"🏁",n:"Señales de ruta"}],
+  items:[{e:"",svg:SVG_VALLA,t:"Valla",c:"obs"},{e:"🪨",t:"Roca",c:"obs"},{e:"🧱",t:"Muro",c:"bar"},{e:"⛔",t:"Talanquera",c:"bar"},{e:"🕳️",t:"Túnel",c:"tun"},{e:"🤸",t:"Salto acrobático",c:"sal"},{e:"🏁",t:"Meta",c:"sen"},{e:"➡️",t:"Flecha de ruta",c:"sen"}]},
+sala:{ t:"Panel de Juegos Galácticos", et:"Activa los juegos", o:"Ubica cada juego en su panel correspondiente",
+  frase:"Cada juego tiene su panel. ¡Actívalos todos!",
+  contenedores:[{id:"log",e:"🧩",n:"Juegos de lógica"},{id:"mem",e:"👀",n:"Juegos de memoria"},{id:"vel",e:"🏎️",n:"Juegos de velocidad"},{id:"est",e:"♟️",n:"Juegos de estrategia"}],
+  items:[{e:"🧩",t:"Rompecabezas",c:"log"},{e:"🧠",t:"Acertijo",c:"log"},{e:"👀",t:"Encuentra la pareja",c:"mem"},{e:"🃏",t:"Cartas iguales",c:"mem"},{e:"🏎️",t:"Carrera contra el reloj",c:"vel"},{e:"⏱️",t:"Reto rápido",c:"vel"},{e:"♟️",t:"Ajedrez",c:"est"},{e:"🛡️",t:"Defiende la torre",c:"est"}]},
+taller:{ t:"Mesa de Ensamble Estelar", et:"Mesa de ensamble", o:"Ubica cada pieza en su espacio de ensamble",
+  frase:"Sobre la mesa de ensamble cada pieza tiene su lugar.",
+  contenedores:[{id:"pie",e:"🟦",n:"Piezas"},{id:"her2",e:"🔨",n:"Herramientas"},{id:"mat",e:"🪵",n:"Materiales"},{id:"mec",e:"⚙️",n:"Componentes mecánicos"},{id:"ele",e:"🔋",n:"Componentes electrónicos"}],
+  items:[{e:"🟦",t:"Bloque",c:"pie"},{e:"🧩",t:"Pieza de encaje",c:"pie"},{e:"🔨",t:"Martillo",c:"her2"},{e:"🪛",t:"Destornillador",c:"her2"},{e:"🪵",t:"Madera",c:"mat"},{e:"🧱",t:"Ladrillo",c:"mat"},{e:"⚙️",t:"Engranaje",c:"mec"},{e:"🔩",t:"Tornillo",c:"mec"},{e:"🔋",t:"Batería",c:"ele"},{e:"💡",t:"Bombillo",c:"ele"}]},
+cocina:{ t:"Estación de Cocina Galáctica", et:"Estación de cocina", o:"Ubica ingredientes y utensilios en la estación correcta",
+  frase:"¡A ordenar la cocina para preparar el plato!",
+  contenedores:[{id:"ing",e:"🥚",n:"Ingredientes"},{id:"ute",e:"🥄",n:"Utensilios"},{id:"rec",e:"📖",n:"Recetas"},{id:"pla",e:"🍰",n:"Platos preparados"}],
+  items:[{e:"🥚",t:"Huevo",c:"ing"},{e:"🍫",t:"Chocolate",c:"ing"},{e:"🥄",t:"Cuchara",c:"ute"},{e:"🍳",t:"Sartén",c:"ute"},{e:"📖",t:"Receta de torta",c:"rec"},{e:"📜",t:"Receta de pan",c:"rec"},{e:"🍰",t:"Torta lista",c:"pla"},{e:"🥞",t:"Pancakes listos",c:"pla"}]},
+observatorio:{ t:"Panel de Análisis Estelar", et:"Panel de análisis", o:"Ubica cada tipo de dato en su panel correspondiente",
+  frase:"El panel de análisis espera sus datos. ¡Clasifícalos!",
+  contenedores:[{id:"gra",e:"📊",n:"Gráficas"},{id:"tab",e:"📋",n:"Tablas"},{id:"sen2",e:"📡",n:"Sensores"},{id:"ind",e:"🧭",n:"Indicadores"},{id:"reg",e:"📓",n:"Registros"}],
+  items:[{e:"📊",t:"Gráfica de barras",c:"gra"},{e:"📈",t:"Gráfica de línea",c:"gra"},{e:"📋",t:"Tabla de datos",c:"tab"},{e:"🗒️",t:"Tabla de conteo",c:"tab"},{e:"🌡️",t:"Termómetro",c:"sen2"},{e:"📡",t:"Antena",c:"sen2"},{e:"🧭",t:"Brújula",c:"ind"},{e:"📓",t:"Bitácora",c:"reg"},{e:"🗂️",t:"Archivo",c:"reg"}]},
+reloj:{ t:"Panel Cronométrico Estelar", et:"Panel cronométrico", o:"Ubica cada segmento de tiempo en su espacio",
+  frase:"Construyamos el reloj de la nave, pieza por pieza.",
+  contenedores:[{id:"seg",e:"🕐",n:"Segmentos de tiempo"},{id:"ind2",e:"⏱️",n:"Indicadores"},{id:"ala",e:"⏰",n:"Alarmas"},{id:"cic",e:"🌗",n:"Ciclos"}],
+  items:[{e:"🕐",t:"Hora",c:"seg"},{e:"📅",t:"Día",c:"seg"},{e:"⏱️",t:"Cronómetro",c:"ind2"},{e:"⌛",t:"Reloj de arena",c:"ind2"},{e:"⏰",t:"Despertador",c:"ala"},{e:"🔔",t:"Campana",c:"ala"},{e:"🌗",t:"Fases de la luna",c:"cic"},{e:"🔄",t:"Ciclo del día",c:"cic"}]}
+};
+const NIVEL_UBICAR = id => { const u=UBICAR[id]; u.id=id; return { t:u.t, et:"🚚 "+u.et, o:u.o, mec:"ubicar", frase:u.frase, datos:u }; };
+
+const NIVEL_AHORRO = () => ({ t:"Ahorro", et:"💰 Ahorro", o:"Recibo dinero y pago… ¿cuánto me queda?", mec:"ahorro", ahorro:true,
+  frase:"Cada pregunta bien contestada guarda dinero en tu alcancía para la Tienda.", datos:{} });
+
+const MODULOS = [
+{ id:"mercado", nombre:"Mercado Estelar", mapa:["Mercado","Estelar"], icono:"m-mercado", color:"#5BD672",
+  desc:"Dinero y costos: el Laboratorio Financiero de la estación.",
+  niveles:[
+    { t:"Arma la plata", o:"Componer una cantidad exacta", mec:"armar", frase:"Necesito el valor exacto, ni un peso más.",
+      datos:{rondas:[
+        {meta:700, piezas:[500,200,100,100]},
+        {meta:1500,piezas:[500,500,1000,200,100]},
+        {meta:1800,piezas:[1000,500,200,100,200]},
+        {meta:2700,piezas:[2000,500,200,100,1000]},
+        {meta:2600,piezas:[2000,500,100,200,1000]},
+        {meta:3500,piezas:[2000,1000,500,200,100]},
+        {meta:4300,piezas:[2000,1000,1000,200,100,500]},
+        {meta:5200,piezas:[5000,200,1000,100,500]},
+        {meta:6700,piezas:[5000,1000,500,200,2000,100]},
+        {meta:8600,piezas:[5000,2000,1000,500,100,200]}]}},
+    { t:"El cambio", o:"Restar con dinero", mec:"entradas", frase:"Un buen tendero devuelve el cambio completo.",
+      datos:{rondas:[
+        {consigna:"La cuenta es $700 y pagan con $1.000", ayuda:"¿Cuánto cambio devuelves?", escena:{tipo:"dinero",args:[1000]}, campos:[{etq:"Cambio:",esp:300}]},
+        {consigna:"La cuenta es $2.300 y pagan con $5.000", ayuda:"Resta la cuenta al billete.", escena:{tipo:"dinero",args:[5000]}, campos:[{etq:"Cambio:",esp:2700}]},
+        {consigna:"La cuenta es $1.600 y pagan con $2.000", ayuda:"¡Tú puedes!", escena:{tipo:"dinero",args:[2000]}, campos:[{etq:"Cambio:",esp:400}]},
+        {consigna:"La cuenta es $4.200 y pagan con $5.000", ayuda:"Resta con cuidado.", escena:{tipo:"dinero",args:[5000]}, campos:[{etq:"Cambio:",esp:800}]},
+        {consigna:"La cuenta es $3.100 y pagan con $5.000", ayuda:"Sigue así.", escena:{tipo:"dinero",args:[5000]}, campos:[{etq:"Cambio:",esp:1900}]},
+        {consigna:"La cuenta es $4.200 y pagan con $10.000", ayuda:"Ahora con billete grande.", escena:{tipo:"dinero",args:[10000]}, campos:[{etq:"Cambio:",esp:5800}]},
+        {consigna:"La cuenta es $7.600 y pagan con $10.000", ayuda:"Casi lo logras todo.", escena:{tipo:"dinero",args:[10000]}, campos:[{etq:"Cambio:",esp:2400}]},
+        {consigna:"La cuenta es $5.500 y pagan con $10.000", ayuda:"Mitades exactas.", escena:{tipo:"dinero",args:[10000]}, campos:[{etq:"Cambio:",esp:4500}]},
+        {consigna:"La cuenta es $8.900 y pagan con $10.000", ayuda:"Cambio pequeño.", escena:{tipo:"dinero",args:[10000]}, campos:[{etq:"Cambio:",esp:1100}]},
+        {consigna:"La cuenta es $12.400 y pagan con $20.000", ayuda:"¡La venta más grande del día!", escena:{tipo:"dinero",args:[20000]}, campos:[{etq:"Cambio:",esp:7600}]}]}},
+    { t:"Rebajas galácticas", o:"Calcular porcentajes", mec:"entradas", frase:"¡Hoy hay descuentos en todo el Mercado!",
+      datos:{rondas:[
+        {consigna:"4 × Carrito estelar a $1.500 con 25% de descuento", ayuda:"Primero el precio sin descuento, luego el descuento, luego lo que pagas.", campos:[{etq:"Precio sin descuento:",esp:6000},{etq:"Descuento (25%):",esp:1500},{etq:"Pagas:",esp:4500}]},
+        {consigna:"2 × Casco espacial a $2.500 con 20% de descuento", ayuda:"El 20% es dividir entre 5.", campos:[{etq:"Precio sin descuento:",esp:5000},{etq:"Descuento (20%):",esp:1000},{etq:"Pagas:",esp:4000}]},
+        {consigna:"6 × Manzana espacial a $500 con 10% de descuento", ayuda:"El 10% es dividir entre 10.", campos:[{etq:"Precio sin descuento:",esp:3000},{etq:"Descuento (10%):",esp:300},{etq:"Pagas:",esp:2700}]},
+        {consigna:"5 × Jugo de nebulosa a $800 con 25% de descuento", ayuda:"El 25% es la cuarta parte.", campos:[{etq:"Precio sin descuento:",esp:4000},{etq:"Descuento (25%):",esp:1000},{etq:"Pagas:",esp:3000}]},
+        {consigna:"3 × Pelota lunar a $1.000 con 20% de descuento", ayuda:"Ya conoces el método.", campos:[{etq:"Precio sin descuento:",esp:3000},{etq:"Descuento (20%):",esp:600},{etq:"Pagas:",esp:2400}]},
+        {consigna:"5 × Robot de juguete a $1.200 con 50% de descuento", ayuda:"¡Mitad de precio!", campos:[{etq:"Precio sin descuento:",esp:6000},{etq:"Descuento (50%):",esp:3000},{etq:"Pagas:",esp:3000}]},
+        {consigna:"4 × Galleta meteorito a $700 con 25% de descuento", ayuda:"La cuarta parte otra vez.", campos:[{etq:"Precio sin descuento:",esp:2800},{etq:"Descuento (25%):",esp:700},{etq:"Pagas:",esp:2100}]},
+        {consigna:"5 × Dulce cósmico a $1.200 con 10% de descuento", ayuda:"Divide entre 10.", campos:[{etq:"Precio sin descuento:",esp:6000},{etq:"Descuento (10%):",esp:600},{etq:"Pagas:",esp:5400}]},
+        {consigna:"3 × Herramienta lunar a $2.000 con 15% de descuento", ayuda:"15% = 10% + 5%.", campos:[{etq:"Precio sin descuento:",esp:6000},{etq:"Descuento (15%):",esp:900},{etq:"Pagas:",esp:5100}]},
+        {consigna:"2 × Telescopio a $3.000 con 20% de descuento", ayuda:"¡Última rebaja del día!", campos:[{etq:"Precio sin descuento:",esp:6000},{etq:"Descuento (20%):",esp:1200},{etq:"Pagas:",esp:4800}]}]}},
+    NIVEL_AHORRO(),
+    NIVEL_UBICAR("mercado")
+  ]},
+
+{ id:"invernadero", nombre:"Invernadero Estelar", mapa:["Invernadero","Estelar"], icono:"m-planta", color:"#7BE08F",
+  desc:"La Huerta Escolar de los libros: sembrar, medir con la regla, registrar y leer el crecimiento.",
+  niveles:[
+    { t:"Cuenta las semillas", o:"Conteo hasta 10", mec:"opciones", frase:"¡Sembremos! Pero primero cuenta las semillas.",
+      datos:{rondas:[
+        {consigna:"¿Cuántas semillas hay?", escena:{tipo:"semillas",args:[3]}, ops:[2,3,4,5], corr:3},
+        {consigna:"¿Y ahora cuántas hay?", escena:{tipo:"semillas",args:[5]}, ops:[4,5,6,7], corr:5},
+        {consigna:"Cuenta con calma", escena:{tipo:"semillas",args:[2]}, ops:[1,2,3,4], corr:2},
+        {consigna:"¿Cuántas semillas hay?", escena:{tipo:"semillas",args:[7]}, ops:[6,7,8,9], corr:7},
+        {consigna:"Sigue contando", escena:{tipo:"semillas",args:[4]}, ops:[3,4,5,6], corr:4},
+        {consigna:"¿Cuántas hay en la bandeja?", escena:{tipo:"semillas",args:[8]}, ops:[7,8,9,10], corr:8},
+        {consigna:"¡Ya casi eres experto!", escena:{tipo:"semillas",args:[6]}, ops:[5,6,7,8], corr:6},
+        {consigna:"¿Cuántas semillas hay?", escena:{tipo:"semillas",args:[9]}, ops:[8,9,10,11], corr:9},
+        {consigna:"¡Bandeja llena!", escena:{tipo:"semillas",args:[10]}, ops:[8,9,10,11], corr:10},
+        {consigna:"Última bandeja", escena:{tipo:"semillas",args:[7]}, ops:[5,6,7,8], corr:7}]}},
+    { t:"Mide la planta", o:"Medir con la regla en cm", mec:"opciones", frase:"Usa la regla: ¿hasta qué número llega la planta?",
+      datos:{rondas:[
+        {consigna:"¿Cuánto mide la planta?", escena:{tipo:"planta",args:[4]}, ops:["3 cm","4 cm","5 cm","6 cm"], corr:"4 cm"},
+        {consigna:"Creció un poco…", escena:{tipo:"planta",args:[6]}, ops:["4 cm","6 cm","8 cm","10 cm"], corr:"6 cm"},
+        {consigna:"¿Cuánto mide ahora?", escena:{tipo:"planta",args:[8]}, ops:["7 cm","8 cm","9 cm","10 cm"], corr:"8 cm"},
+        {consigna:"Mide con cuidado", escena:{tipo:"planta",args:[5]}, ops:["4 cm","5 cm","6 cm","7 cm"], corr:"5 cm"},
+        {consigna:"¡Sigue creciendo!", escena:{tipo:"planta",args:[9]}, ops:["7 cm","8 cm","9 cm","11 cm"], corr:"9 cm"},
+        {consigna:"¿Hasta dónde llega?", escena:{tipo:"planta",args:[11]}, ops:["10 cm","11 cm","12 cm","13 cm"], corr:"11 cm"},
+        {consigna:"Revisa la regla", escena:{tipo:"planta",args:[7]}, ops:["6 cm","7 cm","8 cm","9 cm"], corr:"7 cm"},
+        {consigna:"¡Qué alta va!", escena:{tipo:"planta",args:[12]}, ops:["11 cm","12 cm","13 cm","14 cm"], corr:"12 cm"},
+        {consigna:"Casi lista la cosecha", escena:{tipo:"planta",args:[14]}, ops:["12 cm","13 cm","14 cm","15 cm"], corr:"14 cm"},
+        {consigna:"¡Mírala ahora!", escena:{tipo:"planta",args:[16]}, ops:["14 cm","15 cm","16 cm","17 cm"], corr:"16 cm"}]}},
+    { t:"La curva de crecimiento", o:"Registrar y calcular el crecimiento", mec:"entradas", frase:"El registro semanal es el corazón de la Huerta.",
+      datos:{rondas:[
+        {consigna:"Midió: sem 1 = 5 cm · sem 2 = 9 cm · sem 3 = 14 cm · sem 4 = 21 cm", ayuda:"Cuánto creció cada semana y el total.", escena:{tipo:"linea",args:[[5,9,14,21]]}, campos:[{etq:"Creció en semana 2 (cm):",esp:4},{etq:"Creció en semana 3 (cm):",esp:5},{etq:"Creció en semana 4 (cm):",esp:7},{etq:"Crecimiento total (cm):",esp:16}]},
+        {consigna:"Midió: sem 1 = 3 cm · sem 2 = 7 cm · sem 3 = 10 cm · sem 4 = 16 cm", ayuda:"Resta semana contra semana.", escena:{tipo:"linea",args:[[3,7,10,16]]}, campos:[{etq:"Creció en semana 2 (cm):",esp:4},{etq:"Crecimiento total (cm):",esp:13}]},
+        {consigna:"Midió: sem 1 = 6 cm · sem 2 = 11 cm · sem 3 = 15 cm · sem 4 = 22 cm", ayuda:"Fíjate en la semana 3.", escena:{tipo:"linea",args:[[6,11,15,22]]}, campos:[{etq:"Creció en semana 3 (cm):",esp:4},{etq:"Crecimiento total (cm):",esp:16}]},
+        {consigna:"Midió: sem 1 = 4 cm · sem 2 = 9 cm · sem 3 = 13 cm · sem 4 = 20 cm", ayuda:"La última semana fue fuerte.", escena:{tipo:"linea",args:[[4,9,13,20]]}, campos:[{etq:"Creció en semana 4 (cm):",esp:7},{etq:"Crecimiento total (cm):",esp:16}]},
+        {consigna:"Midió: sem 1 = 2 cm · sem 2 = 6 cm · sem 3 = 12 cm · sem 4 = 19 cm", ayuda:"Dos semanas para comparar.", escena:{tipo:"linea",args:[[2,6,12,19]]}, campos:[{etq:"Creció en semana 2 (cm):",esp:4},{etq:"Creció en semana 3 (cm):",esp:6}]},
+        {consigna:"Midió: sem 1 = 8 cm · sem 2 = 12 cm · sem 3 = 17 cm · sem 4 = 25 cm", ayuda:"El total es final menos inicio.", escena:{tipo:"linea",args:[[8,12,17,25]]}, campos:[{etq:"Creció en semana 4 (cm):",esp:8},{etq:"Crecimiento total (cm):",esp:17}]},
+        {consigna:"Midió: sem 1 = 5 cm · sem 2 = 8 cm · sem 3 = 14 cm · sem 4 = 18 cm", ayuda:"Semana 3 dio un salto.", escena:{tipo:"linea",args:[[5,8,14,18]]}, campos:[{etq:"Creció en semana 3 (cm):",esp:6},{etq:"Crecimiento total (cm):",esp:13}]},
+        {consigna:"Midió: sem 1 = 7 cm · sem 2 = 13 cm · sem 3 = 18 cm · sem 4 = 26 cm", ayuda:"Empieza por la semana 2.", escena:{tipo:"linea",args:[[7,13,18,26]]}, campos:[{etq:"Creció en semana 2 (cm):",esp:6},{etq:"Crecimiento total (cm):",esp:19}]},
+        {consigna:"Midió: sem 1 = 3 cm · sem 2 = 9 cm · sem 3 = 16 cm · sem 4 = 24 cm", ayuda:"Dos semanas seguidas.", escena:{tipo:"linea",args:[[3,9,16,24]]}, campos:[{etq:"Creció en semana 3 (cm):",esp:7},{etq:"Creció en semana 4 (cm):",esp:8}]},
+        {consigna:"Midió: sem 1 = 10 cm · sem 2 = 14 cm · sem 3 = 19 cm · sem 4 = 27 cm", ayuda:"¡Cosecha final!", escena:{tipo:"linea",args:[[10,14,19,27]]}, campos:[{etq:"Creció en semana 2 (cm):",esp:4},{etq:"Crecimiento total (cm):",esp:17}]}]}},
+    { t:"El terreno de la huerta", et:"🌱 Plantas y costos", o:"Área de la huerta y costo de las semillas", mec:"entradas",
+      frase:"Cada cuadro del terreno lleva una planta. ¡Calculemos el costo!",
+      datos:{rondas:[
+        {consigna:"La huerta mide 4 × 3 cuadros y en cada cuadro se siembra 1 planta. Cada semilla cuesta $200", ayuda:"Primero cuenta las plantas, luego el costo.", escena:{tipo:"cuadricula",args:[4,3]}, campos:[{etq:"Plantas que caben:",esp:12},{etq:"Costo de las semillas:",esp:2400}]},
+        {consigna:"La huerta mide 5 × 2 cuadros. Cada semilla cuesta $100", ayuda:"El mismo método.", escena:{tipo:"cuadricula",args:[5,2]}, campos:[{etq:"Plantas que caben:",esp:10},{etq:"Costo de las semillas:",esp:1000}]},
+        {consigna:"La huerta mide 3 × 3 cuadros. Cada semilla cuesta $300", ayuda:"Un terreno cuadrado.", escena:{tipo:"cuadricula",args:[3,3]}, campos:[{etq:"Plantas que caben:",esp:9},{etq:"Costo de las semillas:",esp:2700}]},
+        {consigna:"La huerta mide 6 × 2 cuadros. Cada semilla cuesta $200", ayuda:"Sigue contando.", escena:{tipo:"cuadricula",args:[6,2]}, campos:[{etq:"Plantas que caben:",esp:12},{etq:"Costo de las semillas:",esp:2400}]},
+        {consigna:"La huerta mide 4 × 4 cuadros. Cada semilla cuesta $100", ayuda:"Vas muy bien.", escena:{tipo:"cuadricula",args:[4,4]}, campos:[{etq:"Plantas que caben:",esp:16},{etq:"Costo de las semillas:",esp:1600}]},
+        {consigna:"La huerta mide 5 × 3 cuadros. Cada semilla cuesta $200", ayuda:"Plantas y luego costo.", escena:{tipo:"cuadricula",args:[5,3]}, campos:[{etq:"Plantas que caben:",esp:15},{etq:"Costo de las semillas:",esp:3000}]},
+        {consigna:"La huerta mide 6 × 3 cuadros. Cada semilla cuesta $100", ayuda:"Un terreno grande.", escena:{tipo:"cuadricula",args:[6,3]}, campos:[{etq:"Plantas que caben:",esp:18},{etq:"Costo de las semillas:",esp:1800}]},
+        {consigna:"La huerta mide 4 × 5 cuadros. Cada semilla cuesta $300", ayuda:"Con calma.", escena:{tipo:"cuadricula",args:[4,5]}, campos:[{etq:"Plantas que caben:",esp:20},{etq:"Costo de las semillas:",esp:6000}]},
+        {consigna:"La huerta mide 7 × 2 cuadros. Cada semilla cuesta $200", ayuda:"Casi terminas.", escena:{tipo:"cuadricula",args:[7,2]}, campos:[{etq:"Plantas que caben:",esp:14},{etq:"Costo de las semillas:",esp:2800}]},
+        {consigna:"La huerta mide 5 × 4 cuadros. Cada semilla cuesta $500", ayuda:"¡La gran siembra final!", escena:{tipo:"cuadricula",args:[5,4]}, campos:[{etq:"Plantas que caben:",esp:20},{etq:"Costo de las semillas:",esp:10000}]}]}},
+    NIVEL_UBICAR("invernadero")
+  ]},
+
+{ id:"pista", nombre:"Pista de Entrenamiento", mapa:["Pista de","Entrenamiento"], icono:"m-crono", color:"#FF6B5E",
+  desc:"Deporte y Números: cronómetro, ordenar tiempos y el promedio del equipo.",
+  niveles:[
+    { t:"¿Quién ganó?", o:"Comparar: menor tiempo gana", mec:"opciones", frase:"En la carrera gana el tiempo MÁS pequeño.",
+      datos:{rondas:[
+        {consigna:"Ana: 9 s · Beto: 7 s · Cami: 8 s. ¿Quién ganó?", escena:{tipo:"podio",args:[[["Ana",9],["Beto",7],["Cami",8]]]}, ops:["Ana","Beto","Cami"], corr:"Beto"},
+        {consigna:"Dani: 11 s · Eli: 12 s · Fede: 10 s. ¿Quién ganó?", escena:{tipo:"podio",args:[[["Dani",11],["Eli",12],["Fede",10]]]}, ops:["Dani","Eli","Fede"], corr:"Fede"},
+        {consigna:"¿Quién quedó de último? Gina: 8 s · Hugo: 13 s · Iris: 9 s", escena:{tipo:"podio",args:[[["Gina",8],["Hugo",13],["Iris",9]]]}, ops:["Gina","Hugo","Iris"], corr:"Hugo"},
+        {consigna:"Juan: 6 s · Kata: 9 s · Leo: 7 s. ¿Quién ganó?", escena:{tipo:"podio",args:[[["Juan",6],["Kata",9],["Leo",7]]]}, ops:["Juan","Kata","Leo"], corr:"Juan"},
+        {consigna:"Mia: 10 s · Nico: 8 s · Olga: 12 s. ¿Quién ganó?", escena:{tipo:"podio",args:[[["Mia",10],["Nico",8],["Olga",12]]]}, ops:["Mia","Nico","Olga"], corr:"Nico"},
+        {consigna:"¿Quién quedó de último? Pablo: 7 s · Quique: 11 s · Rosa: 9 s", escena:{tipo:"podio",args:[[["Pablo",7],["Quique",11],["Rosa",9]]]}, ops:["Pablo","Quique","Rosa"], corr:"Quique"},
+        {consigna:"Sara: 13 s · Tomás: 12 s · Ulises: 14 s. ¿Quién ganó?", escena:{tipo:"podio",args:[[["Sara",13],["Tomás",12],["Ulises",14]]]}, ops:["Sara","Tomás","Ulises"], corr:"Tomás"},
+        {consigna:"Vera: 6 s · Wilo: 8 s · Ximena: 5 s. ¿Quién ganó?", escena:{tipo:"podio",args:[[["Vera",6],["Wilo",8],["Ximena",5]]]}, ops:["Vera","Wilo","Ximena"], corr:"Ximena"},
+        {consigna:"¿Quién quedó de último? Yara: 10 s · Zoe: 14 s · Abel: 12 s", escena:{tipo:"podio",args:[[["Yara",10],["Zoe",14],["Abel",12]]]}, ops:["Yara","Zoe","Abel"], corr:"Zoe"},
+        {consigna:"Bruno: 9 s · Cleo: 7 s · Darío: 8 s. ¿Quién ganó?", escena:{tipo:"podio",args:[[["Bruno",9],["Cleo",7],["Darío",8]]]}, ops:["Bruno","Cleo","Darío"], corr:"Cleo"}]}},
+    { t:"Ordena la llegada", o:"Ordenar números con decimales", mec:"ordenar", frase:"Del más rápido al más lento, ¡sin equivocarse!",
+      datos:{rondas:[
+        {consigna:"Toca los tiempos del MENOR al MAYOR", items:[["9,2 s",9.2],["8,5 s",8.5],["10,1 s",10.1],["7,8 s",7.8]]},
+        {consigna:"¡Otra carrera! Del menor al mayor", items:[["12,4 s",12.4],["11,9 s",11.9],["12,0 s",12.0],["13,2 s",13.2]]},
+        {consigna:"Ordena la llegada", items:[["6,8 s",6.8],["7,5 s",7.5],["7,1 s",7.1],["6,4 s",6.4]]},
+        {consigna:"Del más rápido al más lento", items:[["10,5 s",10.5],["9,9 s",9.9],["10,0 s",10.0],["11,2 s",11.2]]},
+        {consigna:"¡Concéntrate en los decimales!", items:[["8,1 s",8.1],["8,9 s",8.9],["7,6 s",7.6],["9,3 s",9.3]]},
+        {consigna:"Carrera de resistencia", items:[["14,2 s",14.2],["13,8 s",13.8],["15,0 s",15.0],["14,9 s",14.9]]},
+        {consigna:"¡Los más veloces!", items:[["5,9 s",5.9],["6,3 s",6.3],["5,5 s",5.5],["6,8 s",6.8]]},
+        {consigna:"Ordena con cuidado", items:[["11,1 s",11.1],["10,7 s",10.7],["12,3 s",12.3],["11,8 s",11.8]]},
+        {consigna:"Décimas de diferencia", items:[["7,2 s",7.2],["8,0 s",8.0],["7,9 s",7.9],["6,9 s",6.9]]},
+        {consigna:"¡Final del campeonato!", items:[["9,6 s",9.6],["9,1 s",9.1],["10,4 s",10.4],["8,8 s",8.8]]}]}},
+    { t:"El promedio del equipo", o:"Calcular el promedio", mec:"entradas", frase:"El promedio: suma todo y divide entre cuántos son.",
+      datos:{rondas:[
+        {consigna:"Tiempos: 8 s, 9 s, 7 s y 12 s", ayuda:"Suma los cuatro y divide entre 4.", escena:{tipo:"barras",args:[[8,9,7,12],["A","B","C","D"]]}, campos:[{etq:"Suma de tiempos (s):",esp:36},{etq:"Promedio (s):",esp:9}]},
+        {consigna:"Tiempos: 10 s, 12 s, 14 s y 12 s", ayuda:"El mismo método.", escena:{tipo:"barras",args:[[10,12,14,12],["A","B","C","D"]]}, campos:[{etq:"Suma de tiempos (s):",esp:48},{etq:"Promedio (s):",esp:12}]},
+        {consigna:"Tiempos: 6 s, 8 s, 10 s y 12 s", ayuda:"Suma y divide.", escena:{tipo:"barras",args:[[6,8,10,12],["A","B","C","D"]]}, campos:[{etq:"Suma de tiempos (s):",esp:36},{etq:"Promedio (s):",esp:9}]},
+        {consigna:"Tiempos: 9 s, 11 s, 10 s y 10 s", ayuda:"Todos cerca del promedio.", escena:{tipo:"barras",args:[[9,11,10,10],["A","B","C","D"]]}, campos:[{etq:"Suma de tiempos (s):",esp:40},{etq:"Promedio (s):",esp:10}]},
+        {consigna:"Tiempos: 7 s, 7 s, 9 s y 9 s", ayuda:"Parejas de tiempos.", escena:{tipo:"barras",args:[[7,7,9,9],["A","B","C","D"]]}, campos:[{etq:"Suma de tiempos (s):",esp:32},{etq:"Promedio (s):",esp:8}]},
+        {consigna:"Tiempos: 11 s, 13 s, 12 s y 12 s", ayuda:"Concéntrate en la suma.", escena:{tipo:"barras",args:[[11,13,12,12],["A","B","C","D"]]}, campos:[{etq:"Suma de tiempos (s):",esp:48},{etq:"Promedio (s):",esp:12}]},
+        {consigna:"Tiempos: 5 s, 9 s, 8 s y 10 s", ayuda:"¡Equipo veloz!", escena:{tipo:"barras",args:[[5,9,8,10],["A","B","C","D"]]}, campos:[{etq:"Suma de tiempos (s):",esp:32},{etq:"Promedio (s):",esp:8}]},
+        {consigna:"Tiempos: 14 s, 10 s, 12 s y 12 s", ayuda:"Divide entre 4 al final.", escena:{tipo:"barras",args:[[14,10,12,12],["A","B","C","D"]]}, campos:[{etq:"Suma de tiempos (s):",esp:48},{etq:"Promedio (s):",esp:12}]},
+        {consigna:"Tiempos: 6 s, 10 s, 9 s y 11 s", ayuda:"Vas muy bien.", escena:{tipo:"barras",args:[[6,10,9,11],["A","B","C","D"]]}, campos:[{etq:"Suma de tiempos (s):",esp:36},{etq:"Promedio (s):",esp:9}]},
+        {consigna:"Tiempos: 13 s, 9 s, 11 s y 11 s", ayuda:"¡Cierre del entrenamiento!", escena:{tipo:"barras",args:[[13,9,11,11],["A","B","C","D"]]}, campos:[{etq:"Suma de tiempos (s):",esp:44},{etq:"Promedio (s):",esp:11}]}]}},
+    { t:"Salto largo", et:"🏃 Salto y equipo", o:"Participantes y marcas de salto largo", mec:"entradas",
+      frase:"¡A la arena! Saltos, marcas y el conteo del equipo.",
+      datos:{rondas:[
+        {consigna:"Ana saltó 120 cm y Beto saltó 95 cm", ayuda:"Resta las dos marcas.", campos:[{etq:"¿Cuántos cm más saltó Ana?:",esp:25}]},
+        {consigna:"Hay 3 equipos con 4 participantes cada uno", ayuda:"Multiplica.", campos:[{etq:"Participantes en total:",esp:12}]},
+        {consigna:"Cami saltó 110 cm y Dani saltó 130 cm", ayuda:"¿Quién saltó más y por cuánto?", campos:[{etq:"¿Cuántos cm más saltó Dani?:",esp:20}]},
+        {consigna:"Hay 5 equipos con 6 participantes cada uno", ayuda:"El conteo del torneo.", campos:[{etq:"Participantes en total:",esp:30}]},
+        {consigna:"Eli saltó 88 cm y Fede saltó 100 cm", ayuda:"La diferencia de marcas.", campos:[{etq:"¿Cuántos cm más saltó Fede?:",esp:12}]},
+        {consigna:"En la mañana saltaron 14 atletas y en la tarde 17", ayuda:"Suma las dos jornadas.", campos:[{etq:"Atletas del día:",esp:31}]},
+        {consigna:"Gina saltó 125 cm y la marca del colegio es 150 cm", ayuda:"¿Cuánto le faltó?", campos:[{etq:"Le faltaron (cm):",esp:25}]},
+        {consigna:"Hay 4 equipos con 7 participantes cada uno", ayuda:"Ya conoces el método.", campos:[{etq:"Participantes en total:",esp:28}]},
+        {consigna:"Hugo saltó 105, 112 y 121 cm en sus tres intentos", ayuda:"Su mejor marca y su mejora.", campos:[{etq:"Su mejor salto (cm):",esp:121},{etq:"Mejoró del primero al último (cm):",esp:16}]},
+        {consigna:"En la final saltan 2 equipos de 8 y hay 3 jueces", ayuda:"Cuenta a todas las personas.", campos:[{etq:"Personas en la pista:",esp:19}]}]}},
+    NIVEL_UBICAR("pista")
+  ]},
+
+{ id:"sala", nombre:"Sala de Juegos", mapa:["Sala de","Juegos"], icono:"m-dado", color:"#FFC94D",
+  desc:"Parqués, Dominó y probabilidad: los juegos de mesa de los libros, en versión estelar.",
+  niveles:[
+    { t:"Suma de dados", o:"Sumar dos dados", mec:"opciones", frase:"¡Tira los dados del parqués!",
+      datos:{rondas:[
+        {consigna:"¿Cuánto suman?", escena:{tipo:"dados",args:[2,3]}, ops:[4,5,6,7], corr:5},
+        {consigna:"¡Otra tirada!", escena:{tipo:"dados",args:[4,5]}, ops:[8,9,10,11], corr:9},
+        {consigna:"¡Pares!", escena:{tipo:"dados",args:[6,6]}, ops:[10,11,12,13], corr:12},
+        {consigna:"Suma con cuidado", escena:{tipo:"dados",args:[3,4]}, ops:[6,7,8,9], corr:7},
+        {consigna:"Tirada pequeña", escena:{tipo:"dados",args:[1,2]}, ops:[2,3,4,5], corr:3},
+        {consigna:"¡Doble cinco!", escena:{tipo:"dados",args:[5,5]}, ops:[9,10,11,12], corr:10},
+        {consigna:"¿Cuánto suman ahora?", escena:{tipo:"dados",args:[2,6]}, ops:[7,8,9,10], corr:8},
+        {consigna:"¡Doble cuatro!", escena:{tipo:"dados",args:[4,4]}, ops:[6,7,8,9], corr:8},
+        {consigna:"Sigue sumando", escena:{tipo:"dados",args:[3,6]}, ops:[8,9,10,11], corr:9},
+        {consigna:"¡Última tirada!", escena:{tipo:"dados",args:[6,5]}, ops:[10,11,12,13], corr:11}]}},
+    { t:"Dominó de cuentas", o:"Encontrar la ficha que suma", mec:"opciones", frase:"Busca la ficha de dominó que sume lo que pido.",
+      datos:{rondas:[
+        {consigna:"¿Cuál ficha suma 8?", ops:[{escena:{tipo:"domino",args:[3,5]},v:"a"},{escena:{tipo:"domino",args:[2,4]},v:"b"},{escena:{tipo:"domino",args:[6,3]},v:"c"}], corr:"a"},
+        {consigna:"¿Cuál ficha suma 7?", ops:[{escena:{tipo:"domino",args:[5,5]},v:"a"},{escena:{tipo:"domino",args:[6,1]},v:"b"},{escena:{tipo:"domino",args:[2,3]},v:"c"}], corr:"b"},
+        {consigna:"¿Cuál ficha suma 10?", ops:[{escena:{tipo:"domino",args:[4,4]},v:"a"},{escena:{tipo:"domino",args:[3,6]},v:"b"},{escena:{tipo:"domino",args:[6,4]},v:"c"}], corr:"c"},
+        {consigna:"¿Cuál ficha suma 9?", ops:[{escena:{tipo:"domino",args:[4,5]},v:"a"},{escena:{tipo:"domino",args:[3,3]},v:"b"},{escena:{tipo:"domino",args:[6,2]},v:"c"}], corr:"a"},
+        {consigna:"¿Cuál ficha suma 6?", ops:[{escena:{tipo:"domino",args:[1,3]},v:"a"},{escena:{tipo:"domino",args:[2,4]},v:"b"},{escena:{tipo:"domino",args:[5,3]},v:"c"}], corr:"b"},
+        {consigna:"¿Cuál ficha suma 11?", ops:[{escena:{tipo:"domino",args:[5,5]},v:"a"},{escena:{tipo:"domino",args:[6,4]},v:"b"},{escena:{tipo:"domino",args:[6,5]},v:"c"}], corr:"c"},
+        {consigna:"¿Cuál ficha suma 5?", ops:[{escena:{tipo:"domino",args:[2,3]},v:"a"},{escena:{tipo:"domino",args:[1,2]},v:"b"},{escena:{tipo:"domino",args:[4,4]},v:"c"}], corr:"a"},
+        {consigna:"¿Cuál ficha suma 12?", ops:[{escena:{tipo:"domino",args:[6,5]},v:"a"},{escena:{tipo:"domino",args:[6,6]},v:"b"},{escena:{tipo:"domino",args:[4,6]},v:"c"}], corr:"b"},
+        {consigna:"¿Cuál ficha suma 4?", ops:[{escena:{tipo:"domino",args:[1,1]},v:"a"},{escena:{tipo:"domino",args:[3,3]},v:"b"},{escena:{tipo:"domino",args:[1,3]},v:"c"}], corr:"c"},
+        {consigna:"¿Cuál ficha suma 9? ¡Última!", ops:[{escena:{tipo:"domino",args:[6,3]},v:"a"},{escena:{tipo:"domino",args:[2,5]},v:"b"},{escena:{tipo:"domino",args:[4,4]},v:"c"}], corr:"a"}]}},
+    { t:"¿Qué es más probable?", o:"Probabilidad simple", mec:"opciones", frase:"Mira la bolsa y piensa: ¿qué color saldrá más fácil?",
+      datos:{rondas:[
+        {consigna:"Hay 6 rojas y 2 azules. ¿Qué es más probable sacar?", escena:{tipo:"bolsa",args:[6,2]}, ops:["Roja","Azul","Igual de probable"], corr:"Roja"},
+        {consigna:"Hay 3 rojas y 3 azules", escena:{tipo:"bolsa",args:[3,3]}, ops:["Roja","Azul","Igual de probable"], corr:"Igual de probable"},
+        {consigna:"Hay 1 roja y 5 azules", escena:{tipo:"bolsa",args:[1,5]}, ops:["Roja","Azul","Igual de probable"], corr:"Azul"},
+        {consigna:"Hay 7 rojas y 3 azules", escena:{tipo:"bolsa",args:[7,3]}, ops:["Roja","Azul","Igual de probable"], corr:"Roja"},
+        {consigna:"Hay 4 rojas y 4 azules", escena:{tipo:"bolsa",args:[4,4]}, ops:["Roja","Azul","Igual de probable"], corr:"Igual de probable"},
+        {consigna:"Hay 2 rojas y 6 azules", escena:{tipo:"bolsa",args:[2,6]}, ops:["Roja","Azul","Igual de probable"], corr:"Azul"},
+        {consigna:"Hay 8 rojas y 2 azules", escena:{tipo:"bolsa",args:[8,2]}, ops:["Roja","Azul","Igual de probable"], corr:"Roja"},
+        {consigna:"Hay 5 rojas y 5 azules", escena:{tipo:"bolsa",args:[5,5]}, ops:["Roja","Azul","Igual de probable"], corr:"Igual de probable"},
+        {consigna:"Hay 3 rojas y 7 azules", escena:{tipo:"bolsa",args:[3,7]}, ops:["Roja","Azul","Igual de probable"], corr:"Azul"},
+        {consigna:"Hay 9 rojas y 3 azules. ¡Última!", escena:{tipo:"bolsa",args:[9,3]}, ops:["Roja","Azul","Igual de probable"], corr:"Roja"}]}},
+    { t:"Fichas y jugadores", et:"🎲 Fichas y dados", o:"Participantes, dados y fichas del juego", mec:"entradas",
+      frase:"Antes de jugar hay que repartir y contar.",
+      datos:{rondas:[
+        {consigna:"Cada jugador recibe 4 fichas y juegan 3 jugadores", ayuda:"Multiplica fichas por jugadores.", campos:[{etq:"Fichas repartidas:",esp:12}]},
+        {consigna:"Tiraron 3 dados y los tres cayeron en 6", ayuda:"Suma los tres dados.", campos:[{etq:"Suma de los dados:",esp:18}]},
+        {consigna:"El parqués trae 16 fichas y se perdieron 3", ayuda:"Resta las perdidas.", campos:[{etq:"Fichas que quedan:",esp:13}]},
+        {consigna:"Se juegan 2 partidas con 4 jugadores cada una", ayuda:"Cuenta a todos.", campos:[{etq:"Participantes en total:",esp:8}]},
+        {consigna:"Cada jugador recibe 7 fichas de dominó y juegan 4", ayuda:"El reparto del dominó.", campos:[{etq:"Fichas repartidas:",esp:28}]},
+        {consigna:"Dos dados cayeron en 5 y uno cayó en 3", ayuda:"5 + 5 + 3.", campos:[{etq:"Suma de los dados:",esp:13}]},
+        {consigna:"La caja trae 28 fichas de dominó y se repartieron 21", ayuda:"¿Cuántas sobraron?", campos:[{etq:"Quedan en la caja:",esp:7}]},
+        {consigna:"Hay 5 mesas con 4 jugadores cada una", ayuda:"El salón completo.", campos:[{etq:"Participantes en total:",esp:20}]},
+        {consigna:"Un dado cayó en 4. Para llegar a 10…", ayuda:"¿Cuánto falta?", campos:[{etq:"Falta:",esp:6}]},
+        {consigna:"Cada uno de los 6 jugadores pone 2 fichas en el centro", ayuda:"¡El pozo del juego!", campos:[{etq:"Fichas en el centro:",esp:12}]}]}},
+    NIVEL_UBICAR("sala")
+  ]},
+
+{ id:"taller", nombre:"Taller de Construcción", mapa:["Taller de","Construcción"], icono:"m-piramide", color:"#9CCBFF",
+  desc:"Las Pirámides y las baldosas: figuras, perímetro, área y volumen para construir la estación.",
+  niveles:[
+    { t:"Lados y figuras", o:"Reconocer figuras y contar lados", mec:"opciones", frase:"Todo constructor conoce sus figuras.",
+      datos:{rondas:[
+        {consigna:"¿Cuántos lados tiene el triángulo?", escena:{tipo:"figura",args:["tri"]}, ops:[3,4,5,6], corr:3},
+        {consigna:"¿Cuántos lados tiene el cuadrado?", escena:{tipo:"figura",args:["cua"]}, ops:[3,4,5,6], corr:4},
+        {consigna:"¿Cuántos lados tiene el hexágono?", escena:{tipo:"figura",args:["hex"]}, ops:[4,5,6,8], corr:6},
+        {consigna:"¿Cuántos lados tiene el pentágono?", escena:{tipo:"figura",args:["pent"]}, ops:[4,5,6,7], corr:5},
+        {consigna:"¿Cuántos lados tiene el rectángulo?", escena:{tipo:"figura",args:["rect"]}, ops:[3,4,5,6], corr:4},
+        {consigna:"¿Cuántos lados tiene el triángulo?", escena:{tipo:"figura",args:["tri"]}, ops:[2,3,4,5], corr:3},
+        {consigna:"¿Cuántos lados tiene el hexágono?", escena:{tipo:"figura",args:["hex"]}, ops:[5,6,7,8], corr:6},
+        {consigna:"¿Cuántos lados tiene el pentágono?", escena:{tipo:"figura",args:["pent"]}, ops:[3,4,5,6], corr:5},
+        {consigna:"¿Cuántos lados tiene el cuadrado?", escena:{tipo:"figura",args:["cua"]}, ops:[4,5,6,8], corr:4},
+        {consigna:"¿Cuántos lados tiene el rectángulo?", escena:{tipo:"figura",args:["rect"]}, ops:[2,3,4,5], corr:4}]}},
+    { t:"Baldosas: área y perímetro", o:"Contar cuadrados de la cuadrícula", mec:"entradas", frase:"Cada cuadrito mide 1 metro. ¡A embaldosar!",
+      datos:{rondas:[
+        {consigna:"El piso mide 6 × 3 cuadros", ayuda:"Área: cuadros que caben. Perímetro: el borde completo.", escena:{tipo:"cuadricula",args:[6,3]}, campos:[{etq:"Área (cuadros):",esp:18},{etq:"Perímetro (m):",esp:18}]},
+        {consigna:"El piso mide 5 × 4 cuadros", ayuda:"El mismo método.", escena:{tipo:"cuadricula",args:[5,4]}, campos:[{etq:"Área (cuadros):",esp:20},{etq:"Perímetro (m):",esp:18}]},
+        {consigna:"El piso mide 4 × 4 cuadros", ayuda:"Un piso cuadrado.", escena:{tipo:"cuadricula",args:[4,4]}, campos:[{etq:"Área (cuadros):",esp:16},{etq:"Perímetro (m):",esp:16}]},
+        {consigna:"El piso mide 7 × 3 cuadros", ayuda:"Cuenta con calma.", escena:{tipo:"cuadricula",args:[7,3]}, campos:[{etq:"Área (cuadros):",esp:21},{etq:"Perímetro (m):",esp:20}]},
+        {consigna:"El piso mide 6 × 5 cuadros", ayuda:"Un salón grande.", escena:{tipo:"cuadricula",args:[6,5]}, campos:[{etq:"Área (cuadros):",esp:30},{etq:"Perímetro (m):",esp:22}]},
+        {consigna:"El piso mide 8 × 2 cuadros", ayuda:"Un pasillo largo.", escena:{tipo:"cuadricula",args:[8,2]}, campos:[{etq:"Área (cuadros):",esp:16},{etq:"Perímetro (m):",esp:20}]},
+        {consigna:"El piso mide 5 × 5 cuadros", ayuda:"Otro cuadrado.", escena:{tipo:"cuadricula",args:[5,5]}, campos:[{etq:"Área (cuadros):",esp:25},{etq:"Perímetro (m):",esp:20}]},
+        {consigna:"El piso mide 7 × 4 cuadros", ayuda:"Vas muy bien.", escena:{tipo:"cuadricula",args:[7,4]}, campos:[{etq:"Área (cuadros):",esp:28},{etq:"Perímetro (m):",esp:22}]},
+        {consigna:"El piso mide 9 × 3 cuadros", ayuda:"¡El corredor de la nave!", escena:{tipo:"cuadricula",args:[9,3]}, campos:[{etq:"Área (cuadros):",esp:27},{etq:"Perímetro (m):",esp:24}]},
+        {consigna:"El piso mide 6 × 4 cuadros", ayuda:"¡Última obra!", escena:{tipo:"cuadricula",args:[6,4]}, campos:[{etq:"Área (cuadros):",esp:24},{etq:"Perímetro (m):",esp:20}]}]}},
+    { t:"Volumen con cubos", o:"Contar cubos: largo × ancho × alto", mec:"entradas", frase:"Como las pirámides: capa por capa.",
+      datos:{rondas:[
+        {consigna:"Bloque de 3 × 2 de base y 2 pisos", ayuda:"Cubos de la base, luego multiplica por los pisos.", escena:{tipo:"cubos",args:[3,2,2]}, campos:[{etq:"Cubos en la base:",esp:6},{etq:"Cubos en total:",esp:12}]},
+        {consigna:"Bloque de 4 × 3 de base y 2 pisos", ayuda:"¡Ya sabes el truco!", escena:{tipo:"cubos",args:[4,3,2]}, campos:[{etq:"Cubos en la base:",esp:12},{etq:"Cubos en total:",esp:24}]},
+        {consigna:"Bloque de 2 × 2 de base y 2 pisos", ayuda:"Un cubo pequeño.", escena:{tipo:"cubos",args:[2,2,2]}, campos:[{etq:"Cubos en la base:",esp:4},{etq:"Cubos en total:",esp:8}]},
+        {consigna:"Bloque de 4 × 2 de base y 3 pisos", ayuda:"Tres pisos ahora.", escena:{tipo:"cubos",args:[4,2,3]}, campos:[{etq:"Cubos en la base:",esp:8},{etq:"Cubos en total:",esp:24}]},
+        {consigna:"Bloque de 5 × 3 de base y 2 pisos", ayuda:"Base grande.", escena:{tipo:"cubos",args:[5,3,2]}, campos:[{etq:"Cubos en la base:",esp:15},{etq:"Cubos en total:",esp:30}]},
+        {consigna:"Bloque de 3 × 3 de base y 3 pisos", ayuda:"¡Un cubo perfecto!", escena:{tipo:"cubos",args:[3,3,3]}, campos:[{etq:"Cubos en la base:",esp:9},{etq:"Cubos en total:",esp:27}]},
+        {consigna:"Bloque de 4 × 4 de base y 2 pisos", ayuda:"Cuenta la base primero.", escena:{tipo:"cubos",args:[4,4,2]}, campos:[{etq:"Cubos en la base:",esp:16},{etq:"Cubos en total:",esp:32}]},
+        {consigna:"Bloque de 5 × 2 de base y 2 pisos", ayuda:"Sigue construyendo.", escena:{tipo:"cubos",args:[5,2,2]}, campos:[{etq:"Cubos en la base:",esp:10},{etq:"Cubos en total:",esp:20}]},
+        {consigna:"Bloque de 3 × 4 de base y 2 pisos", ayuda:"Casi terminas la torre.", escena:{tipo:"cubos",args:[3,4,2]}, campos:[{etq:"Cubos en la base:",esp:12},{etq:"Cubos en total:",esp:24}]},
+        {consigna:"Bloque de 4 × 3 de base y 3 pisos", ayuda:"¡La gran pirámide final!", escena:{tipo:"cubos",args:[4,3,3]}, campos:[{etq:"Cubos en la base:",esp:12},{etq:"Cubos en total:",esp:36}]}]}},
+    { t:"El costo de la obra", et:"🧱 Precios de obra", o:"Precios y costos de la construcción", mec:"entradas",
+      frase:"Todo constructor calcula el costo antes de construir.",
+      datos:{rondas:[
+        {consigna:"El piso lleva una baldosa por cuadro. Cada baldosa cuesta $300", ayuda:"Cuenta las baldosas y calcula el costo.", escena:{tipo:"cuadricula",args:[4,3]}, campos:[{etq:"Baldosas:",esp:12},{etq:"Costo:",esp:3600}]},
+        {consigna:"Cada ladrillo cuesta $200 y la pared lleva 25", ayuda:"Multiplica.", campos:[{etq:"Costo:",esp:5000}]},
+        {consigna:"Una baldosa por cuadro. Cada baldosa cuesta $400", ayuda:"Primero el conteo.", escena:{tipo:"cuadricula",args:[5,2]}, campos:[{etq:"Baldosas:",esp:10},{etq:"Costo:",esp:4000}]},
+        {consigna:"Cada bloque cuesta $500 y la torre lleva 8", ayuda:"El costo de la torre.", campos:[{etq:"Costo:",esp:4000}]},
+        {consigna:"Una baldosa por cuadro. Cada baldosa cuesta $200", ayuda:"Un piso grande.", escena:{tipo:"cuadricula",args:[6,3]}, campos:[{etq:"Baldosas:",esp:18},{etq:"Costo:",esp:3600}]},
+        {consigna:"Se necesitan 3 tarros de pintura a $2.000 cada uno", ayuda:"Multiplica.", campos:[{etq:"Costo:",esp:6000}]},
+        {consigna:"Una baldosa por cuadro. Cada baldosa cuesta $250", ayuda:"Piso cuadrado.", escena:{tipo:"cuadricula",args:[4,4]}, campos:[{etq:"Baldosas:",esp:16},{etq:"Costo:",esp:4000}]},
+        {consigna:"La puerta cuesta $3.500 y la ventana $1.500", ayuda:"Suma los dos precios.", campos:[{etq:"Costo de ambas:",esp:5000}]},
+        {consigna:"Una baldosa por cuadro. Cada baldosa cuesta $300", ayuda:"El pasillo de la nave.", escena:{tipo:"cuadricula",args:[7,2]}, campos:[{etq:"Baldosas:",esp:14},{etq:"Costo:",esp:4200}]},
+        {consigna:"Se necesitan 10 tornillos a $150 cada uno", ayuda:"¡Último cálculo de la obra!", campos:[{etq:"Costo:",esp:1500}]}]}},
+    NIVEL_UBICAR("taller")
+  ]},
+
+{ id:"cocina", nombre:"Cocina Estelar", mapa:["Cocina","Estelar"], icono:"m-torta", color:"#F5A3B8",
+  desc:"Pan, torta y mermeladas: fracciones y proporciones que se comen.",
+  niveles:[
+    { t:"Parte la torta", o:"Mitades, tercios y cuartos", mec:"fraccion", frase:"Toca las porciones para servirlas.",
+      datos:{rondas:[
+        {consigna:"Sirve la MITAD de la torta", n:2, k:1},
+        {consigna:"Sirve UN CUARTO", n:4, k:1},
+        {consigna:"Sirve DOS CUARTOS", n:4, k:2},
+        {consigna:"Sirve TRES CUARTOS", n:4, k:3},
+        {consigna:"Sirve UN TERCIO", n:3, k:1},
+        {consigna:"Sirve DOS TERCIOS", n:3, k:2},
+        {consigna:"Sirve la MITAD de esta torta de 6", n:6, k:3},
+        {consigna:"Sirve la MITAD de esta torta de 8", n:8, k:4},
+        {consigna:"Sirve 1/6 de la torta", n:6, k:1},
+        {consigna:"Sirve 2/8 de la torta", n:8, k:2}]}},
+    { t:"Fracciones al horno", o:"Fracciones con más porciones", mec:"fraccion", frase:"Ahora con tortas de más porciones.",
+      datos:{rondas:[
+        {consigna:"Sirve 3/8 de la torta", n:8, k:3},
+        {consigna:"Sirve 2/6", n:6, k:2},
+        {consigna:"Sirve 5/8", n:8, k:5},
+        {consigna:"Sirve 4/6", n:6, k:4},
+        {consigna:"Sirve 6/8", n:8, k:6},
+        {consigna:"Sirve 2/5", n:5, k:2},
+        {consigna:"Sirve 3/5", n:5, k:3},
+        {consigna:"Sirve 7/8", n:8, k:7},
+        {consigna:"Sirve 5/6", n:6, k:5},
+        {consigna:"Sirve 3/10 de la torta gigante", n:10, k:3}]}},
+    { t:"Escala la receta", o:"Proporciones: la receta de 6 porciones", mec:"entradas", frase:"La receta de la torta es para 6. ¡Pero somos más!",
+      datos:{rondas:[
+        {consigna:"Receta para 6: 300 g de harina, 2 huevos, 150 mL de leche. Hazla para 12", ayuda:"12 es 2 veces 6.", campos:[{etq:"Harina (g):",esp:600},{etq:"Huevos:",esp:4},{etq:"Leche (mL):",esp:300}]},
+        {consigna:"La receta de 6, ahora para 18 porciones", ayuda:"Multiplica todo por 3.", campos:[{etq:"Harina (g):",esp:900},{etq:"Huevos:",esp:6},{etq:"Leche (mL):",esp:450}]},
+        {consigna:"La receta de 6, para 24 porciones", ayuda:"¿Cuántas veces cabe 6 en 24?", campos:[{etq:"Harina (g):",esp:1200},{etq:"Huevos:",esp:8},{etq:"Leche (mL):",esp:600}]},
+        {consigna:"La receta de 6, para 9 porciones", ayuda:"9 ÷ 6 = 1,5: una vez y media.", campos:[{etq:"Harina (g):",esp:450},{etq:"Huevos:",esp:3},{etq:"Leche (mL):",esp:225}]},
+        {consigna:"La receta de 6, para 15 porciones", ayuda:"15 ÷ 6 = 2,5.", campos:[{etq:"Harina (g):",esp:750},{etq:"Huevos:",esp:5},{etq:"Leche (mL):",esp:375}]},
+        {consigna:"La receta de 6, para 30 porciones", ayuda:"¡Fiesta grande! ×5.", campos:[{etq:"Harina (g):",esp:1500},{etq:"Huevos:",esp:10},{etq:"Leche (mL):",esp:750}]},
+        {consigna:"La receta de 6, para solo 3 porciones", ayuda:"La mitad de todo.", campos:[{etq:"Harina (g):",esp:150},{etq:"Huevos:",esp:1},{etq:"Leche (mL):",esp:75}]},
+        {consigna:"La receta de 6, para 21 porciones", ayuda:"21 ÷ 6 = 3,5.", campos:[{etq:"Harina (g):",esp:1050},{etq:"Huevos:",esp:7},{etq:"Leche (mL):",esp:525}]},
+        {consigna:"La receta de 6, para 27 porciones", ayuda:"27 ÷ 6 = 4,5.", campos:[{etq:"Harina (g):",esp:1350},{etq:"Huevos:",esp:9},{etq:"Leche (mL):",esp:675}]},
+        {consigna:"La receta de 6, para 36 porciones", ayuda:"¡Toda la escuela! ×6.", campos:[{etq:"Harina (g):",esp:1800},{etq:"Huevos:",esp:12},{etq:"Leche (mL):",esp:900}]}]}},
+    { t:"El costo de la receta", et:"🍰 Precios de cocina", o:"Precios y costos de los ingredientes", mec:"entradas",
+      frase:"Cocinar rico también es saber cuánto cuesta.",
+      datos:{rondas:[
+        {consigna:"Cada huevo cuesta $500 y la receta lleva 4", ayuda:"Multiplica.", campos:[{etq:"Costo de los huevos:",esp:2000}]},
+        {consigna:"La harina cuesta $1.200 y la leche $800", ayuda:"Suma los dos.", campos:[{etq:"Costo:",esp:2000}]},
+        {consigna:"Se compran 3 bolsas de azúcar a $900 cada una", ayuda:"El azúcar de la torta.", campos:[{etq:"Costo:",esp:2700}]},
+        {consigna:"La torta lleva 2 huevos a $500 cada uno y 1 bolsa de harina de $1.200", ayuda:"Huevos + harina.", campos:[{etq:"Costo total:",esp:2200}]},
+        {consigna:"Para la mermelada se compran 5 manzanas a $400", ayuda:"Multiplica.", campos:[{etq:"Costo:",esp:2000}]},
+        {consigna:"El queso cuesta $4.000 y usamos la mitad", ayuda:"La mitad del precio.", campos:[{etq:"Costo de lo usado:",esp:2000}]},
+        {consigna:"Se compran 2 litros de leche a $1.500 cada uno", ayuda:"La leche del mes.", campos:[{etq:"Costo:",esp:3000}]},
+        {consigna:"La receta completa cuesta $6.000 y salen 6 porciones", ayuda:"Divide entre las porciones.", campos:[{etq:"Costo de cada porción:",esp:1000}]},
+        {consigna:"La mantequilla cuesta $1.800 y el chocolate $2.700", ayuda:"Suma con cuidado.", campos:[{etq:"Costo:",esp:4500}]},
+        {consigna:"Para el desayuno se compran 4 panes a $600", ayuda:"¡Último costo del día!", campos:[{etq:"Costo:",esp:2400}]}]}},
+    NIVEL_UBICAR("cocina")
+  ]},
+
+{ id:"observatorio", nombre:"Observatorio de Datos", mapa:["Observatorio","de Datos"], icono:"m-tele", color:"#9B7BFF",
+  desc:"La Edad, El Estrato y las encuestas del salón: tablas, frecuencias y gráficas.",
+  niveles:[
+    { t:"Lee el pictograma", o:"Cada dibujo vale 1 voto", mec:"opciones", frase:"Las encuestas del salón, en dibujos.",
+      datos:{rondas:[
+        {consigna:"¿Cuántos votos tiene la manzana 🍎?", escena:{tipo:"picto",args:[["🍎",3],["🍌",2],["🍪",4]]}, ops:[2,3,4,5], corr:3},
+        {consigna:"¿Cuál fue la más votada?", escena:{tipo:"picto",args:[["🍎",3],["🍌",2],["🍪",4]]}, ops:["🍎 Manzana","🍌 Banano","🍪 Galleta"], corr:"🍪 Galleta"},
+        {consigna:"¿Cuántos votos hay en TOTAL?", escena:{tipo:"picto",args:[["🍎",3],["🍌",2],["🍪",4]]}, ops:[8,9,10,11], corr:9},
+        {consigna:"¿Cuántos votos tiene el fútbol ⚽?", escena:{tipo:"picto",args:[["⚽",5],["🏀",3],["🎾",2]]}, ops:[3,4,5,6], corr:5},
+        {consigna:"¿Cuál fue el menos votado?", escena:{tipo:"picto",args:[["⚽",5],["🏀",3],["🎾",2]]}, ops:["⚽ Fútbol","🏀 Baloncesto","🎾 Tenis"], corr:"🎾 Tenis"},
+        {consigna:"¿Cuántos votos hay en TOTAL?", escena:{tipo:"picto",args:[["⚽",5],["🏀",3],["🎾",2]]}, ops:[9,10,11,12], corr:10},
+        {consigna:"¿Cuántos votos tiene el gato 🐱?", escena:{tipo:"picto",args:[["🐶",6],["🐱",4],["🐟",2]]}, ops:[3,4,5,6], corr:4},
+        {consigna:"¿Cuál fue la más votada?", escena:{tipo:"picto",args:[["🐶",6],["🐱",4],["🐟",2]]}, ops:["🐶 Perro","🐱 Gato","🐟 Pez"], corr:"🐶 Perro"},
+        {consigna:"¿Cuántos votos hay en TOTAL?", escena:{tipo:"picto",args:[["🐶",6],["🐱",4],["🐟",2]]}, ops:[10,11,12,13], corr:12},
+        {consigna:"¿Cuál fue la menos votada?", escena:{tipo:"picto",args:[["🐶",6],["🐱",4],["🐟",2]]}, ops:["🐶 Perro","🐱 Gato","🐟 Pez"], corr:"🐟 Pez"}]}},
+    { t:"Lee las barras", o:"Interpretar una gráfica de barras", mec:"opciones", frase:"Las encuestas del salón, ahora en barras.",
+      datos:{rondas:[
+        {consigna:"¿Cuántos votos tiene el gato?", escena:{tipo:"barras",args:[[6,9,4],["Perro","Gato","Pez"]]}, ops:[4,6,8,9], corr:9},
+        {consigna:"¿Cuál tiene MENOS votos?", escena:{tipo:"barras",args:[[6,9,4],["Perro","Gato","Pez"]]}, ops:["Perro","Gato","Pez"], corr:"Pez"},
+        {consigna:"¿Cuántos votos más tiene el gato que el perro?", escena:{tipo:"barras",args:[[6,9,4],["Perro","Gato","Pez"]]}, ops:[2,3,4,5], corr:3},
+        {consigna:"¿Cuántos votos tiene el tenis?", escena:{tipo:"barras",args:[[5,8,3],["Fútbol","Baloncesto","Tenis"]]}, ops:[3,5,6,8], corr:3},
+        {consigna:"¿Cuál tiene MÁS votos?", escena:{tipo:"barras",args:[[5,8,3],["Fútbol","Baloncesto","Tenis"]]}, ops:["Fútbol","Baloncesto","Tenis"], corr:"Baloncesto"},
+        {consigna:"¿Cuántos votos más tiene el baloncesto que el tenis?", escena:{tipo:"barras",args:[[5,8,3],["Fútbol","Baloncesto","Tenis"]]}, ops:[4,5,6,7], corr:5},
+        {consigna:"¿Cuántos votos tiene el rojo?", escena:{tipo:"barras",args:[[7,4,10],["Rojo","Azul","Verde"]]}, ops:[4,7,9,10], corr:7},
+        {consigna:"¿Cuál tiene MÁS votos?", escena:{tipo:"barras",args:[[7,4,10],["Rojo","Azul","Verde"]]}, ops:["Rojo","Azul","Verde"], corr:"Verde"},
+        {consigna:"¿Cuál tiene MENOS votos?", escena:{tipo:"barras",args:[[7,4,10],["Rojo","Azul","Verde"]]}, ops:["Rojo","Azul","Verde"], corr:"Azul"},
+        {consigna:"¿Cuántos votos más tiene el verde que el azul?", escena:{tipo:"barras",args:[[7,4,10],["Rojo","Azul","Verde"]]}, ops:[5,6,7,8], corr:6}]}},
+    { t:"La tabla de frecuencias", o:"fi, total y porcentaje", mec:"entradas", frase:"Como en el proyecto La Edad: la tabla del salón.",
+      datos:{rondas:[
+        {consigna:"Edades → 9 años: 6 · 10 años: 9 · 11 años: 5", ayuda:"Porcentaje: frecuencia ÷ total × 100.", escena:{tipo:"barras",args:[[6,9,5],["9 años","10 años","11 años"]]}, campos:[{etq:"Total de niños:",esp:20},{etq:"% de 10 años:",esp:45}]},
+        {consigna:"Edades → 9 años: 10 · 10 años: 8 · 11 años: 7", ayuda:"Primero el total.", escena:{tipo:"barras",args:[[10,8,7],["9 años","10 años","11 años"]]}, campos:[{etq:"Total de niños:",esp:25},{etq:"% de 9 años:",esp:40}]},
+        {consigna:"Mascotas → Perro: 4 · Gato: 3 · Pez: 3", ayuda:"Un grupo pequeño.", escena:{tipo:"barras",args:[[4,3,3],["Perro","Gato","Pez"]]}, campos:[{etq:"Total de niños:",esp:10},{etq:"% de Perro:",esp:40}]},
+        {consigna:"Deportes → Fútbol: 20 · Baloncesto: 15 · Tenis: 15", ayuda:"Todo el colegio votó.", escena:{tipo:"barras",args:[[20,15,15],["Fútbol","Baloncesto","Tenis"]]}, campos:[{etq:"Total de niños:",esp:50},{etq:"% de Fútbol:",esp:40}]},
+        {consigna:"Edades → 9 años: 8 · 10 años: 7 · 11 años: 5", ayuda:"Con calma.", escena:{tipo:"barras",args:[[8,7,5],["9 años","10 años","11 años"]]}, campos:[{etq:"Total de niños:",esp:20},{etq:"% de 9 años:",esp:40}]},
+        {consigna:"Colores → Rojo: 5 · Azul: 12 · Verde: 8", ayuda:"El azul arrasó.", escena:{tipo:"barras",args:[[5,12,8],["Rojo","Azul","Verde"]]}, campos:[{etq:"Total de niños:",esp:25},{etq:"% de Azul:",esp:48}]},
+        {consigna:"Meriendas → Fruta: 9 · Galletas: 6 · Jugo: 5", ayuda:"Sigue el método.", escena:{tipo:"barras",args:[[9,6,5],["Fruta","Galletas","Jugo"]]}, campos:[{etq:"Total de niños:",esp:20},{etq:"% de Fruta:",esp:45}]},
+        {consigna:"Mascotas → Perro: 2 · Gato: 5 · Pez: 3", ayuda:"Grupo de 10.", escena:{tipo:"barras",args:[[2,5,3],["Perro","Gato","Pez"]]}, campos:[{etq:"Total de niños:",esp:10},{etq:"% de Gato:",esp:50}]},
+        {consigna:"Edades → 9 años: 11 · 10 años: 9 · 11 años: 5", ayuda:"Vas muy bien.", escena:{tipo:"barras",args:[[11,9,5],["9 años","10 años","11 años"]]}, campos:[{etq:"Total de niños:",esp:25},{etq:"% de 9 años:",esp:44}]},
+        {consigna:"Deportes → Fútbol: 25 · Baloncesto: 15 · Tenis: 10", ayuda:"¡Cierre de la encuesta!", escena:{tipo:"barras",args:[[25,15,10],["Fútbol","Baloncesto","Tenis"]]}, campos:[{etq:"Total de niños:",esp:50},{etq:"% de Fútbol:",esp:50}]}]}},
+    { t:"Cuenta los datos", et:"📊 Conteo de datos", o:"Contar y completar los datos de la encuesta", mec:"entradas",
+      frase:"Antes de graficar hay que contar bien los datos.",
+      datos:{rondas:[
+        {consigna:"En la encuesta votaron 8 niñas y 7 niños", ayuda:"Suma los dos grupos.", campos:[{etq:"Datos en total:",esp:15}]},
+        {consigna:"El lunes se registraron 12 datos y el martes 9", ayuda:"Suma los dos días.", campos:[{etq:"Datos en total:",esp:21}]},
+        {consigna:"La tabla tiene 3 filas con 5 datos cada una", ayuda:"Multiplica.", campos:[{etq:"Datos en total:",esp:15}]},
+        {consigna:"De 20 encuestados, 6 no respondieron", ayuda:"Resta.", campos:[{etq:"Respuestas obtenidas:",esp:14}]},
+        {consigna:"Se encuestaron 4 salones con 10 estudiantes cada uno", ayuda:"Todo el colegio.", campos:[{etq:"Datos en total:",esp:40}]},
+        {consigna:"La gráfica muestra 7 votos el día 1 y 13 el día 2", ayuda:"Suma los dos días.", campos:[{etq:"Votos en total:",esp:20}]},
+        {consigna:"De 25 datos registrados, 5 están repetidos", ayuda:"Resta los repetidos.", campos:[{etq:"Datos distintos:",esp:20}]},
+        {consigna:"Se hicieron 2 encuestas con 15 preguntas cada una", ayuda:"Multiplica.", campos:[{etq:"Preguntas en total:",esp:30}]},
+        {consigna:"Ya se contaron 22 votos y faltan 8", ayuda:"El total de la urna.", campos:[{etq:"Votos en total:",esp:30}]},
+        {consigna:"El registro anotó 6, 9 y 5 datos en tres días", ayuda:"¡Cierre del conteo!", campos:[{etq:"Datos en total:",esp:20}]}]}},
+    NIVEL_UBICAR("observatorio")
+  ]},
+
+{ id:"reloj", nombre:"Reloj de la Nave", mapa:["Reloj de","la Nave"], icono:"m-reloj", color:"#4FD8CB",
+  desc:"Viaje en el tiempo: la hora, las duraciones y las líneas de tiempo.",
+  niveles:[
+    { t:"¿Qué hora es?", o:"Leer el reloj: en punto y y media", mec:"opciones", frase:"El reloj de la nave marca la hora de la misión.",
+      datos:{rondas:[
+        {consigna:"¿Qué hora marca?", escena:{tipo:"reloj",args:[3,0]}, ops:["3:00","6:00","12:15","9:00"], corr:"3:00"},
+        {consigna:"¿Y ahora?", escena:{tipo:"reloj",args:[7,30]}, ops:["6:30","7:30","8:30","7:00"], corr:"7:30"},
+        {consigna:"¿Qué hora es?", escena:{tipo:"reloj",args:[10,0]}, ops:["10:00","2:00","11:00","10:30"], corr:"10:00"},
+        {consigna:"Mira las dos agujas", escena:{tipo:"reloj",args:[1,30]}, ops:["1:00","1:30","2:30","12:30"], corr:"1:30"},
+        {consigna:"¿Qué hora marca?", escena:{tipo:"reloj",args:[6,0]}, ops:["5:00","6:00","7:00","6:30"], corr:"6:00"},
+        {consigna:"Hora de la merienda", escena:{tipo:"reloj",args:[9,30]}, ops:["9:00","8:30","9:30","10:30"], corr:"9:30"},
+        {consigna:"¡Mediodía en la nave!", escena:{tipo:"reloj",args:[12,0]}, ops:["12:00","6:00","1:00","11:00"], corr:"12:00"},
+        {consigna:"¿Qué hora es?", escena:{tipo:"reloj",args:[4,30]}, ops:["4:00","5:30","4:30","3:30"], corr:"4:30"},
+        {consigna:"Casi la hora de dormir", escena:{tipo:"reloj",args:[11,0]}, ops:["10:00","11:00","12:00","11:30"], corr:"11:00"},
+        {consigna:"¡Última hora!", escena:{tipo:"reloj",args:[2,30]}, ops:["2:00","3:30","2:30","1:30"], corr:"2:30"}]}},
+    { t:"¿Cuánto dura?", o:"Duraciones y calendario", mec:"entradas", frase:"Las misiones tienen hora de inicio y de final.",
+      datos:{rondas:[
+        {consigna:"La clase empieza a las 8:00 y dura 2 horas", ayuda:"¿A qué hora termina?", campos:[{etq:"Termina a las:",esp:10}]},
+        {consigna:"La película dura 90 minutos", ayuda:"Pásalo a horas y minutos.", campos:[{etq:"Horas:",esp:1},{etq:"Minutos:",esp:30}]},
+        {consigna:"Vas al colegio de lunes a viernes", ayuda:"¿Cuántos días a la semana?", campos:[{etq:"Días:",esp:5}]},
+        {consigna:"El recreo dura 20 minutos y hay 2 recreos al día", ayuda:"Suma los dos recreos.", campos:[{etq:"Minutos de recreo al día:",esp:40}]},
+        {consigna:"Media hora, ¿cuántos minutos es?", ayuda:"La mitad de una hora.", campos:[{etq:"Minutos:",esp:30}]},
+        {consigna:"2 horas, ¿cuántos minutos son?", ayuda:"Una hora tiene 60 minutos.", campos:[{etq:"Minutos:",esp:120}]},
+        {consigna:"La práctica va de 3:00 a 5:00", ayuda:"¿Cuántas horas dura?", campos:[{etq:"Horas:",esp:2}]},
+        {consigna:"Una película de 2 horas y 15 minutos", ayuda:"¿Cuántos minutos en total?", campos:[{etq:"Minutos:",esp:135}]},
+        {consigna:"45 minutos de tarea + 15 minutos de lectura", ayuda:"Suma y conviértelo.", campos:[{etq:"Minutos:",esp:60},{etq:"Horas:",esp:1}]},
+        {consigna:"Una semana completa", ayuda:"¿Cuántos días tiene?", campos:[{etq:"Días:",esp:7}]}]}},
+    { t:"Línea de tiempo", o:"Años y edades", mec:"entradas", frase:"Como el proyecto La Edad: tu vida en una línea. Estamos en 2026.",
+      datos:{rondas:[
+        {consigna:"Sara nació en 2015", ayuda:"¿Cuántos años cumple en 2026?", escena:{tipo:"linea",args:[[2015,2026]]}, campos:[{etq:"Años:",esp:11}]},
+        {consigna:"Su abuela nació en 1966", ayuda:"¿Cuántos años cumple en 2026?", campos:[{etq:"Años:",esp:60}]},
+        {consigna:"El colegio cumplirá 50 años en 2030", ayuda:"¿Cuántos años faltan desde 2026?", campos:[{etq:"Faltan:",esp:4}]},
+        {consigna:"Papá nació en 2000", ayuda:"¿Cuántos años cumple en 2026?", campos:[{etq:"Años:",esp:26}]},
+        {consigna:"La profe nació en 1990", ayuda:"¿Cuántos años cumple en 2026?", campos:[{etq:"Años:",esp:36}]},
+        {consigna:"Tu hermanito nació en 2020", ayuda:"¿Cuántos años cumple en 2026?", escena:{tipo:"linea",args:[[2020,2026]]}, campos:[{etq:"Años:",esp:6}]},
+        {consigna:"Un cohete se lanzará en 2050", ayuda:"¿Cuántos años faltan desde 2026?", campos:[{etq:"Faltan:",esp:24}]},
+        {consigna:"El abuelo nació en 1976", ayuda:"¿Cuántos años cumple en 2026?", campos:[{etq:"Años:",esp:50}]},
+        {consigna:"Tu prima nació en 2008", ayuda:"¿Cuántos años cumple en 2026?", campos:[{etq:"Años:",esp:18}]},
+        {consigna:"La bisabuela nació en 1946", ayuda:"¡80 años de historia! Compruébalo.", campos:[{etq:"Años:",esp:80}]}]}},
+    { t:"El tiempo vuela", et:"🕐 El tiempo vuela", o:"Convertir días, horas y minutos", mec:"entradas",
+      frase:"En la nave el tiempo vuela: ¡aprende a convertirlo!",
+      datos:{rondas:[
+        {consigna:"2 días, ¿cuántas horas son?", ayuda:"Un día tiene 24 horas.", campos:[{etq:"Horas:",esp:48}]},
+        {consigna:"3 semanas, ¿cuántos días son?", ayuda:"Una semana tiene 7 días.", campos:[{etq:"Días:",esp:21}]},
+        {consigna:"Medio día, ¿cuántas horas son?", ayuda:"La mitad de 24.", campos:[{etq:"Horas:",esp:12}]},
+        {consigna:"1 hora y media, ¿cuántos minutos son?", ayuda:"60 + 30.", campos:[{etq:"Minutos:",esp:90}]},
+        {consigna:"Un año, ¿cuántos meses tiene?", ayuda:"Piensa en el calendario.", campos:[{etq:"Meses:",esp:12}]},
+        {consigna:"El vuelo sale a las 9:00 y dura 2 horas", ayuda:"¿A qué hora llega?", campos:[{etq:"Llega a las:",esp:11}]},
+        {consigna:"4 horas, ¿cuántos minutos son?", ayuda:"4 × 60.", campos:[{etq:"Minutos:",esp:240}]},
+        {consigna:"Un día completo, ¿cuántas horas tiene?", ayuda:"De medianoche a medianoche.", campos:[{etq:"Horas:",esp:24}]},
+        {consigna:"2 semanas y 3 días, ¿cuántos días en total?", ayuda:"14 + 3.", campos:[{etq:"Días:",esp:17}]},
+        {consigna:"El cohete despega a las 6:00 y vuela 5 horas", ayuda:"¡Aterrizaje final!", campos:[{etq:"Aterriza a las:",esp:11}]}]}},
+    NIVEL_UBICAR("reloj")
+  ]}
+];
+
+/* ============================================================
+   2. UTILIDADES: sonido, voz, confeti, dinero, Fedor, canal
+   ============================================================ */
+
+const $ = s => document.querySelector(s);
+const pesos = n => "$" + Math.round(n).toLocaleString("es-CO");
+const el = (t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
+const NS = "http://www.w3.org/2000/svg";
+const mezclar = a => a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(p=>p[1]);
+const esBillete = v => v >= 2000;
+const azar = a => a[Math.floor(Math.random()*a.length)];
+const reducida = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+let audioOn = true, ctxA = null;
+function tono(fs,dur,tipo){
+  if(!audioOn) return;
+  try{
+    ctxA = ctxA || new (window.AudioContext||window.webkitAudioContext)();
+    const t0 = ctxA.currentTime;
+    fs.forEach((f,i)=>{
+      const o=ctxA.createOscillator(),g=ctxA.createGain();
+      o.type=tipo||"triangle";o.frequency.value=f;
+      g.gain.setValueAtTime(.0001,t0+i*dur);
+      g.gain.exponentialRampToValueAtTime(.11,t0+i*dur+.02);
+      g.gain.exponentialRampToValueAtTime(.0001,t0+(i+1)*dur);
+      o.connect(g);g.connect(ctxA.destination);
+      o.start(t0+i*dur);o.stop(t0+(i+1)*dur+.05);
+    });
+  }catch(e){}
+}
+const sClick=()=>tono([520],.09), sBien=()=>tono([523,659,784],.11),
+      sMal=()=>tono([220,180],.16,"sawtooth"), sMoneda=()=>tono([880,1175],.07),
+      sVictoria=()=>tono([523,659,784,1047,784,1047],.12);
+$("#btn-sonido").addEventListener("click",()=>{
+  audioOn=!audioOn;
+  $("#btn-sonido").textContent=audioOn?"🔊":"🔇";
+  $("#btn-sonido").classList.toggle("activo",audioOn);
+  $("#btn-sonido").setAttribute("aria-pressed",audioOn);
+  if(audioOn)sClick();
+});
+
+let vozOn = true;
+function hablar(txt){
+  if(!vozOn||!("speechSynthesis" in window))return;
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(txt);
+    u.lang="es-CO";u.rate=.95;u.pitch=1.15;
+    const vs=speechSynthesis.getVoices();
+    const v=vs.find(x=>x.lang.startsWith("es-CO"))||vs.find(x=>x.lang.startsWith("es"));
+    if(v)u.voice=v;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+if("speechSynthesis" in window){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();}
+$("#btn-voz-global").addEventListener("click",()=>{
+  vozOn=!vozOn;
+  $("#btn-voz-global").classList.toggle("activo",vozOn);
+  $("#btn-voz-global").setAttribute("aria-pressed",vozOn);
+  if(!vozOn&&"speechSynthesis" in window)speechSynthesis.cancel();
+  else hablar("¡Hola, cadete! Aquí Fedor.");
+});
+$("#btn-leer").addEventListener("click",()=>{
+  const a=vozOn;vozOn=true;
+  hablar($("#n-consigna").textContent+". "+$("#n-ayuda").textContent);
+  vozOn=a;
+});
+
+const lienzoC=$("#confeti"),ctxC=lienzoC.getContext("2d");
+let particulas=[],animC=null;
+function ajustarC(){lienzoC.width=innerWidth;lienzoC.height=innerHeight;}
+addEventListener("resize",ajustarC);ajustarC();
+function confeti(n){
+  if(reducida)return;
+  const cols=["#FFC94D","#FF6B5E","#4FD8CB","#9B7BFF","#5BD672","#F2F6FF"];
+  for(let i=0;i<n;i++)particulas.push({x:Math.random()*lienzoC.width,y:-20-Math.random()*120,vx:(Math.random()-.5)*2.4,vy:2+Math.random()*3.2,r:4+Math.random()*5,rot:Math.random()*Math.PI,vr:(Math.random()-.5)*.25,c:azar(cols)});
+  if(!animC)pasoC();
+}
+function pasoC(){
+  ctxC.clearRect(0,0,lienzoC.width,lienzoC.height);
+  particulas=particulas.filter(p=>p.y<lienzoC.height+30);
+  particulas.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;ctxC.save();ctxC.translate(p.x,p.y);ctxC.rotate(p.rot);ctxC.fillStyle=p.c;ctxC.fillRect(-p.r,-p.r/2,p.r*2,p.r);ctxC.restore();});
+  animC=particulas.length?requestAnimationFrame(pasoC):null;
+}
+
+const COLOR_DINERO={50:"#E6C88A",100:"#E6C88A",200:"#D9D2C4",500:"#D9D2C4",1000:"#E8B96B",2000:"#B7D6EC",5000:"#F5C6C0",10000:"#C9E4C5",20000:"#D9C8EA",50000:"#F2D9A8"};
+function svgDinero(v){
+  const s=document.createElementNS(NS,"svg");s.setAttribute("aria-hidden","true");
+  const col=COLOR_DINERO[v]||"#E6C88A";
+  if(esBillete(v)){
+    s.setAttribute("viewBox","0 0 120 60");s.setAttribute("width","116");s.setAttribute("height","58");
+    s.innerHTML='<rect x="3" y="3" width="114" height="54" rx="8" fill="'+col+'" stroke="#070C1F" stroke-width="4"/><rect x="11" y="11" width="98" height="38" rx="5" fill="none" stroke="rgba(7,12,31,.4)" stroke-width="2" stroke-dasharray="5 4"/><circle cx="26" cy="30" r="11" fill="rgba(255,255,255,.55)" stroke="#070C1F" stroke-width="2.5"/><text x="70" y="38" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="800" font-size="20" fill="#070C1F">'+(v/1000)+' mil</text>';
+  }else{
+    s.setAttribute("viewBox","0 0 64 64");s.setAttribute("width","60");s.setAttribute("height","60");
+    s.innerHTML='<circle cx="32" cy="32" r="28" fill="'+col+'" stroke="#070C1F" stroke-width="4"/><circle cx="32" cy="32" r="20" fill="none" stroke="rgba(7,12,31,.35)" stroke-width="2.5"/><text x="32" y="39" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="800" font-size="17" fill="#070C1F">'+(v>=1000?(v/1000)+"mil":"$"+v)+'</text>';
+  }
+  return s;
+}
+function piezaDOM(v,clickable){
+  const b=el("button","pieza"+(esBillete(v)?" billete":"")+(clickable?"":" quieta"));
+  b.append(svgDinero(v));
+  b.setAttribute("aria-label",(esBillete(v)?"Billete":"Moneda")+" de "+pesos(v));
+  if(!clickable)b.tabIndex=-1;
+  return b;
+}
+function fedor(cara,frase){
+  $("#fedor-cara").setAttribute("href","#fx-"+cara);
+  const f=$("#fedor");
+  f.classList.remove("feliz","triste");void f.offsetWidth;
+  if(cara==="wow"||cara==="feliz")f.classList.add("feliz");
+  if(cara==="triste")f.classList.add("triste");
+  if(frase!=null)$("#globo").textContent=frase;
+}
+function emitir(evento,carga){
+  const msg=Object.assign({fuente:"estacion-fedor",evento,ts:Date.now()},carga||{});
+  try{window.parent.postMessage(msg,"*");}catch(e){}
+  console.log("[progreso]",msg);
+}
+
+/* ============================================================
+   3. ESCENAS: dibujos generados por datos
+   ============================================================ */
+
+function svgBase(w,h,vw,vh){
+  const s=document.createElementNS(NS,"svg");
+  s.setAttribute("viewBox","0 0 "+(vw||w)+" "+(vh||h));
+  s.setAttribute("width",w);s.setAttribute("style","max-width:100%;height:auto");
+  s.setAttribute("aria-hidden","true");
+  return s;
+}
+const ESCENAS = {
+  dinero(v){const d=el("div","rejilla-dinero");d.append(piezaDOM(v,false));return d;},
+  semillas(n){
+    const s=svgBase(300,120);let h="";
+    h+='<rect x="4" y="70" width="292" height="46" rx="10" fill="#6B4527" stroke="#070C1F" stroke-width="3.5"/>';
+    for(let i=0;i<n;i++){const x=30+(i%5)*56,y=(i<5)?38:92;
+      h+='<ellipse cx="'+x+'" cy="'+y+'" rx="14" ry="18" fill="#FFC94D" stroke="#070C1F" stroke-width="3" transform="rotate(18 '+x+' '+y+')"/>';}
+    s.innerHTML=h;return s;
+  },
+  planta(cm){
+    const esc=8, alto=cm*esc, base=160;
+    const s=svgBase(280,190,280,190);let h="";
+    h+='<rect x="40" y="'+(base)+'" width="70" height="24" rx="5" fill="#FF8A5C" stroke="#070C1F" stroke-width="3.5"/>';
+    h+='<line x1="75" y1="'+base+'" x2="75" y2="'+(base-alto)+'" stroke="#5BD672" stroke-width="6" stroke-linecap="round"/>';
+    h+='<path d="M75 '+(base-alto+12)+' q-22 -4 -26 -24 q20 2 26 24 M75 '+(base-alto+4)+' q22 -4 26 -24 q-20 2 -26 24" fill="#5BD672" stroke="#070C1F" stroke-width="2.5"/>';
+    h+='<rect x="160" y="20" width="34" height="164" rx="5" fill="#FFC94D" stroke="#070C1F" stroke-width="3.5"/>';
+    for(let c=0;c<=18;c++){const y=base-c*esc; if(y<24)break;
+      h+='<line x1="160" y1="'+y+'" x2="'+(c%5===0?182:172)+'" y2="'+y+'" stroke="#070C1F" stroke-width="2"/>';
+      if(c%5===0)h+='<text x="187" y="'+(y+4)+'" font-family="Nunito" font-weight="800" font-size="11" fill="#070C1F">'+c+'</text>';}
+    h+='<line x1="108" y1="'+(base-alto)+'" x2="160" y2="'+(base-alto)+'" stroke="#FF6B5E" stroke-width="3" stroke-dasharray="6 5"/>';
+    s.innerHTML=h;return s;
+  },
+  podio(corredores){
+    const s=svgBase(340,110);let h="",x=14;
+    corredores.forEach(([n,t])=>{
+      h+='<rect x="'+x+'" y="14" width="96" height="80" rx="12" fill="#243468" stroke="#070C1F" stroke-width="3"/>';
+      h+='<circle cx="'+(x+48)+'" cy="40" r="14" fill="#E8A45C" stroke="#070C1F" stroke-width="2.5"/>';
+      h+='<text x="'+(x+48)+'" y="70" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="13" fill="#F2F6FF">'+n+'</text>';
+      h+='<text x="'+(x+48)+'" y="88" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="13" fill="#FFC94D">'+t+' s</text>';
+      x+=110;});
+    s.innerHTML=h;return s;
+  },
+  dados(a,b){
+    const s=svgBase(240,110);
+    const P={1:[[.5,.5]],2:[[.28,.28],[.72,.72]],3:[[.25,.25],[.5,.5],[.75,.75]],4:[[.28,.28],[.72,.28],[.28,.72],[.72,.72]],5:[[.28,.28],[.72,.28],[.5,.5],[.28,.72],[.72,.72]],6:[[.28,.25],[.72,.25],[.28,.5],[.72,.5],[.28,.75],[.72,.75]]};
+    let h="";[[a,16,"#FFC94D"],[b,130,"#4FD8CB"]].forEach(([n,x,c])=>{
+      h+='<rect x="'+x+'" y="16" width="80" height="80" rx="16" fill="'+c+'" stroke="#070C1F" stroke-width="4"/>';
+      P[n].forEach(([px,py])=>{h+='<circle cx="'+(x+px*80)+'" cy="'+(16+py*80)+'" r="7" fill="#070C1F"/>';});});
+    s.innerHTML=h;return s;
+  },
+  domino(a,b){
+    const s=svgBase(150,80,150,80);
+    const P={1:[[.5,.5]],2:[[.3,.3],[.7,.7]],3:[[.28,.28],[.5,.5],[.72,.72]],4:[[.3,.3],[.7,.3],[.3,.7],[.7,.7]],5:[[.3,.3],[.7,.3],[.5,.5],[.3,.7],[.7,.7]],6:[[.3,.26],[.7,.26],[.3,.5],[.7,.5],[.3,.74],[.7,.74]]};
+    let h='<rect x="4" y="10" width="142" height="62" rx="10" fill="#F2F6FF" stroke="#070C1F" stroke-width="4"/><line x1="75" y1="10" x2="75" y2="72" stroke="#070C1F" stroke-width="3"/>';
+    [[a,4],[b,75]].forEach(([n,x0])=>{P[n].forEach(([px,py])=>{h+='<circle cx="'+(x0+px*71)+'" cy="'+(10+py*62)+'" r="5.5" fill="#070C1F"/>';});});
+    s.innerHTML=h;return s;
+  },
+  bolsa(rojas,azules){
+    const s=svgBase(230,150);let h='<path d="M55 40 Q40 20 70 18 L160 18 Q190 20 175 40 L188 118 Q190 140 165 140 L65 140 Q40 140 42 118 Z" fill="#243468" stroke="#070C1F" stroke-width="4"/>';
+    let i=0;
+    for(let r=0;r<rojas;r++){const x=68+(i%4)*32,y=58+Math.floor(i/4)*32;h+='<circle cx="'+x+'" cy="'+y+'" r="12" fill="#FF6B5E" stroke="#070C1F" stroke-width="3"/>';i++;}
+    for(let a2=0;a2<azules;a2++){const x=68+(i%4)*32,y=58+Math.floor(i/4)*32;h+='<circle cx="'+x+'" cy="'+y+'" r="12" fill="#4FA3E8" stroke="#070C1F" stroke-width="3"/>';i++;}
+    s.innerHTML=h;return s;
+  },
+  figura(tipo){
+    const s=svgBase(180,150,180,150);
+    const F={tri:'<path d="M90 18 L164 130 L16 130 Z" fill="#FFC94D" stroke="#070C1F" stroke-width="4"/>',
+      cua:'<rect x="35" y="25" width="110" height="110" fill="#4FD8CB" stroke="#070C1F" stroke-width="4"/>',
+      hex:'<path d="M90 14 L152 48 L152 112 L90 146 L28 112 L28 48 Z" fill="#9B7BFF" stroke="#070C1F" stroke-width="4"/>',
+      pent:'<path d="M90 12 L160 64 L133 140 L47 140 L20 64 Z" fill="#F5A3B8" stroke="#070C1F" stroke-width="4"/>',
+      rect:'<rect x="20" y="45" width="140" height="70" fill="#FFC94D" stroke="#070C1F" stroke-width="4"/>'};
+    s.innerHTML=F[tipo];return s;
+  },
+  cuadricula(w,h2){
+    const cel=34,W=w*cel,H=h2*cel;
+    const s=svgBase(Math.min(420,W+8),H+8,W+8,H+8);
+    let h='<rect x="4" y="4" width="'+W+'" height="'+H+'" fill="#4FD8CB" opacity=".85" stroke="#070C1F" stroke-width="4"/>';
+    for(let i=1;i<w;i++)h+='<line x1="'+(4+i*cel)+'" y1="4" x2="'+(4+i*cel)+'" y2="'+(4+H)+'" stroke="#070C1F" stroke-width="2"/>';
+    for(let j=1;j<h2;j++)h+='<line x1="4" y1="'+(4+j*cel)+'" x2="'+(4+W)+'" y2="'+(4+j*cel)+'" stroke="#070C1F" stroke-width="2"/>';
+    s.innerHTML=h;return s;
+  },
+  cubos(l,an,al){
+    const u=26,ox=30,oy=34+al*u*.5;
+    const s=svgBase(l*u+an*u*.6+60,al*u+an*u*.5+50,l*u+an*u*.6+60,al*u+an*u*.5+50);
+    let h="";
+    for(let z=an-1;z>=0;z--)for(let y=0;y<al;y++)for(let x=0;x<l;x++){
+      const px=ox+x*u+z*u*.5,py=oy+(al-1-y)*u-z*u*.3;
+      h+='<g stroke="#070C1F" stroke-width="2">'+
+        '<path d="M'+px+' '+py+' l'+u+' 0 l0 '+u+' l-'+u+' 0 Z" fill="#9CCBFF"/>'+
+        '<path d="M'+px+' '+py+' l'+(u*.5)+' -'+(u*.3)+' l'+u+' 0 l-'+(u*.5)+' '+(u*.3)+' Z" fill="#C9DFF5"/>'+
+        '<path d="M'+(px+u)+' '+py+' l'+(u*.5)+' -'+(u*.3)+' l0 '+u+' l-'+(u*.5)+' '+(u*.3)+' Z" fill="#6FA8DC"/></g>';
+    }
+    s.innerHTML=h;return s;
+  },
+  barras(vals,labels){
+    const W=380,H=190,mI=44,mA=34,mT=14;
+    const s=svgBase(W,H,W,H);
+    const max=Math.max(...vals),aU=H-mA-mT,anU=W-mI-14;
+    const bw=Math.min(64,anU/vals.length*.6),paso=anU/vals.length;
+    let h="";
+    for(let i2=0;i2<=2;i2++){const y=mT+aU-aU*i2/2;
+      h+='<line x1="'+mI+'" y1="'+y+'" x2="'+(W-8)+'" y2="'+y+'" stroke="rgba(185,196,232,.2)" stroke-width="1.5"/>';
+      h+='<text x="'+(mI-6)+'" y="'+(y+4)+'" text-anchor="end" font-family="Nunito" font-weight="700" font-size="11" fill="#B9C4E8">'+(max*i2/2)+'</text>';}
+    vals.forEach((v,i2)=>{
+      const bh=aU*v/max,x=mI+paso*i2+(paso-bw)/2,y=mT+aU-bh;
+      h+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="6" fill="'+(v===max?"#FFC94D":"#4FD8CB")+'" stroke="#070C1F" stroke-width="3"/>';
+      h+='<text x="'+(x+bw/2)+'" y="'+(H-14)+'" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="12" fill="#F2F6FF">'+labels[i2]+'</text>';
+      h+='<text x="'+(x+bw/2)+'" y="'+(y-6)+'" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="12" fill="#B9C4E8">'+v+'</text>';});
+    s.innerHTML=h;return s;
+  },
+  picto(...filas){
+    const d=el("div");
+    d.style.cssText="display:grid;gap:8px;font-size:15px;background:var(--espacio-hondo);border:3px solid var(--borde);border-radius:14px;padding:14px 16px;max-width:340px";
+    filas.forEach(([emoji,n])=>{
+      const f=el("div");
+      f.style.cssText="display:flex;align-items:center;gap:10px";
+      const et=el("span",null,emoji);et.style.fontSize="20px";
+      const votos=el("span",null,emoji.repeat(n));votos.style.fontSize="22px";votos.style.letterSpacing="4px";
+      f.append(et,votos);d.append(f);});
+    return d;
+  },
+  reloj(hh,mm){
+    const s=svgBase(190,190,190,190);
+    const cx=95,cy=95;
+    let h='<circle cx="'+cx+'" cy="'+cy+'" r="86" fill="#F2F6FF" stroke="#070C1F" stroke-width="5"/>';
+    for(let i2=1;i2<=12;i2++){const a=(i2*30-90)*Math.PI/180;
+      h+='<text x="'+(cx+66*Math.cos(a))+'" y="'+(cy+66*Math.sin(a)+5)+'" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="16" fill="#070C1F">'+i2+'</text>';}
+    const aM=(mm*6-90)*Math.PI/180,aH=((hh%12)*30+mm*.5-90)*Math.PI/180;
+    h+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+38*Math.cos(aH))+'" y2="'+(cy+38*Math.sin(aH))+'" stroke="#070C1F" stroke-width="6" stroke-linecap="round"/>';
+    h+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+56*Math.cos(aM))+'" y2="'+(cy+56*Math.sin(aM))+'" stroke="#FF6B5E" stroke-width="4.5" stroke-linecap="round"/>';
+    h+='<circle cx="'+cx+'" cy="'+cy+'" r="6" fill="#070C1F"/>';
+    s.innerHTML=h;return s;
+  },
+  linea(vals){
+    const W=380,H=150,mI=30,mA=30,mT=16;
+    const s=svgBase(W,H,W,H);
+    const min=Math.min(...vals),max=Math.max(...vals);
+    const aU=H-mA-mT,anU=W-mI-20;
+    let h='<line x1="'+mI+'" y1="'+(H-mA)+'" x2="'+(W-12)+'" y2="'+(H-mA)+'" stroke="#B9C4E8" stroke-width="2.5"/>';
+    let path="";
+    vals.forEach((v,i2)=>{
+      const x=mI+anU*i2/(vals.length-1||1),y=mT+aU-(max===min?aU/2:aU*(v-min)/(max-min));
+      path+=(i2?"L":"M")+x+" "+y+" ";
+      h+='<circle cx="'+x+'" cy="'+y+'" r="6" fill="#FFC94D" stroke="#070C1F" stroke-width="2.5"/>';
+      h+='<text x="'+x+'" y="'+(H-10)+'" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="11" fill="#B9C4E8">'+v+'</text>';});
+    h='<path d="'+path+'" fill="none" stroke="#5BD672" stroke-width="3.5" stroke-linecap="round"/>'+h;
+    s.innerHTML=h;return s;
+  }
+};
+function pintarEscena(esc){
+  const c=$("#n-escena");c.innerHTML="";
+  if(!esc)return;
+  c.append(ESCENAS[esc.tipo](...esc.args));
+}
+function escenaSuelta(esc){ /* para opciones con dibujo */
+  return ESCENAS[esc.tipo](...esc.args);
+}
+
+/* ============================================================
+   4. ESTADO, MAPA, MÓDULO, MOTOR
+   ============================================================ */
+
+const estado={progreso:{},saldo:0,actual:null,vidas:3,inicio:0,bloqueado:false,modAbierto:null,dia:1,bitacora:[],meta:null,registro:{},nombre:"Cadete"};
+function reg(id){return estado.registro[id]||(estado.registro[id]={int:0,ok:0,seg:0,est:0});}
+const TOTAL=MODULOS.reduce((a,m)=>a+m.niveles.length,0);
+$("#m-total").textContent=TOTAL*3;
+const totalEstrellas=()=>Object.values(estado.progreso).reduce((a,b)=>a+b,0);
+function pintarHUD(){
+  $("#m-saldo").textContent=pesos(estado.saldo);
+  $("#m-estrellas").textContent=totalEstrellas();
+  $("#num-bitacora").textContent=estado.bitacora.length;
+  const m=$("#m-meta");
+  if(estado.meta){
+    const c=CATALOGO[estado.meta];
+    const pct=Math.min(100,Math.round(estado.saldo/c.p*100));
+    m.classList.remove("oculto");
+    m.textContent="🎯 "+c.n+" · "+(estado.saldo>=c.p?"¡ya puedes!":pct+"%");
+    m.style.color=estado.saldo>=c.p?"var(--verde)":"var(--lila)";
+  } else m.classList.add("oculto");
+}
+function nivelId(m,ni){return m.id+"-"+ni;}
+function estrellasModulo(m){return m.niveles.reduce((a,_,i)=>a+(estado.progreso[nivelId(m,i)]||0),0);}
+
+const POS=[[500,88],[798,112],[905,300],[778,486],[500,492],[222,486],[95,300],[202,112]];
+function pintarMapa(){
+  document.querySelectorAll("#mapa .pod").forEach(p=>p.remove());
+  MODULOS.forEach((m,i)=>{
+    const [x,y]=POS[i];
+    const est=estrellasModulo(m);
+    const g=document.createElementNS(NS,"g");
+    g.setAttribute("class","pod");g.setAttribute("tabindex","0");g.setAttribute("role","button");
+    const maxE=m.niveles.length*3;
+    g.setAttribute("aria-label",m.nombre+", "+est+" de "+maxE+" estrellas");
+    const comp=est===maxE;
+    const C=2*Math.PI*50;
+    const [l1,l2]=m.mapa;
+    g.innerHTML=
+      (comp?'<circle cx="'+x+'" cy="'+y+'" r="72" fill="url(#halo)"/>':"")+
+      /* cápsula */
+      '<circle cx="'+x+'" cy="'+y+'" r="50" fill="'+(est>0?"#173B2C":"#1A2650")+'" stroke="#070C1F" stroke-width="5"/>'+
+      '<circle cx="'+x+'" cy="'+y+'" r="40" fill="none" stroke="'+m.color+'" stroke-width="1.6" stroke-dasharray="3 7" opacity=".45"/>'+
+      /* anillo de progreso */
+      '<circle cx="'+x+'" cy="'+y+'" r="50" fill="none" stroke="rgba(7,12,31,.55)" stroke-width="5"/>'+
+      (est>0?'<circle cx="'+x+'" cy="'+y+'" r="50" fill="none" stroke="'+m.color+'" stroke-width="5" stroke-linecap="round" stroke-dasharray="'+(C*est/maxE)+' '+C+'" transform="rotate(-90 '+x+' '+y+')"/>':"")+
+      '<circle cx="'+x+'" cy="'+(y-2)+'" r="33" fill="'+m.color+'" opacity=".16"/>'+
+      '<use href="#'+m.icono+'" x="'+(x-32)+'" y="'+(y-36)+'" width="64" height="64"/>'+
+      /* insignia de estrellas */
+      '<rect x="'+(x-33)+'" y="'+(y+34)+'" width="66" height="24" rx="12" fill="#0A1028" stroke="#070C1F" stroke-width="3"/>'+
+      '<text x="'+x+'" y="'+(y+51)+'" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="13.5" fill="'+(est?"#FFC94D":"#8B97BD")+'">★ '+est+'/'+maxE+'</text>'+
+      /* placa del nombre */
+      '<rect x="'+(x-80)+'" y="'+(y+66)+'" width="160" height="'+(l2?46:34)+'" rx="12" fill="#0A1028" stroke="#070C1F" stroke-width="3.5"/>'+
+      '<circle cx="'+(x-66)+'" cy="'+(y+(l2?89:83))+'" r="5" fill="'+m.color+'" stroke="#070C1F" stroke-width="2"/>'+
+      (l2
+        ? '<text x="'+(x+6)+'" y="'+(y+86)+'" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="15" fill="#F2F6FF">'+l1+'</text>'+
+          '<text x="'+(x+6)+'" y="'+(y+104)+'" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="15" fill="#F2F6FF">'+l2+'</text>'
+        : '<text x="'+(x+6)+'" y="'+(y+89)+'" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="15" fill="#F2F6FF">'+l1+'</text>');
+    const abrir=()=>{sClick();abrirModulo(m);};
+    g.addEventListener("click",abrir);
+    g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();abrir();}});
+    $("#mapa").append(g);
+  });
+  pintarHUD();
+}
+
+const TODAS_SECS=["sec-mapa","sec-modulo","sec-nivel","sec-tienda","sec-bitacora","sec-monitor","sec-docente","sec-juegos"];
+function irSec(id){
+  TODAS_SECS.forEach(s=>$("#"+s).classList.toggle("oculto",s!==id));
+  const zona={"sec-tienda":"tienda","sec-bitacora":"bitacora","sec-monitor":"monitor","sec-juegos":"juegos"}[id]||"mapa";
+  document.querySelectorAll(".puerta").forEach(p=>p.classList.toggle("abierta",p.dataset.z===zona));
+  scrollTo({top:0,behavior:reducida?"auto":"smooth"});
+}
+document.querySelectorAll(".puerta").forEach(p=>p.addEventListener("click",()=>{
+  sClick();
+  const z=p.dataset.z;
+  if(z==="mapa"){pintarMapa();irSec("sec-mapa");}
+  if(z==="tienda"){pintarTienda();irSec("sec-tienda");}
+  if(z==="bitacora"){pintarBitacora();irSec("sec-bitacora");}
+  if(z==="monitor"){pintarMonitor(true);irSec("sec-monitor");}
+  if(z==="juegos"){pintarZonaJuegos();irSec("sec-juegos");}
+}));
+function abrirModulo(m){
+  estado.modAbierto=m;
+  const cab=$("#mod-cabecera");cab.innerHTML="";
+  const ic=document.createElementNS(NS,"svg");ic.setAttribute("viewBox","0 0 64 64");
+  ic.innerHTML='<use href="#'+m.icono+'"/>';
+  cab.append(ic);
+  const tx=el("div");
+  tx.append(el("h2",null,m.nombre),el("p",null,m.desc));
+  cab.append(tx);
+  const rej=$("#rejilla-niveles");rej.innerHTML="";
+  m.niveles.forEach((n,ni)=>{
+    const e=estado.progreso[nivelId(m,ni)]||0;
+    const b=el("button","mision");
+    b.append(el("span","banda b"+ni,n.et||BANDAS[ni]));
+    b.append(el("h3",null,n.t),el("p",null,n.o));
+    const pie=el("div","pie");
+    const est=el("span","estrellas");
+    est.innerHTML=[1,2,3].map(i=>'<span class="'+(i<=e?"on":"")+'">★</span>').join("");
+    pie.append(est);
+    if(n.ahorro)pie.append(el("span","recompensa","🏦 Paga por pregunta"));
+    else if(e<3)pie.append(el("span","recompensa","+"+pesos((3-e)*PAGO_ESTRELLA)));
+    b.append(pie);
+    b.addEventListener("click",()=>{sClick();abrirNivel(m,n,ni);});
+    rej.append(b);
+  });
+  irSec("sec-modulo");
+}
+$("#btn-volver-mapa").addEventListener("click",()=>{sClick();pintarMapa();irSec("sec-mapa");});
+$("#btn-volver-mod").addEventListener("click",()=>{sClick();if("speechSynthesis" in window)speechSynthesis.cancel();abrirModulo(estado.modAbierto);});
+
+function abrirNivel(m,n,ni){
+  estado.actual={m,n,ni};
+  estado.vidas=3;estado.inicio=Date.now();estado.bloqueado=false;
+  irSec("sec-nivel");
+  $("#n-chip").textContent=m.nombre+" · "+(n.et||BANDAS[ni]);
+  $("#n-msg").textContent="";
+  pintarVidas();
+  fedor("feliz",n.frase||"¡A la misión!");
+  emitir("nivel_iniciado",{nivel:(n.expres?"expres-"+m.id+"-"+ni:nivelId(m,ni)),modulo:m.id,mecanica:n.mec,banda:(n.et||BANDAS[ni])});
+  MECANICAS[n.mec](n.datos,api);
+  hablar($("#n-consigna").textContent+". "+$("#n-ayuda").textContent);
+}
+function pintarVidas(){
+  $("#n-vidas").innerHTML=Array.from({length:3},(_,i)=>i<estado.vidas?'<span class="latido" style="animation-delay:'+(i*.2)+'s">❤️</span>':"🖤").join("");
+}
+function pintarProgreso(a,t){
+  const p=$("#n-progreso");p.innerHTML="";
+  if(!t||t<2)return;
+  for(let i=0;i<t;i++)p.append(el("span","punto"+(i<a?" hecha":i===a?" actual":"")));
+}
+function idActual(){
+  const {m,n,ni}=estado.actual;
+  return n.expres ? "expres-"+m.id+"-"+ni : nivelId(m,ni);
+}
+const FRASES_B=["¡Eso es, cadete!","¡Cuenta estelar!","¡El Comando estará orgulloso!","¡Exacto, sigue así!"];
+const FRASES_M=["Uy, casi. Vuelve a contar.","Mmm, revisa la cuenta.","Tranquilo, en el espacio también nos equivocamos."];
+
+const api={
+  lienzo(){const j=$("#n-juego");j.innerHTML="";return j;},
+  titulo(c,a,r,t,esc){
+    $("#n-consigna").textContent=c;
+    $("#n-ayuda").textContent=a||"";
+    pintarProgreso(r||0,t||0);
+    pintarEscena(esc);
+  },
+  comprobarCon(fn){
+    const b=$("#btn-comprobar");
+    b.classList.remove("oculto");b.disabled=false;
+    b.onclick=()=>{if(estado.bloqueado)return;sClick();const r=fn();if(r==null)return;if(r.ok)api.acierto(r.msg);else api.fallo(r.msg);};
+  },
+  sinComprobar(){const b=$("#btn-comprobar");b.classList.add("oculto");b.onclick=null;},
+  mensaje(t,bien){
+    const m=$("#n-msg");m.textContent=t||"";m.className="aviso-msg "+(bien?"bien":"mal");
+    if(t)fedor(bien?"wow":"triste",bien?azar(FRASES_B):azar(FRASES_M));
+    if(t)(bien?sBien:sMal)();
+  },
+  fallo(msg){
+    reg(idActual()).int++;
+    estado.vidas=Math.max(0,estado.vidas-1);
+    pintarVidas();
+    api.mensaje(msg||"Todavía no. Inténtalo otra vez.",false);
+    emitir("intento",{nivel:idActual(),correcto:false});
+    if(estado.vidas===0){estado.bloqueado=true;setTimeout(()=>cerrarNivel(1,true),750);}
+  },
+  acierto(msg){
+    const r0=reg(idActual());r0.int++;r0.ok++;
+    estado.bloqueado=true;
+    api.mensaje(msg||"¡Correcto!",true);
+    emitir("intento",{nivel:idActual(),correcto:true});
+    setTimeout(()=>cerrarNivel(estado.vidas,false),700);
+  },
+  hayVidas(){return estado.vidas>0;},
+  bloqueado(){return estado.bloqueado;}
+};
+
+function cerrarNivel(vidas,sinCorazones){
+  const est=Math.max(1,vidas);
+  const {m,n,ni}=estado.actual;
+  const id=idActual();
+  const previo=n.expres?0:(estado.progreso[id]||0);
+  let pago=0;
+  if(!sinCorazones){
+    if(n.expres){
+      pago=PAGO_EXPRES;estado.saldo+=pago;
+    } else if(n.ahorro){
+      pago=estado.actual.ahorroGanado||0;
+      estado.progreso[id]=Math.max(previo,est);
+    } else {
+      if(est>previo){pago=(est-previo)*PAGO_ESTRELLA;estado.saldo+=pago;}
+      estado.progreso[id]=Math.max(previo,est);
+    }
+    confeti(est===3?160:80);sVictoria();
+  }
+  const seg=Math.round((Date.now()-estado.inicio)/1000);
+  const r1=reg(id);r1.seg+=seg;if(!sinCorazones&&!n.expres)r1.est=Math.max(r1.est,est);
+  emitir(sinCorazones?"nivel_fallido":"nivel_completado",{nivel:id,modulo:m.id,estrellas:sinCorazones?0:est,pago,saldo:estado.saldo,segundos:seg});
+  snapshot();
+  if(!sinCorazones&&!n.expres&&Object.keys(estado.progreso).length===TOTAL){
+    emitir("estacion_completada",{estrellas:totalEstrellas(),de:TOTAL*3});
+  }
+  $("#p-fedor").setAttribute("href",sinCorazones?"#fx-triste":"#fx-wow");
+  $("#p-titulo").textContent=sinCorazones?"Casi lo tenías":est===3?"¡Misión perfecta!":est===2?"¡Muy bien, cadete!":"¡Misión cumplida!";
+  $("#p-estrellas").innerHTML=sinCorazones?'<span class="off">★★★</span>':[1,2,3].map(i=>'<span class="'+(i<=est?"gira":"off")+'">★</span>').join("");
+  $("#p-premio").textContent=pago>0?"💎 Ganaste "+pesos(pago):(sinCorazones?"":"Ya habías ganado el premio de esta misión");
+  $("#p-texto").textContent=sinCorazones
+    ?"Se acabaron los corazones, pero no se pierde nada: entra otra vez."
+    :est===3?"Sin errores. ¡Sigue con la próxima misión del módulo!"
+    :"Puedes repetirla cuando quieras para las tres estrellas.";
+  pintarHUD();
+  $("#velo").classList.remove("oculto");
+  $("#p-continuar").focus();
+}
+$("#p-continuar").addEventListener("click",()=>{sClick();$("#velo").classList.add("oculto");abrirModulo(estado.actual.m);});
+
+/* ============================================================
+   5. MECÁNICAS (5 genéricas → 24 niveles)
+   ============================================================ */
+
+const MECANICAS={
+
+  opciones(d){
+    let i=0;
+    const paso=()=>{
+      const r=d.rondas[i];
+      if(!r.ops.some(o=>(typeof o==="object"?o.v:o)===r.corr)) r.ops=r.ops.concat([r.corr]);
+      api.titulo(r.consigna,r.ayuda||"",i,d.rondas.length,r.escena);
+      api.sinComprobar();
+      const j=api.lienzo();
+      const ops=el("div","opciones");
+      mezclar(r.ops.slice()).forEach(o=>{
+        const esObj=typeof o==="object";
+        const v=esObj?o.v:o;
+        const b=el("button","opcion");
+        if(esObj&&o.escena)b.append(escenaSuelta(o.escena));
+        else b.textContent=String(o);
+        b.addEventListener("click",()=>{
+          if(api.bloqueado())return;
+          if(v===r.corr){
+            i++;
+            if(i>=d.rondas.length)api.acierto("¡Ronda completa!");
+            else{api.mensaje("¡Bien!",true);setTimeout(paso,650);}
+          }else{
+            b.disabled=true;
+            api.fallo("Esa no es. Míralo otra vez con calma.");
+          }
+        });
+        ops.append(b);
+      });
+      j.append(ops);
+    };
+    paso();
+  },
+
+  entradas(d){
+    let i=0;
+    const paso=()=>{
+      const r=d.rondas[i];
+      api.titulo(r.consigna,r.ayuda||"",i,d.rondas.length,r.escena);
+      const j=api.lienzo();
+      const caja=el("div","campos");
+      const entradas=[];
+      r.campos.forEach(c=>{
+        const f=el("div","campo");
+        const inp=el("input","celda");inp.type="number";inp.step="any";inp.placeholder="0";
+        inp.setAttribute("aria-label",c.etq);
+        f.append(el("strong",null,c.etq),inp);
+        caja.append(f);
+        entradas.push({inp,esp:c.esp,tol:c.tol!=null?c.tol:.01});
+      });
+      j.append(caja);
+      entradas[0].inp.focus();
+      api.comprobarCon(()=>{
+        let malas=0;
+        entradas.forEach(e=>{
+          const ok=Math.abs(Number(e.inp.value.replace(",","."))-e.esp)<=e.tol;
+          e.inp.classList.toggle("ok",ok);
+          e.inp.classList.remove("err");void e.inp.offsetWidth;
+          if(!ok){e.inp.classList.add("err");malas++;}
+        });
+        if(malas>0)return{ok:false,msg:"Hay "+malas+" casilla"+(malas>1?"s":"")+" por corregir."};
+        i++;
+        if(i>=d.rondas.length)return{ok:true,msg:"¡Todas las cuentas correctas!"};
+        api.mensaje("¡Correcto!",true);
+        setTimeout(paso,800);
+        return null;
+      });
+    };
+    paso();
+  },
+
+  ordenar(d){
+    let i=0;
+    const paso=()=>{
+      const r=d.rondas[i];
+      api.titulo(r.consigna,"Toca las fichas en orden. Si te equivocas, la ronda vuelve a empezar.",i,d.rondas.length);
+      api.sinComprobar();
+      const j=api.lienzo();
+      const fila=el("div","fila-orden");
+      fila.append(el("p",null,"Aquí va el orden de llegada →"));
+      j.append(fila);
+      const cont=el("div","fichas-orden");
+      const orden=r.items.slice().sort((a,b)=>a[1]-b[1]).map(x=>x[1]);
+      let puesto=0;
+      mezclar(r.items.slice()).forEach(([t,v])=>{
+        const f=el("button","ficha",t);
+        f.addEventListener("click",()=>{
+          if(api.bloqueado()||f.classList.contains("puesta"))return;
+          if(v===orden[puesto]){
+            sMoneda();
+            f.classList.add("puesta");
+            if(fila.querySelector("p"))fila.innerHTML="";
+            fila.append(el("span","puesto",t));
+            puesto++;
+            if(puesto===orden.length){
+              i++;
+              if(i>=d.rondas.length)api.acierto("¡Orden perfecto!");
+              else{api.mensaje("¡Llegada ordenada!",true);setTimeout(paso,700);}
+            }
+          }else{
+            api.fallo("Ese no va todavía: busca el menor de los que quedan.");
+            setTimeout(()=>{if(api.hayVidas())paso();},950);
+          }
+        });
+        cont.append(f);
+      });
+      j.append(cont);
+    };
+    paso();
+  },
+
+  armar(d){
+    let i=0;
+    const paso=()=>{
+      const r=d.rondas[i];
+      let suma=0;
+      api.titulo("Arma "+pesos(r.meta),"Toca las monedas y billetes hasta llegar justo a la meta.",i,d.rondas.length);
+      const j=api.lienzo();
+      const marcador=el("div");marcador.style.margin="0 0 12px";
+      const cont=el("span","contador","$0");
+      marcador.append(cont,el("span",null," de "),el("span","meta",pesos(r.meta)));
+      j.append(marcador);
+      const bandeja=el("div","bandeja");
+      bandeja.append(el("p",null,"La bandeja está vacía: toca el dinero de abajo"));
+      j.append(bandeja);
+      const fila=el("div","rejilla-dinero");
+      mezclar(r.piezas.slice()).forEach(v=>{
+        const b=piezaDOM(v,true);
+        b.addEventListener("click",()=>{
+          if(b.disabled||api.bloqueado())return;
+          b.disabled=true;sMoneda();
+          suma+=v;
+          if(bandeja.querySelector("p"))bandeja.innerHTML="";
+          bandeja.append(piezaDOM(v,false));
+          cont.textContent=pesos(suma);
+          cont.classList.add("tic");setTimeout(()=>cont.classList.remove("tic"),160);
+          if(suma===r.meta){
+            i++;
+            if(i>=d.rondas.length)api.acierto("¡Armaste todas las cantidades!");
+            else{api.mensaje("¡Exacto!",true);setTimeout(paso,700);}
+          }else if(suma>r.meta){
+            api.fallo("Te pasaste: llevas "+pesos(suma)+" y la meta es "+pesos(r.meta)+".");
+            setTimeout(()=>{if(api.hayVidas())paso();},950);
+          }
+        });
+        fila.append(b);
+      });
+      j.append(fila);
+      api.sinComprobar();
+    };
+    paso();
+  },
+
+  ubicar(d){
+    api.titulo(d.t, d.o + ". Toca un elemento y luego su espacio.", 0, 0);
+    api.sinComprobar();
+    const j=api.lienzo();
+    const total=d.items.length;
+    let puestos=0, sel=null;
+    const registroU=[];
+
+    /* barra superior del proyecto: datos · puntos · progreso · acción */
+    const top=el("div","ubicar-top");
+    const dNom=el("button","dato"); dNom.innerHTML="👤 <b>"+estado.nombre+"</b>";
+    dNom.title="Datos del estudiante (toca para cambiar el nombre)";
+    dNom.addEventListener("click",()=>{
+      try{
+        const v=prompt("Nombre del estudiante:",estado.nombre);
+        if(v&&v.trim()){estado.nombre=v.trim();dNom.innerHTML="👤 <b>"+estado.nombre+"</b>";snapshot();}
+      }catch(e){}
+    });
+    const dProy=el("span","dato"); dProy.innerHTML="📌 <b>"+estado.actual.m.nombre+"</b>";
+    const dPuntos=el("span","dato"); dPuntos.innerHTML="💎 Puntos: <b>"+pesos(estado.saldo)+"</b> · ★ <b>"+totalEstrellas()+"</b>";
+    const dProg=el("span","dato"); dProg.innerHTML="Ubicados: <b>0/"+total+"</b>";
+    top.append(dNom,dProy,dPuntos,dProg);
+    if(d.id==="mercado"){
+      const dCom=el("span","dato"); dCom.innerHTML="🛒 Compras: <b>"+estado.bitacora.length+"</b>";
+      top.append(dCom);
+    }
+    const bDatos=el("button","volver","📥 "+RECOL_BTN[d.id]);
+    bDatos.addEventListener("click",()=>{sClick();abrirRecoleccion(d,registroU);});
+    const bRe=el("button","volver","↺ Reiniciar");
+    top.append(bDatos,bRe);
+    j.append(top);
+
+    const grid=el("div","ubicar-grid");
+    /* zona izquierda: elementos del proyecto */
+    const colIzq=el("div");
+    colIzq.append(el("p","zona-titulo","Elementos del proyecto"));
+    const zElems=el("div","zona-elems");
+    colIzq.append(zElems);
+    /* zona derecha: espacio de ubicación */
+    const colDer=el("div");
+    colDer.append(el("p","zona-titulo",d.t));
+    const zSlots=el("div","zona-slots");
+    colDer.append(zSlots);
+    grid.append(colIzq,colDer);
+    j.append(grid);
+
+    const porSlot={};
+    d.contenedores.forEach(c=>{
+      const sl=el("div","slot");
+      sl.dataset.c=c.id;
+      const nom=el("div","slot-nom");
+      const em=el("span",null,c.e); em.style.fontSize="20px";
+      nom.append(em,el("span",null,c.n));
+      const zona=el("div","slot-items");
+      const vac=el("span","tx","(vacío)");
+      vac.style.cssText="font-size:11px;color:rgba(185,196,232,.5);font-weight:700";
+      zona.append(vac);
+      sl.append(nom,zona);
+      sl.addEventListener("click",()=>{
+        if(api.bloqueado())return;
+        if(!sel){api.mensaje("Primero toca un elemento de la izquierda.",false);fedor("feliz","Primero elige un elemento, luego su espacio.");sMal();return;}
+        const item=sel.dato, tarjeta=sel.el;
+        if(item.c===c.id){
+          sel=null;
+          tarjeta.classList.remove("sel");
+          /* el elemento vuela hasta su espacio */
+          const r0=tarjeta.getBoundingClientRect(), r1=zona.getBoundingClientRect();
+          const clon=tarjeta.cloneNode(true);
+          clon.classList.add("vuela2");
+          clon.style.left=r0.left+"px";clon.style.top=r0.top+"px";clon.style.width=r0.width+"px";
+          document.body.append(clon);
+          if(!reducida){
+            requestAnimationFrame(()=>{
+              clon.style.transform="translate("+(r1.left+14-r0.left)+"px,"+(r1.top+2-r0.top)+"px) scale(.55)";
+              clon.style.opacity=".9";
+            });
+          }
+          setTimeout(()=>{
+            clon.remove();
+            tarjeta.classList.add("puesto");
+            if(vac.parentNode)vac.remove();
+            const mini=el("span","item-mini");
+            if(item.svg){
+              const w2=el("span"); w2.innerHTML=item.svg;
+              const sv=w2.querySelector("svg"); sv.setAttribute("width","20"); sv.setAttribute("height","17"); sv.style.verticalAlign="middle";
+              mini.append(w2, document.createTextNode(" "+item.t));
+            } else {
+              mini.append(document.createTextNode(item.e+" "+item.t));
+            }
+            if(item.p!=null){ const pr=el("span","pr",pesos(item.p)); mini.append(pr); } /* precio automático */
+            zona.append(mini);
+            sl.classList.add("brillo");
+            registroU.push({t:item.t,cat:c.n,p:item.p||0,seg:Math.round((Date.now()-estado.inicio)/1000)});
+            porSlot[c.id]=(porSlot[c.id]||0)+1;
+            if(porSlot[c.id]>=d.items.filter(x=>x.c===c.id).length)sl.classList.add("listo-ok");
+            puestos++; dProg.innerHTML="Ubicados: <b>"+puestos+"/"+total+"</b>";
+            sMoneda();
+            if(puestos>=total)api.acierto("¡Todo ubicado en su lugar!");
+            else api.mensaje("¡Correcto! "+item.t+" → "+c.n+".",true);
+          }, reducida?0:460);
+        }else{
+          tarjeta.classList.remove("err2");void tarjeta.offsetWidth;tarjeta.classList.add("err2");
+          api.fallo(item.t+" no va en "+c.n+". Piensa a qué grupo pertenece.");
+        }
+      });
+      zSlots.append(sl);
+    });
+
+    mezclar(d.items.slice()).forEach(item=>{
+      const b=el("button","item-el");
+      const em=el("span","em");
+      if(item.svg){ em.innerHTML=item.svg; } else { em.textContent=item.e; }
+      b.append(em,el("span","tx",item.t));
+      b.setAttribute("aria-label",item.t);
+      b.addEventListener("click",()=>{
+        if(api.bloqueado()||b.classList.contains("puesto"))return;
+        sClick();
+        if(sel&&sel.el===b){b.classList.remove("sel");sel=null;return;}
+        if(sel)sel.el.classList.remove("sel");
+        sel={el:b,dato:item};
+        b.classList.add("sel");
+        fedor("feliz","¿Dónde va "+item.t.toLowerCase()+"? Toca su espacio.");
+      });
+      zElems.append(b);
+    });
+
+    bRe.addEventListener("click",()=>{sClick();MECANICAS.ubicar(d);});
+  },
+
+  ahorro(d){
+    const al=n=>Math.floor(Math.random()*n);
+    const rondas=[];
+    for(let r=0;r<10;r++){
+      const recibo=(2+al(17))*500;
+      const pagoQ=(1+al(recibo/100-1))*100;
+      rondas.push({recibo,pago:pagoQ,queda:recibo-pagoQ});
+    }
+    estado.actual.ahorroGanado=0;
+    let i=0;
+    const paso=()=>{
+      const r=rondas[i];
+      api.titulo("Recibes "+pesos(r.recibo)+" y pagas "+pesos(r.pago),
+        "¿Cuánto dinero te queda? Cada respuesta correcta guarda "+pesos(PAGO_AHORRO)+" en tu alcancía.",i,rondas.length);
+      const j=api.lienzo();
+      const esc=el("div");
+      esc.style.cssText="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:14px";
+      const c1=el("span","contador","Recibes: "+pesos(r.recibo));
+      const c2=el("span","contador","Pagas: "+pesos(r.pago)); c2.style.color="var(--coral)";
+      const alc=el("span","contador","🏦 Alcancía: "+pesos(estado.actual.ahorroGanado)); alc.style.color="var(--dorado)";
+      esc.append(c1,c2,alc); j.append(esc);
+      const caja=el("div","campos");
+      const f=el("div","campo");
+      const inp=el("input","celda"); inp.type="number"; inp.placeholder="0";
+      inp.style.cssText="width:180px;font-size:22px;padding:11px 13px";
+      inp.setAttribute("aria-label","Dinero que te queda");
+      f.append(el("strong",null,"Te queda:"),inp);
+      caja.append(f); j.append(caja);
+      inp.focus();
+      api.comprobarCon(()=>{
+        if(Number(inp.value)!==r.queda){
+          inp.classList.remove("err");void inp.offsetWidth;inp.classList.add("err");
+          return {ok:false,msg:"Resta: "+pesos(r.recibo)+" − "+pesos(r.pago)+"."};
+        }
+        inp.classList.remove("err");inp.classList.add("ok");
+        estado.saldo+=PAGO_AHORRO;
+        estado.actual.ahorroGanado+=PAGO_AHORRO;
+        pintarHUD(); sMoneda();
+        i++;
+        if(i>=rondas.length) return {ok:true,msg:"¡10 de 10! Guardaste "+pesos(estado.actual.ahorroGanado)+" en tu alcancía."};
+        api.mensaje("¡Correcto! +"+pesos(PAGO_AHORRO)+" a la alcancía.",true);
+        setTimeout(paso,800);
+        return null;
+      });
+    };
+    paso();
+  },
+
+  fraccion(d){
+    let i=0;
+    const paso=()=>{
+      const r=d.rondas[i];
+      api.titulo(r.consigna,"Toca las porciones para servirlas y luego Comprobar.",i,d.rondas.length);
+      const j=api.lienzo();
+      const s=svgBase(240,240,240,240);
+      const cx=120,cy=120,R=104;
+      const sel=new Set();
+      for(let k2=0;k2<r.n;k2++){
+        const a0=(k2*360/r.n-90)*Math.PI/180,a1=((k2+1)*360/r.n-90)*Math.PI/180;
+        const grande=(a1-a0)>Math.PI?1:0;
+        const p=document.createElementNS(NS,"path");
+        p.setAttribute("d","M"+cx+" "+cy+" L"+(cx+R*Math.cos(a0))+" "+(cy+R*Math.sin(a0))+" A"+R+" "+R+" 0 "+grande+" 1 "+(cx+R*Math.cos(a1))+" "+(cy+R*Math.sin(a1))+" Z");
+        p.setAttribute("fill","#F5C6C0");
+        p.setAttribute("stroke","#070C1F");
+        p.setAttribute("stroke-width","4");
+        p.setAttribute("class","porcion");
+        p.setAttribute("tabindex","0");
+        p.setAttribute("role","button");
+        p.setAttribute("aria-label","Porción "+(k2+1)+" de "+r.n);
+        const alternar=()=>{
+          if(api.bloqueado())return;
+          if(sel.has(k2)){sel.delete(k2);p.setAttribute("fill","#F5C6C0");}
+          else{sel.add(k2);p.setAttribute("fill","#FF6B5E");sMoneda();}
+        };
+        p.addEventListener("click",alternar);
+        p.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();alternar();}});
+        s.append(p);
+      }
+      j.append(s);
+      const et=el("p","ayuda","Torta partida en "+r.n+" porciones iguales.");
+      et.style.marginTop="8px";
+      j.append(et);
+      api.comprobarCon(()=>{
+        if(sel.size!==r.k)return{ok:false,msg:"Llevas "+sel.size+" porción"+(sel.size===1?"":"es")+" y se piden "+r.k+" de "+r.n+"."};
+        i++;
+        if(i>=d.rondas.length)return{ok:true,msg:"¡Fracciones dominadas!"};
+        api.mensaje("¡"+r.k+"/"+r.n+" perfecto!",true);
+        setTimeout(paso,800);
+        return null;
+      });
+    };
+    paso();
+  }
+};
+
+
+/* ============================================================
+   5B. TIENDA, BITÁCORA, MONITOR, REPORTE Y EXPRÉS
+   ============================================================ */
+
+const sCompra=()=>tono([659,880,1047,1319],.09);
+function svgUso(id,w,h){
+  const s2=document.createElementNS(NS,"svg");
+  s2.setAttribute("viewBox","0 0 64 64");s2.setAttribute("width",w||64);s2.setAttribute("height",h||w||64);
+  s2.setAttribute("aria-hidden","true");
+  const u=document.createElementNS(NS,"use");u.setAttribute("href","#"+id);s2.append(u);
+  return s2;
+}
+function prodDOM(k,grande){
+  const c=CATALOGO[k];
+  const d=el("div","prod"+(grande?" grande":""));
+  d.append(el("span","tier "+c.tier,TIER_NOMBRE[c.tier].replace("Cristal ","")),svgUso(c.ic),el("span","n",c.n),el("span","p",pesos(c.p)));
+  return d;
+}
+function volar(origen,destino,v,alLlegar){
+  if(reducida){alLlegar();return;}
+  const r0=origen.getBoundingClientRect(),r1=destino.getBoundingClientRect();
+  const clon=piezaDOM(v,false);
+  clon.classList.add("vuela");
+  clon.style.left=r0.left+"px";clon.style.top=r0.top+"px";
+  document.body.append(clon);
+  requestAnimationFrame(()=>{
+    const dx=r1.left+r1.width/2-r0.left-r0.width/2;
+    const dy=r1.top+r1.height/2-r0.top-r0.height/2;
+    clon.style.transform="translate("+dx+"px,"+dy+"px) scale(.85) rotate(340deg)";
+  });
+  setTimeout(()=>{clon.remove();alLlegar();},480);
+}
+let dicho=new Set();
+function hablarUnaVez(t){if(dicho.has(t))return;dicho.add(t);hablar(t);}
+
+const PASOS=["Observa","Lee el costo","Paga","Recibe el cambio","Revisa tu gráfica"];
+let compra=null;
+function pintarPasos(){
+  const c=$("#pasos-compra");c.innerHTML="";
+  PASOS.forEach((p,i)=>{
+    const sp=el("span","paso"+(compra&&i<compra.paso?" hecho":compra&&i===compra.paso?" actual":""));
+    sp.append(el("span","b",String(i+1)),document.createTextNode(p));
+    c.append(sp);
+  });
+}
+
+function pintarTienda(){
+  if(!compra)compra={paso:0,item:null,entregado:[]};
+  pintarPasos();
+  const z=$("#compra-zona");z.innerHTML="";
+
+  if(compra.paso===0){
+    const cab=el("div");
+    cab.style.cssText="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:10px";
+    cab.append(el("span","contador","Tu dinero: "+pesos(estado.saldo)));
+    z.append(cab);
+    if(estado.saldo<500){
+      z.append(el("div","vacio","Aún no tienes dinero suficiente. ¡Completa misiones o misiones exprés para ganar!"));
+      return;
+    }
+    ["eco","com","pre"].forEach(tier=>{
+      const grupo=el("div","cajon");grupo.style.marginBottom="12px";
+      grupo.append(el("h4",null,TIER_NOMBRE[tier]));
+      const rej=el("div","productos");
+      Object.keys(CATALOGO).filter(k=>CATALOGO[k].tier===tier).forEach(k=>{
+        const c=CATALOGO[k];
+        const card=prodDOM(k);
+        card.tabIndex=0;card.setAttribute("role","button");
+        card.setAttribute("aria-label",c.n+", "+pesos(c.p));
+        if(c.p>estado.saldo){card.style.opacity=".38";card.setAttribute("aria-disabled","true");}
+        const elegir=()=>{
+          if(c.p>estado.saldo){sMal();hablar("Aún no te alcanza para "+c.n+". ¡Gana más en las misiones!");return;}
+          sClick();compra.item=k;compra.paso=1;pintarTienda();
+        };
+        card.addEventListener("click",elegir);
+        card.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();elegir();}});
+        const bm=el("button","btn-meta",estado.meta===k?"🎯":"◎");
+        bm.title="Fijar como meta de ahorro";
+        bm.setAttribute("aria-label","Fijar "+c.n+" como meta de ahorro");
+        bm.addEventListener("click",e=>{
+          e.stopPropagation();sClick();
+          estado.meta=(estado.meta===k?null:k);
+          if(estado.meta)hablar("Meta de ahorro: "+c.n+". ¡A juntar dinero!");
+          pintarHUD();pintarTienda();
+        });
+        card.append(bm);
+        rej.append(card);
+      });
+      grupo.append(rej);z.append(grupo);
+    });
+    hablarUnaVez("Bienvenido a la Tienda Estelar. Observa los productos y toca el que quieras comprar.");
+  }
+
+  else if(compra.paso===1){
+    const c=CATALOGO[compra.item];
+    const caja=el("div");
+    caja.style.cssText="display:flex;gap:18px;align-items:center;flex-wrap:wrap";
+    caja.append(prodDOM(compra.item,true));
+    const info=el("div");
+    info.append(el("p","ayuda","Este es tu producto. Lee bien su costo antes de pagar:"));
+    info.append(el("div","contador",pesos(c.p)));
+    caja.append(info);z.append(caja);
+    const pie=el("div","pie-nivel");
+    const b0=el("button","volver","← Escoger otro");
+    b0.addEventListener("click",()=>{sClick();compra={paso:0,item:null,entregado:[]};pintarTienda();});
+    const b1=el("button","btn cristal","Ya leí el costo →");
+    b1.addEventListener("click",()=>{sClick();compra.paso=2;pintarTienda();});
+    pie.append(b0,b1);z.append(pie);
+    hablar(c.n+". Cuesta "+c.p+" pesos.");
+  }
+
+  else if(compra.paso===2){
+    const c=CATALOGO[compra.item];
+    const suma=()=>compra.entregado.reduce((a,b)=>a+b,0);
+    z.append(el("p","ayuda","Entrega monedas o billetes hasta cubrir el costo. Puedes pagar exacto o pagar de más y recibir cambio."));
+    const fila=el("div");
+    fila.style.cssText="display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:8px";
+    const entTag=el("span","contador","$0");
+    fila.append(el("span","meta","Costo: "+pesos(c.p)),entTag);
+    z.append(fila);
+    const bandeja=el("div","bandeja");
+    bandeja.append(el("p",null,"Bandeja de pago vacía"));
+    z.append(bandeja);
+    const caja=el("div","cajon");
+    caja.append(el("h4",null,"Tu caja de dinero (saldo: "+pesos(estado.saldo)+")"));
+    const rej=el("div","rejilla-dinero");
+    const msgP=el("p","aviso-msg");
+    [100,200,500,1000,2000,5000,10000].forEach(v=>{
+      const b=piezaDOM(v,true);
+      b.addEventListener("click",()=>{
+        if(suma()+v>estado.saldo){sMal();msgP.textContent="No puedes entregar más de lo que tienes: "+pesos(estado.saldo)+".";msgP.className="aviso-msg mal";return;}
+        sMoneda();
+        volar(b,bandeja,v,()=>{
+          compra.entregado.push(v);
+          if(bandeja.querySelector("p"))bandeja.innerHTML="";
+          bandeja.append(piezaDOM(v,false));
+          entTag.textContent=pesos(suma());
+          entTag.classList.add("tic");setTimeout(()=>entTag.classList.remove("tic"),160);
+          if(suma()>=c.p)btnSeguir.disabled=false;
+        });
+      });
+      rej.append(b);
+    });
+    caja.append(rej);z.append(caja);z.append(msgP);
+    const pie=el("div","pie-nivel");
+    const bR=el("button","volver","Vaciar bandeja");
+    bR.addEventListener("click",()=>{sClick();compra.entregado=[];pintarTienda();});
+    const btnSeguir=el("button","btn cristal","Entregar el pago →");
+    btnSeguir.disabled=true;
+    btnSeguir.addEventListener("click",()=>{sClick();compra.pago=suma();compra.paso=3;pintarTienda();});
+    pie.append(bR,btnSeguir);z.append(pie);
+  }
+
+  else if(compra.paso===3){
+    const c=CATALOGO[compra.item];
+    const cambio=compra.pago-c.p;
+    z.append(el("p","ayuda","Pagaste "+pesos(compra.pago)+" por algo que cuesta "+pesos(c.p)+". ¿Cuánto cambio debes recibir? Si pagaste exacto, escribe 0."));
+    const caja=el("div");
+    caja.style.cssText="display:flex;gap:12px;align-items:center;flex-wrap:wrap";
+    const inp=el("input","celda");inp.type="number";inp.placeholder="0";
+    inp.style.cssText="width:180px;font-size:23px;padding:12px 14px";
+    inp.setAttribute("aria-label","Cambio en pesos");
+    caja.append(el("span","meta","Cambio:"),inp);
+    z.append(caja);
+    const msg=el("p","aviso-msg");msg.style.marginTop="10px";z.append(msg);
+    const pie=el("div","pie-nivel");
+    const b=el("button","btn","Comprobar y comprar");
+    b.addEventListener("click",()=>{
+      sClick();
+      if(Number(inp.value)!==cambio){
+        inp.classList.remove("err");void inp.offsetWidth;inp.classList.add("err");
+        msg.textContent="Recuerda: "+pesos(compra.pago)+" − "+pesos(c.p)+".";msg.className="aviso-msg mal";
+        sMal();hablar("Todavía no. Resta el costo a lo que pagaste.");
+        return;
+      }
+      estado.saldo-=c.p;
+      estado.bitacora.push({dia:estado.dia,item:compra.item,costo:c.p,pago:compra.pago,cambio});
+      emitir("compra_registrada",{dia:estado.dia,item:compra.item,costo:c.p,pago:compra.pago,cambio,saldo:estado.saldo});
+      sCompra();confeti(70);
+      compra.paso=4;pintarHUD();pintarTienda();snapshot();
+    });
+    pie.append(b);z.append(pie);
+    inp.focus();
+  }
+
+  else {
+    const c=CATALOGO[compra.item];
+    const fin=el("div");fin.style.textAlign="center";
+    const ic=svgUso(c.ic,110);ic.style.cssText="margin:0 auto 6px;display:block";
+    fin.append(ic,el("h3",null,"¡"+c.n+" es tuyo!"),el("p","ayuda","Quedó registrado en tu Bitácora del día "+estado.dia+". Mira cómo subió tu barra en el Monitor."));
+    z.append(fin);
+    const pie=el("div","pie-nivel");pie.style.justifyContent="center";
+    const b1=el("button","btn dorado","📊 Ver mi Monitor");
+    b1.addEventListener("click",()=>{sClick();compra=null;pintarMonitor(true);irSec("sec-monitor");});
+    const b2=el("button","btn cristal","🛒 Comprar otra cosa");
+    b2.addEventListener("click",()=>{sClick();compra=null;pintarTienda();});
+    const b3=el("button","volver","Cerrar el día "+estado.dia+" →");
+    b3.addEventListener("click",()=>{sClick();estado.dia++;compra=null;hablar("¡Nuevo día en la Tienda Estelar!");pintarTienda();pintarHUD();snapshot();});
+    pie.append(b1,b2,b3);z.append(pie);
+    hablar("¡Compra registrada, Contador Estelar!");
+  }
+  pintarPasos();
+}
+
+function pintarBitacora(){
+  const z=$("#bitacora-zona");z.innerHTML="";
+  if(!estado.bitacora.length){
+    z.append(el("div","vacio","La bitácora está vacía. Gana dinero en las misiones y haz tu primera compra en la Tienda."));
+    return;
+  }
+  const env=el("div","envoltura-tabla");
+  const t=el("table","costos");
+  t.innerHTML="<thead><tr><th>Día</th><th>Producto</th><th>Costo</th><th>Pago</th><th>Cambio</th></tr></thead>";
+  const tb=el("tbody");
+  let total=0;
+  estado.bitacora.forEach(r=>{
+    total+=r.costo;
+    const c=CATALOGO[r.item];
+    const tr=el("tr");
+    const tdP=el("td");
+    if(c)tdP.append(svgUso(c.ic,32),document.createTextNode(c.n));
+    else tdP.append(document.createTextNode(r.item));
+    tr.append(el("td",null,"Día "+r.dia),tdP,el("td",null,pesos(r.costo)),el("td",null,pesos(r.pago)),el("td",null,pesos(r.cambio)));
+    tb.append(tr);
+  });
+  const trT=el("tr","total");
+  trT.append(el("td",null,"Total gastado"),el("td"),el("td",null,pesos(total)),el("td"),el("td"));
+  tb.append(trT);
+  t.append(tb);env.append(t);z.append(env);
+}
+
+function gastoPorDia(){
+  const g={};
+  estado.bitacora.forEach(r=>g[r.dia]=(g[r.dia]||0)+r.costo);
+  return g;
+}
+function pintarMonitor(animar){
+  const z=$("#monitor-zona");z.innerHTML="";
+  const g=gastoPorDia();
+  const dias=Object.keys(g).map(Number).sort((a,b)=>a-b);
+  if(!dias.length){
+    z.append(el("div","vacio","Aún no hay compras. Cuando compres en la Tienda, aquí crecerán tus barras de gasto."));
+    return;
+  }
+  const max=Math.max(...dias.map(d=>g[d]));
+  const W=640,H=300,mIzq=74,mAbj=44,mArr=18;
+  const anchoUtil=W-mIzq-16,altoUtil=H-mAbj-mArr;
+  const bw=Math.min(70,anchoUtil/dias.length*.62);
+  const paso=anchoUtil/dias.length;
+  const svg=document.createElementNS(NS,"svg");
+  svg.setAttribute("viewBox","0 0 "+W+" "+H);
+  svg.setAttribute("style","width:100%;height:auto");
+  svg.setAttribute("role","img");
+  svg.setAttribute("aria-label","Gráfica de barras del gasto por día");
+  let inner="";
+  for(let i=0;i<=4;i++){
+    const val=max*i/4;
+    const y=mArr+altoUtil-altoUtil*i/4;
+    inner+='<line x1="'+mIzq+'" y1="'+y+'" x2="'+(W-10)+'" y2="'+y+'" stroke="rgba(185,196,232,.18)" stroke-width="1.5"/>';
+    inner+='<text x="'+(mIzq-8)+'" y="'+(y+4)+'" text-anchor="end" font-family="Nunito,sans-serif" font-weight="700" font-size="11.5" fill="#B9C4E8">'+pesos(val)+'</text>';
+  }
+  svg.innerHTML=inner;
+  z.append(svg);
+  const maxDia=dias.reduce((a,d)=>g[d]>g[a]?d:a,dias[0]);
+  dias.forEach((d,i)=>{
+    const h=Math.max(6,altoUtil*g[d]/max);
+    const x=mIzq+paso*i+(paso-bw)/2;
+    const y=mArr+altoUtil-h;
+    const r=document.createElementNS(NS,"rect");
+    r.setAttribute("class","barra-svg");
+    r.setAttribute("x",x);r.setAttribute("width",bw);r.setAttribute("rx",7);
+    r.setAttribute("fill",d===maxDia?"#FFC94D":"#4FD8CB");
+    r.setAttribute("stroke","#070C1F");r.setAttribute("stroke-width","3");
+    if(animar&&!reducida){
+      r.setAttribute("y",mArr+altoUtil);r.setAttribute("height",0);
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{r.setAttribute("y",y);r.setAttribute("height",h);}));
+    }else{r.setAttribute("y",y);r.setAttribute("height",h);}
+    svg.append(r);
+    const tx=document.createElementNS(NS,"text");
+    tx.setAttribute("x",x+bw/2);tx.setAttribute("y",H-22);
+    tx.setAttribute("text-anchor","middle");
+    tx.setAttribute("font-family","Baloo 2,sans-serif");tx.setAttribute("font-weight","800");
+    tx.setAttribute("font-size","14");tx.setAttribute("fill","#F2F6FF");
+    tx.textContent="Día "+d;
+    svg.append(tx);
+    const tv=document.createElementNS(NS,"text");
+    tv.setAttribute("x",x+bw/2);tv.setAttribute("y",y-7);
+    tv.setAttribute("text-anchor","middle");
+    tv.setAttribute("font-family","Baloo 2,sans-serif");tv.setAttribute("font-weight","800");
+    tv.setAttribute("font-size","13");tv.setAttribute("fill",d===maxDia?"#FFC94D":"#B9C4E8");
+    tv.textContent=pesos(g[d]);
+    svg.append(tv);
+  });
+  const total=dias.reduce((a,d)=>a+g[d],0);
+  const resumen=el("p","sub2");
+  resumen.style.marginTop="12px";
+  resumen.textContent="Total gastado: "+pesos(total)+" · El día que más gastaste fue el Día "+maxDia+" ("+pesos(g[maxDia])+"). Preguntas del Comando: ¿por qué ese día gastaste más? ¿Te alcanzó el dinero?";
+  z.append(resumen);
+}
+
+$("#btn-reporte").addEventListener("click",()=>{
+  sClick();
+  const g=gastoPorDia();
+  const dias=Object.keys(g).map(Number).sort((a,b)=>a-b);
+  const total=estado.bitacora.reduce((a,r)=>a+r.costo,0);
+  const maxDia=dias.length?dias.reduce((a,d)=>g[d]>g[a]?d:a,dias[0]):null;
+  let filas=estado.bitacora.map(r=>
+    "<tr><td>Día "+r.dia+"</td><td>"+CATALOGO[r.item].n+"</td><td>"+pesos(r.costo)+"</td><td>"+pesos(r.pago)+"</td><td>"+pesos(r.cambio)+"</td></tr>"
+  ).join("");
+  if(!filas)filas='<tr><td colspan="5">Sin compras registradas todavía.</td></tr>';
+  const html=
+    "<h1>Reporte Financiero de la Estación Fedor</h1>"+
+    "<p>Contador Estelar: ______________________________ &nbsp;&nbsp; Grado: ______ &nbsp;&nbsp; Fecha: "+new Date().toLocaleDateString("es-CO")+"</p>"+
+    "<h2>1. Bitácora de compras</h2>"+
+    "<table><thead><tr><th>Día</th><th>Producto</th><th>Costo</th><th>Pago</th><th>Cambio</th></tr></thead><tbody>"+filas+"</tbody></table>"+
+    "<h2>2. Resumen</h2>"+
+    "<p>Total gastado: <b>"+pesos(total)+"</b>"+
+    (maxDia!=null?" · Día de mayor gasto: <b>Día "+maxDia+"</b> ("+pesos(g[maxDia])+")":"")+
+    " · Dinero disponible al cierre: <b>"+pesos(estado.saldo)+"</b>"+
+    " · Estrellas de misiones: <b>"+totalEstrellas()+" de "+(TOTAL*3)+"</b></p>"+
+    "<h2>3. Preguntas para exponer al Comando Central</h2>"+
+    "<p>¿Qué compraste? ¿Cuánto gastaste en total? ¿Qué día gastaste más y por qué? ¿Te alcanzó el dinero para todas tus compras?</p>"+
+    "<div class='firma'><div>Firma del Contador Estelar</div><div>Firma del Comando Central (docente)</div></div>";
+  $("#reporte-imprimible").innerHTML=html;
+  $("#reporte-vista").innerHTML=html;
+  $("#velo-reporte").classList.remove("oculto");
+  emitir("reporte_generado",{compras:estado.bitacora.length,total,saldo:estado.saldo});
+});
+$("#btn-imprimir").addEventListener("click",()=>{sClick();try{print();}catch(e){}});
+$("#btn-cerrar-reporte").addEventListener("click",()=>{sClick();$("#velo-reporte").classList.add("oculto");});
+
+/* --- Recolección de Datos y Gráficas Automáticas (los 8 proyectos) --- */
+const RECOL_BTN={mercado:"Recolectar Datos del Mercado",invernadero:"Recolectar Datos del Invernadero",pista:"Recolectar Datos de la Pista",sala:"Recolectar Datos de Juegos",taller:"Recolectar Datos del Taller",cocina:"Recolectar Datos de Cocina",observatorio:"Recolectar Datos del Observatorio",reloj:"Recolectar Datos del Reloj"};
+const COLORES_G=["#4FD8CB","#FFC94D","#FF6B5E","#9B7BFF","#5BD672","#9CCBFF"];
+
+function grLineas(labels, vals){
+  const W=460,H=230,mI=40,mA=44,mT=20,aU=H-mA-mT,anU=W-mI-24;
+  const max=Math.max(1,...vals);
+  const s2=document.createElementNS(NS,"svg");
+  s2.setAttribute("viewBox","0 0 "+W+" "+H);s2.setAttribute("width",W);
+  let h='<line x1="'+mI+'" y1="'+(H-mA)+'" x2="'+(W-12)+'" y2="'+(H-mA)+'" stroke="#B9C4E8" stroke-width="2.5"/>';
+  let path="";
+  vals.forEach((v,i)=>{
+    const x=mI+anU*(vals.length===1?.5:i/(vals.length-1));
+    const y=mT+aU-aU*v/max;
+    path+=(i?"L":"M")+x+" "+y+" ";
+    h+='<circle cx="'+x+'" cy="'+y+'" r="6" fill="#FFC94D" stroke="#070C1F" stroke-width="2.5"/>';
+    h+='<text x="'+x+'" y="'+(y-10)+'" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="12" fill="#F2F6FF">'+v+'</text>';
+    h+='<text x="'+x+'" y="'+(H-24)+'" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10.5" fill="#B9C4E8">'+labels[i]+'</text>';
+  });
+  h='<path d="'+path+'" fill="none" stroke="#5BD672" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>'+h;
+  s2.innerHTML=h;return s2;
+}
+function grCircular(labels, vals){
+  const tot=vals.reduce((a,b)=>a+b,0)||1;
+  const cx=110,cy=110,R=88;
+  const s2=document.createElementNS(NS,"svg");
+  s2.setAttribute("viewBox","0 0 220 220");s2.setAttribute("width","220");
+  let h="", ang=-Math.PI/2;
+  vals.forEach((v,i)=>{
+    if(!v)return;
+    const a2=ang+2*Math.PI*v/tot;
+    const grande=(a2-ang)>Math.PI?1:0;
+    if(v===tot){ h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="'+COLORES_G[i%6]+'" stroke="#070C1F" stroke-width="3"/>'; }
+    else h+='<path d="M'+cx+' '+cy+' L'+(cx+R*Math.cos(ang))+' '+(cy+R*Math.sin(ang))+' A'+R+' '+R+' 0 '+grande+' 1 '+(cx+R*Math.cos(a2))+' '+(cy+R*Math.sin(a2))+' Z" fill="'+COLORES_G[i%6]+'" stroke="#070C1F" stroke-width="3"/>';
+    const am=(ang+a2)/2;
+    h+='<text x="'+(cx+R*.62*Math.cos(am))+'" y="'+(cy+R*.62*Math.sin(am)+4)+'" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="14" fill="#0A1028">'+v+'</text>';
+    ang=a2;
+  });
+  h+='<circle cx="'+cx+'" cy="'+cy+'" r="34" fill="#0A1028" stroke="#070C1F" stroke-width="3"/>';
+  h+='<text x="'+cx+'" y="'+(cy+5)+'" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="15" fill="#FFC94D">'+tot+'</text>';
+  s2.innerHTML=h;return s2;
+}
+function grCombinada(labels, vals){
+  const base=ESCENAS.barras(vals.map(v=>v),labels);
+  const W=380,H=190,mI=44,mA=34,mT=14,aU=H-mA-mT,anU=W-mI-14;
+  const max=Math.max(1,...vals);
+  const paso=anU/vals.length, bw=Math.min(64,paso*.6);
+  let path="";
+  vals.forEach((v,i)=>{
+    const x=mI+paso*i+paso/2, y=mT+aU-aU*v/max;
+    path+=(i?"L":"M")+x+" "+y+" ";
+  });
+  const g2=document.createElementNS(NS,"g");
+  g2.innerHTML='<path d="'+path+'" fill="none" stroke="#FF6B5E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>'+
+    vals.map((v,i)=>{const x=mI+paso*i+paso/2,y=mT+aU-aU*v/max;return '<circle cx="'+x+'" cy="'+y+'" r="5" fill="#FF6B5E" stroke="#070C1F" stroke-width="2.5"/>';}).join("");
+  base.append(g2);
+  return base;
+}
+function chipR(k,v){const p=el("span","pastilla");p.innerHTML=k+": <b>"+v+"</b>";return p;}
+function abrirRecoleccion(d, registro){
+  const gastado=estado.bitacora.reduce((a,r)=>a+r.costo,0);
+  const ganado=estado.saldo+gastado;
+  const porCont=d.contenedores.map((c,i)=>({n:c.n,e:c.e,cant:registro.filter(r=>r.cat===c.n).length,val:registro.filter(r=>r.cat===c.n).reduce((a,r)=>a+r.p,0),i}));
+  const seg=Math.round((Date.now()-estado.inicio)/1000);
+  $("#rd-titulo").textContent="📥 Datos: "+d.t;
+  const chips=$("#rd-chips");chips.innerHTML="";
+  chips.append(chipR("👤 Estudiante",estado.nombre));
+  const tz=$("#rd-tabla");tz.innerHTML="";
+  const gz=$("#rd-graf");gz.innerHTML="";
+  let tipoG="barras", labels=porCont.map(c=>c.n.length>14?c.n.slice(0,13)+"…":c.n), vals=porCont.map(c=>c.cant), tituloG="";
+
+  if(d.id==="mercado"){
+    chips.append(chipR("Ubicados correctamente",registro.length+" / "+d.items.length),chipR("💎 Puntos ganados",pesos(ganado)),chipR("💸 Puntos gastados",pesos(gastado)),chipR("🛒 Compras realizadas",estado.bitacora.length));
+    tituloG="Gráfica de barras · elementos ubicados por categoría · Total gastado: "+pesos(gastado);
+  }
+  if(d.id==="invernadero"){
+    const etapas=porCont.filter(c=>c.cant>=d.items.filter(x=>{const co=d.contenedores.find(k=>k.n===c.n);return x.c===co.id;}).length).length;
+    const nutrientes=(porCont.find(c=>c.n==="Nutrientes")||{}).cant||0;
+    chips.append(chipR("🌱 Etapas completadas",etapas+" / "+d.contenedores.length),chipR("💧 Nutrientes usados",nutrientes),chipR("💸 Puntos gastados",pesos(gastado)));
+    tipoG="lineas"; tituloG="Gráfica de líneas · crecimiento por etapas";
+  }
+  if(d.id==="pista"){
+    chips.append(chipR("🚧 Obstáculos ubicados",registro.length),chipR("⏱️ Tiempo de recorrido",seg+" s"),chipR("💎 Puntos obtenidos",pesos(estado.saldo)));
+    tituloG="Gráfica de barras · desempeño en el circuito";
+  }
+  if(d.id==="sala"){
+    const nivelesComp=estado.actual.m.niveles.filter((n,ni)=>(estado.progreso[nivelId(estado.actual.m,ni)]||0)>0).length;
+    chips.append(chipR("🎮 Juegos activados",registro.length),chipR("⭐ Niveles completados",nivelesComp+" / "+estado.actual.m.niveles.length));
+    tipoG="circular"; tituloG="Gráfica circular · tipos de juegos usados";
+  }
+  if(d.id==="taller"){
+    const ens=((porCont.find(c=>c.n==="Componentes mecánicos")||{}).cant||0)+((porCont.find(c=>c.n==="Componentes electrónicos")||{}).cant||0);
+    chips.append(chipR("🔩 Piezas usadas",registro.length),chipR("⚙️ Componentes ensamblados",ens));
+    tituloG="Gráfica de barras · uso de materiales";
+  }
+  if(d.id==="cocina"){
+    const rec=(porCont.find(c=>c.n==="Recetas")||{}).cant||0;
+    const ing=(porCont.find(c=>c.n==="Ingredientes")||{}).cant||0;
+    const pla=(porCont.find(c=>c.n==="Platos preparados")||{}).cant||0;
+    chips.append(chipR("📖 Recetas preparadas",rec),chipR("🥚 Ingredientes usados",ing),chipR("🍰 Platos completados",pla));
+    tituloG="Gráfica de barras · platos completados por estación";
+  }
+  if(d.id==="observatorio"){
+    const sen=(porCont.find(c=>c.n==="Sensores")||{}).cant||0;
+    chips.append(chipR("📊 Datos analizados",registro.length),chipR("📡 Sensores usados",sen));
+    tipoG="combinada"; tituloG="Gráfica combinada (barras + líneas) · panel de análisis";
+  }
+  if(d.id==="reloj"){
+    const segm=(porCont.find(c=>c.n==="Segmentos de tiempo")||{}).cant||0;
+    const cic=(porCont.find(c=>c.n==="Ciclos")||{}).cant||0;
+    chips.append(chipR("🕐 Segmentos usados",segm),chipR("🌗 Ciclos completados",cic));
+    tipoG="lineas"; tituloG="Gráfica de líneas · tiempo registrado por ubicación";
+    labels=registro.map((r,i)=>"Nº "+(i+1)); vals=registro.map(r=>r.seg);
+  }
+
+  /* tabla de datos organizada */
+  const env=el("div","envoltura-tabla");
+  const t=el("table","costos");
+  t.innerHTML="<thead><tr><th>#</th><th>Elemento</th><th>Espacio</th>"+(d.id==="mercado"?"<th>Precio activado</th>":"<th>Segundo</th>")+"</tr></thead>";
+  const tb=el("tbody");
+  if(!registro.length){
+    const tr=el("tr");const td=el("td",null,"Aún no has ubicado elementos en esta sesión.");td.colSpan=4;tr.append(td);tb.append(tr);
+  } else registro.forEach((r,i)=>{
+    const tr=el("tr");
+    tr.append(el("td",null,String(i+1)),el("td",null,r.t),el("td",null,r.cat),el("td",null,d.id==="mercado"?pesos(r.p):r.seg+" s"));
+    tb.append(tr);
+  });
+  t.append(tb);env.append(t);tz.append(env);
+
+  /* gráfica automática */
+  $("#rd-graf-titulo").textContent=tituloG;
+  if(!registro.length){
+    gz.append(el("div","vacio","La gráfica se genera automáticamente cuando ubiques elementos."));
+  } else {
+    if(tipoG==="barras")gz.append(ESCENAS.barras(vals,labels));
+    if(tipoG==="lineas")gz.append(grLineas(labels,vals));
+    if(tipoG==="combinada")gz.append(grCombinada(labels,vals));
+    if(tipoG==="circular"){
+      gz.append(grCircular(labels,vals));
+      const ley=el("div","rd-leyenda");
+      porCont.forEach((c,i)=>{const sp=el("span");sp.innerHTML='<i style="background:'+COLORES_G[i%6]+'"></i>'+c.n+" ("+c.cant+")";ley.append(sp);});
+      gz.append(ley);
+    }
+  }
+  emitir("datos_recolectados",{modulo:d.id,ubicados:registro.length,tabla:registro,puntosGanados:ganado,puntosGastados:gastado,segundos:seg});
+  $("#velo-datos").classList.remove("oculto");
+  $("#rd-cerrar").focus();
+}
+$("#rd-cerrar").addEventListener("click",()=>{sClick();$("#velo-datos").classList.add("oculto");});
+
+/* --- Misiones exprés --- */
+function datosExpres(banda){
+  const al=n=>Math.floor(Math.random()*n);
+  if(banda===0){
+    const base=[100,200,500,1000,2000];
+    const rondas=[];
+    for(let r=0;r<3;r++){
+      const usadas=[];
+      const cuantas=2+al(3);
+      for(let i=0;i<cuantas;i++)usadas.push(base[al(base.length)]);
+      const meta=usadas.reduce((a,b)=>a+b,0);
+      rondas.push({meta,piezas:usadas.concat([base[al(base.length)],base[al(base.length)]])});
+    }
+    return {mec:"armar",datos:{rondas}};
+  }
+  if(banda===1){
+    const rondas=[];
+    for(let r=0;r<3;r++){
+      const paga=[2000,5000,10000][al(3)];
+      const cuenta=(1+al(paga/100-1))*100;
+      rondas.push({consigna:"La cuenta es "+pesos(cuenta)+" y pagan con "+pesos(paga),ayuda:"¿Cuánto cambio devuelves?",escena:{tipo:"dinero",args:[paga]},campos:[{etq:"Cambio:",esp:paga-cuenta}]});
+    }
+    return {mec:"entradas",datos:{rondas}};
+  }
+  const llaves=Object.keys(CATALOGO);
+  const rondas=[];
+  for(let r=0;r<3;r++){
+    const k=llaves[al(llaves.length)],cant=2+al(4),pct=[10,20,25,50][al(4)];
+    const base2=CATALOGO[k].p*cant,desc=base2*pct/100;
+    rondas.push({consigna:cant+" × "+CATALOGO[k].n+" a "+pesos(CATALOGO[k].p)+" con "+pct+"% de descuento",
+      ayuda:"Precio sin descuento, el descuento y lo que pagas.",
+      campos:[{etq:"Sin descuento:",esp:base2},{etq:"Descuento:",esp:desc},{etq:"Pagas:",esp:base2-desc}]});
+  }
+  return {mec:"entradas",datos:{rondas}};
+}
+document.querySelectorAll(".btn-expres").forEach(b=>b.addEventListener("click",()=>{
+  sClick();
+  const banda=Number(b.dataset.b);
+  const g=datosExpres(banda);
+  const m=MODULOS[0];
+  abrirNivel(m,{t:"Misión exprés",o:"Práctica rápida",mec:g.mec,frase:"¡Ejercicio relámpago! Paga "+pesos(PAGO_EXPRES)+".",datos:g.datos,expres:true},banda);
+}));
+
+/* ============================================================
+   5C. PERSISTENCIA (puente con la plataforma) Y PANEL DOCENTE
+   ============================================================ */
+
+function snapshot(){
+  emitir("estado_actualizado",{estado:{
+    progreso:estado.progreso, saldo:estado.saldo, dia:estado.dia,
+    bitacora:estado.bitacora, meta:estado.meta, registro:estado.registro, nombre:estado.nombre
+  }});
+}
+/* La plataforma puede restaurar una sesión guardada enviando:
+   iframe.contentWindow.postMessage({tipo:"fedor_restaurar", estado:{...}}, "*") */
+addEventListener("message", e => {
+  const d = e.data;
+  if(!d || d.tipo !== "fedor_restaurar" || !d.estado) return;
+  try{
+    estado.progreso = d.estado.progreso || {};
+    estado.saldo    = Number(d.estado.saldo) || 0;
+    estado.dia      = Number(d.estado.dia) || 1;
+    estado.bitacora = Array.isArray(d.estado.bitacora) ? d.estado.bitacora : [];
+    estado.meta     = d.estado.meta || null;
+    estado.registro = d.estado.registro || {};
+    if(d.estado.nombre) estado.nombre = String(d.estado.nombre);
+    pintarMapa(); pintarHUD();
+    emitir("estado_restaurado",{niveles:Object.keys(estado.progreso).length});
+  }catch(err){}
+});
+
+/* --- Guardar y Salir (R7) --- */
+let toastTimer=null;
+function toast(txt){
+  const t=$("#toast");
+  t.textContent=txt; t.classList.remove("oculto");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.add("oculto"),2600);
+}
+$("#btn-guardar").addEventListener("click",()=>{
+  sClick(); snapshot();
+  toast("💾 Progreso guardado y enviado al Comando");
+  hablar("Progreso guardado.");
+});
+$("#btn-salir").addEventListener("click",()=>{
+  sClick(); snapshot();
+  emitir("salir_solicitado",{});
+  if("speechSynthesis" in window)speechSynthesis.cancel();
+  $("#velo-salida").classList.remove("oculto");
+  $("#btn-seguir").focus();
+});
+$("#btn-seguir").addEventListener("click",()=>{sClick();$("#velo-salida").classList.add("oculto");});
+
+/* --- Panel docente --- */
+const CLAVE_DOCENTE = "FEDOR";
+let docenteOk = false;
+$("#btn-docente").addEventListener("click", () => {
+  sClick();
+  if(!docenteOk){
+    const c = prompt("Clave docente:");
+    if(c === null) return;
+    if(c.trim().toUpperCase() !== CLAVE_DOCENTE){ alert("Clave incorrecta."); return; }
+    docenteOk = true;
+  }
+  pintarDocente();
+  irSec("sec-docente");
+});
+$("#btn-salir-docente").addEventListener("click", () => { sClick(); pintarMapa(); irSec("sec-mapa"); });
+
+function pintarDocente(){
+  const res = $("#docente-resumen");
+  const gasto = estado.bitacora.reduce((a,r)=>a+r.costo,0);
+  res.innerHTML = "";
+  const fila = el("div");
+  fila.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;margin:2px 0 16px";
+  [["★ Estrellas", totalEstrellas()+" / "+(TOTAL*3)],
+   ["Niveles completados", Object.keys(estado.progreso).length+" / "+TOTAL],
+   ["💎 Dinero actual", pesos(estado.saldo)],
+   ["🛒 Compras", estado.bitacora.length+" ("+pesos(gasto)+")"],
+   ["📅 Día de tienda", String(estado.dia)]
+  ].forEach(([k,v]) => {
+    const p = el("span","pastilla");
+    p.innerHTML = k+": <b>"+v+"</b>";
+    fila.append(p);
+  });
+  res.append(fila);
+
+  const z = $("#docente-tabla"); z.innerHTML = "";
+  const env = el("div","envoltura-tabla");
+  const t = el("table","costos");
+  t.innerHTML = "<thead><tr><th>Módulo</th><th>Misión</th><th>Banda</th><th>★</th><th>Intentos</th><th>Precisión</th><th>Tiempo</th></tr></thead>";
+  const tb = el("tbody");
+  let hayFilas = false;
+  MODULOS.forEach(m => {
+    m.niveles.forEach((n,ni) => {
+      const id = nivelId(m,ni);
+      const r = estado.registro[id];
+      const est = estado.progreso[id]||0;
+      if(!r && !est) return;
+      hayFilas = true;
+      const tr = el("tr");
+      const prec = r && r.int ? Math.round(r.ok/r.int*100)+"%" : "—";
+      tr.append(
+        el("td",null,m.nombre),
+        el("td",null,n.t),
+        el("td",null,BANDAS[ni]),
+        el("td",null,"★".repeat(est)||"—"),
+        el("td",null,r?String(r.int):"0"),
+        el("td",null,prec),
+        el("td",null,r&&r.seg?(r.seg+" s"):"—")
+      );
+      tb.append(tr);
+    });
+  });
+  /* fila agregada de misiones exprés */
+  let exInt=0, exOk=0, exSeg=0, exVeces=0;
+  Object.keys(estado.registro).filter(k=>k.startsWith("expres-")).forEach(k=>{
+    const r=estado.registro[k]; exInt+=r.int; exOk+=r.ok; exSeg+=r.seg; exVeces++;
+  });
+  if(exVeces){
+    hayFilas = true;
+    const tr = el("tr");
+    tr.append(el("td",null,"⚡ Exprés"),el("td",null,"Práctica generada"),el("td",null,"—"),el("td",null,"—"),
+      el("td",null,String(exInt)),el("td",null,exInt?Math.round(exOk/exInt*100)+"%":"—"),el("td",null,exSeg+" s"));
+    tb.append(tr);
+  }
+  t.append(tb); env.append(t);
+  z.append(hayFilas ? env : el("div","vacio","Aún no hay actividad en esta sesión."));
+
+  $("#json-sesion").value = JSON.stringify({
+    fecha:new Date().toISOString(), estrellas:totalEstrellas(), saldo:estado.saldo, dia:estado.dia,
+    progreso:estado.progreso, registro:estado.registro, bitacora:estado.bitacora, meta:estado.meta
+  }, null, 1);
+}
+$("#btn-exportar").addEventListener("click", async () => {
+  sClick();
+  const ta = $("#json-sesion");
+  let ok = false;
+  try{ await navigator.clipboard.writeText(ta.value); ok = true; }
+  catch(e){ ta.focus(); ta.select(); try{ ok = document.execCommand("copy"); }catch(e2){} }
+  const m = $("#msg-exportar");
+  m.textContent = ok ? "¡Copiado! Pégalo en el registro del grupo." : "Selecciona el texto y cópialo manualmente.";
+  m.className = "aviso-msg " + (ok ? "bien" : "mal");
+});
+
+/* ============================================================
+   6. ARRANQUE
+   ============================================================ */
+pintarMapa();
+emitir("estacion_iniciada",{modulos:MODULOS.length,niveles:TOTAL});
+emitir("estado_solicitado",{});
+</script>
+<script>
+"use strict";
+/* ══ ZONA DE JUEGOS (V8): los 5 juegos viven en archivos aparte y la estación
+   los abre embebidos; sus eventos postMessage llegan aquí y pagan 💎 ══ */
+const JUEGOS_ZONA=[
+  {id:"carrera-cosmica",  archivo:"carrera-cosmica_2.html",  emoji:"🚀", nombre:"Carrera Cósmica",   desc:"Pseudo-3D de velocidad: cada cálculo impulsa tu cohete contra 3 rivales.", final:"carrera_terminada"},
+  {id:"atiende-la-tienda",archivo:"atiende-la-tienda_1.html",emoji:"🛒", nombre:"¡Atiende la Tienda!",desc:"Cobra la cuenta y da el cambio antes de que el cliente pierda la paciencia.", final:"dia_terminado"},
+  {id:"cosecha-total",    archivo:"cosecha-total_1.html",    emoji:"🌱", nombre:"Cosecha Total",      desc:"Siembra, riega los mL exactos y llena el camión del Comando.", final:"jornada_terminada"},
+  {id:"torre-de-bloques", archivo:"torre-de-bloques_3.html", emoji:"🧱", nombre:"Torre de Bloques",   desc:"La grúa baja cada capa que calcules bien. Pirámides para expertos.", final:"obra_terminada"},
+  {id:"parques-estelar",  archivo:"parques-estelar_1.html",  emoji:"🎲", nombre:"Parqués Estelar",    desc:"Tablero 3D contra Fedor-bot: dados de verdad y casillas especiales.", final:"partida_terminada"}
+];
+function pintarZonaJuegos(){
+  const r=$("#rejilla-juegos"); r.innerHTML="";
+  JUEGOS_ZONA.forEach(j=>{
+    const t=document.createElement("article"); t.className="tarjeta-juego";
+    t.innerHTML='<span class="emoji-j">'+j.emoji+'</span><h3>'+j.nombre+'</h3><p>'+j.desc+'</p>'+
+      '<span class="ruta-j">3 niveles · 5 a 11 años</span>';
+    const b=document.createElement("button"); b.className="btn-jugar-z"; b.textContent="▶ Jugar";
+    b.addEventListener("click",()=>{sClick();abrirJuegoZona(j);});
+    t.append(b); r.append(t);
+  });
+}
+function abrirJuegoZona(j){
+  $("#emoji-juego-z").textContent=j.emoji;
+  $("#nombre-juego-z").textContent=j.nombre;
+  $("#marco-juego-z").src=j.archivo;
+  $("#velo-juego").classList.remove("oculto");
+  emitir("juego_zona_abierto",{juego:j.id});
+}
+$("#btn-cerrar-juego").addEventListener("click",()=>{
+  sClick();
+  $("#marco-juego-z").src="about:blank";
+  $("#velo-juego").classList.add("oculto");
+});
+if(/(\?|&)test=1/.test(location.search))window.__zona={get estado(){return estado;}};
+addEventListener("message",e=>{
+  const d=e.data;
+  if(!d||!d.fuente)return;
+  const j=JUEGOS_ZONA.find(x=>x.id===d.fuente);
+  if(!j||d.evento!==j.final)return;
+  const premio=Math.max(10,Math.round((Number(d.puntos)||0)/5));
+  estado.saldo+=premio;
+  estado.bitacora.push({dia:estado.dia,item:"🕹️ "+j.nombre+(d.nombre?" · "+d.nombre:"")+" · +"+premio+" 💎",costo:0,pago:0,cambio:0});
+  pintarHUD();
+  toast("🕹️ ¡+"+premio+" 💎 por tu partida de "+j.nombre+"!");
+  emitir("juego_zona_terminado",{juego:j.id,puntos:Number(d.puntos)||0,premio});
+});
+</script>
+</body>
+</html>
