@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { Module, moduleService } from '@/services/module.service';
 import { authService } from '@/services/auth.service';
 import { trackMetaAddToCart } from '@/lib/analytics/meta';
+import { trackTikTokAddToCart } from '@/lib/analytics/tiktok';
+import { trackGTMAddToCart } from '@/lib/analytics/google';
 
 const moduleBooksImages: Record<string, { src: string; alt: string }> = {
     Grado1: { src: '/fedor-modulo-1-libros.png', alt: 'Libros del módulo 1' },
@@ -61,11 +63,38 @@ export default function BuyBooksPage() {
     const handleModuleClick = (moduleId: string) => {
         const selected = modules.find((m) => m._id === moduleId);
         if (selected) {
+            const price = selected.price || 0;
             trackMetaAddToCart({
                 content_ids: [selected._id],
                 content_type: 'product',
-                value: selected.price || 0,
+                value: price,
                 currency: 'COP',
+            });
+            trackTikTokAddToCart({
+                contents: [
+                    {
+                        content_id: selected._id,
+                        content_name: selected.title,
+                        content_type: 'product',
+                        price: price,
+                        quantity: 1,
+                    },
+                ],
+                value: price,
+                currency: 'COP',
+            });
+            trackGTMAddToCart({
+                currency: 'COP',
+                value: price,
+                items: [
+                    {
+                        item_id: selected._id,
+                        item_name: selected.title,
+                        item_category: selected.group || 'Modulo',
+                        price: price,
+                        quantity: 1,
+                    },
+                ],
             });
         }
         router.push(`/dashboard/buybooks/${moduleId}`);

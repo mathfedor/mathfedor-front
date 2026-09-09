@@ -10,6 +10,8 @@ import { estacionAudio } from './services/estacion-audio';
 import EstacionSvgDefs from './shared/EstacionSvgDefs';
 import ConfettiCanvas, { ConfettiRef } from './shared/ConfettiCanvas';
 import { trackMetaStartTrial } from '@/lib/analytics/meta';
+import { trackTikTokStartTrial } from '@/lib/analytics/tiktok';
+import { trackGTMTutorialBegin } from '@/lib/analytics/google';
 
 import EstacionMapScreen from './screens/EstacionMapScreen';
 import EstacionModuleScreen from './screens/EstacionModuleScreen';
@@ -72,6 +74,12 @@ export default function EstacionExperience() {
       content_name: 'Estación Fedor',
       value: 0,
       currency: 'COP',
+    });
+    trackTikTokStartTrial({
+      description: 'Estación Fedor',
+    });
+    trackGTMTutorialBegin({
+      grade: 'Estación Fedor',
     });
 
     try {

@@ -12,6 +12,8 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useModuleAccess } from '@/contexts/ModuleAccessContext';
 import { moduleService, Module } from '@/services/module.service';
 import { trackMetaContact } from '@/lib/analytics/meta';
+import { trackTikTokContact } from '@/lib/analytics/tiktok';
+import { trackGTMGenerateLead } from '@/lib/analytics/google';
 
 interface SubMenuItem {
   title: string;
@@ -153,6 +155,8 @@ export default function Sidebar() {
     // Si es el enlace de ayuda, abrir WhatsApp en nueva pestaña
     if (href === 'whatsapp://help') {
       trackMetaContact({ content_name: 'WhatsApp Soporte (Sidebar)' });
+      trackTikTokContact({ description: 'WhatsApp Soporte (Sidebar)' });
+      trackGTMGenerateLead({ method: 'WhatsApp', value: 0, currency: 'COP' });
       window.open('https://wa.me/573107199897?text=Hola%20amigos%20de%20Fedor%2C%20necesito%20ayuda.', '_blank');
       return;
     }

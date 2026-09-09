@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { trackMetaContact } from '@/lib/analytics/meta';
+import { trackTikTokContact } from '@/lib/analytics/tiktok';
+import { trackGTMGenerateLead } from '@/lib/analytics/google';
 
 export default function Footer() {
   return (
@@ -35,7 +37,11 @@ export default function Footer() {
             href="https://wa.me/573107199897?text=Hola%20amigos%20de%20Fedor"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackMetaContact({ content_name: 'WhatsApp (Footer)' })}
+            onClick={() => {
+              trackMetaContact({ content_name: 'WhatsApp (Footer)' });
+              trackTikTokContact({ description: 'WhatsApp (Footer)' });
+              trackGTMGenerateLead({ method: 'WhatsApp', value: 0, currency: 'COP' });
+            }}
             className="bg-orange-500 text-white p-3 rounded-full hover:bg-orange-600 w-12 h-12 flex items-center justify-center"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="white">

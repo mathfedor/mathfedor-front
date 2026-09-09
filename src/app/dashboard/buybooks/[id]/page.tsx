@@ -12,6 +12,8 @@ import crypto from 'crypto';
 import { purchaseService, PurchaseTransaction } from '@/services/purchase.service';
 import { couponService } from '@/services/coupon.service';
 import { trackMetaInitiateCheckout, trackMetaCouponApplied } from '@/lib/analytics/meta';
+import { trackTikTokInitiateCheckout, trackTikTokApplyCoupon } from '@/lib/analytics/tiktok';
+import { trackGTMBeginCheckout, trackGTMSelectPromotion } from '@/lib/analytics/google';
 
 const getGradeNumber = (group?: string) => {
   const match = group?.match(/Grado(\d+)/);
@@ -98,11 +100,38 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
 
         if (foundModule) {
           setModule(foundModule);
+          const price = foundModule.price || 0;
           trackMetaInitiateCheckout({
             content_ids: [foundModule._id],
             num_items: 1,
-            value: foundModule.price || 0,
+            value: price,
             currency: 'COP',
+          });
+          trackTikTokInitiateCheckout({
+            contents: [
+              {
+                content_id: foundModule._id,
+                content_name: foundModule.title,
+                content_type: 'product',
+                price: price,
+                quantity: 1,
+              },
+            ],
+            value: price,
+            currency: 'COP',
+          });
+          trackGTMBeginCheckout({
+            currency: 'COP',
+            value: price,
+            items: [
+              {
+                item_id: foundModule._id,
+                item_name: foundModule.title,
+                item_category: foundModule.group || 'Modulo',
+                price: price,
+                quantity: 1,
+              },
+            ],
           });
         } else {
           setError('Módulo no encontrado');
@@ -148,6 +177,15 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
             coupon: couponCode.trim(),
             discount: discountValue,
             currency: 'COP',
+          });
+          trackTikTokApplyCoupon({
+            description: couponCode.trim(),
+            value: discountValue,
+            currency: 'COP',
+          });
+          trackGTMSelectPromotion({
+            promotion_name: couponCode.trim(),
+            creative_name: 'Cupon de Descuento',
           });
         } else {
           setCouponError(validation.message || 'El cupón no tiene los datos necesarios');

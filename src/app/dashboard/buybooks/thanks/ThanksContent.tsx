@@ -5,6 +5,8 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 import { authService } from '@/services/auth.service';
 import { trackMetaPurchase } from '@/lib/analytics/meta';
+import { trackTikTokCompletePayment } from '@/lib/analytics/tiktok';
+import { trackGTMPurchase } from '@/lib/analytics/google';
 
 interface TransactionResponse {
   data: {
@@ -105,12 +107,44 @@ function ThanksContentInner() {
   useEffect(() => {
     if (transaction && transaction.status === 'APPROVED' && !hasTrackedPurchase.current) {
       hasTrackedPurchase.current = true;
+      const value = (transaction.amount_in_cents || 0) / 100;
+      const currency = transaction.currency || 'COP';
+
       trackMetaPurchase({
         content_ids: [transaction.reference || transaction.id],
         content_type: 'product',
-        value: (transaction.amount_in_cents || 0) / 100,
-        currency: transaction.currency || 'COP',
+        value: value,
+        currency: currency,
         eventID: transaction.id,
+      });
+
+      trackTikTokCompletePayment({
+        contents: [
+          {
+            content_id: transaction.reference || transaction.id,
+            content_type: 'product',
+            price: value,
+            quantity: 1,
+          },
+        ],
+        value: value,
+        currency: currency,
+        event_id: transaction.id,
+      });
+
+      trackGTMPurchase({
+        transaction_id: transaction.id,
+        currency: currency,
+        value: value,
+        coupon: transaction.payment_method?.type === 'COUPON' ? (transaction.reference || transaction.id) : '',
+        items: [
+          {
+            item_id: transaction.reference || transaction.id,
+            item_name: 'Módulo Matemáticas de Fedor',
+            price: value,
+            quantity: 1,
+          },
+        ],
       });
     }
   }, [transaction]);

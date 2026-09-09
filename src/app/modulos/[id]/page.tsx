@@ -8,6 +8,8 @@ import { authService } from '@/services/auth.service';
 import Image from 'next/image';
 import Footer from "@/components/Footer";
 import { trackMetaViewContent, trackMetaAddToCart } from '@/lib/analytics/meta';
+import { trackTikTokViewContent, trackTikTokAddToCart } from '@/lib/analytics/tiktok';
+import { trackGTMViewItem, trackGTMAddToCart } from '@/lib/analytics/google';
 
 const getGradeNumber = (group?: string) => {
   const match = group?.match(/Grado(\d+)/);
@@ -40,12 +42,39 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
 
         if (foundModule) {
           setModule(foundModule);
+          const price = foundModule.price || 0;
           trackMetaViewContent({
             content_ids: [foundModule._id],
             content_name: foundModule.title,
             content_type: 'product',
-            value: foundModule.price || 0,
+            value: price,
             currency: 'COP',
+          });
+          trackTikTokViewContent({
+            contents: [
+              {
+                content_id: foundModule._id,
+                content_name: foundModule.title,
+                content_type: 'product',
+                price: price,
+                quantity: 1,
+              },
+            ],
+            value: price,
+            currency: 'COP',
+          });
+          trackGTMViewItem({
+            currency: 'COP',
+            value: price,
+            items: [
+              {
+                item_id: foundModule._id,
+                item_name: foundModule.title,
+                item_category: foundModule.group || 'Modulo',
+                price: price,
+                quantity: 1,
+              },
+            ],
           });
         } else {
           setError('Modulo no encontrado');
@@ -62,11 +91,38 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
 
   const handleBuyClick = () => {
     if (module) {
+      const price = module.price || 0;
       trackMetaAddToCart({
         content_ids: [module._id],
         content_type: 'product',
-        value: module.price || 0,
+        value: price,
         currency: 'COP',
+      });
+      trackTikTokAddToCart({
+        contents: [
+          {
+            content_id: module._id,
+            content_name: module.title,
+            content_type: 'product',
+            price: price,
+            quantity: 1,
+          },
+        ],
+        value: price,
+        currency: 'COP',
+      });
+      trackGTMAddToCart({
+        currency: 'COP',
+        value: price,
+        items: [
+          {
+            item_id: module._id,
+            item_name: module.title,
+            item_category: module.group || 'Modulo',
+            price: price,
+            quantity: 1,
+          },
+        ],
       });
     }
 

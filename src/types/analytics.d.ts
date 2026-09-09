@@ -3,6 +3,24 @@ export interface TikTokPixelOptions {
   [key: string]: unknown;
 }
 
+export interface TikTokContentItem {
+  content_id?: string;
+  content_name?: string;
+  content_type?: string;
+  quantity?: number;
+  price?: number;
+  [key: string]: unknown;
+}
+
+export interface GA4Item {
+  item_id: string;
+  item_name: string;
+  item_category?: string;
+  price?: number;
+  quantity?: number;
+  [key: string]: unknown;
+}
+
 export interface TikTokAnalytics {
   page: () => void;
   track: (event: string, params?: Record<string, unknown>, options?: TikTokPixelOptions) => void;
@@ -46,5 +64,6 @@ declare global {
     TiktokAnalyticsObject?: string;
     fbq?: MetaPixel;
     _fbq?: MetaPixel;
+    dataLayer?: Record<string, unknown>[];
   }
 }

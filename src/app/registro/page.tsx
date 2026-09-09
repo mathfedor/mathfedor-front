@@ -8,6 +8,8 @@ import Footer from "@/components/Footer";
 import { usersService } from '@/services/users.service';
 import { AxiosError } from 'axios';
 import { trackMetaCompleteRegistration } from '@/lib/analytics/meta';
+import { trackTikTokCompleteRegistration } from '@/lib/analytics/tiktok';
+import { trackGTMSignUp } from '@/lib/analytics/google';
 
 const LEGAL_DOCUMENT_VERSIONS = {
   terms: '1.0',
@@ -111,6 +113,13 @@ export default function RegisterPage() {
       trackMetaCompleteRegistration({
         content_name: 'registro',
         status: true,
+      });
+      trackTikTokCompleteRegistration({
+        description: 'registro',
+      });
+      trackGTMSignUp({
+        method: 'email',
+        grade: 'General',
       });
 
       router.push('/login?registered=true');

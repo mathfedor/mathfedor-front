@@ -4,6 +4,8 @@ import React from 'react';
 import Sidebar from '@/components/Sidebar';
 import { FiMessageSquare } from 'react-icons/fi';
 import { trackMetaContact } from '@/lib/analytics/meta';
+import { trackTikTokContact } from '@/lib/analytics/tiktok';
+import { trackGTMGenerateLead } from '@/lib/analytics/google';
 
 export default function HelpPage() {
     return (
@@ -29,7 +31,11 @@ export default function HelpPage() {
                                 href="https://wa.me/573107199897?text=Hola%20amigos%20de%20Fedor%2C%20quisiera%20informaci%C3%B3n%20sobre%20los%20m%C3%B3dulos."
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onClick={() => trackMetaContact({ content_name: 'WhatsApp Soporte (Ayuda)' })}
+                                onClick={() => {
+                                    trackMetaContact({ content_name: 'WhatsApp Soporte (Ayuda)' });
+                                    trackTikTokContact({ description: 'WhatsApp Soporte (Ayuda)' });
+                                    trackGTMGenerateLead({ method: 'WhatsApp', value: 0, currency: 'COP' });
+                                }}
                                 className="inline-flex items-center gap-2 px-6 py-3 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold rounded-full transition-colors shadow-lg"
                             >
                                 <FiMessageSquare className="w-5 h-5" />
