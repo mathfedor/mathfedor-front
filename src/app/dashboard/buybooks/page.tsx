@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Module, moduleService } from '@/services/module.service';
 import { authService } from '@/services/auth.service';
+import { trackMetaAddToCart } from '@/lib/analytics/meta';
 
 const moduleBooksImages: Record<string, { src: string; alt: string }> = {
     Grado1: { src: '/fedor-modulo-1-libros.png', alt: 'Libros del módulo 1' },
@@ -58,6 +59,15 @@ export default function BuyBooksPage() {
     }, [router]);
 
     const handleModuleClick = (moduleId: string) => {
+        const selected = modules.find((m) => m._id === moduleId);
+        if (selected) {
+            trackMetaAddToCart({
+                content_ids: [selected._id],
+                content_type: 'product',
+                value: selected.price || 0,
+                currency: 'COP',
+            });
+        }
         router.push(`/dashboard/buybooks/${moduleId}`);
     };
 

@@ -11,6 +11,7 @@ import Sidebar from '@/components/Sidebar';
 import crypto from 'crypto';
 import { purchaseService, PurchaseTransaction } from '@/services/purchase.service';
 import { couponService } from '@/services/coupon.service';
+import { trackMetaInitiateCheckout, trackMetaCouponApplied } from '@/lib/analytics/meta';
 
 const getGradeNumber = (group?: string) => {
   const match = group?.match(/Grado(\d+)/);
@@ -97,6 +98,12 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
 
         if (foundModule) {
           setModule(foundModule);
+          trackMetaInitiateCheckout({
+            content_ids: [foundModule._id],
+            num_items: 1,
+            value: foundModule.price || 0,
+            currency: 'COP',
+          });
         } else {
           setError('Módulo no encontrado');
         }
@@ -137,6 +144,11 @@ export default function BuyBookPage({ params }: { params: Promise<{ id: string }
             discountType: discountType
           });
           setCouponError(null);
+          trackMetaCouponApplied({
+            coupon: couponCode.trim(),
+            discount: discountValue,
+            currency: 'COP',
+          });
         } else {
           setCouponError(validation.message || 'El cupón no tiene los datos necesarios');
           setCouponDiscount(null);

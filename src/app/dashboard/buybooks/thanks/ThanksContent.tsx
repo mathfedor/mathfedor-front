@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 import { authService } from '@/services/auth.service';
+import { trackMetaPurchase } from '@/lib/analytics/meta';
 
 interface TransactionResponse {
   data: {
@@ -98,6 +99,21 @@ function ThanksContentInner() {
 
     checkTransaction();
   }, [searchParams, router]);
+
+  const hasTrackedPurchase = useRef(false);
+
+  useEffect(() => {
+    if (transaction && transaction.status === 'APPROVED' && !hasTrackedPurchase.current) {
+      hasTrackedPurchase.current = true;
+      trackMetaPurchase({
+        content_ids: [transaction.reference || transaction.id],
+        content_type: 'product',
+        value: (transaction.amount_in_cents || 0) / 100,
+        currency: transaction.currency || 'COP',
+        eventID: transaction.id,
+      });
+    }
+  }, [transaction]);
 
   if (isLoading) {
     return (

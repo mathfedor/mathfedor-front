@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Footer from "@/components/Footer";
 import { Module, moduleService } from '@/services/module.service';
 import Image from 'next/image';
+import { trackMetaContact } from '@/lib/analytics/meta';
 
 const moduleBooksImages: Record<string, { src: string; alt: string }> = {
   Grado1: { src: '/fedor-modulo-1-libros.png', alt: 'Libros del módulo 1' },
@@ -688,6 +689,7 @@ export default function BooksPage() {
                 href="https://wa.me/573107199897?text=Hola%20amigos%20de%20Fedor"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackMetaContact({ content_name: 'WhatsApp (Libros CTA)' })}
                 className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-orange-500 transition-all"
               >
                 Contactar por WhatsApp
@@ -701,6 +703,7 @@ export default function BooksPage() {
           href="https://wa.me/573107199897?text=Hola%20amigos%20de%20Fedor%2C%20quisiera%20información%20sobre%20los%20módulos."
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackMetaContact({ content_name: 'WhatsApp Flotante (Libros)' })}
           className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-all transform hover:scale-110 z-50"
           aria-label="Contactar por WhatsApp"
         >

@@ -9,6 +9,7 @@ import { MODULOS, CATALOGO, PAGO_ESTRELLA, pesos } from './data/estacion-data';
 import { estacionAudio } from './services/estacion-audio';
 import EstacionSvgDefs from './shared/EstacionSvgDefs';
 import ConfettiCanvas, { ConfettiRef } from './shared/ConfettiCanvas';
+import { trackMetaStartTrial } from '@/lib/analytics/meta';
 
 import EstacionMapScreen from './screens/EstacionMapScreen';
 import EstacionModuleScreen from './screens/EstacionModuleScreen';
@@ -67,6 +68,12 @@ export default function EstacionExperience() {
 
   // Cargar estado guardado
   useEffect(() => {
+    trackMetaStartTrial({
+      content_name: 'Estación Fedor',
+      value: 0,
+      currency: 'COP',
+    });
+
     try {
       const guardado = localStorage.getItem(STORAGE_KEY);
       if (guardado) {

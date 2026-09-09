@@ -7,6 +7,7 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import Footer from "@/components/Footer";
 import { usersService } from '@/services/users.service';
 import { AxiosError } from 'axios';
+import { trackMetaCompleteRegistration } from '@/lib/analytics/meta';
 
 const LEGAL_DOCUMENT_VERSIONS = {
   terms: '1.0',
@@ -107,6 +108,11 @@ export default function RegisterPage() {
       });
 
       // Registro exitoso
+      trackMetaCompleteRegistration({
+        content_name: 'registro',
+        status: true,
+      });
+
       router.push('/login?registered=true');
 
     } catch (error) {

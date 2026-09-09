@@ -7,6 +7,7 @@ import { moduleService, Module } from '@/services/module.service';
 import { authService } from '@/services/auth.service';
 import Image from 'next/image';
 import Footer from "@/components/Footer";
+import { trackMetaViewContent, trackMetaAddToCart } from '@/lib/analytics/meta';
 
 const getGradeNumber = (group?: string) => {
   const match = group?.match(/Grado(\d+)/);
@@ -39,6 +40,13 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
 
         if (foundModule) {
           setModule(foundModule);
+          trackMetaViewContent({
+            content_ids: [foundModule._id],
+            content_name: foundModule.title,
+            content_type: 'product',
+            value: foundModule.price || 0,
+            currency: 'COP',
+          });
         } else {
           setError('Modulo no encontrado');
         }
@@ -53,6 +61,15 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
   }, [id]);
 
   const handleBuyClick = () => {
+    if (module) {
+      trackMetaAddToCart({
+        content_ids: [module._id],
+        content_type: 'product',
+        value: module.price || 0,
+        currency: 'COP',
+      });
+    }
+
     const isAuthenticated = authService.isAuthenticated();
 
     if (!isAuthenticated) {

@@ -11,6 +11,7 @@ import { User } from '@/types/auth.types';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useModuleAccess } from '@/contexts/ModuleAccessContext';
 import { moduleService, Module } from '@/services/module.service';
+import { trackMetaContact } from '@/lib/analytics/meta';
 
 interface SubMenuItem {
   title: string;
@@ -151,6 +152,7 @@ export default function Sidebar() {
   const handleNavigation = (href: string) => {
     // Si es el enlace de ayuda, abrir WhatsApp en nueva pestaña
     if (href === 'whatsapp://help') {
+      trackMetaContact({ content_name: 'WhatsApp Soporte (Sidebar)' });
       window.open('https://wa.me/573107199897?text=Hola%20amigos%20de%20Fedor%2C%20necesito%20ayuda.', '_blank');
       return;
     }
