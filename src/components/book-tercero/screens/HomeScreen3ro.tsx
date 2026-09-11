@@ -1,10 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useBook3 } from '../context/Book3Context';
 import { fedorSpeak } from '../shared/Grade3Speech';
 import Swal from 'sweetalert2';
 import ProblemasModal3ro from '../shared/ProblemasModal3ro';
+import UniversoFedorModal3ro, { GALAXY_PLANETS_3RO } from '../shared/UniversoFedorModal3ro';
+import MascotaModal3ro from '../shared/MascotaModal3ro';
+import GuiaDocenteModal3ro from '../shared/GuiaDocenteModal3ro';
 
 interface HomeScreen3roProps {
   onOpenIntro: () => void;
@@ -132,6 +135,63 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
 
   const [claimedDaily, setClaimedDaily] = useState(false);
   const [showProblemasModal, setShowProblemasModal] = useState(false);
+  const [showUniversoModal, setShowUniversoModal] = useState(false);
+  const [showMascotaModal, setShowMascotaModal] = useState(false);
+  const [showGuiaModal, setShowGuiaModal] = useState(false);
+  const miniCanvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Progreso por unidad para el mapa galáctico y modales
+  const unitsProgressMap: Record<number, number> = {};
+  (book?.units || []).forEach((u, uIdx) => {
+    let uTotal = 0;
+    let uPassed = 0;
+    (u.topics || []).forEach((t) => {
+      (t.levels || []).forEach((lv, li) => {
+        uTotal++;
+        const key = `${t.id}-n${li + 1}`;
+        if ((scores[key] || 0) >= 70) {
+          uPassed++;
+        }
+      });
+    });
+    unitsProgressMap[uIdx] = uTotal > 0 ? Math.round((uPassed / uTotal) * 100) : 0;
+  });
+
+  // Pintar estrellas en el mini canvas del Universo Fedor
+  useEffect(() => {
+    const cv = miniCanvasRef.current;
+    if (!cv) return;
+    const parent = cv.parentElement;
+    const cw = parent?.offsetWidth || 1100;
+    const ch = parent?.offsetHeight || 130;
+    cv.width = cw;
+    cv.height = ch;
+    const ctx2 = cv.getContext('2d');
+    if (!ctx2) return;
+    ctx2.fillStyle = '#020B18';
+    ctx2.fillRect(0, 0, cw, ch);
+    for (let i = 0; i < 85; i++) {
+      const x = Math.random() * cw;
+      const y = Math.random() * ch;
+      const r = Math.random() * 1.4 + 0.3;
+      ctx2.globalAlpha = Math.random() * 0.7 + 0.3;
+      ctx2.fillStyle = i % 4 === 0 ? '#FFE08A' : i % 6 === 0 ? '#8AC8FF' : '#FFF';
+      ctx2.beginPath();
+      ctx2.arc(x, y, r, 0, Math.PI * 2);
+      ctx2.fill();
+    }
+  }, []);
+
+  const isGalaxyPlanetUnlocked = (idx: number) => {
+    const p = GALAXY_PLANETS_3RO[idx];
+    if (!p) return false;
+    if (idx <= 2) return true; // 🌍 Tierra, 🌙 Luna, 🔴 Marte accesibles inicialmente
+    const prev = GALAXY_PLANETS_3RO[idx - 1];
+    if (!prev) return true;
+    if (prev.unit < 0) return isGalaxyPlanetUnlocked(idx - 1);
+    const prevPct = unitsProgressMap[prev.unit] || 0;
+    return prevPct >= 50;
+  };
 
   // Calcular progreso total del libro
   const totalUnits = book?.units?.length || 5;
@@ -186,7 +246,7 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
     } else if (action.lbl === 'P. Cotid.' || action.lbl === 'Examen') {
       setShowProblemasModal(true);
     } else if (action.lbl === 'Mascota') {
-      fedorSpeak('¡Hola! Soy Fedor, tu amigo en Matemáticas de 3° grado. ¡Vamos a seguir aprendiendo!');
+      setShowMascotaModal(true);
     } else {
       Swal.fire({
         title: `${action.ico} ${action.lbl}`,
@@ -350,188 +410,220 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
       </div>
 
       {/* ══════════════════════════════════════════════════════════
-          3. GALAXY MAP TRACK (Separada como Imagen 2)
+          3. GALAXY MAP TRACK (UNIVERSO FEDOR - EXACTO A LA IMAGEN)
       ══════════════════════════════════════════════════════════ */}
       <div className="section-card-wrap">
-        <div className="bg-gradient-to-r from-[#020B18] via-[#050E2A] to-[#0A1840] border border-blue-800/50 rounded-2xl p-4 md:p-5 shadow-lg relative overflow-hidden">
-          <div className="flex items-center justify-between mb-3">
-            <div>
-              <div className="text-[10px] font-black text-amber-400 uppercase tracking-widest">
-                🌌 Universo Fedor · 3er Grado
+        <div
+          className="universo-preview-card"
+          onClick={() => setShowUniversoModal(true)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              setShowUniversoModal(true);
+            }
+          }}
+          title="Toca para explorar el Universo Fedor"
+        >
+          {/* Mini Canvas Fondo Estelar */}
+          <canvas
+            ref={miniCanvasRef}
+            className="universo-preview-canvas"
+          />
+
+          <div style={{ position: 'relative', zIndex: 2, width: '100%' }}>
+            {/* Header: Titulo y Mejor Racha */}
+            <div className="universo-preview-header">
+              <div>
+                <div className="universo-subhead">
+                  <span className="text-[11px]">🌌</span>
+                  <span>UNIVERSO FEDOR - 3ER GRADO</span>
+                </div>
+                <div className="universo-mainhead">
+                  <span className="text-[16px]">🌌</span>
+                  <span>Galaxia 3° · Del Saber</span>
+                </div>
               </div>
-              <div className="text-base font-black text-white mt-0.5">
-                🌌 Galaxia 3° · Del Saber
+              <div className="universo-streak-wrap">
+                <div className="universo-streak-val">
+                  {streak} 🔥
+                </div>
+                <div className="universo-streak-lbl">
+                  mejor racha
+                </div>
               </div>
             </div>
-            <div className="text-right">
-              <div className="text-lg font-black text-orange-400 leading-none">
-                {streak}🔥
-              </div>
-              <div className="text-[10px] font-bold text-gray-400 mt-0.5">
-                mejor racha
-              </div>
-            </div>
-          </div>
 
-          {/* Planetary Track (Exactamente como Imagen 2 con todos los planetas) */}
-          <div className="flex items-center justify-between py-3 px-2 overflow-x-auto gap-2 md:gap-3 text-center scrollbar-none">
-            {/* 1. Tierra (100%) */}
-            <div className="flex flex-col items-center shrink-0">
-              <span className="text-2xl drop-shadow">🌍</span>
-              <span className="text-[10px] font-black text-emerald-400 mt-1">100%</span>
-            </div>
-            <span className="text-gray-500 text-xs tracking-widest shrink-0">·····</span>
+            {/* Fila de 14 Planetas idéntica a la Imagen */}
+            <div className="universo-planets-row">
+              {GALAXY_PLANETS_3RO.map((p, i) => {
+                const pct = p.unit >= 0 ? (unitsProgressMap[p.unit] || 0) : 100;
+                const unlocked = isGalaxyPlanetUnlocked(i);
+                const hasStarted = p.unit < 0 || pct > 0;
+                const iconSize = hasStarted ? 26 : unlocked ? 22 : 20;
+                const opa = hasStarted ? 1 : unlocked ? 0.75 : 0.35;
 
-            {/* 2. Luna / Sol */}
-            <div className="flex flex-col items-center shrink-0">
-              <span className="text-2xl drop-shadow">🌙</span>
-              <span className="text-[10px] font-black text-amber-300 mt-1">100%</span>
-            </div>
-            <span className="text-gray-500 text-xs tracking-widest shrink-0">·····</span>
+                return (
+                  <React.Fragment key={p.id}>
+                    <div
+                      className="universo-planet-col"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowUniversoModal(true);
+                      }}
+                    >
+                      <div
+                        className="universo-planet-icon-wrap"
+                        style={{
+                          fontSize: `${iconSize}px`,
+                          opacity: opa,
+                          filter: hasStarted
+                            ? `drop-shadow(0 0 7px ${p.glow})`
+                            : unlocked
+                            ? 'grayscale(0.15)'
+                            : 'grayscale(0.75)',
+                          animation: hasStarted ? `universoFloat ${2.2 + i * 0.25}s ease-in-out infinite` : 'none',
+                        }}
+                      >
+                        {p.icon}
+                        {!unlocked && p.unit >= 0 && (
+                          <div className="universo-lock-badge">
+                            🔒
+                          </div>
+                        )}
+                      </div>
 
-            {/* 3. Marte */}
-            <div className="flex flex-col items-center shrink-0">
-              <span className="text-2xl drop-shadow">🔴</span>
-              <span className="text-[10px] font-bold text-orange-400 mt-1">▶</span>
-            </div>
-            <span className="text-gray-600 text-xs tracking-widest shrink-0">·····</span>
+                      {pct > 0 ? (
+                        <div className="universo-pct-badge">
+                          {pct}%
+                        </div>
+                      ) : unlocked ? (
+                        <div className="universo-play-badge">
+                          ▶
+                        </div>
+                      ) : (
+                        <div className="universo-badge-placeholder" />
+                      )}
+                    </div>
 
-            {/* 4. Saturno */}
-            <div className="flex flex-col items-center shrink-0 opacity-75">
-              <span className="text-2xl">🪐</span>
-              <span className="text-[9px] font-bold text-gray-400 mt-1">🔒</span>
+                    {i < GALAXY_PLANETS_3RO.length - 1 && (
+                      <div
+                        className="universo-trail-line"
+                        style={{
+                          borderTopColor: `rgba(245, 197, 24, ${
+                            unlocked && hasStarted ? 0.55 : unlocked ? 0.25 : 0.12
+                          })`,
+                        }}
+                      />
+                    )}
+                  </React.Fragment>
+                );
+              })}
             </div>
-            <span className="text-gray-700 text-xs tracking-widest shrink-0">·····</span>
 
-            {/* 5. Planeta azul */}
-            <div className="flex flex-col items-center shrink-0 opacity-70">
-              <span className="text-2xl">🔵</span>
-              <span className="text-[9px] font-bold text-gray-400 mt-1">🔒</span>
+            {/* Footer text */}
+            <div className="universo-footer-hint">
+              👆 Toca para explorar · arrastra para viajar
             </div>
-            <span className="text-gray-700 text-xs tracking-widest shrink-0">·····</span>
-
-            {/* 6. Sol / Estrella */}
-            <div className="flex flex-col items-center shrink-0 opacity-60">
-              <span className="text-2xl">☀️</span>
-              <span className="text-[9px] font-bold text-gray-500 mt-1">🔒</span>
-            </div>
-            <span className="text-gray-800 text-xs tracking-widest shrink-0">·····</span>
-
-            {/* 7. Bloques 1234 */}
-            <div className="flex flex-col items-center shrink-0 opacity-55">
-              <span className="text-2xl">🔢</span>
-              <span className="text-[9px] font-bold text-gray-500 mt-1">🔒</span>
-            </div>
-            <span className="text-gray-800 text-xs tracking-widest shrink-0">·····</span>
-
-            {/* 8. Estrella saber */}
-            <div className="flex flex-col items-center shrink-0 opacity-50">
-              <span className="text-2xl">⭐</span>
-              <span className="text-[9px] font-bold text-gray-500 mt-1">🔒</span>
-            </div>
-            <span className="text-gray-800 text-xs tracking-widest shrink-0">·····</span>
-
-            {/* 9. Examen */}
-            <div className="flex flex-col items-center shrink-0 opacity-45">
-              <span className="text-2xl">📄</span>
-              <span className="text-[9px] font-bold text-gray-500 mt-1">🔒</span>
-            </div>
-            <span className="text-gray-800 text-xs tracking-widest shrink-0">·····</span>
-
-            {/* 10. Rayo */}
-            <div className="flex flex-col items-center shrink-0 opacity-45">
-              <span className="text-2xl">⚡</span>
-              <span className="text-[9px] font-bold text-gray-500 mt-1">🔒</span>
-            </div>
-            <span className="text-gray-800 text-xs tracking-widest shrink-0">·····</span>
-
-            {/* 11. Escuadra */}
-            <div className="flex flex-col items-center shrink-0 opacity-40">
-              <span className="text-2xl">📐</span>
-              <span className="text-[9px] font-bold text-gray-500 mt-1">🔒</span>
-            </div>
-            <span className="text-gray-800 text-xs tracking-widest shrink-0">·····</span>
-
-            {/* 12. Regla */}
-            <div className="flex flex-col items-center shrink-0 opacity-40">
-              <span className="text-2xl">📏</span>
-              <span className="text-[9px] font-bold text-gray-500 mt-1">🔒</span>
-            </div>
-            <span className="text-gray-800 text-xs tracking-widest shrink-0">·····</span>
-
-            {/* 13. Academia */}
-            <div className="flex flex-col items-center shrink-0 opacity-40">
-              <span className="text-2xl">🏫</span>
-              <span className="text-[9px] font-bold text-gray-500 mt-1">🔒</span>
-            </div>
-            <span className="text-gray-800 text-xs tracking-widest shrink-0">·····</span>
-
-            {/* 14. Balanza */}
-            <div className="flex flex-col items-center shrink-0 opacity-40">
-              <span className="text-2xl">⚖️</span>
-              <span className="text-[9px] font-bold text-gray-500 mt-1">🔒</span>
-            </div>
-          </div>
-
-          <div className="text-center text-[11px] font-bold text-gray-400 mt-2">
-            👆 Toca para explorar · arrastra para viajar
           </div>
         </div>
       </div>
 
       {/* ══════════════════════════════════════════════════════════
-          4. FILA DE BOTONES DE ACCESO RÁPIDO (Separada como Imagen 2)
+          4. BARRA DE NAVEGACIÓN HORIZONTAL (Exacta a la imagen)
       ══════════════════════════════════════════════════════════ */}
-      <div className="section-card-wrap grid grid-cols-5 gap-3 md:gap-4">
-        <button
-          type="button"
-          onClick={() => goScreen('home')}
-          className="quick-bar-btn"
-          style={{ background: 'linear-gradient(135deg, #FFB020, #E65100)' }}
-        >
-          <span className="text-2xl">🏠</span>
-          <span className="text-[10px] font-black text-white uppercase">Inicio</span>
-        </button>
+      <div className="section-card-wrap">
+        <div id="c57NavBar" className="c57-nav-bar">
+          {/* 1. Inicio */}
+          <div className="c57-nav-item">
+            <button
+              type="button"
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                goScreen('home');
+              }}
+              className="c57-nav-btn"
+              style={{ background: 'linear-gradient(135deg, #F5A623, #FFB066)' }}
+              title="Inicio"
+            >
+              <span>🏠</span>
+            </button>
+            <div className="c57-nav-label">
+              Inicio
+            </div>
+          </div>
 
-        <button
-          type="button"
-          onClick={() => goScreen('unit')}
-          className="quick-bar-btn"
-          style={{ background: 'linear-gradient(135deg, #26A69A, #00796B)' }}
-        >
-          <span className="text-2xl">📋</span>
-          <span className="text-[10px] font-black text-white uppercase">Menú</span>
-        </button>
+          {/* 2. Menú */}
+          <div className="c57-nav-item">
+            <button
+              type="button"
+              onClick={() => {
+                const u = document.querySelector('#screen-home .unit-grid, #unitList, .unit-card, [id="unidades-aprendizaje"]');
+                if (u) {
+                  u.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                  goScreen('unit');
+                }
+              }}
+              className="c57-nav-btn"
+              style={{ background: 'linear-gradient(135deg, #06A570, #4DD9A0)' }}
+              title="Menú"
+            >
+              <span>📋</span>
+            </button>
+            <div className="c57-nav-label">
+              Menú
+            </div>
+          </div>
 
-        <button
-          type="button"
-          onClick={() => fedorSpeak('¡Hola cadete! Soy Fedor, tu amigo astronauta. ¡Vamos con toda en 3°!')}
-          className="quick-bar-btn"
-          style={{ background: 'linear-gradient(135deg, #8E24AA, #4A148C)' }}
-        >
-          <span className="text-2xl">🐲</span>
-          <span className="text-[10px] font-black text-white uppercase">Fedor</span>
-        </button>
+          {/* 3. Fedor */}
+          <div className="c57-nav-item">
+            <button
+              type="button"
+              onClick={() => setShowMascotaModal(true)}
+              className="c57-nav-btn"
+              style={{ background: 'linear-gradient(135deg, #7B2FBE, #B983FF)' }}
+              title="Fedor"
+            >
+              <span>🐲</span>
+            </button>
+            <div className="c57-nav-label">
+              Fedor
+            </div>
+          </div>
 
-        <button
-          type="button"
-          onClick={() => goScreen('definiciones')}
-          className="quick-bar-btn"
-          style={{ background: 'linear-gradient(135deg, #0288D1, #01579B)' }}
-        >
-          <span className="text-2xl">📖</span>
-          <span className="text-[10px] font-black text-white uppercase">Definic.</span>
-        </button>
+          {/* 4. Definic. */}
+          <div className="c57-nav-item">
+            <button
+              type="button"
+              onClick={() => goScreen('definiciones')}
+              className="c57-nav-btn"
+              style={{ background: 'linear-gradient(135deg, #3AA0FF, #7BC6FF)' }}
+              title="Definic."
+            >
+              <span>📚</span>
+            </button>
+            <div className="c57-nav-label">
+              Definic.
+            </div>
+          </div>
 
-        <button
-          type="button"
-          onClick={() => goScreen('estandares')}
-          className="quick-bar-btn"
-          style={{ background: 'linear-gradient(135deg, #7CB342, #33691E)' }}
-        >
-          <span className="text-2xl">🧑‍🏫</span>
-          <span className="text-[10px] font-black text-white uppercase">Guía Doc.</span>
-        </button>
+          {/* 5. Guía Doc. */}
+          <div className="c57-nav-item">
+            <button
+              type="button"
+              onClick={() => setShowGuiaModal(true)}
+              className="c57-nav-btn"
+              style={{ background: 'linear-gradient(135deg, #16876A, #24C496)' }}
+              title="Guía Doc."
+            >
+              <span>👩‍🏫</span>
+            </button>
+            <div className="c57-nav-label">
+              Guía Doc.
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* ══════════════════════════════════════════════════════════
@@ -1056,6 +1148,31 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
         }}
       />
 
+      {/* ══ Modal de Universo Fedor Interactivo (Animación HTML) ══ */}
+      <UniversoFedorModal3ro
+        isOpen={showUniversoModal}
+        onClose={() => setShowUniversoModal(false)}
+        onSelectUnit={(uIdx) => {
+          setShowUniversoModal(false);
+          selectUnit(uIdx);
+        }}
+        unitsProgress={unitsProgressMap}
+        totalXP={totalXP}
+        userAvatar={student?.avatar || '🧑‍🚀'}
+      />
+
+      {/* ══ Modal de Mascota Espacial (Astro el perro espacial) ══ */}
+      <MascotaModal3ro
+        isOpen={showMascotaModal}
+        onClose={() => setShowMascotaModal(false)}
+      />
+
+      {/* ══ Modal de Guía Docente ══ */}
+      <GuiaDocenteModal3ro
+        isOpen={showGuiaModal}
+        onClose={() => setShowGuiaModal(false)}
+      />
+
       <style jsx>{`
         .home-screen-shell {
           width: 100%;
@@ -1214,27 +1331,244 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
           transform: translateX(3px);
         }
 
-        .quick-bar-btn {
+        .universo-preview-card {
+          background: linear-gradient(180deg, #020B18 0%, #050E2A 50%, #0A1840 100%);
+          border-radius: 20px;
+          padding: 1rem 1.2rem 0.85rem;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          border: 1px solid rgba(59, 130, 246, 0.25);
+          transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        }
+
+        .universo-preview-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 14px 44px rgba(10, 24, 64, 0.8), 0 0 24px rgba(77, 166, 255, 0.2);
+          border-color: rgba(245, 197, 24, 0.5);
+        }
+
+        .universo-preview-canvas {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+        }
+
+        .universo-preview-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 0.55rem;
+        }
+
+        .universo-subhead {
+          font-size: 9.5px;
+          font-weight: 900;
+          color: #F5C518;
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .universo-mainhead {
+          font-size: 15.5px;
+          font-weight: 900;
+          color: #FFFFFF;
+          margin-top: 2px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          letter-spacing: 0.01em;
+        }
+
+        .universo-streak-wrap {
+          text-align: right;
+        }
+
+        .universo-streak-val {
+          font-size: 18px;
+          font-weight: 900;
+          color: #FF8C2A;
+          line-height: 1;
+        }
+
+        .universo-streak-lbl {
+          font-size: 9px;
+          color: rgba(255, 255, 255, 0.45);
+          font-weight: 700;
+          margin-top: 2px;
+        }
+
+        .universo-planets-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0.35rem 0;
+          width: 100%;
+          gap: 2px;
+        }
+
+        .universo-planet-col {
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: center;
-          gap: 4px;
-          padding: 12px 6px;
-          border-radius: 16px;
-          border: none;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          gap: 3px;
           cursor: pointer;
-          transition: transform 0.15s ease, box-shadow 0.15s ease;
+          flex: 1;
+          min-width: 0;
+          position: relative;
         }
 
-        .quick-bar-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+        .universo-planet-icon-wrap {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          line-height: 1;
+          transition: transform 0.2s ease;
         }
 
-        .quick-bar-btn:active {
+        .universo-planet-col:hover .universo-planet-icon-wrap {
+          transform: scale(1.18);
+        }
+
+        .universo-lock-badge {
+          position: absolute;
+          top: -4px;
+          right: -5px;
+          font-size: 9px;
+          background: rgba(0, 0, 0, 0.75);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          border-radius: 50%;
+          width: 14px;
+          height: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          line-height: 1;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .universo-pct-badge {
+          font-size: 7.5px;
+          font-weight: 900;
+          color: #F5C518;
+          background: rgba(0, 0, 0, 0.65);
+          border: 1px solid rgba(245, 197, 24, 0.3);
+          border-radius: 4px;
+          padding: 1px 3.5px;
+          line-height: 1.1;
+          box-shadow: 0 0 6px rgba(245, 197, 24, 0.35);
+          white-space: nowrap;
+        }
+
+        .universo-play-badge {
+          height: 13px;
+          font-size: 7.5px;
+          font-weight: 800;
+          color: rgba(255, 255, 255, 0.45);
+          line-height: 13px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .universo-badge-placeholder {
+          height: 13px;
+        }
+
+        .universo-trail-line {
+          flex: 1 1 0;
+          min-width: 4px;
+          max-width: 26px;
+          height: 0;
+          border-top: 2px dotted rgba(245, 197, 24, 0.25);
+          align-self: center;
+          margin-bottom: 13px;
+        }
+
+        .universo-footer-hint {
+          text-align: center;
+          font-size: 10.5px;
+          color: rgba(255, 255, 255, 0.35);
+          font-weight: 700;
+          margin-top: 0.4rem;
+          letter-spacing: 0.02em;
+        }
+
+        @keyframes universoFloat {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-3px);
+          }
+        }
+
+        .c57-nav-bar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 0.5rem;
+          border-radius: 16px;
+          padding: 0.85rem 1.25rem;
+          background: linear-gradient(135deg, #0E1A3C 0%, #1A0A3C 50%, #0A1428 100%);
+          box-shadow: 0 8px 28px rgba(14, 8, 48, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          font-family: 'Nunito', sans-serif;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .c57-nav-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 5px;
+          flex: 1;
+          min-width: 0;
+        }
+
+        .c57-nav-btn {
+          width: 52px;
+          height: 52px;
+          border-radius: 16px;
+          color: #ffffff;
+          border: none;
+          font-size: 24px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), inset 0 -3px 0 rgba(0, 0, 0, 0.15), inset 0 2px 0 rgba(255, 255, 255, 0.25);
+          transition: transform 0.18s ease, box-shadow 0.18s ease;
+          font-family: 'Nunito', sans-serif;
+          padding: 0;
+          outline: none;
+        }
+
+        .c57-nav-btn:hover {
+          transform: scale(1.1);
+          box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35), inset 0 -3px 0 rgba(0, 0, 0, 0.15), inset 0 2px 0 rgba(255, 255, 255, 0.35);
+        }
+
+        .c57-nav-btn:active {
           transform: scale(0.95);
+        }
+
+        .c57-nav-label {
+          font-size: 9.5px;
+          font-weight: 800;
+          color: rgba(255, 255, 255, 0.85);
+          text-align: center;
+          letter-spacing: 0.01em;
+          line-height: 1.1;
+          white-space: nowrap;
         }
 
         .unit-card {
