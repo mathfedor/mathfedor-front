@@ -1,0 +1,2019 @@
+{
+  "PC_NIVELES": [
+    {
+      "id": 1,
+      "nombre": "Nivel 1 — Solo Adición",
+      "icon": "➕",
+      "color": "#16876A",
+      "bgColor": "#DCF5EE",
+      "textColor": "#074F3A",
+      "desc": "Suma cantidades de dinero, objetos y situaciones de compras escolares.",
+      "ejemplos": [
+        {
+          "num": 1,
+          "titulo": "Frutas en la tienda",
+          "enunciado": "En la tienda hay 3 manzanas. Llegan 4 manzanas más. ¿Cuántas manzanas hay en total?",
+          "operacion": "3 + 4 = 7",
+          "resultado": 7,
+          "unidad": "manzanas",
+          "proceso": "• Tenemos: 3 manzanas\n• Llegan: 4 manzanas más\n• Sumamos: 3 + 4 = 7 manzanas"
+        },
+        {
+          "num": 2,
+          "titulo": "Lápices de colores",
+          "enunciado": "Carlos tiene 5 lápices y compra 8 más. ¿Cuántos lápices tiene Carlos?",
+          "operacion": "5 + 8 = 13",
+          "resultado": 13,
+          "unidad": "lápices",
+          "proceso": "• Carlos tiene: 5 lápices\n• Compra: 8 lápices más\n• Sumamos: 5 + 8 = 13 lápices"
+        },
+        {
+          "num": 3,
+          "titulo": "Panes del día",
+          "enunciado": "Una panadería vendió 6 panes en la mañana y 12 panes en la tarde. ¿Cuántos panes vendió?",
+          "operacion": "6 + 12 = 18",
+          "resultado": 18,
+          "unidad": "panes",
+          "proceso": "• Mañana: 6 panes\n• Tarde: 12 panes\n• Total: 6 + 12 = 18 panes"
+        },
+        {
+          "num": 4,
+          "titulo": "Dinero en la alcancía",
+          "enunciado": "Lucía tiene $9 y su mamá le da $7 más. ¿Cuánto dinero tiene Lucía?",
+          "operacion": "9 + 7 = 16",
+          "resultado": 16,
+          "unidad": "pesos",
+          "proceso": "• Lucía tenía: $9\n• Mamá le dio: $7\n• Total: 9 + 7 = $16"
+        },
+        {
+          "num": 5,
+          "titulo": "Chocolates en la caja",
+          "enunciado": "En una caja hay 14 chocolates y llegan 15 más. ¿Cuántos chocolates hay en total?",
+          "operacion": "14 + 15 = 29",
+          "resultado": 29,
+          "unidad": "chocolates",
+          "proceso": "• Había: 14 chocolates\n• Llegaron: 15 más\n• Total: 14 + 15 = 29 chocolates"
+        },
+        {
+          "num": 6,
+          "titulo": "Compras escolares",
+          "enunciado": "Pedro compra un borrador por $20 y una regla por $35. ¿Cuánto pagó en total?",
+          "operacion": "20 + 35 = 55",
+          "resultado": 55,
+          "unidad": "pesos",
+          "proceso": "• Borrador: $20\n• Regla: $35\n• Total: 20 + 35 = $55"
+        },
+        {
+          "num": 7,
+          "titulo": "Botellas de agua",
+          "enunciado": "El almacén tiene 48 botellas y recibe 25 más. ¿Cuántas botellas hay?",
+          "operacion": "48 + 25 = 73",
+          "resultado": 73,
+          "unidad": "botellas",
+          "proceso": "• Había: 48 botellas\n• Llegaron: 25 botellas\n• Total: 48 + 25 = 73 botellas"
+        },
+        {
+          "num": 8,
+          "titulo": "Ventas de la tienda",
+          "enunciado": "La tienda vendió $156 el lunes y $245 el martes. ¿Cuánto vendió en total?",
+          "operacion": "156 + 245 = 401",
+          "resultado": 401,
+          "unidad": "pesos",
+          "proceso": "• Lunes: $156\n• Martes: $245\n• Total: 156 + 245 = $401"
+        },
+        {
+          "num": 9,
+          "titulo": "Gastos del mes",
+          "enunciado": "Una familia gasta $324 en mercado y $168 en servicios. ¿Cuánto gasta en total?",
+          "operacion": "324 + 168 = 492",
+          "resultado": 492,
+          "unidad": "pesos",
+          "proceso": "• Mercado: $324\n• Servicios: $168\n• Total: 324 + 168 = $492"
+        },
+        {
+          "num": 10,
+          "titulo": "Recaudación del colegio",
+          "enunciado": "El colegio recauda $456 en actividad y $378 en bingo. ¿Cuánto recaudó?",
+          "operacion": "456 + 378 = 834",
+          "resultado": 834,
+          "unidad": "pesos",
+          "proceso": "• Actividad: $456\n• Bingo: $378\n• Total: 456 + 378 = $834"
+        }
+      ],
+      "ejercicios": [
+        {
+          "num": 1,
+          "enunciado": "Ana tiene 3 manzanas. Le regalan 4 manzanas más. ¿Cuántas manzanas tiene Ana?",
+          "opts": [
+            "7",
+            "5",
+            "6",
+            "8"
+          ],
+          "ans": 0,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "3 + 4 = 7 manzanas",
+          "proceso": "• Ana tiene: 3 manzanas\n• Le regalan: 4 más\n• Resultado: 3 + 4 = 7"
+        },
+        {
+          "num": 2,
+          "enunciado": "Hay 5 perros en el parque. Llegan 6 perros más. ¿Cuántos perros hay en el parque?",
+          "opts": [
+            "9",
+            "11",
+            "10",
+            "12"
+          ],
+          "ans": 1,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "5 + 6 = 11 perros",
+          "proceso": "• Perros al inicio: 5\n• Llegan: 6 más\n• Total: 5 + 6 = 11"
+        },
+        {
+          "num": 3,
+          "enunciado": "Juan compra 4 lápices y 5 borradores. ¿Cuántos útiles compró en total?",
+          "opts": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "ans": 2,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "4 + 5 = 9 útiles",
+          "proceso": "• Lápices: 4\n• Borradores: 5\n• Total útiles: 4 + 5 = 9"
+        },
+        {
+          "num": 4,
+          "enunciado": "En la canasta hay 7 naranjas y 8 limones. ¿Cuántas frutas hay en total?",
+          "opts": [
+            "13",
+            "14",
+            "16",
+            "15"
+          ],
+          "ans": 3,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "7 + 8 = 15 frutas",
+          "proceso": "• Naranjas: 7\n• Limones: 8\n• Total frutas: 7 + 8 = 15"
+        },
+        {
+          "num": 5,
+          "enunciado": "Tomás tiene $9. Su abuela le da $8 más. ¿Cuántos pesos tiene Tomás?",
+          "opts": [
+            "17",
+            "15",
+            "16",
+            "18"
+          ],
+          "ans": 0,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "9 + 8 = $17",
+          "proceso": "• Tenía: $9\n• Le dieron: $8\n• Total: 9 + 8 = $17"
+        },
+        {
+          "num": 6,
+          "enunciado": "Sofía compra un cuaderno por $25 y un lápiz por $18. ¿Cuánto pagó en total?",
+          "opts": [
+            "41",
+            "43",
+            "42",
+            "44"
+          ],
+          "ans": 1,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "25 + 18 = $43",
+          "proceso": "• Cuaderno: $25\n• Lápiz: $18\n• Total: 25 + 18 = $43"
+        },
+        {
+          "num": 7,
+          "enunciado": "El lunes vendieron 34 jugos y el martes 29 jugos. ¿Cuántos jugos vendieron en total?",
+          "opts": [
+            "61",
+            "62",
+            "63",
+            "64"
+          ],
+          "ans": 2,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "34 + 29 = 63 jugos",
+          "proceso": "• Lunes: 34 jugos\n• Martes: 29 jugos\n• Total: 34 + 29 = 63"
+        },
+        {
+          "num": 8,
+          "enunciado": "Hay 46 niñas y 37 niños en la escuela. ¿Cuántos estudiantes hay en total?",
+          "opts": [
+            "81",
+            "82",
+            "84",
+            "83"
+          ],
+          "ans": 3,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "46 + 37 = 83 estudiantes",
+          "proceso": "• Niñas: 46\n• Niños: 37\n• Total: 46 + 37 = 83"
+        },
+        {
+          "num": 9,
+          "enunciado": "Una tienda tiene $58 en caja y le pagan $38 más. ¿Cuánto hay en caja?",
+          "opts": [
+            "96",
+            "94",
+            "95",
+            "97"
+          ],
+          "ans": 0,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "58 + 38 = $96",
+          "proceso": "• En caja: $58\n• Le pagan: $38\n• Total: 58 + 38 = $96"
+        },
+        {
+          "num": 10,
+          "enunciado": "María compra arroz por $47 y aceite por $56. ¿Cuánto gastó?",
+          "opts": [
+            "101",
+            "103",
+            "102",
+            "104"
+          ],
+          "ans": 1,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "47 + 56 = $103",
+          "proceso": "• Arroz: $47\n• Aceite: $56\n• Total: 47 + 56 = $103"
+        },
+        {
+          "num": 11,
+          "enunciado": "La tienda escolar vendió 125 lápices y 146 borradores. ¿Cuántos útiles vendió?",
+          "opts": [
+            "269",
+            "270",
+            "271",
+            "272"
+          ],
+          "ans": 2,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "125 + 146 = 271 útiles",
+          "proceso": "• Lápices: 125\n• Borradores: 146\n• Total: 125 + 146 = 271"
+        },
+        {
+          "num": 12,
+          "enunciado": "Carlos ahorra $234 en enero y $168 en febrero. ¿Cuánto ha ahorrado?",
+          "opts": [
+            "400",
+            "401",
+            "403",
+            "402"
+          ],
+          "ans": 3,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "234 + 168 = $402",
+          "proceso": "• Enero: $234\n• Febrero: $168\n• Total: 234 + 168 = $402"
+        },
+        {
+          "num": 13,
+          "enunciado": "El supermercado vende 315 bolsas el sábado y 178 el domingo. ¿Cuántas bolsas?",
+          "opts": [
+            "493",
+            "491",
+            "492",
+            "494"
+          ],
+          "ans": 0,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "315 + 178 = 493 bolsas",
+          "proceso": "• Sábado: 315 bolsas\n• Domingo: 178 bolsas\n• Total: 315 + 178 = 493"
+        },
+        {
+          "num": 14,
+          "enunciado": "Una familia gasta $256 en comida y $247 en servicios. ¿Cuánto gasta en total?",
+          "opts": [
+            "501",
+            "503",
+            "502",
+            "504"
+          ],
+          "ans": 1,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "256 + 247 = $503",
+          "proceso": "• Comida: $256\n• Servicios: $247\n• Total: 256 + 247 = $503"
+        },
+        {
+          "num": 15,
+          "enunciado": "El colegio tiene 438 libros de matemáticas y 127 de español. ¿Cuántos libros hay?",
+          "opts": [
+            "563",
+            "564",
+            "565",
+            "566"
+          ],
+          "ans": 2,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "438 + 127 = 565 libros",
+          "proceso": "• Matemáticas: 438\n• Español: 127\n• Total: 438 + 127 = 565"
+        },
+        {
+          "num": 16,
+          "enunciado": "Una empresa gana $456 el lunes y $378 el martes. ¿Cuánto ganó en total?",
+          "opts": [
+            "831",
+            "832",
+            "835",
+            "834"
+          ],
+          "ans": 3,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "456 + 378 = $834",
+          "proceso": "• Lunes: $456\n• Martes: $378\n• Total: 456 + 378 = $834"
+        },
+        {
+          "num": 17,
+          "enunciado": "Una fábrica produce 567 unidades el lunes y 234 el martes. ¿Cuántas en total?",
+          "opts": [
+            "801",
+            "799",
+            "800",
+            "802"
+          ],
+          "ans": 0,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "567 + 234 = 801 unidades",
+          "proceso": "• Lunes: 567\n• Martes: 234\n• Total: 567 + 234 = 801"
+        },
+        {
+          "num": 18,
+          "enunciado": "El almacén recibe $348 el viernes y $456 el sábado. ¿Cuánto recibió?",
+          "opts": [
+            "802",
+            "804",
+            "803",
+            "805"
+          ],
+          "ans": 1,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "348 + 456 = $804",
+          "proceso": "• Viernes: $348\n• Sábado: $456\n• Total: 348 + 456 = $804"
+        },
+        {
+          "num": 19,
+          "enunciado": "El colegio recauda $625 en venta y $278 en donaciones. ¿Cuánto en total?",
+          "opts": [
+            "901",
+            "902",
+            "903",
+            "904"
+          ],
+          "ans": 2,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "625 + 278 = $903",
+          "proceso": "• Ventas: $625\n• Donaciones: $278\n• Total: 625 + 278 = $903"
+        },
+        {
+          "num": 20,
+          "enunciado": "Una tienda vende $745 el primer día y $256 el segundo. ¿Cuánto vendió en total?",
+          "opts": [
+            "998",
+            "999",
+            "1000",
+            "1001"
+          ],
+          "ans": 3,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "745 + 256 = $1001",
+          "proceso": "• Día 1: $745\n• Día 2: $256\n• Total: 745 + 256 = $1001"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "nombre": "Nivel 2 — Solo Sustracción",
+      "icon": "➖",
+      "color": "#0E6BA8",
+      "bgColor": "#E8F0FF",
+      "textColor": "#1A3A6A",
+      "desc": "Resta dinero en situaciones de cambio, gastos y diferencias.",
+      "ejemplos": [
+        {
+          "num": 1,
+          "titulo": "Cambio en la tienda",
+          "enunciado": "Daniela paga $10 por una fruta que vale $3. ¿Cuánto le devuelven de cambio?",
+          "operacion": "10 - 3 = 7",
+          "resultado": 7,
+          "unidad": "pesos",
+          "proceso": "• Paga: $10\n• Vale: $3\n• Cambio: 10 - 3 = $7"
+        },
+        {
+          "num": 2,
+          "titulo": "Chocolates que sobran",
+          "enunciado": "Había 18 chocolates. Se vendieron 6. ¿Cuántos chocolates quedan?",
+          "operacion": "18 - 6 = 12",
+          "resultado": 12,
+          "unidad": "chocolates",
+          "proceso": "• Había: 18 chocolates\n• Se vendieron: 6\n• Quedan: 18 - 6 = 12"
+        },
+        {
+          "num": 3,
+          "titulo": "Dinero que queda",
+          "enunciado": "Luis tenía $25 y gastó $9 en un helado. ¿Cuánto dinero le queda?",
+          "operacion": "25 - 9 = 16",
+          "resultado": 16,
+          "unidad": "pesos",
+          "proceso": "• Tenía: $25\n• Gastó: $9\n• Le queda: 25 - 9 = $16"
+        },
+        {
+          "num": 4,
+          "titulo": "Útiles usados",
+          "enunciado": "Sandra tiene 35 hojas de papel y usa 17. ¿Cuántas hojas le quedan?",
+          "operacion": "35 - 17 = 18",
+          "resultado": 18,
+          "unidad": "hojas",
+          "proceso": "• Tenía: 35 hojas\n• Usó: 17 hojas\n• Le quedan: 35 - 17 = 18"
+        },
+        {
+          "num": 5,
+          "titulo": "Cajas en el almacén",
+          "enunciado": "El almacén tenía 50 cajas. Salieron 24. ¿Cuántas cajas quedan?",
+          "operacion": "50 - 24 = 26",
+          "resultado": 26,
+          "unidad": "cajas",
+          "proceso": "• Había: 50 cajas\n• Salieron: 24\n• Quedan: 50 - 24 = 26"
+        },
+        {
+          "num": 6,
+          "titulo": "Presupuesto escolar",
+          "enunciado": "El colegio tiene $80 y gasta $37 en útiles. ¿Cuánto presupuesto queda?",
+          "operacion": "80 - 37 = 43",
+          "resultado": 43,
+          "unidad": "pesos",
+          "proceso": "• Presupuesto: $80\n• Gasto: $37\n• Queda: 80 - 37 = $43"
+        },
+        {
+          "num": 7,
+          "titulo": "Ventas del día",
+          "enunciado": "La panadería vendía 100 panes y vendió 45. ¿Cuántos panes quedan?",
+          "operacion": "100 - 45 = 55",
+          "resultado": 55,
+          "unidad": "panes",
+          "proceso": "• Tenía: 100 panes\n• Vendió: 45\n• Quedan: 100 - 45 = 55"
+        },
+        {
+          "num": 8,
+          "titulo": "Ahorro mensual",
+          "enunciado": "Rosa tiene $250 y gasta $138 en el mercado. ¿Cuánto le queda?",
+          "operacion": "250 - 138 = 112",
+          "resultado": 112,
+          "unidad": "pesos",
+          "proceso": "• Tenía: $250\n• Gastó: $138\n• Le queda: 250 - 138 = $112"
+        },
+        {
+          "num": 9,
+          "titulo": "Producción de la fábrica",
+          "enunciado": "La fábrica produjo 400 objetos y vendió 247. ¿Cuántos objetos le quedan?",
+          "operacion": "400 - 247 = 153",
+          "resultado": 153,
+          "unidad": "objetos",
+          "proceso": "• Producción: 400\n• Vendidos: 247\n• Quedan: 400 - 247 = 153"
+        },
+        {
+          "num": 10,
+          "titulo": "Caja registradora",
+          "enunciado": "La caja tenía $800 y se pagaron $456 de gastos. ¿Cuánto hay en la caja?",
+          "operacion": "800 - 456 = 344",
+          "resultado": 344,
+          "unidad": "pesos",
+          "proceso": "• En caja: $800\n• Gastos: $456\n• Queda: 800 - 456 = $344"
+        }
+      ],
+      "ejercicios": [
+        {
+          "num": 1,
+          "enunciado": "Ana tiene 9 manzanas. Come 4. ¿Cuántas manzanas le quedan?",
+          "opts": [
+            "5",
+            "3",
+            "4",
+            "6"
+          ],
+          "ans": 0,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "9 - 4 = 5 manzanas",
+          "proceso": "• Tenía: 9 manzanas\n• Comió: 4\n• Quedan: 9 - 4 = 5"
+        },
+        {
+          "num": 2,
+          "enunciado": "Hay 12 lápices en un estuche. Se pierden 5. ¿Cuántos lápices quedan?",
+          "opts": [
+            "5",
+            "7",
+            "8",
+            "6"
+          ],
+          "ans": 1,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "12 - 5 = 7 lápices",
+          "proceso": "• Había: 12 lápices\n• Se perdieron: 5\n• Quedan: 12 - 5 = 7"
+        },
+        {
+          "num": 3,
+          "enunciado": "Carlos tiene $16 y gasta $7 en un jugo. ¿Cuánto dinero le queda?",
+          "opts": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "ans": 2,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "16 - 7 = $9",
+          "proceso": "• Tenía: $16\n• Gastó: $7\n• Le queda: 16 - 7 = $9"
+        },
+        {
+          "num": 4,
+          "enunciado": "En la tienda hay 19 panes. Se venden 8. ¿Cuántos panes quedan?",
+          "opts": [
+            "9",
+            "10",
+            "12",
+            "11"
+          ],
+          "ans": 3,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "19 - 8 = 11 panes",
+          "proceso": "• Había: 19 panes\n• Vendidos: 8\n• Quedan: 19 - 8 = 11"
+        },
+        {
+          "num": 5,
+          "enunciado": "Rosa tenía $20. Compra un cuaderno por $7. ¿Cuánto le queda?",
+          "opts": [
+            "13",
+            "11",
+            "12",
+            "14"
+          ],
+          "ans": 0,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "20 - 7 = $13",
+          "proceso": "• Tenía: $20\n• Gastó: $7\n• Le queda: 20 - 7 = $13"
+        },
+        {
+          "num": 6,
+          "enunciado": "El almacén tenía 35 botellas y vendió 18. ¿Cuántas botellas quedan?",
+          "opts": [
+            "15",
+            "17",
+            "16",
+            "18"
+          ],
+          "ans": 1,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "35 - 18 = 17 botellas",
+          "proceso": "• Había: 35 botellas\n• Vendidas: 18\n• Quedan: 35 - 18 = 17"
+        },
+        {
+          "num": 7,
+          "enunciado": "Luis tiene $48 y paga $23 de deuda. ¿Cuánto le queda?",
+          "opts": [
+            "23",
+            "24",
+            "25",
+            "26"
+          ],
+          "ans": 2,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "48 - 23 = $25",
+          "proceso": "• Tenía: $48\n• Pagó: $23\n• Le queda: 48 - 23 = $25"
+        },
+        {
+          "num": 8,
+          "enunciado": "Había 67 estudiantes en el patio. Se van 39. ¿Cuántos quedan?",
+          "opts": [
+            "25",
+            "26",
+            "27",
+            "28"
+          ],
+          "ans": 3,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "67 - 39 = 28 estudiantes",
+          "proceso": "• Había: 67\n• Se fueron: 39\n• Quedan: 67 - 39 = 28"
+        },
+        {
+          "num": 9,
+          "enunciado": "La tienda tenía $84. Paga $47 de gastos. ¿Cuánto queda en caja?",
+          "opts": [
+            "37",
+            "35",
+            "36",
+            "38"
+          ],
+          "ans": 0,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "84 - 47 = $37",
+          "proceso": "• En caja: $84\n• Pagó: $47\n• Queda: 84 - 47 = $37"
+        },
+        {
+          "num": 10,
+          "enunciado": "Sofía tenía $95 y gastó $38 en ropa. ¿Cuánto le queda?",
+          "opts": [
+            "55",
+            "57",
+            "56",
+            "58"
+          ],
+          "ans": 1,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "95 - 38 = $57",
+          "proceso": "• Tenía: $95\n• Gastó: $38\n• Le queda: 95 - 38 = $57"
+        },
+        {
+          "num": 11,
+          "enunciado": "El almacén tenía 150 unidades y vendió 78. ¿Cuántas unidades quedan?",
+          "opts": [
+            "70",
+            "71",
+            "72",
+            "73"
+          ],
+          "ans": 2,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "150 - 78 = 72 unidades",
+          "proceso": "• Había: 150\n• Vendidas: 78\n• Quedan: 150 - 78 = 72"
+        },
+        {
+          "num": 12,
+          "enunciado": "El colegio tenía $245 y gastó $138 en materiales. ¿Cuánto queda?",
+          "opts": [
+            "104",
+            "105",
+            "106",
+            "107"
+          ],
+          "ans": 3,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "245 - 138 = $107",
+          "proceso": "• Tenía: $245\n• Gastó: $138\n• Queda: 245 - 138 = $107"
+        },
+        {
+          "num": 13,
+          "enunciado": "La fábrica tenía 320 cajas y despachó 145. ¿Cuántas cajas quedan?",
+          "opts": [
+            "175",
+            "173",
+            "174",
+            "176"
+          ],
+          "ans": 0,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "320 - 145 = 175 cajas",
+          "proceso": "• Había: 320 cajas\n• Despachadas: 145\n• Quedan: 320 - 145 = 175"
+        },
+        {
+          "num": 14,
+          "enunciado": "Pedro tenía $456 y pagó $234 de arriendo. ¿Cuánto le queda?",
+          "opts": [
+            "220",
+            "222",
+            "221",
+            "223"
+          ],
+          "ans": 1,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "456 - 234 = $222",
+          "proceso": "• Tenía: $456\n• Pagó: $234\n• Le queda: 456 - 234 = $222"
+        },
+        {
+          "num": 15,
+          "enunciado": "La tienda tenía $500 y gastó $167 en mercancía. ¿Cuánto queda?",
+          "opts": [
+            "331",
+            "332",
+            "333",
+            "334"
+          ],
+          "ans": 2,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "500 - 167 = $333",
+          "proceso": "• Tenía: $500\n• Gastó: $167\n• Queda: 500 - 167 = $333"
+        },
+        {
+          "num": 16,
+          "enunciado": "El almacén tenía $650 y pagó $278 de deuda. ¿Cuánto queda en caja?",
+          "opts": [
+            "369",
+            "370",
+            "371",
+            "372"
+          ],
+          "ans": 3,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "650 - 278 = $372",
+          "proceso": "• Tenía: $650\n• Pagó: $278\n• Queda: 650 - 278 = $372"
+        },
+        {
+          "num": 17,
+          "enunciado": "El colegio tenía 730 libros y prestó 456. ¿Cuántos libros quedan?",
+          "opts": [
+            "274",
+            "272",
+            "273",
+            "275"
+          ],
+          "ans": 0,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "730 - 456 = 274 libros",
+          "proceso": "• Había: 730 libros\n• Prestados: 456\n• Quedan: 730 - 456 = 274"
+        },
+        {
+          "num": 18,
+          "enunciado": "La fábrica tenía $800 y gastó $347 en insumos. ¿Cuánto queda?",
+          "opts": [
+            "451",
+            "453",
+            "452",
+            "454"
+          ],
+          "ans": 1,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "800 - 347 = $453",
+          "proceso": "• Tenía: $800\n• Gastó: $347\n• Queda: 800 - 347 = $453"
+        },
+        {
+          "num": 19,
+          "enunciado": "El almacén vendió $900 en total y gastó $456. ¿Cuánto ganó?",
+          "opts": [
+            "442",
+            "443",
+            "444",
+            "445"
+          ],
+          "ans": 2,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "900 - 456 = $444",
+          "proceso": "• Vendió: $900\n• Gastos: $456\n• Ganancia: 900 - 456 = $444"
+        },
+        {
+          "num": 20,
+          "enunciado": "La tienda tenía $950 y pagó $678 de deudas. ¿Cuánto queda?",
+          "opts": [
+            "269",
+            "270",
+            "271",
+            "272"
+          ],
+          "ans": 3,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "950 - 678 = $272",
+          "proceso": "• Tenía: $950\n• Pagó: $678\n• Queda: 950 - 678 = $272"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "nombre": "Nivel 3 — Solo Multiplicación",
+      "icon": "✖️",
+      "color": "#8A2BE2",
+      "bgColor": "#EEEDFE",
+      "textColor": "#2A1070",
+      "desc": "Multiplica en situaciones de compras en cantidad y distribución.",
+      "ejemplos": [
+        {
+          "num": 1,
+          "titulo": "Grupos de manzanas",
+          "enunciado": "Hay 3 bolsas con 4 manzanas cada una. ¿Cuántas manzanas hay en total?",
+          "operacion": "3 × 4 = 12",
+          "resultado": 12,
+          "unidad": "manzanas",
+          "proceso": "• 3 bolsas\n• 4 manzanas por bolsa\n• Total: 3 × 4 = 12 manzanas"
+        },
+        {
+          "num": 2,
+          "titulo": "Cajas de leche",
+          "enunciado": "El almacén recibe 5 cajas con 6 bolsas de leche cada una. ¿Cuántas bolsas hay?",
+          "operacion": "5 × 6 = 30",
+          "resultado": 30,
+          "unidad": "bolsas",
+          "proceso": "• 5 cajas\n• 6 bolsas por caja\n• Total: 5 × 6 = 30 bolsas"
+        },
+        {
+          "num": 3,
+          "titulo": "Chocolates en paquetes",
+          "enunciado": "Hay 7 paquetes con 8 chocolates cada uno. ¿Cuántos chocolates hay?",
+          "operacion": "7 × 8 = 56",
+          "resultado": 56,
+          "unidad": "chocolates",
+          "proceso": "• 7 paquetes\n• 8 chocolates por paquete\n• Total: 7 × 8 = 56 chocolates"
+        },
+        {
+          "num": 4,
+          "titulo": "Precio de los cuadernos",
+          "enunciado": "4 cuadernos cuestan $9 cada uno. ¿Cuánto cuestan todos?",
+          "operacion": "4 × 9 = 36",
+          "resultado": 36,
+          "unidad": "pesos",
+          "proceso": "• 4 cuadernos\n• $9 cada uno\n• Total: 4 × 9 = $36"
+        },
+        {
+          "num": 5,
+          "titulo": "Salones y estudiantes",
+          "enunciado": "Hay 6 salones con 7 estudiantes cada uno. ¿Cuántos estudiantes hay?",
+          "operacion": "6 × 7 = 42",
+          "resultado": 42,
+          "unidad": "estudiantes",
+          "proceso": "• 6 salones\n• 7 estudiantes por salón\n• Total: 6 × 7 = 42"
+        },
+        {
+          "num": 6,
+          "titulo": "Libros en estantes",
+          "enunciado": "Hay 8 estantes con 9 libros cada uno. ¿Cuántos libros hay en total?",
+          "operacion": "8 × 9 = 72",
+          "resultado": 72,
+          "unidad": "libros",
+          "proceso": "• 8 estantes\n• 9 libros por estante\n• Total: 8 × 9 = 72 libros"
+        },
+        {
+          "num": 7,
+          "titulo": "Ganancias por día",
+          "enunciado": "Un vendedor gana $9 por día durante 6 días. ¿Cuánto gana en total?",
+          "operacion": "9 × 6 = 54",
+          "resultado": 54,
+          "unidad": "pesos",
+          "proceso": "• $9 por día\n• 6 días\n• Total: 9 × 6 = $54"
+        },
+        {
+          "num": 8,
+          "titulo": "Cuadros en la pared",
+          "enunciado": "Hay 7 filas con 7 cuadros cada una. ¿Cuántos cuadros hay?",
+          "operacion": "7 × 7 = 49",
+          "resultado": 49,
+          "unidad": "cuadros",
+          "proceso": "• 7 filas\n• 7 cuadros por fila\n• Total: 7 × 7 = 49 cuadros"
+        },
+        {
+          "num": 9,
+          "titulo": "Galletas en bandejas",
+          "enunciado": "Hay 8 bandejas con 8 galletas cada una. ¿Cuántas galletas hay?",
+          "operacion": "8 × 8 = 64",
+          "resultado": 64,
+          "unidad": "galletas",
+          "proceso": "• 8 bandejas\n• 8 galletas por bandeja\n• Total: 8 × 8 = 64 galletas"
+        },
+        {
+          "num": 10,
+          "titulo": "Precio del uniforme",
+          "enunciado": "El uniforme del colegio cuesta $9 y hay que comprar 9 piezas. ¿Cuánto cuesta?",
+          "operacion": "9 × 9 = 81",
+          "resultado": 81,
+          "unidad": "pesos",
+          "proceso": "• 9 piezas\n• $9 cada una\n• Total: 9 × 9 = $81"
+        }
+      ],
+      "ejercicios": [
+        {
+          "num": 1,
+          "enunciado": "Hay 2 cajas con 3 naranjas cada una. ¿Cuántas naranjas hay en total?",
+          "opts": [
+            "6",
+            "4",
+            "5",
+            "7"
+          ],
+          "ans": 0,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "2 × 3 = 6 naranjas",
+          "proceso": "• 2 cajas\n• 3 naranjas por caja\n• Total: 2 × 3 = 6"
+        },
+        {
+          "num": 2,
+          "enunciado": "Un niño tiene 4 bolsas con 2 caramelos cada una. ¿Cuántos caramelos tiene?",
+          "opts": [
+            "6",
+            "8",
+            "9",
+            "7"
+          ],
+          "ans": 1,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "4 × 2 = 8 caramelos",
+          "proceso": "• 4 bolsas\n• 2 caramelos por bolsa\n• Total: 4 × 2 = 8"
+        },
+        {
+          "num": 3,
+          "enunciado": "Hay 3 filas con 4 sillas cada una. ¿Cuántas sillas hay?",
+          "opts": [
+            "10",
+            "11",
+            "12",
+            "13"
+          ],
+          "ans": 2,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "3 × 4 = 12 sillas",
+          "proceso": "• 3 filas\n• 4 sillas por fila\n• Total: 3 × 4 = 12"
+        },
+        {
+          "num": 4,
+          "enunciado": "El almacén recibe 5 cajas con 3 botellas cada una. ¿Cuántas botellas hay?",
+          "opts": [
+            "12",
+            "13",
+            "14",
+            "15"
+          ],
+          "ans": 3,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "5 × 3 = 15 botellas",
+          "proceso": "• 5 cajas\n• 3 botellas por caja\n• Total: 5 × 3 = 15"
+        },
+        {
+          "num": 5,
+          "enunciado": "Hay 4 mesas con 4 sillas cada una. ¿Cuántas sillas hay en total?",
+          "opts": [
+            "16",
+            "14",
+            "15",
+            "17"
+          ],
+          "ans": 0,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "4 × 4 = 16 sillas",
+          "proceso": "• 4 mesas\n• 4 sillas por mesa\n• Total: 4 × 4 = 16"
+        },
+        {
+          "num": 6,
+          "enunciado": "Cada lápiz cuesta $5. Se compran 5. ¿Cuánto cuestan en total?",
+          "opts": [
+            "23",
+            "25",
+            "24",
+            "26"
+          ],
+          "ans": 1,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "5 × 5 = $25",
+          "proceso": "• 5 lápices\n• $5 cada uno\n• Total: 5 × 5 = $25"
+        },
+        {
+          "num": 7,
+          "enunciado": "Hay 6 bolsas con 4 chocolates cada una. ¿Cuántos chocolates hay?",
+          "opts": [
+            "22",
+            "23",
+            "24",
+            "25"
+          ],
+          "ans": 2,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "6 × 4 = 24 chocolates",
+          "proceso": "• 6 bolsas\n• 4 chocolates por bolsa\n• Total: 6 × 4 = 24"
+        },
+        {
+          "num": 8,
+          "enunciado": "Hay 7 estantes con 5 libros cada uno. ¿Cuántos libros hay?",
+          "opts": [
+            "32",
+            "33",
+            "34",
+            "35"
+          ],
+          "ans": 3,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "7 × 5 = 35 libros",
+          "proceso": "• 7 estantes\n• 5 libros por estante\n• Total: 7 × 5 = 35"
+        },
+        {
+          "num": 9,
+          "enunciado": "Un paquete de galletas tiene 6. Se compran 6 paquetes. ¿Cuántas galletas hay?",
+          "opts": [
+            "36",
+            "34",
+            "35",
+            "37"
+          ],
+          "ans": 0,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "6 × 6 = 36 galletas",
+          "proceso": "• 6 paquetes\n• 6 galletas por paquete\n• Total: 6 × 6 = 36"
+        },
+        {
+          "num": 10,
+          "enunciado": "Cada cuaderno cuesta $6. Se compran 7. ¿Cuánto cuestan en total?",
+          "opts": [
+            "40",
+            "42",
+            "41",
+            "43"
+          ],
+          "ans": 1,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "7 × 6 = $42",
+          "proceso": "• 7 cuadernos\n• $6 cada uno\n• Total: 7 × 6 = $42"
+        },
+        {
+          "num": 11,
+          "enunciado": "Hay 8 filas con 5 plantas cada una. ¿Cuántas plantas hay en total?",
+          "opts": [
+            "38",
+            "39",
+            "40",
+            "41"
+          ],
+          "ans": 2,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "8 × 5 = 40 plantas",
+          "proceso": "• 8 filas\n• 5 plantas por fila\n• Total: 8 × 5 = 40"
+        },
+        {
+          "num": 12,
+          "enunciado": "Hay 8 cajas con 6 botellas cada una. ¿Cuántas botellas hay?",
+          "opts": [
+            "45",
+            "46",
+            "47",
+            "48"
+          ],
+          "ans": 3,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "8 × 6 = 48 botellas",
+          "proceso": "• 8 cajas\n• 6 botellas por caja\n• Total: 8 × 6 = 48"
+        },
+        {
+          "num": 13,
+          "enunciado": "Hay 7 grupos con 7 estudiantes cada uno. ¿Cuántos estudiantes hay?",
+          "opts": [
+            "49",
+            "47",
+            "48",
+            "50"
+          ],
+          "ans": 0,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "7 × 7 = 49 estudiantes",
+          "proceso": "• 7 grupos\n• 7 estudiantes por grupo\n• Total: 7 × 7 = 49"
+        },
+        {
+          "num": 14,
+          "enunciado": "Cada bolsa de arroz cuesta $6. Se compran 9. ¿Cuánto cuestan?",
+          "opts": [
+            "52",
+            "54",
+            "53",
+            "55"
+          ],
+          "ans": 1,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "9 × 6 = $54",
+          "proceso": "• 9 bolsas\n• $6 cada una\n• Total: 9 × 6 = $54"
+        },
+        {
+          "num": 15,
+          "enunciado": "Hay 8 estantes con 7 libros cada uno. ¿Cuántos libros hay?",
+          "opts": [
+            "54",
+            "55",
+            "56",
+            "57"
+          ],
+          "ans": 2,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "8 × 7 = 56 libros",
+          "proceso": "• 8 estantes\n• 7 libros por estante\n• Total: 8 × 7 = 56"
+        },
+        {
+          "num": 16,
+          "enunciado": "La tienda vende 15 cajas de leche a $4 cada una. ¿Cuánto cobra?",
+          "opts": [
+            "57",
+            "58",
+            "59",
+            "60"
+          ],
+          "ans": 3,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "15 × 4 = $60",
+          "proceso": "• 15 cajas\n• $4 cada una\n• Total: 15 × 4 = $60"
+        },
+        {
+          "num": 17,
+          "enunciado": "Un agricultor siembra 13 filas con 5 plantas cada una. ¿Cuántas plantas hay?",
+          "opts": [
+            "65",
+            "63",
+            "64",
+            "66"
+          ],
+          "ans": 0,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "13 × 5 = 65 plantas",
+          "proceso": "• 13 filas\n• 5 plantas por fila\n• Total: 13 × 5 = 65"
+        },
+        {
+          "num": 18,
+          "enunciado": "Se producen 24 cajas con 3 botellas cada una. ¿Cuántas botellas hay?",
+          "opts": [
+            "70",
+            "72",
+            "71",
+            "73"
+          ],
+          "ans": 1,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "24 × 3 = 72 botellas",
+          "proceso": "• 24 cajas\n• 3 botellas por caja\n• Total: 24 × 3 = 72"
+        },
+        {
+          "num": 19,
+          "enunciado": "Cada libro cuesta $5. Se compran 16. ¿Cuánto cuestan en total?",
+          "opts": [
+            "78",
+            "79",
+            "80",
+            "81"
+          ],
+          "ans": 2,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "16 × 5 = $80",
+          "proceso": "• 16 libros\n• $5 cada uno\n• Total: 16 × 5 = $80"
+        },
+        {
+          "num": 20,
+          "enunciado": "Se compran 25 juguetes a $4 cada uno. ¿Cuánto cuestan en total?",
+          "opts": [
+            "97",
+            "98",
+            "99",
+            "100"
+          ],
+          "ans": 3,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "25 × 4 = $100",
+          "proceso": "• 25 juguetes\n• $4 cada uno\n• Total: 25 × 4 = $100"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "nombre": "Nivel 4 — Solo División",
+      "icon": "➗",
+      "color": "#FF8C2A",
+      "bgColor": "#FEF3E8",
+      "textColor": "#7A3200",
+      "desc": "Divide en situaciones de repartición y distribución equitativa.",
+      "ejemplos": [
+        {
+          "num": 1,
+          "titulo": "Repartir frutas",
+          "enunciado": "Se reparten 8 frutas entre 4 niños. ¿Cuántas frutas recibe cada niño?",
+          "operacion": "8 ÷ 4 = 2",
+          "resultado": 2,
+          "unidad": "frutas por niño",
+          "proceso": "• Total: 8 frutas\n• Niños: 4\n• Cada uno recibe: 8 ÷ 4 = 2"
+        },
+        {
+          "num": 2,
+          "titulo": "Distribuir chocolates",
+          "enunciado": "15 chocolates se distribuyen en 3 bolsas iguales. ¿Cuántos van en cada bolsa?",
+          "operacion": "15 ÷ 3 = 5",
+          "resultado": 5,
+          "unidad": "chocolates",
+          "proceso": "• Total: 15 chocolates\n• Bolsas: 3\n• Cada bolsa: 15 ÷ 3 = 5"
+        },
+        {
+          "num": 3,
+          "titulo": "Cajas de libros",
+          "enunciado": "24 libros se guardan en 4 cajas iguales. ¿Cuántos libros van en cada caja?",
+          "operacion": "24 ÷ 4 = 6",
+          "resultado": 6,
+          "unidad": "libros",
+          "proceso": "• Total: 24 libros\n• Cajas: 4\n• Cada caja: 24 ÷ 4 = 6"
+        },
+        {
+          "num": 4,
+          "titulo": "Precio compartido",
+          "enunciado": "35 estudiantes comparten el costo de $35. ¿Cuánto paga cada uno?",
+          "operacion": "35 ÷ 5 = 7",
+          "resultado": 7,
+          "unidad": "pesos",
+          "proceso": "• Costo total: $35\n• Estudiantes: 5\n• Cada uno: 35 ÷ 5 = $7"
+        },
+        {
+          "num": 5,
+          "titulo": "Galletas para grupos",
+          "enunciado": "48 galletas se dividen en 6 grupos iguales. ¿Cuántas galletas hay por grupo?",
+          "operacion": "48 ÷ 6 = 8",
+          "resultado": 8,
+          "unidad": "galletas",
+          "proceso": "• Total: 48 galletas\n• Grupos: 6\n• Cada grupo: 48 ÷ 6 = 8"
+        },
+        {
+          "num": 6,
+          "titulo": "Reparto de dinero",
+          "enunciado": "63 pesos se dividen entre 7 personas. ¿Cuánto recibe cada persona?",
+          "operacion": "63 ÷ 7 = 9",
+          "resultado": 9,
+          "unidad": "pesos",
+          "proceso": "• Total: $63\n• Personas: 7\n• Cada una: 63 ÷ 7 = $9"
+        },
+        {
+          "num": 7,
+          "titulo": "Transporte escolar",
+          "enunciado": "40 niños viajan en 5 buses iguales. ¿Cuántos niños van en cada bus?",
+          "operacion": "40 ÷ 5 = 8",
+          "resultado": 8,
+          "unidad": "niños",
+          "proceso": "• Total: 40 niños\n• Buses: 5\n• Cada bus: 40 ÷ 5 = 8"
+        },
+        {
+          "num": 8,
+          "titulo": "Libros por estante",
+          "enunciado": "72 libros se distribuyen en 8 estantes iguales. ¿Cuántos libros por estante?",
+          "operacion": "72 ÷ 8 = 9",
+          "resultado": 9,
+          "unidad": "libros",
+          "proceso": "• Total: 72 libros\n• Estantes: 8\n• Cada estante: 72 ÷ 8 = 9"
+        },
+        {
+          "num": 9,
+          "titulo": "Reparto en grupos",
+          "enunciado": "60 estudiantes se organizan en 5 grupos iguales. ¿Cuántos hay en cada grupo?",
+          "operacion": "60 ÷ 5 = 12",
+          "resultado": 12,
+          "unidad": "estudiantes",
+          "proceso": "• Total: 60 estudiantes\n• Grupos: 5\n• Cada grupo: 60 ÷ 5 = 12"
+        },
+        {
+          "num": 10,
+          "titulo": "Empaques de mercado",
+          "enunciado": "84 productos se empacan en 7 cajas iguales. ¿Cuántos productos hay en cada caja?",
+          "operacion": "84 ÷ 7 = 12",
+          "resultado": 12,
+          "unidad": "productos",
+          "proceso": "• Total: 84 productos\n• Cajas: 7\n• Cada caja: 84 ÷ 7 = 12"
+        }
+      ],
+      "ejercicios": [
+        {
+          "num": 1,
+          "enunciado": "6 dulces se reparten entre 2 niños por igual. ¿Cuántos dulces recibe cada niño?",
+          "opts": [
+            "3",
+            "1",
+            "2",
+            "4"
+          ],
+          "ans": 0,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "6 ÷ 2 = 3 dulces",
+          "proceso": "• Total: 6 dulces\n• Niños: 2\n• Cada uno: 6 ÷ 2 = 3"
+        },
+        {
+          "num": 2,
+          "enunciado": "8 manzanas se dividen entre 4 personas. ¿Cuántas manzanas recibe cada una?",
+          "opts": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "ans": 1,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "8 ÷ 4 = 2 manzanas",
+          "proceso": "• Total: 8 manzanas\n• Personas: 4\n• Cada una: 8 ÷ 4 = 2"
+        },
+        {
+          "num": 3,
+          "enunciado": "10 lápices se reparten entre 2 estudiantes. ¿Cuántos lápices le toca a cada uno?",
+          "opts": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "ans": 2,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "10 ÷ 2 = 5 lápices",
+          "proceso": "• Total: 10 lápices\n• Estudiantes: 2\n• Cada uno: 10 ÷ 2 = 5"
+        },
+        {
+          "num": 4,
+          "enunciado": "12 galletas para 3 niños en partes iguales. ¿Cuántas galletas toca a cada niño?",
+          "opts": [
+            "2",
+            "3",
+            "5",
+            "4"
+          ],
+          "ans": 3,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "12 ÷ 3 = 4 galletas",
+          "proceso": "• Total: 12 galletas\n• Niños: 3\n• Cada uno: 12 ÷ 3 = 4"
+        },
+        {
+          "num": 5,
+          "enunciado": "15 pelotas se guardan en 5 cajas iguales. ¿Cuántas pelotas van en cada caja?",
+          "opts": [
+            "3",
+            "1",
+            "2",
+            "4"
+          ],
+          "ans": 0,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "15 ÷ 5 = 3 pelotas",
+          "proceso": "• Total: 15 pelotas\n• Cajas: 5\n• Cada caja: 15 ÷ 5 = 3"
+        },
+        {
+          "num": 6,
+          "enunciado": "18 chocolates se distribuyen en 3 paquetes iguales. ¿Cuántos chocolates por paquete?",
+          "opts": [
+            "4",
+            "6",
+            "5",
+            "7"
+          ],
+          "ans": 1,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "18 ÷ 3 = 6 chocolates",
+          "proceso": "• Total: 18 chocolates\n• Paquetes: 3\n• Cada uno: 18 ÷ 3 = 6"
+        },
+        {
+          "num": 7,
+          "enunciado": "20 libros se guardan en 4 cajas iguales. ¿Cuántos libros hay en cada caja?",
+          "opts": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "ans": 2,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "20 ÷ 4 = 5 libros",
+          "proceso": "• Total: 20 libros\n• Cajas: 4\n• Cada caja: 20 ÷ 4 = 5"
+        },
+        {
+          "num": 8,
+          "enunciado": "24 naranjas se reparten en 6 bolsas iguales. ¿Cuántas naranjas hay en cada bolsa?",
+          "opts": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "ans": 3,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "24 ÷ 6 = 4 naranjas",
+          "proceso": "• Total: 24 naranjas\n• Bolsas: 6\n• Cada bolsa: 24 ÷ 6 = 4"
+        },
+        {
+          "num": 9,
+          "enunciado": "28 estudiantes forman 4 grupos iguales. ¿Cuántos estudiantes hay en cada grupo?",
+          "opts": [
+            "7",
+            "5",
+            "6",
+            "8"
+          ],
+          "ans": 0,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "28 ÷ 4 = 7 estudiantes",
+          "proceso": "• Total: 28 estudiantes\n• Grupos: 4\n• Cada grupo: 28 ÷ 4 = 7"
+        },
+        {
+          "num": 10,
+          "enunciado": "35 caramelos se dividen entre 5 amigos. ¿Cuántos caramelos recibe cada uno?",
+          "opts": [
+            "5",
+            "7",
+            "6",
+            "8"
+          ],
+          "ans": 1,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "35 ÷ 5 = 7 caramelos",
+          "proceso": "• Total: 35 caramelos\n• Amigos: 5\n• Cada uno: 35 ÷ 5 = 7"
+        },
+        {
+          "num": 11,
+          "enunciado": "36 lápices se guardan en 4 cajas iguales. ¿Cuántos lápices hay en cada caja?",
+          "opts": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "ans": 2,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "36 ÷ 4 = 9 lápices",
+          "proceso": "• Total: 36 lápices\n• Cajas: 4\n• Cada caja: 36 ÷ 4 = 9"
+        },
+        {
+          "num": 12,
+          "enunciado": "42 sillas se distribuyen en 7 filas iguales. ¿Cuántas sillas hay en cada fila?",
+          "opts": [
+            "5",
+            "6",
+            "7",
+            "8"
+          ],
+          "ans": 3,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "42 ÷ 7 = 6 sillas",
+          "proceso": "• Total: 42 sillas\n• Filas: 7\n• Cada fila: 42 ÷ 7 = 6"
+        },
+        {
+          "num": 13,
+          "enunciado": "80 estudiantes se organizan en 8 grupos. ¿Cuántos hay en cada grupo?",
+          "opts": [
+            "10",
+            "8",
+            "9",
+            "11"
+          ],
+          "ans": 0,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "80 ÷ 8 = 10 estudiantes",
+          "proceso": "• Total: 80 estudiantes\n• Grupos: 8\n• Cada grupo: 80 ÷ 8 = 10"
+        },
+        {
+          "num": 14,
+          "enunciado": "84 libros se distribuyen en 7 cajas iguales. ¿Cuántos libros hay en cada caja?",
+          "opts": [
+            "10",
+            "12",
+            "11",
+            "13"
+          ],
+          "ans": 1,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "84 ÷ 7 = 12 libros",
+          "proceso": "• Total: 84 libros\n• Cajas: 7\n• Cada caja: 84 ÷ 7 = 12"
+        },
+        {
+          "num": 15,
+          "enunciado": "90 galletas se reparten en 6 paquetes iguales. ¿Cuántas galletas por paquete?",
+          "opts": [
+            "13",
+            "14",
+            "15",
+            "16"
+          ],
+          "ans": 2,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "90 ÷ 6 = 15 galletas",
+          "proceso": "• Total: 90 galletas\n• Paquetes: 6\n• Cada paquete: 90 ÷ 6 = 15"
+        },
+        {
+          "num": 16,
+          "enunciado": "$100 se dividen entre 4 personas en partes iguales. ¿Cuánto recibe cada una?",
+          "opts": [
+            "22",
+            "23",
+            "24",
+            "25"
+          ],
+          "ans": 3,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "100 ÷ 4 = $25",
+          "proceso": "• Total: $100\n• Personas: 4\n• Cada una: 100 ÷ 4 = $25"
+        },
+        {
+          "num": 17,
+          "enunciado": "126 caramelos se guardan en 6 bolsas iguales. ¿Cuántos caramelos hay en cada bolsa?",
+          "opts": [
+            "21",
+            "19",
+            "20",
+            "22"
+          ],
+          "ans": 0,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "126 ÷ 6 = 21 caramelos",
+          "proceso": "• Total: 126 caramelos\n• Bolsas: 6\n• Cada bolsa: 126 ÷ 6 = 21"
+        },
+        {
+          "num": 18,
+          "enunciado": "144 fichas se distribuyen en 8 cajas iguales. ¿Cuántas fichas hay en cada caja?",
+          "opts": [
+            "16",
+            "18",
+            "17",
+            "19"
+          ],
+          "ans": 1,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "144 ÷ 8 = 18 fichas",
+          "proceso": "• Total: 144 fichas\n• Cajas: 8\n• Cada caja: 144 ÷ 8 = 18"
+        },
+        {
+          "num": 19,
+          "enunciado": "$120 se reparten entre 4 amigos por igual. ¿Cuánto recibe cada amigo?",
+          "opts": [
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "ans": 2,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "120 ÷ 4 = $30",
+          "proceso": "• Total: $120\n• Amigos: 4\n• Cada uno: 120 ÷ 4 = $30"
+        },
+        {
+          "num": 20,
+          "enunciado": "$150 se dividen entre 6 personas iguales. ¿Cuánto recibe cada persona?",
+          "opts": [
+            "22",
+            "23",
+            "24",
+            "25"
+          ],
+          "ans": 3,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "150 ÷ 6 = $25",
+          "proceso": "• Total: $150\n• Personas: 6\n• Cada una: 150 ÷ 6 = $25"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "nombre": "Nivel 5 — Operaciones Combinadas",
+      "icon": "🔢",
+      "color": "#A30041",
+      "bgColor": "#FFF0F5",
+      "textColor": "#5A001A",
+      "desc": "Combina suma, resta, multiplicación y división en problemas complejos.",
+      "ejemplos": [
+        {
+          "num": 1,
+          "titulo": "Caramelos combinados",
+          "enunciado": "Pedro tiene 5 caramelos, compra 4 más y regala 3. ¿Cuántos le quedan?",
+          "operacion": "5 + 4 - 3 = 6",
+          "resultado": 6,
+          "unidad": "caramelos",
+          "proceso": "• Tenía: 5 caramelos\n• Compra: 4 más → 5+4=9\n• Regala: 3 → 9-3=6 caramelos"
+        },
+        {
+          "num": 2,
+          "titulo": "Dinero de la merienda",
+          "enunciado": "Ana tiene $10. Compra un jugo por $3 y una galleta por $2. ¿Cuánto le sobra?",
+          "operacion": "10 - 3 - 2 = 5",
+          "resultado": 5,
+          "unidad": "pesos",
+          "proceso": "• Tenía: $10\n• Jugo: $3 → 10-3=7\n• Galleta: $2 → 7-2=$5"
+        },
+        {
+          "num": 3,
+          "titulo": "Chocolates en cajas",
+          "enunciado": "Hay 3 cajas con 4 chocolates cada una. Julia come 2. ¿Cuántos quedan?",
+          "operacion": "3 × 4 - 2 = 10",
+          "resultado": 10,
+          "unidad": "chocolates",
+          "proceso": "• Cajas: 3 × 4 = 12 chocolates\n• Come: 2\n• Quedan: 12-2=10 chocolates"
+        },
+        {
+          "num": 4,
+          "titulo": "Cajas en el almacén",
+          "enunciado": "El almacén tiene 24 cajas. Llegan 6 más y salen 12. ¿Cuántas quedan?",
+          "operacion": "24 + 6 - 12 = 18",
+          "resultado": 18,
+          "unidad": "cajas",
+          "proceso": "• Había: 24 cajas\n• Llegan: 6 → 24+6=30\n• Salen: 12 → 30-12=18 cajas"
+        },
+        {
+          "num": 5,
+          "titulo": "Bolsas de mercado",
+          "enunciado": "8 familias compran 3 bolsas cada una. Si se reparten 4 bolsas extras. ¿Cuántas hay?",
+          "operacion": "8 × 3 + 4 = 28",
+          "resultado": 28,
+          "unidad": "bolsas",
+          "proceso": "• 8 familias × 3 = 24 bolsas\n• Extras: 4 → 24+4=28 bolsas"
+        },
+        {
+          "num": 6,
+          "titulo": "Gastos de la tienda",
+          "enunciado": "La tienda vende 5 bolsas a $20 cada una y gana $15 de bonificación. ¿Cuánto recibe?",
+          "operacion": "5 × 20 + 15 = 115",
+          "resultado": 115,
+          "unidad": "pesos",
+          "proceso": "• Ventas: 5×20=$100\n• Bonificación: $15\n• Total: 100+15=$115"
+        },
+        {
+          "num": 7,
+          "titulo": "Páginas leídas",
+          "enunciado": "Un estudiante lee 8 páginas por día durante 6 días y ya tenía 12 leídas. ¿Total?",
+          "operacion": "8 × 6 + 12 = 60",
+          "resultado": 60,
+          "unidad": "páginas",
+          "proceso": "• Nuevas: 8×6=48 páginas\n• Ya leídas: 12\n• Total: 48+12=60"
+        },
+        {
+          "num": 8,
+          "titulo": "Grupos con estudiantes",
+          "enunciado": "Hay 3 grupos de 9 estudiantes. Se retiran 7. ¿Cuántos estudiantes quedan?",
+          "operacion": "3 × 9 - 7 = 20",
+          "resultado": 20,
+          "unidad": "estudiantes",
+          "proceso": "• Total: 3×9=27 estudiantes\n• Se retiran: 7\n• Quedan: 27-7=20"
+        },
+        {
+          "num": 9,
+          "titulo": "Lápices distribuidos",
+          "enunciado": "48 lápices se reparten entre 6 niños. Cada uno compra 3 lápices más. ¿Cuántos tiene cada uno?",
+          "operacion": "48 ÷ 6 + 3 = 11",
+          "resultado": 11,
+          "unidad": "lápices",
+          "proceso": "• Repartidos: 48÷6=8 por niño\n• Compran: 3 más\n• Total: 8+3=11 lápices"
+        },
+        {
+          "num": 10,
+          "titulo": "Presupuesto de compras",
+          "enunciado": "Hay $72. Se compran 8 lápices a $5 cada uno. ¿Cuánto dinero queda?",
+          "operacion": "72 - 8 × 5 = 32",
+          "resultado": 32,
+          "unidad": "pesos",
+          "proceso": "• Costo: 8×5=$40\n• Queda: 72-40=$32"
+        }
+      ],
+      "ejercicios": [
+        {
+          "num": 1,
+          "enunciado": "Hay 5 manzanas en una canasta. Se agregan 4 más y se comen 3. ¿Cuántas quedan?",
+          "opts": [
+            "6",
+            "4",
+            "5",
+            "7"
+          ],
+          "ans": 0,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "5 + 4 - 3 = 6 manzanas",
+          "proceso": "• Inicio: 5\n• Agregan: 4 → 5+4=9\n• Comen: 3 → 9-3=6"
+        },
+        {
+          "num": 2,
+          "enunciado": "Ana tiene $10. Compra un helado por $4 y un chicle por $1. ¿Cuánto le sobra?",
+          "opts": [
+            "3",
+            "5",
+            "4",
+            "6"
+          ],
+          "ans": 1,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "10 - 4 - 1 = $5",
+          "proceso": "• Tenía: $10\n• Helado: $4 → 10-4=6\n• Chicle: $1 → 6-1=$5"
+        },
+        {
+          "num": 3,
+          "enunciado": "Hay 12 galletas y se comen 5. Luego llegan 7 más. ¿Cuántas galletas hay?",
+          "opts": [
+            "12",
+            "13",
+            "14",
+            "15"
+          ],
+          "ans": 2,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "12 - 5 + 7 = 14 galletas",
+          "proceso": "• Inicio: 12\n• Comen: 5 → 12-5=7\n• Llegan: 7 → 7+7=14"
+        },
+        {
+          "num": 4,
+          "enunciado": "Hay 20 niños. Llegan 8 y se van 12. ¿Cuántos niños quedan?",
+          "opts": [
+            "13",
+            "14",
+            "15",
+            "16"
+          ],
+          "ans": 3,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "20 + 8 - 12 = 16 niños",
+          "proceso": "• Inicio: 20\n• Llegan: 8 → 20+8=28\n• Se van: 12 → 28-12=16"
+        },
+        {
+          "num": 5,
+          "enunciado": "Pedro tiene $15. Compra 3 lápices a $2 cada uno. ¿Cuánto le queda?",
+          "opts": [
+            "9",
+            "7",
+            "8",
+            "10"
+          ],
+          "ans": 0,
+          "pts": 10,
+          "tiempo": 45,
+          "explicacion": "15 - 3 × 2 = $9",
+          "proceso": "• Costo lápices: 3×2=$6\n• Queda: 15-6=$9"
+        },
+        {
+          "num": 6,
+          "enunciado": "Hay 3 cajas con 6 chocolates cada una. Se agregan 7 chocolates sueltos. ¿Cuántos hay?",
+          "opts": [
+            "24",
+            "25",
+            "23",
+            "26"
+          ],
+          "ans": 1,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "3 × 6 + 7 = 25 chocolates",
+          "proceso": "• Cajas: 3×6=18\n• Sueltos: 7\n• Total: 18+7=25"
+        },
+        {
+          "num": 7,
+          "enunciado": "45 estudiantes forman grupos de 5. Luego llegan 8 más. ¿Cuántos estudiantes hay?",
+          "opts": [
+            "51",
+            "53",
+            "52",
+            "54"
+          ],
+          "ans": 2,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "45 + 8 = 53 estudiantes",
+          "proceso": "• Total estudiantes: 45+8=53"
+        },
+        {
+          "num": 8,
+          "enunciado": "Hay 4 grupos de 8 niños. Se retiran 10. ¿Cuántos niños quedan?",
+          "opts": [
+            "20",
+            "21",
+            "22",
+            "23"
+          ],
+          "ans": 3,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "4 × 8 - 10 = 22 niños",
+          "proceso": "• Total: 4×8=32\n• Se retiran: 10\n• Quedan: 32-10=22"
+        },
+        {
+          "num": 9,
+          "enunciado": "48 fichas se reparten en 6 grupos. Cada grupo recibe 3 fichas más. ¿Cuántas tiene cada grupo?",
+          "opts": [
+            "11",
+            "9",
+            "10",
+            "12"
+          ],
+          "ans": 0,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "48 ÷ 6 + 3 = 11 fichas",
+          "proceso": "• Por grupo: 48÷6=8\n• Más: 3\n• Total: 8+3=11"
+        },
+        {
+          "num": 10,
+          "enunciado": "Carlos tiene $50. Compra 5 cuadernos a $6 cada uno. ¿Cuánto le queda?",
+          "opts": [
+            "18",
+            "20",
+            "19",
+            "21"
+          ],
+          "ans": 1,
+          "pts": 15,
+          "tiempo": 60,
+          "explicacion": "50 - 5 × 6 = $20",
+          "proceso": "• Costo: 5×6=$30\n• Queda: 50-30=$20"
+        },
+        {
+          "num": 11,
+          "enunciado": "Hay 3 filas de 7 sillas. Se añaden 14 sillas más. ¿Cuántas sillas hay?",
+          "opts": [
+            "33",
+            "35",
+            "34",
+            "36"
+          ],
+          "ans": 2,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "3 × 7 + 14 = 35 sillas",
+          "proceso": "• Filas: 3×7=21\n• Añaden: 14\n• Total: 21+14=35"
+        },
+        {
+          "num": 12,
+          "enunciado": "El almacén tiene 3 cajas con 8 libros cada una. Se agregan 20 libros más. ¿Cuántos libros hay?",
+          "opts": [
+            "42",
+            "44",
+            "43",
+            "45"
+          ],
+          "ans": 1,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "3 × 8 + 20 = 44 libros",
+          "proceso": "• Libros en cajas: 3×8=24\n• Se agregan: 20\n• Total: 24+20=44"
+        },
+        {
+          "num": 13,
+          "enunciado": "Hay $50. Se gastan 5 bolsas de leche a $8 cada una. ¿Cuánto queda?",
+          "opts": [
+            "8",
+            "10",
+            "9",
+            "11"
+          ],
+          "ans": 0,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "50 - 5 × 8 = $10",
+          "proceso": "• Costo: 5×8=$40\n• Queda: 50-40=$10"
+        },
+        {
+          "num": 14,
+          "enunciado": "Hay 4 grupos de 12 estudiantes. Llegan 16 más. ¿Cuántos estudiantes hay en total?",
+          "opts": [
+            "62",
+            "64",
+            "63",
+            "65"
+          ],
+          "ans": 1,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "4 × 12 + 16 = 64 estudiantes",
+          "proceso": "• Total inicial: 4×12=48\n• Llegan: 16\n• Total: 48+16=64"
+        },
+        {
+          "num": 15,
+          "enunciado": "90 galletas se distribuyen en 9 cajas. Luego se sacan 2 de cada caja. ¿Cuántas quedan por caja?",
+          "opts": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "ans": 2,
+          "pts": 20,
+          "tiempo": 75,
+          "explicacion": "90 ÷ 9 - 2 = 8 galletas por caja",
+          "proceso": "• Por caja: 90÷9=10\n• Se sacan: 2\n• Quedan: 10-2=8"
+        },
+        {
+          "num": 16,
+          "enunciado": "6 vendedores venden 9 productos cada uno y ganan $28 extra. ¿Cuántos productos en total?",
+          "opts": [
+            "79",
+            "80",
+            "81",
+            "82"
+          ],
+          "ans": 3,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "6 × 9 + 28 = 82 productos",
+          "proceso": "• Vendedores: 6×9=54\n• Extra: 28\n• Total: 54+28=82"
+        },
+        {
+          "num": 17,
+          "enunciado": "$120 se dividen entre 8 niños. Cada uno recibe $25 extra. ¿Cuánto tiene cada niño?",
+          "opts": [
+            "40",
+            "38",
+            "39",
+            "41"
+          ],
+          "ans": 0,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "120 ÷ 8 + 25 = $40",
+          "proceso": "• Repartido: 120÷8=$15\n• Extra: $25\n• Total: 15+25=$40"
+        },
+        {
+          "num": 18,
+          "enunciado": "Hay 7 filas de 8 sillas. Se quitan 18 sillas. ¿Cuántas sillas quedan?",
+          "opts": [
+            "36",
+            "38",
+            "37",
+            "39"
+          ],
+          "ans": 1,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "7 × 8 - 18 = 38 sillas",
+          "proceso": "• Total: 7×8=56\n• Quitan: 18\n• Quedan: 56-18=38"
+        },
+        {
+          "num": 19,
+          "enunciado": "4 fábricas hacen 12 cajas cada una. Se agregan 24 cajas más. ¿Cuántas hay?",
+          "opts": [
+            "70",
+            "71",
+            "72",
+            "73"
+          ],
+          "ans": 2,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "4 × 12 + 24 = 72 cajas",
+          "proceso": "• Producen: 4×12=48\n• Agregan: 24\n• Total: 48+24=72"
+        },
+        {
+          "num": 20,
+          "enunciado": "$180 se dividen entre 6 personas. Cada una invierte $15 más. ¿Cuánto tiene cada una?",
+          "opts": [
+            "42",
+            "43",
+            "44",
+            "45"
+          ],
+          "ans": 3,
+          "pts": 25,
+          "tiempo": 90,
+          "explicacion": "180 ÷ 6 + 15 = $45",
+          "proceso": "• Repartido: 180÷6=$30\n• Invierte: $15\n• Total: 30+15=$45"
+        }
+      ]
+    }
+  ]
+}

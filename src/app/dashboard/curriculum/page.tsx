@@ -21,7 +21,8 @@ function CurriculumAdminContent() {
   // Navegación jerárquica
   const [books] = useState([
     { slug: 'libro-1ro', title: 'Matemáticas de Fedor 1°' },
-    { slug: 'matematicas-fedor-2', title: 'Matemáticas de Fedor 2°' }
+    { slug: 'matematicas-fedor-2', title: 'Matemáticas de Fedor 2°' },
+    { slug: 'matematicas-fedor-3', title: 'Matemáticas de Fedor 3°' },
   ]);
   const [selectedBookSlug, setSelectedBookSlug] = useState('libro-1ro');
   const [bookData, setBookData] = useState<Book | null>(null);
@@ -59,7 +60,7 @@ function CurriculumAdminContent() {
   }, [router, selectedBookSlug]);
 
   useEffect(() => {
-    if (bookSlugParam && (bookSlugParam === 'libro-1ro' || bookSlugParam === 'matematicas-fedor-2')) {
+    if (bookSlugParam && (bookSlugParam === 'libro-1ro' || bookSlugParam === 'matematicas-fedor-2' || bookSlugParam === 'matematicas-fedor-3')) {
       setSelectedBookSlug(bookSlugParam);
     }
   }, [bookSlugParam]);

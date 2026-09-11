@@ -1,0 +1,147 @@
+{
+  "UNIT_TUTS": [
+    {
+      "icon": "➕",
+      "title": "¡Unidad 1 — Adición de 3 Cifras!",
+      "text": "Dominarás la suma de 3 cifras con y sin llevadas, y propiedades de la adición.",
+      "steps": [
+        "Conteo del 1 al 5, 10 y 20 con objetos visuales",
+        "Suma con grupos de elementos animados",
+        "Decena y recta numérica interactiva",
+        "¡Llega a la centena: suma hasta 100!"
+      ]
+    },
+    {
+      "icon": "➖",
+      "title": "¡Unidad 2 — Sustracción de 3 Cifras!",
+      "text": "Restarás con y sin préstamo y verificarás con la operación inversa.",
+      "steps": [
+        "Tienda: abre con X, cierra con Y → diferencia",
+        "Minuendo − Sustraendo = Diferencia",
+        "Edificio de pisos — recta numérica",
+        "División exacta: residuo siempre 0"
+      ]
+    },
+    {
+      "icon": "✖️",
+      "title": "¡Unidad 3 — Multiplicación y Tablas!",
+      "text": "Dominarás las tablas del 2 al 9 y multiplicarás números de 2 cifras.",
+      "steps": [
+        "Multiplicar = sumar el mismo número varias veces",
+        "2×3 = 3+3 = 6 (dos grupos de tres)",
+        "Propiedad conmutativa: 2×3 = 3×2",
+        "¡La Tabla Mágica del 1 al 10!"
+      ]
+    },
+    {
+      "icon": "➗",
+      "title": "¡Unidad 4 — División con Residuo!",
+      "text": "Dividirás con y sin residuo y verificarás con la multiplicación.",
+      "steps": [
+        "Items (izquierda) ÷ Personas (derecha) = Cociente",
+        "El divisor siempre son personas o grupos",
+        "División exacta: residuo = 0",
+        "División inexacta: sobran algunos items"
+      ]
+    },
+    {
+      "icon": "🏆",
+      "title": "¡Unidad 5 — Problemas SABER!",
+      "text": "Resolverás problemas combinados de las 4 operaciones al estilo evaluación SABER.",
+      "steps": [
+        "Lee el problema completo antes de operar",
+        "Identifica qué piden y qué datos tienes",
+        "¿Suma, resta, multiplica o divide?",
+        "Comprueba tu respuesta con la operación inversa"
+      ]
+    },
+    {
+      "icon": "🔢",
+      "title": "¡Unidad 6 — Factores y Múltiplos!",
+      "text": "Hallarás todos los divisores de un número y calcularás el MCD y MCM.",
+      "steps": [
+        "Divisor: número que divide exactamente",
+        "12 ÷ 4 = 3 ✓ → 4 es divisor de 12",
+        "Múltiplo: 3×1=3, 3×2=6, 3×3=9,...",
+        "MCD = Mayor divisor común entre dos números"
+      ]
+    },
+    {
+      "icon": "½",
+      "title": "¡Unidad 7 — Fracciones!",
+      "text": "Operarás con fracciones: simplificar, sumar, restar, multiplicar y dividir.",
+      "steps": [
+        "Fracción = parte de un entero: 3/4 = 3 partes de 4",
+        "Para sumar: denominador común primero",
+        "Multiplicar: multiplica numeradores y denominadores",
+        "Dividir: multiplica por el recíproco (voltea la 2ª)"
+      ]
+    },
+    {
+      "icon": "📝",
+      "title": "¡Unidad 8 — Aplicaciones!",
+      "text": "Resolverás problemas con fracciones, MCD y MCM en situaciones reales.",
+      "steps": [
+        "Lee el contexto: ¿de qué trata el problema?",
+        "¿La respuesta es una fracción o un número entero?",
+        "MCD para simplificar; MCM para sumar fracciones",
+        "Comprueba que la respuesta tiene sentido"
+      ]
+    },
+    {
+      "icon": "⚡",
+      "title": "¡Unidad 9 — Potenciación!",
+      "text": "Calcularás potencias y raíces cuadradas y usarás sus propiedades.",
+      "steps": [
+        "2³ = 2×2×2 = 8 (base × base × base)",
+        "Cualquier número a la 0 = 1 (excepto 0)",
+        "Raíz cuadrada: √25 = 5 porque 5² = 25",
+        "a^m × a^n = a^(m+n) — ¡suman los exponentes!"
+      ]
+    },
+    {
+      "icon": "📏",
+      "title": "¡Unidad 10 — Sistema Métrico!",
+      "text": "Convertirás entre unidades de longitud, área, volumen y capacidad.",
+      "steps": [
+        "1 km = 1000 m = 100000 cm",
+        "Para pasar a unidad mayor: divides",
+        "Para pasar a unidad menor: multiplicas",
+        "1 m² = 10000 cm² · 1 m³ = 1000 litros"
+      ]
+    },
+    {
+      "icon": "📐",
+      "title": "¡Unidad 11 — Geometría!",
+      "text": "Calcularás perímetros, áreas y volúmenes de figuras geométricas.",
+      "steps": [
+        "Perímetro = suma de todos los lados",
+        "Área cuadrado = lado² · Área rectángulo = base × altura",
+        "Área triángulo = (base × altura) ÷ 2",
+        "Volumen = largo × ancho × alto"
+      ]
+    },
+    {
+      "icon": "📊",
+      "title": "¡Unidad 12 — Estadística!",
+      "text": "Interpretarás datos, calcularás la media y calcularás probabilidades.",
+      "steps": [
+        "Media = suma de datos ÷ cantidad de datos",
+        "Moda = el dato que más se repite",
+        "Probabilidad = casos favorables ÷ casos posibles",
+        "0 = imposible · 1 = seguro · 1/2 = igual chance"
+      ]
+    },
+    {
+      "icon": "⚖️",
+      "title": "¡Unidad 13 — Magnitudes!",
+      "text": "Identificarás proporcionalidad directa e inversa en problemas reales.",
+      "steps": [
+        "Directa: si X sube, Y sube proporcional",
+        "Inversa: si X sube, Y baja proporcional",
+        "Constante de proporcionalidad k = Y ÷ X",
+        "Tabla de valores: verifica que el cociente sea constante"
+      ]
+    }
+  ]
+}

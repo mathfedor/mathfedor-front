@@ -30,21 +30,30 @@ const TOKEN = process.env.SEED_TOKEN || (() => {
 })();
 
 const isGrade1 = process.argv.includes('--grade1');
-const slug = process.argv[2] || (isGrade1 ? 'libro-1ro' : 'matematicas-fedor-2');
+const isGrade3 = process.argv.includes('--grade3') || process.argv[2] === 'matematicas-fedor-3' || process.argv[2] === 'libro-3ro';
+const slug = process.argv[2] || (isGrade1 ? 'libro-1ro' : isGrade3 ? 'matematicas-fedor-3' : 'matematicas-fedor-2');
 
 // Rutas a los archivos de datos del frontend
 const FRONT_DATA = path.join(__dirname, '..', 'src', 'mocks', 'data');
 
 const CURRICULUM_FILE = isGrade1
   ? path.join(FRONT_DATA, 'book-curriculum-1.data.json')
+  : isGrade3
+  ? path.join(FRONT_DATA, 'book-curriculum-3.data.json')
   : path.join(FRONT_DATA, 'book-curriculum.data.json');
 
 const EXTRAS_FILE = isGrade1
   ? path.join(FRONT_DATA, 'book-extras-1.data.json')
+  : isGrade3
+  ? path.join(FRONT_DATA, 'book-extras-3.data.json')
   : path.join(FRONT_DATA, 'book-extras.data.json');
 
-const LORE_FILE = path.join(FRONT_DATA, 'book-lore.data.json');
-const TUTS_FILE = path.join(FRONT_DATA, 'book-unit-tuts.data.json');
+const LORE_FILE = isGrade3
+  ? path.join(FRONT_DATA, 'book-lore-3.data.json')
+  : path.join(FRONT_DATA, 'book-lore.data.json');
+const TUTS_FILE = isGrade3
+  ? path.join(FRONT_DATA, 'book-unit-tuts-3.data.json')
+  : path.join(FRONT_DATA, 'book-unit-tuts.data.json');
 
 // ──────────────────────────────────────────────
 // Helpers

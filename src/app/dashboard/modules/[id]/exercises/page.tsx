@@ -17,6 +17,7 @@ import { useModuleAccess } from '@/contexts/ModuleAccessContext';
 import { LearningResult, learningResultsService } from '@/services/learning-results.service';
 import { LearningComment, LearningReply, learningCommentsService } from '@/services/learning-comments.service';
 import BookExperience from '@/components/book/BookExperience';
+import Book3Experience from '@/components/book-tercero/Book3Experience';
 import '@/app/dashboard/libro-2do/book.css';
 
 type FireworkStyle = CSSProperties & Record<`--${string}`, string>;
@@ -126,12 +127,15 @@ const normalizeText = (value: string) => value
   .trim()
   .toLowerCase();
 
-const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2) => {
+const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2 | 3) => {
   const normalizedId = normalizeText(routeId);
   if (grade === 1 && (normalizedId === '1' || normalizedId === 'libro-1ro' || normalizedId === 'matematicas-fedor-1')) {
     return true;
   }
   if (grade === 2 && (normalizedId === '2' || normalizedId === 'libro-2do' || normalizedId === 'matematicas-fedor-2')) {
+    return true;
+  }
+  if (grade === 3 && (normalizedId === '3' || normalizedId === 'libro-3ro' || normalizedId === 'matematicas-fedor-3')) {
     return true;
   }
   if (!module) return false;
@@ -147,7 +151,11 @@ const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2
     return /\bgrado\s*1\b|\bgrado1\b|\b1ro\b|\bprimero\b|\b1\s*°/.test(haystack);
   }
 
-  return /\bgrado\s*2\b|\bgrado2\b|\b2do\b|\bsegundo\b|\b2\s*°/.test(haystack);
+  if (grade === 2) {
+    return /\bgrado\s*2\b|\bgrado2\b|\b2do\b|\bsegundo\b|\b2\s*°/.test(haystack);
+  }
+
+  return /\bgrado\s*3\b|\bgrado3\b|\b3ro\b|\btercero\b|\b3\s*°/.test(haystack);
 };
 
 const isInformationalTopic = (topic?: Topic) => (
@@ -4432,6 +4440,10 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     return moduleMatchesGrade(currentModule, resolvedParams.id, 2) || currentModule?.group === 'Grado2';
   }, [currentModule, resolvedParams.id]);
 
+  const isGrade3Module = useMemo(() => {
+    return moduleMatchesGrade(currentModule, resolvedParams.id, 3) || currentModule?.group === 'Grado3';
+  }, [currentModule, resolvedParams.id]);
+
   const isBookModule = useMemo(() => {
     return isGrade1Module || isGrade2Module;
   }, [isGrade1Module, isGrade2Module]);
@@ -4441,6 +4453,23 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     if (isGrade2Module) return 'matematicas-fedor-2';
     return '';
   }, [isGrade1Module, isGrade2Module]);
+
+  if (isGrade3Module) {
+    return (
+      <div className="flex min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">
+        <Sidebar />
+        <AlertDialog
+          isOpen={isAlertOpen}
+          onClose={() => setIsAlertOpen(false)}
+          title={alertMessage.title}
+          message={alertMessage.message}
+        />
+        <div className="flex-1 overflow-y-auto">
+          <Book3Experience slug="matematicas-fedor-3" />
+        </div>
+      </div>
+    );
+  }
 
   if (isBookModule) {
     return (

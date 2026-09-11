@@ -9,11 +9,12 @@
 import type { Book, Unit, Topic, LevelRef, Level, LevelExample, LoreChapter, UnitTutorial, Exercise } from '@/types/book.types';
 import type { GamificationCatalog } from '@/types/gamification.types';
 import { mockBook, mockGamificationCatalog } from '@/mocks/book-curriculum.mock';
-import { mockLevelExamples, mockLevelExamples1 } from '@/mocks/book-examples.mock';
-import { mockLoreChapters } from '@/mocks/book-lore.mock';
-import { mockUnitTutorials } from '@/mocks/book-unit-tuts.mock';
+import { mockLevelExamples, mockLevelExamples1, mockLevelExamples3 } from '@/mocks/book-examples.mock';
+import { mockLoreChapters, mockLoreChapters3 } from '@/mocks/book-lore.mock';
+import { mockUnitTutorials, mockUnitTutorials3 } from '@/mocks/book-unit-tuts.mock';
 import { BOOK_API_URL as API_URL, BOOK_SLUG, bookBackendEnabled, bookHeaders } from './book-http';
 import bookCurriculum1 from '@/mocks/data/book-curriculum-1.data.json';
+import bookCurriculum3 from '@/mocks/data/book-curriculum-3.data.json';
 
 interface RawExercise {
   type: 'mcq' | 'input' | 'seq';
@@ -140,6 +141,22 @@ const mockBook1: Book = {
   units: ((bookCurriculum1.UNITS || []) as unknown as RawUnit[]).map((u, i) => mapUnit(u, i)),
 };
 
+const mockBook3: Book = {
+  id: 'book-fedor-3',
+  slug: 'matematicas-fedor-3',
+  title: 'Matemáticas de Fedor 3°',
+  grade: '3° de Primaria',
+  standard: 'Pensamiento Numérico · MEN Colombia',
+  units: ((bookCurriculum3.UNITS || []) as unknown as RawUnit[]).map((u, i) => mapUnit(u, i)),
+};
+
+const mockGamificationCatalog3: GamificationCatalog = {
+  avatars: (bookCurriculum3.AVATAR_UNLOCKS || []) as any[],
+  badges: (bookCurriculum3.ALL_BADGES || []) as any[],
+  ranks: (bookCurriculum3.RANKS || []) as any[],
+  shopItems: (bookCurriculum3.SHOP_ITEMS || []) as any[],
+};
+
 
 /**
  * Convierte la respuesta del backend (que devuelve bookCurriculum directamente)
@@ -233,6 +250,9 @@ export const bookService = {
       if (slug === 'libro-1ro' || slug === 'matematicas-fedor-1') {
         return mockBook1;
       }
+      if (slug === 'libro-3ro' || slug === 'matematicas-fedor-3') {
+        return mockBook3;
+      }
       return mockBook;
     })();
 
@@ -262,6 +282,9 @@ export const bookService = {
           console.warn(`[book.service] Fallback to local mock for gamification ${slug}:`, err);
         }
       }
+      if (slug === 'libro-3ro' || slug === 'matematicas-fedor-3') {
+        return mockGamificationCatalog3;
+      }
       return mockGamificationCatalog;
     })();
 
@@ -290,6 +313,9 @@ export const bookService = {
         } catch (err) {
           console.warn(`[book.service] Fallback to local mock for lore ${slug}:`, err);
         }
+      }
+      if (slug === 'libro-3ro' || slug === 'matematicas-fedor-3') {
+        return mockLoreChapters3;
       }
       return mockLoreChapters;
     })();
@@ -323,6 +349,9 @@ export const bookService = {
           console.warn(`[book.service] Fallback to local mock for tutorial ${slug}_${unitIndex}:`, err);
         }
       }
+      if (slug === 'libro-3ro' || slug === 'matematicas-fedor-3') {
+        return mockUnitTutorials3[unitIndex] ?? null;
+      }
       return mockUnitTutorials[unitIndex] ?? null;
     })();
 
@@ -337,9 +366,13 @@ export const bookService = {
   /** Obtiene ejemplos de forma síncrona/instantánea. */
   getExamplesSync(levelKey: string, slug: string = BOOK_SLUG): LevelExample[] {
     const isBook1 = slug === 'libro-1ro' || slug === 'matematicas-fedor-1';
+    const isBook3 = slug === 'libro-3ro' || slug === 'matematicas-fedor-3';
     const physicalKey = resolvePhysicalLevelKey(levelKey, slug);
     if (isBook1) {
       return mockLevelExamples1[levelKey] || mockLevelExamples1[physicalKey] || [];
+    }
+    if (isBook3) {
+      return mockLevelExamples3[levelKey] || mockLevelExamples3[physicalKey] || [];
     }
     return mockLevelExamples[levelKey] || mockLevelExamples[physicalKey] || [];
   },
@@ -360,8 +393,14 @@ export const bookService = {
 
     const getLocalExamples = () => {
       const isBook1 = slug === 'libro-1ro' || slug === 'matematicas-fedor-1';
+      const isBook3 = slug === 'libro-3ro' || slug === 'matematicas-fedor-3';
       if (isBook1) {
         const ex = mockLevelExamples1[physicalKey] || mockLevelExamples1[levelKey];
+        if (ex && ex.length > 0) return ex;
+        return [];
+      }
+      if (isBook3) {
+        const ex = mockLevelExamples3[physicalKey] || mockLevelExamples3[levelKey];
         if (ex && ex.length > 0) return ex;
         return [];
       }
