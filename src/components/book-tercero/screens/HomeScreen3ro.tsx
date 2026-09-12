@@ -8,6 +8,7 @@ import ProblemasModal3ro from '../shared/ProblemasModal3ro';
 import UniversoFedorModal3ro, { GALAXY_PLANETS_3RO } from '../shared/UniversoFedorModal3ro';
 import MascotaModal3ro from '../shared/MascotaModal3ro';
 import GuiaDocenteModal3ro from '../shared/GuiaDocenteModal3ro';
+import CommandPanelModals3ro from '../shared/CommandPanelModals3ro';
 
 interface HomeScreen3roProps {
   onOpenIntro: () => void;
@@ -98,24 +99,61 @@ const CANONICAL_UNITS_3RO: CanonicalUnit3ro[] = [
   },
 ];
 
+export interface FedorRank3ro {
+  id: number;
+  emoji: string;
+  name: string;
+  xp: number;
+  color: string;
+  desc: string;
+}
+
+export const FEDOR_RANKS_3RO: FedorRank3ro[] = [
+  { id: 0, emoji: '🌱', name: 'Cadete Estelar', xp: 0, color: '#16876A', desc: '¡Bienvenido a la academia! Empieza tu aventura.' },
+  { id: 1, emoji: '🐣', name: 'Aprendiz Lunar', xp: 200, color: '#3AA0FF', desc: 'Ya conoces el camino. Sigue resolviendo bloques.' },
+  { id: 2, emoji: '🚀', name: 'Explorador Cósmico', xp: 500, color: '#9B5CFF', desc: 'Tu nave vuela alto. ¡Conquista las galaxias!' },
+  { id: 3, emoji: '⭐', name: 'Veterano del Espacio', xp: 1000, color: '#F5C518', desc: 'Brillas como una estrella. Los maestros te admiran.' },
+  { id: 4, emoji: '🏆', name: 'Maestro Galáctico', xp: 2000, color: '#FF8C2A', desc: 'Eres un campeón. Pocos llegan hasta aquí.' },
+  { id: 5, emoji: '☄️', name: 'Leyenda de Fedor', xp: 3500, color: '#FF1D4E', desc: '¡INCREÍBLE! Tu nombre se escribe en las estrellas.' },
+];
+
+export function getFedorRank3ro(xp: number): FedorRank3ro {
+  let r = FEDOR_RANKS_3RO[0];
+  for (let i = 0; i < FEDOR_RANKS_3RO.length; i++) {
+    if (xp >= FEDOR_RANKS_3RO[i].xp) {
+      r = FEDOR_RANKS_3RO[i];
+    }
+  }
+  return r;
+}
+
+export function getNextFedorRank3ro(xp: number): FedorRank3ro | null {
+  for (let i = 0; i < FEDOR_RANKS_3RO.length; i++) {
+    if (xp < FEDOR_RANKS_3RO[i].xp) {
+      return FEDOR_RANKS_3RO[i];
+    }
+  }
+  return null;
+}
+
 const COMMAND_PANEL_ACTIONS = [
-  { cls: 'tienda', ico: '🛒', lbl: 'Tienda', color: 'linear-gradient(135deg,#16876A,#24C496)', desc: 'Tienda de trajes y avatares' },
-  { cls: 'espacial', ico: '🚀', lbl: 'Espacial', color: 'linear-gradient(135deg,#6C28B4,#9B5CFF)', desc: 'Misiones astronáuticas' },
-  { cls: 'diario', ico: '📓', lbl: 'Diario', color: 'linear-gradient(135deg,#0E6BA8,#3AA0FF)', desc: 'Diario de aventuras matemáticas' },
-  { cls: 'examen', ico: '📝', lbl: 'Examen', color: 'linear-gradient(135deg,#A30041,#FF1D4E)', desc: 'Evaluación final SABER' },
-  { cls: 'despegue', ico: '🎬', lbl: 'Despegue', color: 'linear-gradient(135deg,#FF8C2A,#F5C518)', desc: 'Ver despegue animado' },
-  { cls: 'stickers', ico: '🎴', lbl: 'Stickers', color: 'linear-gradient(135deg,#9B0066,#FF1DAA)', desc: 'Álbum espacial de cromos' },
-  { cls: 'juegos', ico: '🎮', lbl: 'Juegos', color: 'linear-gradient(135deg,#FF1D4E,#FF8C2A)', desc: 'Zona arcade matemática' },
-  { cls: 'galaxia3d', ico: '🌌', lbl: 'Galaxia 3D', color: 'linear-gradient(135deg,#102A70,#2563EB)', desc: 'Vista tridimensional del cosmos' },
-  { cls: 'mascota', ico: '🐾', lbl: 'Mascota', color: 'linear-gradient(135deg,#4C1D95,#7C3AED)', desc: 'Interactuar con Fedor' },
-  { cls: 'historia', ico: '📖', lbl: 'Historia', color: 'linear-gradient(135deg,#78350F,#B45309)', desc: 'El origen de Fedor y las matemáticas' },
-  { cls: 'estandares', ico: '📋', lbl: 'Estándares', color: 'linear-gradient(135deg,#1E293B,#475569)', desc: 'Estándares curriculares MEN' },
-  { cls: 'misiones', ico: '🎯', lbl: 'Misiones', color: 'linear-gradient(135deg,#BE185D,#F43F5E)', desc: 'Misiones activas de 3° grado' },
-  { cls: 'definic', ico: '📚', lbl: 'Definiciones', color: 'linear-gradient(135deg,#581C87,#9333EA)', desc: 'Glosario matemático interactivo' },
-  { cls: 'maraton', ico: '🏃', lbl: 'Maratón', color: 'linear-gradient(135deg,#9A3412,#EA580C)', desc: 'Carrera contra el reloj' },
-  { cls: 'minijuegos', ico: '🕹️', lbl: 'Minijuegos', color: 'linear-gradient(135deg,#6D28D9,#A855F7)', desc: 'Minijuegos de cálculo mental' },
-  { cls: 'explicar', ico: '💡', lbl: 'Explicar', color: 'linear-gradient(135deg,#D97706,#F59E0B)', desc: 'Explicaciones paso a paso' },
-  { cls: 'pcotid', ico: '🧮', lbl: 'P. Cotid.', color: 'linear-gradient(135deg,#831843,#DB2777)', desc: 'Problemas de la vida cotidiana' },
+  { id: 'tienda', cls: 'tienda', ico: '🛒', lbl: 'Tienda', color: 'linear-gradient(135deg, #16876A, #24C496)', textColor: '#FFFFFF' },
+  { id: 'espacial', cls: 'espacial', ico: '🚀', lbl: 'Espacial', color: 'linear-gradient(135deg, #6C28B4, #9B5CFF)', textColor: '#FFFFFF' },
+  { id: 'diario', cls: 'diario', ico: '📓', lbl: 'Diario', color: 'linear-gradient(135deg, #0E6BA8, #3AA0FF)', textColor: '#FFFFFF' },
+  { id: 'examen', cls: 'examen', ico: '📝', lbl: 'Examen', color: 'linear-gradient(135deg, #A30041, #FF1D4E)', textColor: '#FFFFFF' },
+  { id: 'despegue', cls: 'intro', ico: '🎬', lbl: 'Despegue', color: 'linear-gradient(135deg, #FF8C2A, #F5C518)', textColor: '#3A1A00' },
+  { id: 'stickers', cls: 'album', ico: '🎴', lbl: 'Stickers', color: 'linear-gradient(135deg, #9B0066, #FF1DAA)', textColor: '#FFFFFF' },
+  { id: 'juegos', cls: 'juegos', ico: '🎮', lbl: 'Juegos', color: 'linear-gradient(135deg, #FF1D4E, #FF8C2A)', textColor: '#FFFFFF' },
+  { id: 'galaxia3d', cls: 'galaxia3d', ico: '🌌', lbl: 'Galaxia 3D', color: 'rgba(255, 255, 255, 0.08)', textColor: '#FFFFFF', border: '2px solid rgba(255, 255, 255, 0.2)' },
+  { id: 'mascota', cls: 'mascota', ico: '🐾', lbl: 'Mascota', color: 'rgba(255, 255, 255, 0.08)', textColor: '#FFFFFF', border: '2px solid rgba(255, 255, 255, 0.2)' },
+  { id: 'historia', cls: 'historia', ico: '📖', lbl: 'Historia', color: 'rgba(255, 255, 255, 0.08)', textColor: '#FFFFFF', border: '2px solid rgba(255, 255, 255, 0.2)' },
+  { id: 'estandares', cls: 'estandares', ico: '📋', lbl: 'Estándares', color: 'rgba(255, 255, 255, 0.08)', textColor: '#FFFFFF', border: '2px solid rgba(255, 255, 255, 0.2)' },
+  { id: 'misiones', cls: 'misiones', ico: '🎯', lbl: 'Misiones', color: 'rgba(255, 255, 255, 0.08)', textColor: '#FFFFFF', border: '2px solid rgba(255, 255, 255, 0.2)' },
+  { id: 'definiciones', cls: 'definic', ico: '📚', lbl: 'Definiciones', color: 'rgba(255, 255, 255, 0.08)', textColor: '#FFFFFF', border: '2px solid rgba(255, 255, 255, 0.2)' },
+  { id: 'maraton', cls: 'maraton', ico: '🏃', lbl: 'Maratón', color: 'rgba(255, 255, 255, 0.08)', textColor: '#FFFFFF', border: '2px solid rgba(255, 255, 255, 0.2)' },
+  { id: 'minijuegos', cls: 'minijuego', ico: '🕹️', lbl: 'Minijuegos', color: 'rgba(255, 255, 255, 0.08)', textColor: '#FFFFFF', border: '2px solid rgba(255, 255, 255, 0.2)' },
+  { id: 'explicar', cls: 'explicar', ico: '💡', lbl: 'Explicar', color: 'linear-gradient(135deg, #E8650A, #F5C518)', textColor: '#3A1A00' },
+  { id: 'pcotid', cls: 'probcot', ico: '🧮', lbl: 'P.Cotid.', color: 'linear-gradient(135deg, #2A1070, #6C28B4)', textColor: '#FFFFFF' },
 ];
 
 export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
@@ -131,6 +169,7 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
     goScreen,
     setActiveProblemasNivel,
     setActiveProblemasTab,
+    updateStats,
   } = useBook3();
 
   const [claimedDaily, setClaimedDaily] = useState(false);
@@ -138,7 +177,20 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
   const [showUniversoModal, setShowUniversoModal] = useState(false);
   const [showMascotaModal, setShowMascotaModal] = useState(false);
   const [showGuiaModal, setShowGuiaModal] = useState(false);
+  const [activeCommandModal, setActiveCommandModal] = useState<string | null>(null);
   const miniCanvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Rangos de Fedor y progreso de XP
+  const currentRank = getFedorRank3ro(totalXP);
+  const nextRank = getNextFedorRank3ro(totalXP);
+
+  const rankProgressPct = nextRank
+    ? Math.min(100, Math.max(0, ((totalXP - currentRank.xp) / (nextRank.xp - currentRank.xp)) * 100))
+    : 100;
+
+  const rankLabel = nextRank
+    ? `${nextRank.xp - totalXP} XP para ${nextRank.emoji} ${nextRank.name}`
+    : '🌟 ¡RANGO MÁXIMO ALCANZADO!';
 
   // Progreso por unidad para el mapa galáctico y modales
   const unitsProgressMap: Record<number, number> = {};
@@ -237,26 +289,17 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
   };
 
   const handleCommandAction = (action: typeof COMMAND_PANEL_ACTIONS[0]) => {
-    if (action.lbl === 'Despegue') {
+    if (action.id === 'despegue') {
       onOpenIntro();
-    } else if (action.lbl === 'Estándares') {
-      goScreen('estandares');
-    } else if (action.lbl === 'Definiciones') {
-      goScreen('definiciones');
-    } else if (action.lbl === 'P. Cotid.' || action.lbl === 'Examen') {
-      setShowProblemasModal(true);
-    } else if (action.lbl === 'Mascota') {
+    } else if (action.id === 'mascota') {
       setShowMascotaModal(true);
+    } else if (action.id === 'pcotid') {
+      setShowProblemasModal(true);
     } else {
-      Swal.fire({
-        title: `${action.ico} ${action.lbl}`,
-        text: action.desc,
-        icon: 'info',
-        confirmButtonText: 'Entendido',
-        confirmButtonColor: '#7B2FBE',
-      });
+      setActiveCommandModal(action.id);
     }
   };
+
 
   return (
     <div className="home-screen-shell select-none">
@@ -627,66 +670,78 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
       </div>
 
       {/* ══════════════════════════════════════════════════════════
-          5. CADETE ESTELAR / PROGRESO XP (Imagen 4 Arriba)
+          5. CADETE ESTELAR / PROGRESO XP (Exacto a la Imagen)
       ══════════════════════════════════════════════════════════ */}
       <div className="section-card-wrap">
-        <div className="bg-gradient-to-r from-[#200A40] via-[#2D1055] to-[#1E0942] border border-purple-500/30 rounded-2xl p-4 shadow-xl text-white relative overflow-hidden">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-purple-900/60 border border-purple-400/40 flex items-center justify-center text-2xl shrink-0">
-              🌱
+        <div id="fedorRankCard" className="fedor-rank-card">
+          <div className="rank-head">
+            <div className="rank-emoji" id="rkEmoji">
+              {currentRank.emoji}
             </div>
-            <div>
-              <h3 className="font-black text-sm tracking-wide text-amber-300">
-                Cadete Estelar
-              </h3>
-              <p className="text-[11px] font-bold text-purple-200/80">
-                {totalXP} XP totales · ¡Bienvenido a la academia! Empieza tu aventura.
-              </p>
+            <div className="rank-info">
+              <div
+                className="rank-name"
+                id="rkName"
+                style={{ color: currentRank.color }}
+              >
+                {currentRank.name}
+              </div>
+              <div className="rank-xp" id="rkXP">
+                <span>{totalXP}</span> XP totales
+              </div>
+              <div className="rank-desc" id="rkDesc">
+                {currentRank.desc}
+              </div>
             </div>
           </div>
 
-          <div className="w-full bg-white/10 h-2.5 rounded-full overflow-hidden mt-3">
+          <div className="rank-bar-wrap">
             <div
-              className="bg-gradient-to-r from-amber-400 via-orange-400 to-emerald-400 h-full rounded-full transition-all duration-500"
-              style={{ width: `${Math.min(100, Math.max(5, (totalXP / 200) * 100))}%` }}
+              className="rank-bar-fill"
+              id="rkBarFill"
+              style={{ width: `${rankProgressPct}%` }}
             />
           </div>
 
-          <div className="text-right text-[10px] font-bold text-amber-300/90 mt-1.5">
-            200 XP para 🐣 Aprendiz Lunar
+          <div className="rank-progress-lbl" id="rkLbl">
+            {rankLabel}
           </div>
         </div>
       </div>
 
       {/* ══════════════════════════════════════════════════════════
-          6. PANEL DE COMANDO (Imagen 4 Medio)
+          6. PANEL DE COMANDO (Exacto a la Imagen de Referencia)
       ══════════════════════════════════════════════════════════ */}
       <div className="section-card-wrap">
-        <div className="relative bg-gradient-to-r from-[#1A0A3C] via-[#2A0F60] to-[#0A1B40] border-2 border-sky-400/35 rounded-2xl p-4 pt-5 shadow-2xl">
+        <div id="fedorActionBar" className="fedor-action-bar">
           {/* Badge "⚡ PANEL DE COMANDO" */}
-          <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#FF1D4E] to-[#F5C518] text-white text-[10px] font-black px-4 py-0.5 rounded-full tracking-widest shadow-md uppercase">
+          <div className="fedor-action-badge">
             ⚡ PANEL DE COMANDO
           </div>
 
           {/* Botones Horizontales */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-            {COMMAND_PANEL_ACTIONS.map((action, aIdx) => (
+          <div className="fedor-action-scroll">
+            {COMMAND_PANEL_ACTIONS.map((action) => (
               <button
-                key={aIdx}
+                key={action.id}
                 type="button"
                 onClick={() => handleCommandAction(action)}
-                className="flex-shrink-0 w-[78px] md:w-[84px] p-2 rounded-xl flex flex-col items-center justify-center gap-1 text-white border border-white/20 shadow-md cursor-pointer hover:scale-105 active:scale-95 transition-transform"
-                style={{ background: action.color }}
+                className={`ab-btn ${action.cls}`}
+                style={{
+                  background: action.color,
+                  color: action.textColor || '#FFFFFF',
+                  border: action.border || '2px solid rgba(255,255,255,0.2)',
+                }}
+                title={action.lbl}
               >
-                <span className="text-2xl drop-shadow-sm">{action.ico}</span>
-                <span className="text-[10px] font-black tracking-tight drop-shadow-sm truncate w-full text-center">
-                  {action.lbl}
-                </span>
+                <span className="ab-ico">{action.ico}</span>
+                <span className="ab-lbl">{action.lbl}</span>
               </button>
             ))}
           </div>
         </div>
       </div>
+
 
       {/* ══════════════════════════════════════════════════════════
           7. TRAVESÍA MERCURIO → PLUTÓN (Imagen 4 Medio-Abajo)
@@ -1173,6 +1228,18 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
         onClose={() => setShowGuiaModal(false)}
       />
 
+      {/* ══ Modales Interactivos del Panel de Comando ══ */}
+      <CommandPanelModals3ro
+        activeModal={activeCommandModal}
+        onClose={() => setActiveCommandModal(null)}
+        coins={coins}
+        totalXP={totalXP}
+        streak={streak}
+        studentName={student?.name || 'Astronauta'}
+        onAddCoins={(amount) => updateStats(amount, 0, 0)}
+        onAddXP={(amount) => updateStats(0, 0, amount)}
+      />
+
       <style jsx>{`
         .home-screen-shell {
           width: 100%;
@@ -1569,6 +1636,222 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
           letter-spacing: 0.01em;
           line-height: 1.1;
           white-space: nowrap;
+        }
+
+        .fedor-rank-card {
+          position: relative;
+          background: linear-gradient(135deg, #1E0848 0%, #3D1468 50%, #6C28B4 100%);
+          border-radius: 18px;
+          padding: 1rem 1.25rem 0.9rem;
+          color: #ffffff;
+          box-shadow: 0 12px 36px rgba(60, 20, 104, 0.5), inset 0 0 30px rgba(255, 255, 255, 0.08);
+          border: 2px solid rgba(245, 197, 24, 0.5);
+          overflow: hidden;
+          z-index: 5;
+          font-family: 'Nunito', sans-serif;
+          width: 100%;
+          box-sizing: border-box;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .fedor-rank-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 16px 44px rgba(60, 20, 104, 0.65), inset 0 0 30px rgba(255, 255, 255, 0.12);
+          border-color: rgba(245, 197, 24, 0.75);
+        }
+
+        .fedor-rank-card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle at 20% 30%, rgba(245, 197, 24, 0.22), transparent 60%),
+            radial-gradient(circle at 80% 70%, rgba(91, 191, 255, 0.18), transparent 60%);
+          pointer-events: none;
+          animation: rankAura 4s ease-in-out infinite;
+        }
+
+        @keyframes rankAura {
+          0%, 100% {
+            opacity: 0.6;
+          }
+          50% {
+            opacity: 1;
+          }
+        }
+
+        .rank-head {
+          position: relative;
+          z-index: 2;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          margin-bottom: 0.7rem;
+        }
+
+        .rank-emoji {
+          font-size: 46px;
+          line-height: 1;
+          filter: drop-shadow(0 0 14px rgba(245, 197, 24, 0.7));
+          animation: rankBob 2.5s ease-in-out infinite;
+          flex-shrink: 0;
+          user-select: none;
+        }
+
+        @keyframes rankBob {
+          0%, 100% {
+            transform: translateY(0) rotate(-2deg);
+          }
+          50% {
+            transform: translateY(-4px) rotate(2deg);
+          }
+        }
+
+        .rank-info {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .rank-name {
+          font-size: 18px;
+          font-weight: 900;
+          line-height: 1.2;
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+          letter-spacing: -0.01em;
+        }
+
+        .rank-xp {
+          font-size: 12px;
+          color: #C5BFEE;
+          font-weight: 800;
+          margin-top: 2px;
+        }
+
+        .rank-desc {
+          font-size: 11px;
+          color: rgba(255, 255, 255, 0.9);
+          font-weight: 700;
+          margin-top: 3px;
+          font-style: italic;
+        }
+
+        .rank-bar-wrap {
+          position: relative;
+          z-index: 2;
+          height: 10px;
+          background: rgba(0, 0, 0, 0.45);
+          border-radius: 6px;
+          overflow: hidden;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          width: 100%;
+        }
+
+        .rank-bar-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #F5C518, #FF8C2A, #FF1D4E);
+          border-radius: 6px;
+          transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+          box-shadow: 0 0 12px rgba(245, 197, 24, 0.8);
+        }
+
+        .rank-progress-lbl {
+          position: relative;
+          z-index: 2;
+          text-align: center;
+          font-size: 11px;
+          font-weight: 900;
+          color: #FFD66B;
+          margin-top: 6px;
+          text-shadow: 0 0 8px rgba(245, 197, 24, 0.5);
+          letter-spacing: 0.01em;
+        }
+
+        /* ── PANEL DE COMANDO (Exacto a la Imagen de Referencia) ── */
+        .fedor-action-bar {
+          position: relative;
+          background: linear-gradient(135deg, #1A0A3C 0%, #2A0F60 50%, #0A1B40 100%);
+          border: 2px solid rgba(91, 191, 255, 0.35);
+          border-radius: 18px;
+          padding: 16px 14px 14px 14px;
+          box-shadow: 0 8px 30px rgba(10, 5, 30, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+          z-index: 5;
+        }
+
+        .fedor-action-badge {
+          position: absolute;
+          top: -11px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: linear-gradient(135deg, #FF1D4E, #F5C518);
+          color: #ffffff;
+          font-size: 10px;
+          font-weight: 900;
+          padding: 3px 14px;
+          border-radius: 14px;
+          letter-spacing: 0.12em;
+          box-shadow: 0 4px 12px rgba(255, 29, 78, 0.5);
+          white-space: nowrap;
+          text-transform: uppercase;
+        }
+
+        .fedor-action-scroll {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          overflow-x: auto;
+          scrollbar-width: none;
+          padding-bottom: 2px;
+        }
+
+        .fedor-action-scroll::-webkit-scrollbar {
+          display: none;
+        }
+
+        .ab-btn {
+          flex: 0 0 88px;
+          max-width: 88px;
+          min-width: 88px;
+          height: 76px;
+          border-radius: 14px;
+          cursor: pointer;
+          font-family: 'Nunito', sans-serif;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          padding: 8px 4px;
+          transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+          backdrop-filter: blur(8px);
+          user-select: none;
+          box-sizing: border-box;
+        }
+
+        .ab-btn:hover {
+          transform: translateY(-3px) scale(1.05);
+          box-shadow: 0 8px 22px rgba(91, 191, 255, 0.35);
+          border-color: rgba(245, 197, 24, 0.8) !important;
+        }
+
+        .ab-btn:active {
+          transform: translateY(-1px) scale(0.98);
+        }
+
+        .ab-ico {
+          font-size: 26px;
+          line-height: 1;
+          filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+        }
+
+        .ab-lbl {
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.02em;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+          white-space: nowrap;
+          text-align: center;
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .unit-card {
