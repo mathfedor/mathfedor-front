@@ -41,33 +41,33 @@ export default function UnitWelcomeModal3ro({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-[420px] bg-white rounded-[28px] p-6 md:p-7 text-center shadow-2xl animate-popIn border border-white/40"
+        className="relative w-full max-w-[480px] bg-white rounded-[38px] px-8 py-9 md:px-10 md:py-10 text-center shadow-[0_25px_70px_rgba(0,0,0,0.35)] animate-popIn border border-white/50"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Top purple pill indicator bar */}
-        <div className="w-12 h-1.5 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full mx-auto mb-5 shadow-xs" />
+        {/* Top glossy 3D purple pill indicator bar */}
+        <div className="w-16 h-3 bg-gradient-to-b from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] rounded-full mx-auto mb-7 mt-1 shadow-[inset_0_1px_2px_rgba(255,255,255,0.45),0_3px_6px_rgba(109,40,217,0.3)]" />
 
         {/* Title */}
-        <h2 className="text-xl md:text-2xl font-black text-[#7B2FBE] font-['Baloo_2',sans-serif] leading-tight mb-2 tracking-tight">
+        <h2 className="text-2xl md:text-[27px] font-black text-[#7B2FBE] font-['Baloo_2',sans-serif] leading-tight mb-3.5 tracking-tight">
           {tut.title}
         </h2>
 
         {/* Subtitle / Description */}
-        <p className="text-xs md:text-sm font-bold text-gray-600 leading-relaxed max-w-xs mx-auto mb-5">
+        <p className="text-sm md:text-[15px] font-bold text-[#555555] leading-relaxed max-w-[360px] mx-auto mb-7">
           {tut.text}
         </p>
 
-        {/* 4 Numbered Steps / Highlights */}
-        <div className="space-y-2.5 mb-6 text-left">
+        {/* 4 Numbered Steps / Highlights with generous spacing */}
+        <div className="space-y-3.5 mb-7 text-left">
           {tut.steps.map((step, idx) => (
             <div
               key={idx}
-              className="flex items-center gap-3 p-3 bg-[#F7F4FF] rounded-2xl border border-purple-100/70 shadow-xs hover:border-purple-200 transition-colors"
+              className="flex items-center gap-3.5 md:gap-4 py-3.5 px-4 md:py-4 md:px-5 bg-[#F7F4FF] rounded-[20px] border border-purple-100/60 shadow-xs hover:border-purple-200 transition-colors"
             >
-              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-[#7B2FBE] to-[#9B5CE5] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-sm">
+              <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-[#7B2FBE] to-[#9333EA] text-white font-black text-xs md:text-sm flex items-center justify-center shrink-0 shadow-sm">
                 {idx + 1}
               </div>
-              <div className="text-xs md:text-sm font-bold text-gray-800 leading-snug">
+              <div className="text-xs md:text-[14px] font-extrabold text-[#333333] leading-snug">
                 {step}
               </div>
             </div>
@@ -78,7 +78,7 @@ export default function UnitWelcomeModal3ro({
         <button
           type="button"
           onClick={handleStart}
-          className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#7B2FBE] via-[#8E3DE0] to-[#A864E8] hover:from-[#6A23A8] hover:to-[#924CE0] text-white font-black text-sm md:text-base shadow-lg shadow-purple-600/30 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer mb-2.5 flex items-center justify-center gap-2"
+          className="w-full py-4 px-6 rounded-[20px] bg-gradient-to-r from-[#8638DF] via-[#8130DA] to-[#7625C9] hover:from-[#7625C9] hover:to-[#681DB7] text-white font-black text-base md:text-[17px] shadow-lg shadow-purple-600/30 transition-all hover:scale-[1.015] active:scale-[0.985] cursor-pointer mb-3.5 flex items-center justify-center gap-2"
         >
           <span>¡Empezar Aventura!</span>
           <span>🚀</span>
@@ -88,7 +88,7 @@ export default function UnitWelcomeModal3ro({
         <button
           type="button"
           onClick={onClose}
-          className="text-xs text-gray-400 hover:text-gray-600 font-bold underline cursor-pointer transition-colors block mx-auto pt-1"
+          className="text-xs md:text-[13px] text-gray-400 hover:text-gray-600 font-semibold underline cursor-pointer transition-colors block mx-auto pt-0.5 tracking-wide"
         >
           Omitir tutorial
         </button>
