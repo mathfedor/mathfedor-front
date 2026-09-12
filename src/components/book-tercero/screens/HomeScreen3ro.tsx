@@ -9,9 +9,30 @@ import UniversoFedorModal3ro, { GALAXY_PLANETS_3RO } from '../shared/UniversoFed
 import MascotaModal3ro from '../shared/MascotaModal3ro';
 import GuiaDocenteModal3ro from '../shared/GuiaDocenteModal3ro';
 import CommandPanelModals3ro from '../shared/CommandPanelModals3ro';
+import StatsLabModal3ro from '../shared/StatsLabModal3ro';
 
 interface HomeScreen3roProps {
   onOpenIntro: () => void;
+}
+
+function playSound(type: 'click' | 'coin') {
+  if (typeof window === 'undefined') return;
+  try {
+    const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    if (type === 'click') {
+      osc.frequency.setValueAtTime(440, ctx.currentTime);
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.08);
+    }
+  } catch {}
 }
 
 interface CanonicalUnit3ro {
@@ -29,7 +50,7 @@ const CANONICAL_UNITS_3RO: CanonicalUnit3ro[] = [
   {
     index: 0,
     name: 'Unidad 1 — Adición y Números',
-    meta: '5 temas · Conteo, Suma, Decena, Recta, Problemas',
+    meta: '6 temas · Conteo, Suma, Decena, Recta, Problemas',
     icon: '➕',
     iconBg: '#EEEDFE',
     accentClass: 'uc-purple',
@@ -58,7 +79,7 @@ const CANONICAL_UNITS_3RO: CanonicalUnit3ro[] = [
   {
     index: 2,
     name: 'Unidad 3 — Multiplicación',
-    meta: '2 temas · Tablas del 1 al 9 · Propiedad Conmutativa',
+    meta: '4 temas · Tablas del 1 al 9 · Propiedad Conmutativa',
     icon: '✖️',
     iconBg: '#F3E8FF',
     accentClass: 'uc-purple',
@@ -72,7 +93,7 @@ const CANONICAL_UNITS_3RO: CanonicalUnit3ro[] = [
   {
     index: 3,
     name: 'Unidad 4 — División',
-    meta: '1 tema · Chocolatinas de Math · Dividendo ÷ Divisor',
+    meta: '3 temas · Chocolatinas de Math · Dividendo ÷ Divisor',
     icon: '➗',
     iconBg: '#FAECE7',
     accentClass: 'uc-orange',
@@ -90,11 +111,122 @@ const CANONICAL_UNITS_3RO: CanonicalUnit3ro[] = [
     icon: '🏆',
     iconBg: '#F3E8FF',
     accentClass: 'uc-purple',
-    accentGradient: 'linear-gradient(90deg, #7B2FBE, #A864E8)',
+    accentGradient: 'linear-gradient(90deg, #F5C518, #FF8C2A)',
     pills: [
-      { text: '📝 Saber 1', bg: '#FEF3E8', color: '#7A3200', border: '#FBBF7A' },
-      { text: '🧠 Razonamiento', bg: '#EEEDFE', color: '#3D1468', border: '#C5BFEE' },
-      { text: '🏆 Evaluación', bg: '#DCF5EE', color: '#074F3A', border: '#95DAC4' },
+      { text: '➕➖ Mixtos', bg: '#FEF9E0', color: '#7A5000', border: '#F5C518' },
+      { text: '📝 SABER', bg: '#FEF9E0', color: '#7A5000', border: '#F5C518' },
+      { text: '🏆 Evaluación', bg: '#FEF9E0', color: '#7A5000', border: '#F5C518' },
+    ],
+  },
+  {
+    index: 5,
+    name: 'Unidad 6 — Factores y Múltiplos',
+    meta: '2 temas · Divisores · MCD · Múltiplos · MCM',
+    icon: '🔢',
+    iconBg: '#F3E5F5',
+    accentClass: 'uc-purple',
+    accentGradient: 'linear-gradient(90deg, #CE93D8, #9C27B0)',
+    pills: [
+      { text: '÷ Divisores', bg: '#F3E5F5', color: '#4A1070', border: '#C5BFEE' },
+      { text: '× Múltiplos', bg: '#F3E5F5', color: '#4A1070', border: '#C5BFEE' },
+      { text: '🔗 MCD · MCM', bg: '#F3E5F5', color: '#4A1070', border: '#C5BFEE' },
+    ],
+  },
+  {
+    index: 6,
+    name: 'Unidad 7 — Fracciones',
+    meta: '4 temas · Simplificar · Sumar · Multiplicar · Dividir',
+    icon: '½',
+    iconBg: '#E0F2F1',
+    accentClass: 'uc-teal',
+    accentGradient: 'linear-gradient(90deg, #80CBC4, #009688)',
+    pills: [
+      { text: '= Simplificar', bg: '#DCF5EE', color: '#074F3A', border: '#95DAC4' },
+      { text: '+/- Sumar/Restar', bg: '#DCF5EE', color: '#074F3A', border: '#95DAC4' },
+      { text: '×÷ Operar', bg: '#DCF5EE', color: '#074F3A', border: '#95DAC4' },
+    ],
+  },
+  {
+    index: 7,
+    name: 'Unidad 8 — Aplicaciones con Fracciones',
+    meta: '2 temas · Problemas reales · MCD y MCM aplicados',
+    icon: '📝',
+    iconBg: '#E3F2FD',
+    accentClass: 'uc-blue',
+    accentGradient: 'linear-gradient(90deg, #90CAF9, #1976D2)',
+    pills: [
+      { text: '🧮 Problemas', bg: '#E8F0FF', color: '#1A3A6A', border: '#8EBBF0' },
+      { text: '🔗 MCD · MCM', bg: '#E8F0FF', color: '#1A3A6A', border: '#8EBBF0' },
+    ],
+  },
+  {
+    index: 8,
+    name: 'Unidad 9 — Potenciación y Raíces',
+    meta: '2 temas · Potencias · Propiedades · Raíces cuadradas',
+    icon: '⚡',
+    iconBg: '#FFF3E0',
+    accentClass: 'uc-orange',
+    accentGradient: 'linear-gradient(90deg, #FFE082, #FF6F00)',
+    pills: [
+      { text: '2² Potencias', bg: '#FAECE7', color: '#7A1800', border: '#F5B09A' },
+      { text: '√ Raíces', bg: '#FAECE7', color: '#7A1800', border: '#F5B09A' },
+      { text: '📐 Propiedades', bg: '#FAECE7', color: '#7A1800', border: '#F5B09A' },
+    ],
+  },
+  {
+    index: 9,
+    name: 'Unidad 10 — Sistema Métrico',
+    meta: '2 temas · Longitud · Área · Volumen · Capacidad',
+    icon: '📏',
+    iconBg: '#E8F5E9',
+    accentClass: 'uc-teal',
+    accentGradient: 'linear-gradient(90deg, #A5D6A7, #2E7D32)',
+    pills: [
+      { text: 'm km cm Longitud', bg: '#DCF5EE', color: '#074F3A', border: '#95DAC4' },
+      { text: 'm² Área', bg: '#DCF5EE', color: '#074F3A', border: '#95DAC4' },
+      { text: 'm³ L Volumen', bg: '#DCF5EE', color: '#074F3A', border: '#95DAC4' },
+    ],
+  },
+  {
+    index: 10,
+    name: 'Unidad 11 — Geometría',
+    meta: '3 temas · Perímetro · Área de figuras · Volumen',
+    icon: '📐',
+    iconBg: '#FCE4EC',
+    accentClass: 'uc-pink',
+    accentGradient: 'linear-gradient(90deg, #F48FB1, #C62828)',
+    pills: [
+      { text: 'P Perímetro', bg: '#FCE4EC', color: '#880E4F', border: '#F48FB1' },
+      { text: 'A Área', bg: '#FCE4EC', color: '#880E4F', border: '#F48FB1' },
+      { text: 'V Volumen', bg: '#FCE4EC', color: '#880E4F', border: '#F48FB1' },
+    ],
+  },
+  {
+    index: 11,
+    name: 'Unidad 12 — Estadística y Probabilidad',
+    meta: '2 temas · Datos · Gráficas · Probabilidad',
+    icon: '📊',
+    iconBg: '#E8EAF6',
+    accentClass: 'uc-blue',
+    accentGradient: 'linear-gradient(90deg, #9FA8DA, #3949AB)',
+    pills: [
+      { text: '📈 Datos', bg: '#E8F0FF', color: '#1A3A6A', border: '#8EBBF0' },
+      { text: '📊 Gráficas', bg: '#E8F0FF', color: '#1A3A6A', border: '#8EBBF0' },
+      { text: '🎲 Probabilidad', bg: '#E8F0FF', color: '#1A3A6A', border: '#8EBBF0' },
+    ],
+  },
+  {
+    index: 12,
+    name: 'Unidad 13 — Magnitudes Proporcionales',
+    meta: '1 tema · Proporcionalidad directa e inversa',
+    icon: '⚖️',
+    iconBg: '#EDE7F6',
+    accentClass: 'uc-purple',
+    accentGradient: 'linear-gradient(90deg, #CE93D8, #7B1FA2)',
+    pills: [
+      { text: '∝ Directa', bg: '#EEEDFE', color: '#3D1468', border: '#C5BFEE' },
+      { text: '↔ Inversa', bg: '#EEEDFE', color: '#3D1468', border: '#C5BFEE' },
+      { text: '🏆 Nivel Final', bg: '#EEEDFE', color: '#3D1468', border: '#C5BFEE' },
     ],
   },
 ];
@@ -178,6 +310,7 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
   const [showMascotaModal, setShowMascotaModal] = useState(false);
   const [showGuiaModal, setShowGuiaModal] = useState(false);
   const [activeCommandModal, setActiveCommandModal] = useState<string | null>(null);
+  const [showStatsLabModal, setShowStatsLabModal] = useState(false);
   const miniCanvasRef = useRef<HTMLCanvasElement>(null);
 
   // Rangos de Fedor y progreso de XP
@@ -875,16 +1008,29 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
           </div>
 
           {/* Mini line indicators */}
-          <div className="space-y-1.5 mb-3">
-            {CANONICAL_UNITS_3RO.map((u) => (
-              <div key={u.index} className="flex items-center gap-2 text-[9px] text-gray-300 font-bold">
-                <span className="w-2">{u.icon}</span>
-                <div className="flex-1 bg-white/10 h-1.5 rounded-full overflow-hidden">
-                  <div className="bg-amber-400 h-full rounded-full" style={{ width: `${u.index === 0 ? 10 : 0}%` }} />
+          <div className="space-y-1.5 mb-3 max-h-48 overflow-y-auto pr-1">
+            {CANONICAL_UNITS_3RO.map((u) => {
+              const unit = book?.units?.[u.index];
+              let uTot = 0, uPassed = 0;
+              (unit?.topics || []).forEach((t) => {
+                (t.levels || []).forEach((lv, li) => {
+                  uTot++;
+                  const key = `${t.id}-n${li + 1}`;
+                  if ((scores[key] || 0) >= 70) uPassed++;
+                });
+              });
+              const pct = uTot > 0 ? Math.round((uPassed / uTot) * 100) : 0;
+              return (
+                <div key={u.index} className="flex items-center gap-2 text-[9px] text-gray-300 font-bold">
+                  <span className="w-3 text-center">{u.icon}</span>
+                  <span className="w-16 truncate text-[8px] text-gray-400">{u.name.split('—')[0].trim()}</span>
+                  <div className="flex-1 bg-white/10 h-1.5 rounded-full overflow-hidden">
+                    <div className="bg-amber-400 h-full rounded-full transition-all duration-300" style={{ width: `${pct}%` }} />
+                  </div>
+                  <span className="w-6 text-right font-mono">{pct}%</span>
                 </div>
-                <span className="w-5 text-right">{u.index === 0 ? '0%' : '0%'}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <button
@@ -1060,60 +1206,67 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
       </div>
 
       {/* ══════════════════════════════════════════════════════════
-          15. CARD LABORATORIO DE ESTADÍSTICA (Imagen 5 Pie)
+          15. CARD LABORATORIO DE ESTADÍSTICA (Imagen 1)
       ══════════════════════════════════════════════════════════ */}
-      <div className="section-card-wrap">
+      <div className="section-card-wrap flex justify-end my-1">
         <div
-          onClick={() => selectUnit(0)}
-          className="relative bg-gradient-to-r from-[#0F5C42] via-[#16875E] to-[#0F5C42] rounded-[22px] p-4 md:p-5 flex items-center gap-4 cursor-pointer shadow-xl border-2 border-[#FFE066]/35 overflow-hidden transition-all hover:scale-[1.006] active:scale-[0.99]"
+          onClick={() => {
+            playSound('click');
+            setShowStatsLabModal(true);
+          }}
+          className="relative w-full max-w-[650px] bg-gradient-to-r from-[#0d6b49] via-[#0f7652] to-[#0d6b49] rounded-[26px] p-4 sm:p-5 flex items-center gap-4 cursor-pointer shadow-xl border-2 border-[#FFE066]/30 overflow-hidden transition-all hover:scale-[1.01] active:scale-[0.99]"
         >
           {/* Badge NUEVO */}
-          <div className="absolute top-2.5 right-3 bg-gradient-to-r from-[#FF6B35] to-[#FFD54F] text-[#4A0E00] text-[10px] font-black px-2.5 py-0.5 rounded-lg shadow-sm tracking-wider uppercase">
+          <div className="absolute top-3 right-4 bg-gradient-to-r from-[#FF6B35] to-[#FFAB00] text-[#3D1200] text-[10px] font-black px-3 py-0.5 rounded-full shadow-sm tracking-wider uppercase">
             NUEVO
           </div>
 
-          <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white/10 flex items-center justify-center text-3xl md:text-4xl shrink-0 shadow-inner">
+          {/* Left glowing container with test tube */}
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#147953]/80 flex items-center justify-center text-4xl shrink-0 shadow-inner border border-emerald-400/20">
             🧪
           </div>
 
-          <div className="flex-1 min-w-0 pr-2">
-            <div className="font-['Baloo_2',sans-serif] text-lg md:text-xl font-black text-[#FFE066] drop-shadow-sm tracking-wide">
+          {/* Center Info */}
+          <div className="flex-1 min-w-0 pr-1">
+            <div className="font-['Baloo_2',sans-serif] text-lg sm:text-xl font-black text-[#FFE066] drop-shadow-sm tracking-wide">
               Laboratorio de Estadística
             </div>
-            <div className="text-xs md:text-sm font-bold text-white/95 mt-1 leading-snug">
+            <div className="text-xs sm:text-[13px] font-bold text-white/95 mt-1 leading-snug">
               ¡Crea tus propias encuestas! Mete datos, mira el gráfico cambiar en vivo y genera preguntas para tus amigos.
             </div>
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
-                selectUnit(0);
+                playSound('click');
+                setShowStatsLabModal(true);
               }}
-              className="mt-2.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-[#FFE066] to-[#FFC947] text-[#0A4030] font-black text-xs border-2 border-white shadow-md cursor-pointer hover:opacity-95 transition-opacity inline-flex items-center gap-1"
+              className="mt-3 px-5 py-1.5 rounded-full bg-gradient-to-r from-[#FFE066] to-[#FFB703] text-[#0A4030] font-black text-xs border-2 border-white shadow-md cursor-pointer hover:opacity-95 transition-all inline-flex items-center gap-1.5"
             >
               🚀 ABRIR LABORATORIO →
             </button>
           </div>
 
-          <div className="hidden sm:block shrink-0 bg-white rounded-xl p-2.5 shadow-md">
-            <svg width="70" height="52" viewBox="0 0 70 52" xmlns="http://www.w3.org/2000/svg">
-              <rect x="4" y="24" width="10" height="24" rx="2" fill="#E53935" />
-              <rect x="20" y="12" width="10" height="36" rx="2" fill="#FFD54F" />
-              <rect x="36" y="4" width="10" height="44" rx="2" fill="#3AA0FF" />
-              <rect x="52" y="18" width="10" height="30" rx="2" fill="#7B2FBE" />
+          {/* Right White Preview Card with 4 bars */}
+          <div className="hidden sm:flex shrink-0 bg-white rounded-2xl p-3 shadow-md w-20 h-20 sm:w-22 sm:h-22 items-center justify-center">
+            <svg width="60" height="46" viewBox="0 0 60 46" fill="none">
+              <rect x="4" y="24" width="9" height="22" rx="2.5" fill="#EF4444" />
+              <rect x="18" y="14" width="9" height="32" rx="2.5" fill="#F59E0B" />
+              <rect x="32" y="4" width="9" height="42" rx="2.5" fill="#3B82F6" />
+              <rect x="46" y="16" width="9" height="30" rx="2.5" fill="#8B5CF6" />
             </svg>
           </div>
         </div>
       </div>
 
       {/* ══════════════════════════════════════════════════════════
-          16. UNIDADES DE APRENDIZAJE (Idéntico a Imagen 2)
+          16. UNIDADES DE APRENDIZAJE (Idéntico a Imagen 1)
       ══════════════════════════════════════════════════════════ */}
       <div className="section-card-wrap mb-8">
-        {/* Badge Pill "🎲 UNIDADES DE APRENDIZAJE" */}
+        {/* Badge "📦 UNIDADES DE APRENDIZAJE" */}
         <div className="mb-3.5">
-          <span className="inline-flex items-center gap-1.5 bg-[#1A56DB] text-white text-[11px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-md">
-            <span>🎲</span> UNIDADES DE APRENDIZAJE
+          <span className="inline-flex items-center gap-2 text-[#581c87] text-[12px] font-black uppercase tracking-wider">
+            <span>📦</span> UNIDADES DE APRENDIZAJE
           </span>
         </div>
 
@@ -1137,11 +1290,18 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
             const unitPct = unitTotalEx > 0 ? Math.round((unitPassedEx / unitTotalEx) * 100) : 0;
 
             return (
-              <div
-                key={u.index}
-                onClick={() => selectUnit(u.index)}
-                className={`unit-card ${u.accentClass}`}
-              >
+              <React.Fragment key={u.index}>
+                {u.index === 5 && (
+                  <div className="pt-5 pb-2">
+                    <span className="inline-flex items-center gap-2 text-[#581c87] text-[12px] font-black uppercase tracking-wider">
+                      <span>🚀</span> PARTE 2 — PENSAMIENTO AVANZADO
+                    </span>
+                  </div>
+                )}
+                <div
+                  onClick={() => selectUnit(u.index)}
+                  className={`unit-card ${u.accentClass}`}
+                >
                 <div className="uc-row">
                   {/* Icon Box */}
                   <div className="uc-icon-wrap" style={{ background: u.iconBg }}>
@@ -1185,7 +1345,8 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
                     </span>
                   ))}
                 </div>
-              </div>
+                </div>
+              </React.Fragment>
             );
           })}
         </div>
@@ -1238,6 +1399,12 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
         studentName={student?.name || 'Astronauta'}
         onAddCoins={(amount) => updateStats(amount, 0, 0)}
         onAddXP={(amount) => updateStats(0, 0, amount)}
+      />
+
+      {/* ══ Modal Laboratorio de Estadística 3° (Imagen 2) ══ */}
+      <StatsLabModal3ro
+        isOpen={showStatsLabModal}
+        onClose={() => setShowStatsLabModal(false)}
       />
 
       <style jsx>{`

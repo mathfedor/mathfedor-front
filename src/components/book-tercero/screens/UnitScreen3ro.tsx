@@ -1,10 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useBook3 } from '../context/Book3Context';
+import UnitWelcomeModal3ro from '../shared/UnitWelcomeModal3ro';
 
 export default function UnitScreen3ro() {
   const { book, currentUnit, currentTopic, scores, goScreen, startLevel, selectTopic } = useBook3();
+  const [showWelcomeModal, setShowWelcomeModal] = useState(true);
+
+  useEffect(() => {
+    setShowWelcomeModal(true);
+  }, [currentUnit]);
 
   const unit = book?.units?.[currentUnit] || book?.units?.[0];
   if (!unit) return null;
@@ -12,14 +18,25 @@ export default function UnitScreen3ro() {
   return (
     <div className="min-h-screen bg-[#07091B] text-white font-sans p-4 md:p-6 pb-24 select-none">
       {/* Back button */}
-      <button
-        type="button"
-        onClick={() => goScreen('home')}
-        className="inline-flex items-center gap-2 text-xs font-black text-amber-300 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full border border-white/20 mb-4 cursor-pointer transition-colors"
-      >
-        <span>←</span>
-        <span>Volver a Unidades</span>
-      </button>
+      <div className="flex items-center justify-between mb-4">
+        <button
+          type="button"
+          onClick={() => goScreen('home')}
+          className="inline-flex items-center gap-2 text-xs font-black text-amber-300 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full border border-white/20 cursor-pointer transition-colors"
+        >
+          <span>←</span>
+          <span>Volver a Unidades</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setShowWelcomeModal(true)}
+          className="inline-flex items-center gap-1.5 text-xs font-black text-purple-200 bg-purple-900/60 hover:bg-purple-800 px-3.5 py-1.5 rounded-full border border-purple-400/40 cursor-pointer transition-colors"
+        >
+          <span>💡</span>
+          <span>Tutorial de Unidad</span>
+        </button>
+      </div>
 
       {/* Unit Header Card */}
       <div className="bg-gradient-to-r from-[#1E0942] via-[#2A0E5A] to-[#1E0942] border border-purple-500/40 rounded-3xl p-6 shadow-2xl mb-6">
@@ -28,9 +45,11 @@ export default function UnitScreen3ro() {
             {unit.icon || '📘'}
           </div>
           <div className="flex-1">
-            <span className="text-[10px] font-black text-amber-400 uppercase tracking-widest bg-amber-400/10 px-2.5 py-0.5 rounded-md border border-amber-400/30">
-              Unidad {currentUnit + 1}
-            </span>
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[10px] font-black text-amber-400 uppercase tracking-widest bg-amber-400/10 px-2.5 py-0.5 rounded-md border border-amber-400/30">
+                Unidad {currentUnit + 1}
+              </span>
+            </div>
             <h1 className="text-xl md:text-2xl font-black text-white mt-1">
               {unit.name}
             </h1>
@@ -120,6 +139,13 @@ export default function UnitScreen3ro() {
           );
         })}
       </div>
+
+      {/* Modal de Bienvenida de Unidad (Imagen 1) */}
+      <UnitWelcomeModal3ro
+        isOpen={showWelcomeModal}
+        onClose={() => setShowWelcomeModal(false)}
+        unitIndex={currentUnit}
+      />
     </div>
   );
 }
