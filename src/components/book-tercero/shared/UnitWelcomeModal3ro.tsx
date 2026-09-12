@@ -10,7 +10,7 @@ interface UnitWelcomeModal3roProps {
   unitIndex: number;
 }
 
-function UnitOperationIcon3D({ unitIndex }: { unitIndex: number }) {
+export function UnitOperationIcon3D({ unitIndex }: { unitIndex: number }) {
   // Unit 0: Adición (+) - Plus 3D
   if (unitIndex === 0) {
     return (
