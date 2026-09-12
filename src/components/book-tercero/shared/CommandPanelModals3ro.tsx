@@ -286,18 +286,18 @@ export default function CommandPanelModals3ro({
       {/* Modal Card Shell */}
       <div
         className={`relative w-full ${
-          activeModal === 'tienda' ? 'max-w-[560px]' : 'max-w-[500px]'
-        } max-h-[92vh] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-purple-200/40`}
+          activeModal === 'tienda' ? 'max-w-[560px]' : 'max-w-[520px]'
+        } max-h-[92vh] bg-white rounded-[26px] shadow-2xl overflow-hidden flex flex-col border border-purple-200/40`}
       >
         {/* ══════════════════════════════════════════════════════════════════
             HEADER CON COLOR ESPECÍFICO DE CADA POPUP
         ══════════════════════════════════════════════════════════════════ */}
         <div
-          className="flex items-center justify-between px-5 py-3.5 text-white"
+          className="flex items-center justify-between px-6 py-3.5 text-white"
           style={{
             background:
               activeModal === 'tienda'
-                ? 'linear-gradient(135deg, #10B981, #059669)' // Exact Emerald Green (Imagen 1)
+                ? 'linear-gradient(135deg, #1DBF8B, #14A877)' // Bright emerald/teal green (exact to reference)
                 : activeModal === 'espacial'
                 ? 'linear-gradient(135deg, #4C1D95, #6D28B4)' // Exact Deep Purple (Imagen 2)
                 : activeModal === 'diario'
@@ -323,7 +323,7 @@ export default function CommandPanelModals3ro({
                 : 'linear-gradient(135deg, #E8650A, #F5C518)',
           }}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <span className="text-xl drop-shadow">
               {activeModal === 'tienda' && '🛒'}
               {activeModal === 'espacial' && '🚀'}
@@ -362,7 +362,7 @@ export default function CommandPanelModals3ro({
               playSound('click');
               onClose();
             }}
-            className="w-8 h-8 rounded-full bg-white/25 hover:bg-white/40 text-white font-black text-sm flex items-center justify-center transition-all cursor-pointer shadow-sm"
+            className="w-9 h-9 rounded-full bg-white/30 hover:bg-white/45 text-white font-black text-base flex items-center justify-center transition-all cursor-pointer shadow-sm"
             title="Cerrar ventana"
           >
             ✕
@@ -372,19 +372,19 @@ export default function CommandPanelModals3ro({
         {/* ══════════════════════════════════════════════════════════════════
             BODY DEL MODAL
         ══════════════════════════════════════════════════════════════════ */}
-        <div className="p-4 md:p-5 overflow-y-auto flex-1 bg-white text-gray-800 text-sm">
+        <div className="px-5 md:px-7 py-4 md:py-5 pb-7 overflow-y-auto flex-1 bg-white text-gray-800 text-sm">
           {/* ─────────────────────────────────────────────────────────────
-              1. TIENDA (EXACTA A IMAGEN 1)
+              1. TIENDA (EXACTA A IMAGEN)
           ───────────────────────────────────────────────────────────── */}
           {activeModal === 'tienda' && (
-            <div className="space-y-3.5">
+            <div className="w-full max-w-[505px] mx-auto space-y-3">
               {/* Tu saldo bar */}
-              <div className="bg-[#F8F7FF] border border-[#ECE7FF] rounded-2xl px-4 py-2.5 flex items-center justify-between text-xs md:text-sm font-extrabold">
-                <span className="flex items-center gap-1.5 text-[#20084A]">
-                  <span>🪙</span>
+              <div className="bg-[#F8F7FF] border border-[#ECE7FF] rounded-2xl px-4 py-2.5 flex items-center justify-between font-extrabold text-xs md:text-sm">
+                <span className="flex items-center gap-2 text-[#100344]">
+                  <span className="text-base">🪙</span>
                   <span>Tu saldo</span>
                 </span>
-                <span className="text-[#6C28B4] font-black text-base">{coins}</span>
+                <span className="text-[#8B5CF6] font-black text-base">{coins}</span>
               </div>
 
               {/* Category tabs: row of 4 pills */}
@@ -404,14 +404,14 @@ export default function CommandPanelModals3ro({
                         playSound('click');
                         setShopV2Tab(tb.id as typeof shopV2Tab);
                       }}
-                      className={`py-2 px-1 rounded-2xl font-black text-[10px] md:text-[11px] uppercase tracking-tight transition-all cursor-pointer text-center flex flex-col sm:flex-row items-center justify-center gap-1 border ${
+                      className={`h-10 md:h-11 px-1 rounded-2xl font-black text-[10px] md:text-[11px] uppercase tracking-tight transition-all cursor-pointer text-center flex items-center justify-center gap-1 border-2 ${
                         isActive
-                          ? 'bg-[#7B2FBE] text-white border-[#7B2FBE] shadow-md shadow-purple-900/20'
-                          : 'bg-white text-[#6C28B4] border-[#DDD6FE] hover:bg-purple-50'
+                          ? 'bg-[#7C28BE] text-white border-[#7C28BE] shadow-sm'
+                          : 'bg-white text-[#6C28B4] border-[#DDD5FC] hover:bg-purple-50/70'
                       }`}
                     >
-                      <span className="text-xs">{tb.ico}</span>
-                      <span>{tb.lbl}</span>
+                      <span className="text-xs leading-none">{tb.ico}</span>
+                      <span className="leading-none">{tb.lbl}</span>
                     </button>
                   );
                 })}
@@ -425,42 +425,44 @@ export default function CommandPanelModals3ro({
                     playSound('click');
                     setShopV2Tab('access');
                   }}
-                  className={`w-full py-2 px-3 rounded-2xl font-black text-[11px] uppercase tracking-wider transition-all cursor-pointer text-center flex items-center justify-center gap-1.5 border ${
+                  className={`w-full h-9 md:h-10 px-4 rounded-2xl font-black text-[11px] md:text-xs uppercase tracking-widest transition-all cursor-pointer text-center flex items-center justify-center gap-1.5 border-2 ${
                     shopV2Tab === 'access'
-                      ? 'bg-[#7B2FBE] text-white border-[#7B2FBE] shadow-md'
-                      : 'bg-white text-[#6C28B4] border-[#DDD6FE] hover:bg-purple-50'
+                      ? 'bg-[#7C28BE] text-white border-[#7C28BE] shadow-sm'
+                      : 'bg-white text-[#6C28B4] border-[#DDD5FC] hover:bg-purple-50/70'
                   }`}
                 >
-                  <span>💎</span>
+                  <span className="text-sm">💎</span>
                   <span>ACCESORIOS</span>
                 </button>
               </div>
 
-              {/* Items grid (4 cols exact to Imagen 1) */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+              {/* Items grid (4 cols exact to Imagen) */}
+              <div className="grid grid-cols-4 gap-2.5 md:gap-3 pt-1 pb-3">
                 {SHOP_V2_ITEMS_3RO.filter((it) => it.cat === shopV2Tab).map((item) => {
                   const isOwned = !!ownedShopIds[item.id];
                   return (
                     <div
                       key={item.id}
                       onClick={() => handleBuyV2Item(item)}
-                      className={`bg-white border border-[#E4DEFF] rounded-2xl p-3 text-center flex flex-col items-center justify-center gap-1.5 cursor-pointer hover:shadow-md hover:border-[#9B5CFF] hover:-translate-y-0.5 transition-all ${
-                        isOwned ? 'bg-[#F9F7FF] border-[#6C28B4]/40' : ''
+                      className={`bg-white border-2 border-[#DDD5FC] rounded-2xl py-3 px-2 text-center flex flex-col items-center justify-between min-h-[138px] max-h-[144px] cursor-pointer hover:shadow-md hover:border-[#8B5CF6] hover:-translate-y-0.5 transition-all ${
+                        isOwned ? 'bg-[#FAF8FF] border-[#8B5CF6]/50' : ''
                       }`}
                     >
-                      <div className="text-3xl drop-shadow-sm my-0.5">{item.emoji}</div>
-                      <div className="text-[11px] font-black text-[#1E0A40] line-clamp-1 leading-tight">
+                      <div className="text-3xl my-0.5 h-10 flex items-center justify-center">
+                        {item.emoji}
+                      </div>
+                      <div className="text-[11px] font-black text-[#100344] text-center leading-tight my-1 px-1 line-clamp-1">
                         {item.name}
                       </div>
-                      <div>
+                      <div className="w-full flex justify-center mt-auto">
                         {isOwned ? (
                           <span className="bg-[#DCF5EE] text-[#074F3A] border border-[#95DAC4] text-[10px] font-black px-2.5 py-0.5 rounded-full inline-block">
                             ✓ Comprado
                           </span>
                         ) : (
-                          <span className="bg-[#FFF7ED] text-[#D97706] border border-[#FFEDD5] text-[10px] font-black px-2.5 py-0.5 rounded-full inline-flex items-center gap-1">
+                          <span className="bg-[#FEEDDB] text-[#E06A02] text-[11px] font-black px-3 py-0.5 rounded-full inline-flex items-center gap-1 shadow-xs">
                             <span>{item.price}</span>
-                            <span>🪙</span>
+                            <span className="text-xs">🪙</span>
                           </span>
                         )}
                       </div>
