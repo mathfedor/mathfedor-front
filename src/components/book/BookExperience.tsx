@@ -28,9 +28,10 @@ import DefinicionesScreen from './screens/DefinicionesScreen';
 import ConceptosScreen from './screens/ConceptosScreen';
 import ConceptosFedorModal from './shared/ConceptosFedorModal';
 import StickerAlbumModal from './shared/StickerAlbumModal';
-import ConteoModal from './shared/ConteoModal';
+import Conteo1roModal from './shared/Conteo1roModal';
 import HerramientasModal from './shared/HerramientasModal';
 import VideosModal from './shared/VideosModal';
+import Videos1roModal from './shared/Videos1roModal';
 import ColorPickerModal from './shared/ColorPickerModal';
 import ExplicacionModal from './shared/ExplicacionModal';
 import LoreModal from './shared/LoreModal';
@@ -73,19 +74,19 @@ const SCREENS: Record<BookScreen, ComponentType> = {
 export default function BookExperience({ slug }: { slug: string }) {
   return (
     <BookProvider slug={slug}>
-      <BookShell />
+      <BookShell slugProp={slug} />
     </BookProvider>
   );
 }
 
 /** Aplica las preferencias de tema (modo oscuro) al contenedor raíz. */
-function BookShell() {
+function BookShell({ slugProp }: { slugProp?: string }) {
   const { book, dark, loading, screen, progress } = useBook();
   const [showIntro, setShowIntro] = useState(false);
   const [showCadeteModal, setShowCadeteModal] = useState(false);
   const [showAiChat, setShowAiChat] = useState(false);
-  const isGrade1 = book?.slug === 'libro-1ro';
-  const isGrade2 = book?.slug === 'libro-2do' || book?.slug === 'matematicas-fedor-2';
+  const isGrade1 = slugProp === 'libro-1ro' || book?.slug === 'libro-1ro' || book?.grade === '1' || book?.grade === '1°';
+  const isGrade2 = slugProp === 'libro-2do' || slugProp === 'matematicas-fedor-2' || book?.slug === 'libro-2do' || book?.slug === 'matematicas-fedor-2';
   const bookGroup = isGrade1 ? 'Grado1' : 'Grado2';
 
   const prevScreenRef = useRef(screen);
@@ -308,13 +309,14 @@ function FloatingQuickActions() {
 const HouseIcon3D = () => (
   <svg viewBox="0 0 64 64" className="w-7 h-7 md:w-9 md:h-9 drop-shadow-sm">
     <ellipse cx="32" cy="55" rx="22" ry="5" fill="#4ADE80" />
+    <rect x="21" y="16" width="6" height="12" rx="1" fill="#B45309" />
     <path d="M 18 30 L 18 50 C 18 52 19 53 21 53 L 43 53 C 45 53 46 52 46 50 L 46 30 Z" fill="#FDBA74" />
     <path d="M 18 30 L 18 50 C 18 52 19 53 21 53 L 32 53 L 32 30 Z" fill="#FB923C" opacity="0.3" />
     <path d="M 10 32 L 32 12 L 54 32 C 55 33 54 35 52 35 L 12 35 C 10 35 9 33 10 32 Z" fill="#EF4444" />
     <path d="M 32 12 L 54 32 C 55 33 54 35 52 35 L 32 35 Z" fill="#DC2626" opacity="0.3" />
-    <rect x="27" y="38" width="10" height="15" rx="2" fill="#881337" />
-    <circle cx="34" cy="46" r="1" fill="#FDE047" />
-    <rect x="35" y="24" width="9" height="9" rx="2" fill="#38BDF8" stroke="#FFFFFF" strokeWidth="1.5" />
+    <rect x="22" y="38" width="9" height="15" rx="2" fill="#881337" />
+    <circle cx="29" cy="46" r="1" fill="#FDE047" />
+    <rect x="34" y="36" width="9" height="9" rx="2" fill="#38BDF8" stroke="#FFFFFF" strokeWidth="1.5" />
   </svg>
 );
 
@@ -501,12 +503,25 @@ const MultiplyGridIcon3D = () => (
 );
 
 const StatsLabIcon3D = () => (
-  <svg viewBox="0 0 64 64" className="w-7 h-7 md:w-9 md:h-9 drop-shadow-sm">
-    <rect x="12" y="28" width="6" height="22" rx="2" fill="#4ADE80" />
-    <rect x="20" y="34" width="6" height="16" rx="2" fill="#F43F5E" />
-    <rect x="28" y="22" width="6" height="28" rx="2" fill="#3B82F6" />
-    <path d="M 40 18 L 48 18 M 42 18 L 42 42 C 42 46 46 50 50 50 C 54 50 58 46 58 42 L 58 18" stroke="#38BDF8" strokeWidth="2.5" fill="none" />
-    <path d="M 44 32 C 48 30 52 34 56 32 L 56 42 C 56 45 53 48 50 48 C 47 48 44 45 44 42 Z" fill="#4ADE80" />
+  <svg viewBox="0 0 64 64" className="w-8 h-8 md:w-9 md:h-9 drop-shadow-sm" fill="none">
+    {/* Bar chart grid backing */}
+    <rect x="10" y="20" width="22" height="28" rx="2" fill="#F1F5F9" stroke="#CBD5E1" strokeWidth="1" />
+    <line x1="10" y1="29" x2="32" y2="29" stroke="#E2E8F0" strokeWidth="1" />
+    <line x1="10" y1="38" x2="32" y2="38" stroke="#E2E8F0" strokeWidth="1" />
+    <line x1="17" y1="20" x2="17" y2="48" stroke="#E2E8F0" strokeWidth="1" />
+    <line x1="24" y1="20" x2="24" y2="48" stroke="#E2E8F0" strokeWidth="1" />
+    {/* 3 Bars */}
+    <rect x="12" y="27" width="5" height="21" rx="1.5" fill="#4ADE80" />
+    <rect x="19" y="33" width="5" height="15" rx="1.5" fill="#F43F5E" />
+    <rect x="26" y="22" width="5" height="26" rx="1.5" fill="#3B82F6" />
+    {/* Angled test tube (45 deg) */}
+    <g transform="rotate(45 47 34)">
+      <rect x="43" y="16" width="9" height="28" rx="4.5" fill="#E0F2FE" stroke="#38BDF8" strokeWidth="1.5" />
+      <rect x="41.5" y="14" width="12" height="3" rx="1.5" fill="#BAE6FD" />
+      <path d="M 44 28 L 51 28 L 51 39.5 C 51 42 49.5 43.5 47.5 43.5 C 45.5 43.5 44 42 44 39.5 Z" fill="#22C55E" />
+      <circle cx="46.5" cy="32" r="1" fill="#BBF7D0" />
+      <circle cx="48.5" cy="36" r="1" fill="#BBF7D0" />
+    </g>
   </svg>
 );
 
@@ -600,12 +615,7 @@ function Grade1FloatingButtons({ onOpenAiChat, onOpenIntro, bookGroup }: { onOpe
   const hidden = screen === 'lesson' || screen === 'galaxy';
   if (hidden) return null;
 
-  const isGrade1Internal =
-    bookGroup === 'Grado1' ||
-    book?.slug === 'libro-1ro' ||
-    book?.slug === 'matematicas-fedor-1' ||
-    book?.grade === '1' ||
-    book?.grade === '1°';
+  const isGrade1Internal = true;
 
   const tutorialClick = () => {
     if (onOpenIntro) {
@@ -710,155 +720,205 @@ function Grade1FloatingButtons({ onOpenAiChat, onOpenIntro, bookGroup }: { onOpe
         </div>
       )}
 
-      {/* ── BOTONES FLOTANTES IZQUIERDOS: Mascota Fedor y Juegos para Grado 1 ── */}
-      {isGrade1Internal && (
-        <div className="fixed left-3 md:left-20 top-1/2 -translate-y-1/2 z-[9996] flex flex-col gap-4 select-none">
-          {/* 1. Mascota Fedor (Top) - Círculo con borde amarillo y dragón */}
-          <div className="relative group fedor-float-btn" style={{ animationDelay: '0s' }}>
-            <button
-              type="button"
-              onClick={handleMascotClick}
-              className="relative flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer"
-              style={{
-                background: 'radial-gradient(circle at 35% 35%, #FFFFFF 0%, #FEF9C3 60%, #FEF08A 100%)',
-                border: '3.5px solid #FACC15',
-                boxShadow: '0 8px 24px rgba(234, 179, 8, 0.4), 0 0 16px rgba(253, 224, 71, 0.5), inset 0 2px 4px rgba(255,255,255,0.8)',
-              }}
-              title="Toca tu mascota"
-              aria-label="Toca tu mascota"
-            >
-              <DragonIcon3D />
-            </button>
-            <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-              Toca tu mascota
-            </span>
-          </div>
-
-          {/* 2. Juegos (Bottom) - Círculo con gradiente rojo-naranja y control púrpura */}
-          <div className="relative group fedor-float-btn" style={{ animationDelay: '0.4s' }}>
-            <button
-              type="button"
-              onClick={() => setShowJuegosPicker(true)}
-              className="relative flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer"
-              style={{
-                background: 'linear-gradient(135deg, #FF6B4A 0%, #FF334B 55%, #E60049 100%)',
-                border: '3px solid rgba(255, 255, 255, 0.65)',
-                boxShadow: '0 8px 25px rgba(230, 0, 73, 0.45), 0 0 18px rgba(255, 107, 74, 0.4), inset 0 2px 4px rgba(255,255,255,0.5)',
-              }}
-              title="Juegos de 1°"
-              aria-label="Juegos de 1°"
-            >
-              <GamepadIcon3D />
-            </button>
-            <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-              Juegos de 1°
-            </span>
-          </div>
+      {/* ── BOTONERA FLOTANTE IZQUIERDA: 6 Botones Estilo Imagen (Grado 1) ── */}
+      <div className="fixed left-3 md:left-20 top-1/2 -translate-y-1/2 z-[9996] flex flex-col gap-2.5 md:gap-3.5 select-none items-center">
+        {/* 1. Inicio (House) */}
+        <div className="relative group fedor-float-btn" style={{ animationDelay: '0s' }}>
+          <button
+            type="button"
+            onClick={() => goScreen('home')}
+            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
+            title="Volver al inicio"
+            aria-label="Volver al inicio"
+          >
+            <HouseIcon3D />
+          </button>
+          <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+            Inicio
+          </span>
         </div>
-      )}
 
-      {/* ── BOTONES FLOTANTES DERECHOS ── */}
-      <div className={`fixed right-3 md:right-5 top-1/2 -translate-y-1/2 z-[9996] flex flex-col select-none ${isGrade1Internal ? 'gap-3 md:gap-4' : 'gap-1.5 md:gap-2'}`}>
-        {(isGrade1Internal ? [
-          // GRADO 1: 4 BOTONES REDONDOS DERECHOS
-          {
-            key: 'g1-conceptos',
-            label: 'Conceptos',
-            icon: <BooksIcon3D />,
-            onClick: () => setShowConceptos(true),
-            s: {
-              border: '3.5px solid #FFFFFF',
-              background: 'linear-gradient(135deg, #FFC837 0%, #FF8008 100%)',
-              boxShadow: '0 8px 24px rgba(255, 140, 0, 0.5), 0 0 16px rgba(255, 200, 55, 0.6)',
-            },
-            delay: '0s',
-            badge: '',
-            extraClass: '',
-          },
-          {
-            key: 'g1-tablas',
-            label: 'Tablas de multiplicar',
-            icon: <NumbersGridIcon3D />,
-            onClick: () => setShowTablas(true),
-            s: {
-              border: '3.5px solid #FFFFFF',
-              background: 'linear-gradient(135deg, #FF512F 0%, #DD2476 100%)',
-              boxShadow: '0 8px 24px rgba(221, 36, 118, 0.5), 0 0 16px rgba(255, 81, 47, 0.6)',
-            },
-            delay: '0.2s',
-            badge: '',
-            extraClass: '',
-          },
-          {
-            key: 'g1-stats',
-            label: 'Laboratorio de Estadistica',
-            icon: <StatsLabIcon3D />,
-            onClick: () => setShowStatsLab(true),
-            s: {
-              border: '3.5px solid #FFFFFF',
-              background: 'linear-gradient(135deg, #11998E 0%, #38EF7D 100%)',
-              boxShadow: '0 8px 24px rgba(17, 153, 142, 0.5), 0 0 16px rgba(56, 239, 125, 0.6)',
-            },
-            delay: '0.4s',
-            badge: '',
-            extraClass: '',
-          },
-          {
-            key: 'g1-stickers',
-            label: 'Mi album de stickers',
-            icon: <StickerAlbumIcon3D />,
-            onClick: () => setShowStickers(true),
-            s: {
-              border: '3.5px solid #FFFFFF',
-              background: 'linear-gradient(135deg, #A855F7 0%, #EC4899 50%, #E11D48 100%)',
-              boxShadow: '0 8px 24px rgba(236, 72, 153, 0.5), 0 0 16px rgba(225, 29, 72, 0.6)',
-            },
-            delay: '0.6s',
-            badge: '',
-            extraClass: 'mt-10 md:mt-14',
-          },
-        ] : [
-          // GRADO 2: 13 BOTONES CUADRADOS (Estilo Imagen 2)
-          { key: 'g2-menu', label: 'Menú de unidades', icon: <NumbersGridIcon3D />, onClick: handleScrollToUnits, s: { border: '2px solid rgba(255,255,255,0.4)', background: 'linear-gradient(145deg,#FF9800,#F57C00)', boxShadow: '0 6px 14px rgba(245,124,0,0.4), inset 0 2px 2px rgba(255,255,255,0.4)' }, delay: '0s', badge: '', extraClass: '' },
-          { key: 'g2-tablas', label: 'Tablas de multiplicar', icon: <NumbersGridIcon3D />, onClick: () => setShowTablas(true), s: { border: '2px solid rgba(255,255,255,0.3)', background: 'linear-gradient(145deg,#7C3AED,#6D28D9)', boxShadow: '0 6px 14px rgba(109,40,217,0.4), inset 0 2px 2px rgba(255,255,255,0.3)' }, delay: '0.12s', badge: '', extraClass: '' },
-          { key: 'g2-vid', label: 'Videos del libro', icon: <ClapperboardIcon3D />, onClick: () => setShowVideos(true), s: { border: '2px solid rgba(255,255,255,0.8)', background: 'linear-gradient(145deg,#FFFFFF,#F1F5F9)', boxShadow: '0 6px 14px rgba(0,0,0,0.15), inset 0 2px 2px rgba(255,255,255,0.9)' }, delay: '0.24s', badge: '222', extraClass: '' },
-          { key: 'g2-stats', label: 'Laboratorio estadística', icon: <StatsLabIcon3D />, onClick: () => setShowStatsLab(true), s: { border: '2px solid rgba(255,255,255,0.2)', background: 'linear-gradient(145deg,#0F2B5C,#0A1C3E)', boxShadow: '0 6px 14px rgba(10,28,62,0.5), inset 0 2px 2px rgba(255,255,255,0.2)' }, delay: '0.36s', badge: '', extraClass: '' },
-          { key: 'g2-tut', label: 'Tutorial y Guía', icon: <TutorialIcon3D />, onClick: tutorialClick, s: { border: '2px solid rgba(255,255,255,0.4)', background: 'linear-gradient(145deg,#F59E0B,#D97706)', boxShadow: '0 6px 14px rgba(217,119,6,0.4), inset 0 2px 2px rgba(255,255,255,0.4)' }, delay: '0.48s', badge: '', extraClass: '' },
-          { key: 'g2-juegos', label: 'Panel de juegos', icon: <GamepadIcon3D />, onClick: () => setShowJuegosPicker(true), s: { border: '2px solid rgba(255,255,255,0.3)', background: 'linear-gradient(145deg,#8B5CF6,#7C3AED)', boxShadow: '0 6px 14px rgba(124,58,237,0.4), inset 0 2px 2px rgba(255,255,255,0.3)' }, delay: '0.6s', badge: '', extraClass: '' },
-          { key: 'g2-exp', label: 'Explicación y Fichas', icon: <ExplicacionIcon3D />, onClick: () => setShowExplicacion(true), s: { border: '2px solid rgba(255,255,255,0.8)', background: 'linear-gradient(145deg,#F8FAFC,#E2E8F0)', boxShadow: '0 6px 14px rgba(0,0,0,0.15), inset 0 2px 2px rgba(255,255,255,0.9)' }, delay: '0.72s', badge: '', extraClass: '' },
-          { key: 'g2-cont', label: 'Contenidos del libro', icon: <ContenidosIcon3D />, onClick: () => setShowContenidos(true), s: { border: '2px solid rgba(255,255,255,0.2)', background: 'linear-gradient(145deg,#1E3A8A,#172554)', boxShadow: '0 6px 14px rgba(23,37,84,0.5), inset 0 2px 2px rgba(255,255,255,0.2)' }, delay: '0.84s', badge: '', extraClass: '' },
-          { key: 'g2-def', label: 'Definiciones FEDOR', icon: <BooksIcon3D />, onClick: () => goScreen('definiciones'), s: { border: '2px solid rgba(255,255,255,0.3)', background: 'linear-gradient(145deg,#4F46E5,#4338CA)', boxShadow: '0 6px 14px rgba(67,56,202,0.4), inset 0 2px 2px rgba(255,255,255,0.3)' }, delay: '0.96s', badge: '', extraClass: '' },
-          { key: 'g2-conteo', label: 'Módulo de conteo', icon: <NumbersGridIcon3D />, onClick: () => setShowConteo(true), s: { border: '2px solid rgba(255,255,255,0.3)', background: 'linear-gradient(145deg,#0D9488,#0F766E)', boxShadow: '0 6px 14px rgba(15,118,110,0.4), inset 0 2px 2px rgba(255,255,255,0.3)' }, delay: '1.08s', badge: '', extraClass: '' },
-          { key: 'g2-fedor', label: 'Fedor · tu compañero', icon: <DragonIcon3D />, onClick: handleMascotClick, s: { border: '2px solid rgba(255,255,255,0.2)', background: 'linear-gradient(145deg,#1E1B4B,#0F0E2A)', boxShadow: '0 6px 14px rgba(15,14,42,0.5), inset 0 2px 2px rgba(255,255,255,0.2)' }, delay: '1.2s', badge: '', extraClass: '' },
-          { key: 'g2-lore', label: 'Historia Fedor', icon: <LoreIcon3D />, onClick: () => setShowLore(true), s: { border: '2px solid rgba(255,255,255,0.3)', background: 'linear-gradient(145deg,#6D28D9,#581C87)', boxShadow: '0 6px 14px rgba(88,28,135,0.4), inset 0 2px 2px rgba(255,255,255,0.3)' }, delay: '1.32s', badge: '', extraClass: '' },
-          { key: 'g2-mini', label: 'Mini-juegos adicionales', icon: <GamepadIcon3D />, onClick: () => setShowJuegosPicker(true), s: { border: '2px solid rgba(255,255,255,0.2)', background: 'linear-gradient(145deg,#18181B,#09090B)', boxShadow: '0 6px 14px rgba(0,0,0,0.5), inset 0 2px 2px rgba(255,255,255,0.2)' }, delay: '1.44s', badge: '', extraClass: '' },
-        ]).map((btn) => (
-          <div key={btn.key} className={`relative group fedor-float-btn ${btn.extraClass || ''}`} style={{ animationDelay: btn.delay }}>
-            <button
-              type="button"
-              onClick={btn.onClick}
-              className="relative flex items-center justify-center hover:scale-110 active:scale-95 transition-transform duration-200 cursor-pointer"
-              style={{
-                width: isGrade1Internal ? 56 : 46,
-                height: isGrade1Internal ? 56 : 46,
-                borderRadius: isGrade1Internal ? '50%' : 15,
-                ...btn.s,
-              }}
-              title={btn.label}
-              aria-label={btn.label}
-            >
-              {btn.icon}
-              {btn.badge && (
-                <span className="absolute -top-1.5 -right-1.5 bg-amber-400 text-amber-950 font-black text-[10px] px-1.5 py-0.5 rounded-full shadow border border-white">
-                  {btn.badge}
-                </span>
-              )}
-            </button>
-            <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
-              {btn.label}
+        {/* 2. Maletín / Herramientas */}
+        <div className="relative group fedor-float-btn" style={{ animationDelay: '0.2s' }}>
+          <button
+            type="button"
+            onClick={() => setShowHerramientas(true)}
+            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
+            title="Herramientas del libro"
+            aria-label="Herramientas del libro"
+          >
+            <ToolboxIcon3D />
+          </button>
+          <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+            Herramientas del libro
+          </span>
+        </div>
+
+        {/* 3. Paleta / Cambiar color de fondo */}
+        <div className="relative group fedor-float-btn" style={{ animationDelay: '0.4s' }}>
+          <button
+            type="button"
+            onClick={() => setShowColorPicker(true)}
+            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
+            title="Cambiar color de fondo"
+            aria-label="Cambiar color de fondo"
+          >
+            <PaletteIcon3D />
+          </button>
+          <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+            Cambiar color de fondo
+          </span>
+        </div>
+
+        {/* 4. Libros / Definiciones FEDOR */}
+        <div className="relative group fedor-float-btn" style={{ animationDelay: '0.6s' }}>
+          <button
+            type="button"
+            onClick={() => goScreen('definiciones')}
+            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
+            title="Definiciones FEDOR"
+            aria-label="Definiciones FEDOR"
+          >
+            <BooksIcon3D />
+          </button>
+          <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+            Definiciones FEDOR
+          </span>
+        </div>
+
+        {/* 5. Mando de Consola / Juegos de 1° */}
+        <div className="relative group fedor-float-btn" style={{ animationDelay: '0.8s' }}>
+          <button
+            type="button"
+            onClick={() => setShowJuegosPicker(true)}
+            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
+            title="Juegos de 1°"
+            aria-label="Juegos de 1°"
+          >
+            <GamepadIcon3D />
+          </button>
+          <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+            Juegos Matemáticos
+          </span>
+        </div>
+
+        {/* 6. Dragón / Mascota Fedor */}
+        <div className="relative group fedor-float-btn" style={{ animationDelay: '1.0s' }}>
+          <button
+            type="button"
+            onClick={handleMascotClick}
+            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
+            title="Toca a tu mascota"
+            aria-label="Toca a tu mascota"
+          >
+            <DragonIcon3D />
+          </button>
+          <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+            Mascota Fedor
+          </span>
+        </div>
+      </div>
+
+      {/* ── BOTONERA FLOTANTE DERECHA: 6 Botones Estilo Imagen (Grado 1) ── */}
+      <div className="fixed right-3 md:right-5 top-1/2 -translate-y-1/2 z-[9996] flex flex-col gap-2.5 md:gap-3.5 select-none items-center">
+        {/* 1. Videos explicativos con badge 290 */}
+        <div className="relative group fedor-float-btn" style={{ animationDelay: '0.1s' }}>
+          <button
+            type="button"
+            onClick={() => setShowVideos(true)}
+            className="relative flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
+            title="Videos por unidad"
+            aria-label="Videos por unidad"
+          >
+            <ClapperboardIcon3D />
+            <span className="absolute -top-1 -right-1 bg-amber-400 text-amber-950 font-black text-[10px] md:text-[11px] px-1.5 py-0.5 rounded-full shadow border border-white">
+              290
             </span>
-          </div>
-        ))}
+          </button>
+          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+            Videos explicativos (290)
+          </span>
+        </div>
+
+        {/* 2. Libros apilados / Conceptos */}
+        <div className="relative group fedor-float-btn" style={{ animationDelay: '0.3s' }}>
+          <button
+            type="button"
+            onClick={() => setShowConceptos(true)}
+            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
+            title="Conceptos"
+            aria-label="Conceptos"
+          >
+            <BooksIcon3D />
+          </button>
+          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+            Conceptos
+          </span>
+        </div>
+
+        {/* 3. Multiplicación X / Tablas de multiplicar */}
+        <div className="relative group fedor-float-btn" style={{ animationDelay: '0.5s' }}>
+          <button
+            type="button"
+            onClick={() => setShowTablas(true)}
+            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
+            title="Tablas de multiplicar"
+            aria-label="Tablas de multiplicar"
+          >
+            <MultiplyGridIcon3D />
+          </button>
+          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+            Tablas de multiplicar
+          </span>
+        </div>
+
+        {/* 4. Gráfico de Barras / Laboratorio de Estadística */}
+        <div className="relative group fedor-float-btn" style={{ animationDelay: '0.7s' }}>
+          <button
+            type="button"
+            onClick={() => setShowStatsLab(true)}
+            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
+            title="Laboratorio de Estadística"
+            aria-label="Laboratorio de Estadística"
+          >
+            <StatsLabIcon3D />
+          </button>
+          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+            Laboratorio de Estadística
+          </span>
+        </div>
+
+        {/* 5. Libro Morado / Mi álbum de stickers */}
+        <div className="relative group fedor-float-btn" style={{ animationDelay: '0.9s' }}>
+          <button
+            type="button"
+            onClick={() => setShowStickers(true)}
+            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
+            title="Álbum Coleccionable"
+            aria-label="Álbum Coleccionable"
+          >
+            <StickerAlbumIcon3D />
+          </button>
+          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+            Álbum Coleccionable
+          </span>
+        </div>
+
+        {/* 6. Cuadrícula 1234 / Conteo */}
+        <div className="relative group fedor-float-btn" style={{ animationDelay: '1.1s' }}>
+          <button
+            type="button"
+            onClick={() => setShowConteo(true)}
+            className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-b from-white via-slate-50 to-slate-100 shadow-[0_8px_22px_rgba(0,0,0,0.15),_inset_0_2px_4px_rgba(255,255,255,1),_inset_0_-2px_4px_rgba(0,0,0,0.06)] border-2 border-white/90 hover:scale-115 active:scale-95 transition-transform duration-200 cursor-pointer"
+            title="Conteo"
+            aria-label="Conteo"
+          >
+            <NumbersGridIcon3D />
+          </button>
+          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shadow-md z-10">
+            Conteo
+          </span>
+        </div>
       </div>
       {showJuegosPicker && (
         isGrade1Internal ? (
@@ -884,7 +944,7 @@ function Grade1FloatingButtons({ onOpenAiChat, onOpenIntro, bookGroup }: { onOpe
         <StickerAlbumModal onClose={() => setShowStickers(false)} />
       )}
       {showConteo && (
-        <ConteoModal
+        <Conteo1roModal
           onClose={() => setShowConteo(false)}
           onSelectOption={(id) => openGameShortcut('conteo')}
         />
@@ -901,7 +961,7 @@ function Grade1FloatingButtons({ onOpenAiChat, onOpenIntro, bookGroup }: { onOpe
           else if (option === 'lab') setShowStatsLab(true);
         }}
       />
-      <VideosModal
+      <Videos1roModal
         isOpen={showVideos}
         onClose={() => setShowVideos(false)}
       />

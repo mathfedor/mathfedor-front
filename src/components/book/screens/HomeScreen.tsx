@@ -267,6 +267,7 @@ export default function HomeScreen() {
   if (!book || !progress) return null;
 
   const g = progress.gamification;
+  const displayAvatar = (g.avatar && !/^[a-zA-Z0-9_.-]+$/.test(g.avatar)) ? g.avatar : '🧑‍🚀';
   const globalPct = globalProgressPct(book, progress.scores);
   const dailyAvailable = g.lastDaily !== new Date().toDateString();
   const challengeDone = g.lastDailyChallenge === dayKey();

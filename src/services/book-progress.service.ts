@@ -14,7 +14,7 @@ import type {
   LessonResult,
 } from '@/types/book-progress.types';
 import type { LevelRef } from '@/types/book.types';
-import { createInitialGamificationState } from './gamification.service';
+import { createInitialGamificationState, ensureGamificationState } from './gamification.service';
 import { BOOK_API_URL as API_URL, BOOK_SLUG, bookBackendEnabled as backendEnabled, bookHeaders } from './book-http';
 
 
@@ -108,15 +108,24 @@ class BookProgressService {
             school: lr.student?.school || 'Colegio',
             city: lr.student?.city || 'Ciudad',
             teacher: lr.student?.teacher || lr.teacher?.name || '',
-            avatar: lr.gamification?.avatar || '🧑‍🚀',
+            avatar: lr.gamification?.avatar && !/^[a-zA-Z0-9_.-]+$/.test(lr.gamification.avatar) ? lr.gamification.avatar : '🧑‍🚀',
           },
           scores,
-          gamification: lr.gamification || createInitialGamificationState(lr.gamification?.avatar || '🧑‍🚀'),
+          gamification: ensureGamificationState(lr.gamification),
         };
       }
       return null;
     }
-    return readLocal(slug);
+    const local = readLocal(slug);
+    if (!local) return null;
+    return {
+      ...local,
+      student: {
+        ...local.student,
+        avatar: local.student.avatar && !/^[a-zA-Z0-9_.-]+$/.test(local.student.avatar) ? local.student.avatar : '🧑‍🚀',
+      },
+      gamification: ensureGamificationState(local.gamification),
+    };
   }
 
   /** Guarda el progreso completo. */

@@ -15,8 +15,22 @@ import type {
 import type { Grade, ScoreMap } from '@/types/book-progress.types';
 import type { Book } from '@/types/book.types';
 
+const DEFAULT_AVATAR = '🧑‍🚀';
+
+/**
+ * Detecta si un valor de avatar es un emoji válido.
+ * Los avatares del backend antiguos como 'avatar_1' son strings ASCII
+ * que no contienen caracteres emoji; esta función los filtra.
+ */
+function sanitizeAvatar(avatar?: string | null): string {
+  if (!avatar) return DEFAULT_AVATAR;
+  // Si es un string puramente ASCII/alfanumérico (como 'avatar_1'), no es un emoji válido
+  if (/^[a-zA-Z0-9_.-]+$/.test(avatar)) return DEFAULT_AVATAR;
+  return avatar;
+}
+
 /** Estado de gamificación inicial para un estudiante nuevo. */
-export function createInitialGamificationState(avatar = '🧑‍🚀'): GamificationState {
+export function createInitialGamificationState(avatar = DEFAULT_AVATAR): GamificationState {
   return {
     totalXP: 0,
     coins: 0,
@@ -142,11 +156,13 @@ function isUnitComplete(book: Book, u: number, scores: ScoreMap): boolean {
  * necesarias (utiliza valores por defecto si está ausente o incompleto).
  */
 export function ensureGamificationState(state?: any): GamificationState {
-  const defaults = createInitialGamificationState(state?.avatar || '🧑‍🚀');
+  const safeAvatar = sanitizeAvatar(state?.avatar);
+  const defaults = createInitialGamificationState(safeAvatar);
   if (!state) return defaults;
   return {
     ...defaults,
     ...state,
+    avatar: safeAvatar,
     shop: state.shop ? { ...defaults.shop, ...state.shop } : defaults.shop,
   };
 }
