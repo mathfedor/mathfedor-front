@@ -9,8 +9,9 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const isDashboard = pathname?.startsWith('/dashboard');
+  const isSalesLanding = pathname?.startsWith('/landing') || pathname?.startsWith('/gracias');
 
-  if (isDashboard) return null;
+  if (isDashboard || isSalesLanding) return null;
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 bg-[#FF6B00] transition-all duration-300`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
