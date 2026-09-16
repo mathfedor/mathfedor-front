@@ -1,0 +1,37 @@
+{
+  "hero": {
+    "title_line1": "Master mathematics",
+    "title_highlight": "with the Fedor Method",
+    "title_line2": "And future technology",
+    "cta": "Buy now"
+  },
+  "description": "Matemáticas de Fedor combines innovation, inclusion, and technology so that each student becomes autonomous and competent in the 21st century.",
+  "features": {
+    "interactive_tech_title": "Interactive technology",
+    "interactive_tech_desc": "Learn with modern digital resources",
+    "inclusive_curriculum_title": "Inclusive curriculum",
+    "inclusive_curriculum_desc": "Adapted to all learning levels and styles",
+    "confidence_title": "Autonomy and confidence",
+    "confidence_desc": "Boost your self-esteem by learning at your own pace",
+    "preicfes_title": "Pre-ICFES Preparation",
+    "preicfes_desc": "Achieve outstanding scores on the ICFES exam",
+    "preuni_title": "Pre-University Success",
+    "preuni_desc": "Enter university with confidence and stand out from day one"
+  },
+  "special_offer": {
+    "title": "Exclusive offer!",
+    "cta": "Take advantage now"
+  },
+  "options": {
+    "code_title": "Purchase with code",
+    "code_desc": "Already have a code? Activate it here and start learning.",
+    "code_btn": "Activate code",
+    "direct_title": "Direct purchase with discount",
+    "direct_desc": "Buy today and get instant access with a special discount.",
+    "direct_btn": "Buy with discount"
+  },
+  "testimonial": {
+    "quote": "Learning at my own pace restored my confidence in mathematics.",
+    "author": "Ana, 14 years old"
+  }
+}

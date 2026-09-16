@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { Link, usePathname } from '@/i18n/routing';
+import LocaleSwitcher from '@/components/LocaleSwitcher';
 
 export default function Navbar() {
+  const t = useTranslations('nav');
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const isDashboard = pathname?.startsWith('/dashboard');
@@ -40,7 +42,7 @@ export default function Navbar() {
                   : 'text-white hover:bg-white hover:text-fedor-orange'
                 }`}
             >
-              Home
+              {t('home')}
             </Link>
             <Link
               href="/books"
@@ -49,7 +51,7 @@ export default function Navbar() {
                   : 'text-white hover:bg-white hover:text-fedor-orange'
                 }`}
             >
-              Módulos
+              {t('modules')}
             </Link>
             <Link
               href="/retos"
@@ -58,22 +60,27 @@ export default function Navbar() {
                   : 'text-white hover:bg-white hover:text-fedor-orange'
                 }`}
             >
-              Estación Fedor
+              {t('station')}
             </Link>
+
+            {/* Selector de idiomas */}
+            <LocaleSwitcher />
+
             <Link
               href="/login"
               className="px-4 py-2 rounded-md text-sm font-medium text-fedor-orange bg-white hover:bg-gray-100"
             >
-              Login
+              {t('login')}
             </Link>
           </div>
 
-
           {/* Botón de menú móvil */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center space-x-2">
+            <LocaleSwitcher />
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-white hover:text-fedor-orange focus:outline-none"
+              aria-label="Abrir menú de navegación"
             >
               <svg
                 className="h-6 w-6"
@@ -113,7 +120,7 @@ export default function Navbar() {
                   : 'text-white hover:bg-white hover:text-fedor-orange'
                 }`}
             >
-              Home
+              {t('home')}
             </Link>
             <Link
               href="/books"
@@ -122,7 +129,7 @@ export default function Navbar() {
                   : 'text-white hover:bg-white hover:text-fedor-orange'
                 }`}
             >
-              Módulos
+              {t('modules')}
             </Link>
             <Link
               href="/retos"
@@ -131,17 +138,17 @@ export default function Navbar() {
                   : 'text-white hover:bg-white hover:text-fedor-orange'
                 }`}
             >
-              Estación Fedor
+              {t('station')}
             </Link>
             <Link
               href="/login"
               className="block px-3 py-2 rounded-md text-base font-medium text-fedor-orange bg-white hover:bg-gray-100"
             >
-              Login
+              {t('login')}
             </Link>
           </div>
         </div>
       )}
     </nav>
   );
-} 
+}

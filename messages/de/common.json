@@ -1,0 +1,37 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "modules": "Module",
+    "station": "Fedor Station",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "profile": "Profil",
+    "dashboard": "Dashboard"
+  },
+  "buttons": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "continue": "Weiter",
+    "buy_now": "Jetzt kaufen",
+    "accept": "Akzeptieren",
+    "edit": "Bearbeiten",
+    "delete": "Löschen"
+  },
+  "common": {
+    "loading": "Wird geladen...",
+    "language": "Sprache",
+    "error": "Ein Fehler ist aufgetreten",
+    "success": "Erfolgreicher Vorgang"
+  },
+  "footer": {
+    "follow_us": "Folge uns auf Social Media",
+    "rights_reserved": "Matemáticas de Fedor. Alle Rechte vorbehalten."
+  },
+  "cookies": {
+    "text": "Wir verwenden Cookies, um Ihre Erfahrung zu verbessern. Lesen Sie unsere",
+    "policy_link": "Cookie-Richtlinie",
+    "or_manage": "oder verwalten Sie Cookies.",
+    "accept_all": "Alle akzeptieren",
+    "reject_all": "Alle ablehnen"
+  }
+}

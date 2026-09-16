@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "check:i18n": "node scripts/check-translations.js",
     "setup-google": "echo 'NEXT_PUBLIC_GOOGLE_CLIENT_ID=TU_GOOGLE_CLIENT_ID_AQUI' > .env.local && echo 'Archivo .env.local creado. Reemplaza TU_GOOGLE_CLIENT_ID_AQUI con tu Client ID real de Google.'"
   },
   "dependencies": {
@@ -16,6 +17,7 @@
     "axios": "^1.8.4",
     "lucide-react": "^0.487.0",
     "next": "^16.3.0",
+    "next-intl": "^4.14.5",
     "plotly.js": "^3.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

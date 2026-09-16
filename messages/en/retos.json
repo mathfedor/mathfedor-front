@@ -1,0 +1,48 @@
+{
+  "loading_access": "Verifying access to Fedor Station...",
+  "topbar": {
+    "cadet": "Cadet",
+    "balance": "Balance",
+    "lives": "Lives",
+    "day": "Day",
+    "save_title": "Save progress manually",
+    "exit_title": "Back to Central Station",
+    "exit_aria": "Exit",
+    "teacher_title": "Teacher Panel",
+    "toast_saved": "✓ Progress saved"
+  },
+  "doors": {
+    "map": "Map",
+    "shop": "Shop",
+    "diary": "Logbook",
+    "monitor": "Monitor",
+    "games": "Games"
+  },
+  "map": {
+    "title": "🛰️ Fedor Orbit Stations",
+    "subtitle": "Select a station to launch mathematical missions and earn gems 💎",
+    "base_core": "CORE BASE",
+    "fedor": "FEDOR"
+  },
+  "victory": {
+    "almost": "Almost there!",
+    "perfect": "Perfect Mission!",
+    "completed": "Mission Accomplished!",
+    "earned": "You earned",
+    "no_hearts_desc": "You ran out of lives, but don't worry: you can retry immediately.",
+    "perfect_desc": "Flawless! Keep advancing to the next orbital stations.",
+    "completed_desc": "Well done! You can replay the mission to earn all 3 stars.",
+    "btn_continue": "Continue to Module →"
+  },
+  "public": {
+    "hero_title_1": "Challenge your mind",
+    "hero_title_2": "with unique",
+    "hero_title_3": "math",
+    "hero_title_4": "challenges",
+    "hero_subtitle": "Test your skills and discover new ways to solve problems",
+    "btn_start": "Start Challenges",
+    "section_title": "Math Challenges",
+    "desc_1": "Test your skills with these challenging math puzzles designed to boost logical reasoning and creativity.",
+    "desc_2": "Each challenge is carefully designed to develop distinct aspects of mathematical thinking, from basic algebra to advanced geometry."
+  }
+}

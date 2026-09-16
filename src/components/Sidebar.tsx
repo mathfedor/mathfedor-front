@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart, FiTag, FiHelpCircle, FiLayers, FiTarget } from 'react-icons/fi';
 import { useCallback, useMemo, useState, useEffect } from 'react';
@@ -28,72 +29,67 @@ interface MenuItem {
   submenu?: SubMenuItem[];
 }
 
-// Definimos las opciones de menú base (visibles para todos)
-const baseMenuItems: MenuItem[] = [
-  { icon: <FiHome className="w-5 h-5" />, title: 'Inicio', href: '/dashboard' }
-];
-
-// Opciones específicas para cada rol
-const roleMenuItems: Record<string, MenuItem[]> = {
+const getRoleMenuItems = (t: (key: string) => string): Record<string, MenuItem[]> => ({
   student: [
     {
       icon: <FiBook className="w-5 h-5" />,
-      title: 'Mis Módulos',
+      title: t('my_modules'),
       href: '/dashboard/cursos',
       submenu: [] // Se llenará dinámicamente
     },
     {
       icon: <FiLayers className="w-5 h-5" />,
-      title: 'Módulos Institución',
+      title: t('inst_modules'),
       href: '/dashboard/mis-modulos',
     },
-    { icon: <FiFileText className="w-5 h-5" />, title: 'Diagnóstico', href: '/dashboard/diagnostico' },
-    { icon: <FiPackage className="w-5 h-5" />, title: 'Simulacro', href: '/dashboard/simulation' },
-    { icon: <FiCode className="w-5 h-5" />, title: 'Simulador', href: '/dashboard/simulator' },
-    { icon: <FiTarget className="w-5 h-5" />, title: 'Estación Fedor', href: '/retos' }
+    { icon: <FiFileText className="w-5 h-5" />, title: t('diagnosis'), href: '/dashboard/diagnostico' },
+    { icon: <FiPackage className="w-5 h-5" />, title: t('simulation'), href: '/dashboard/simulation' },
+    { icon: <FiCode className="w-5 h-5" />, title: t('simulator'), href: '/dashboard/simulator' },
+    { icon: <FiTarget className="w-5 h-5" />, title: t('station'), href: '/retos' }
   ],
   teacher: [
     {
       icon: <FiBook className="w-5 h-5" />,
-      title: 'Mis Módulos',
+      title: t('my_modules'),
       href: '/dashboard/cursos',
       submenu: [] // Se llenará dinámicamente
     },
     {
       icon: <FiLayers className="w-5 h-5" />,
-      title: 'Módulos Institución',
+      title: t('inst_modules'),
       href: '/dashboard/mis-modulos',
     },
-    { icon: <FiUser className="w-5 h-5" />, title: 'Estudiantes', href: '/dashboard/estudiantes' },
-    { icon: <FiBarChart className="w-5 h-5" />, title: 'Resultados', href: '/dashboard/results' },
-    { icon: <FiTarget className="w-5 h-5" />, title: 'Estación Fedor', href: '/retos' }
+    { icon: <FiUser className="w-5 h-5" />, title: t('students'), href: '/dashboard/estudiantes' },
+    { icon: <FiBarChart className="w-5 h-5" />, title: t('results'), href: '/dashboard/results' },
+    { icon: <FiTarget className="w-5 h-5" />, title: t('station'), href: '/retos' }
   ],
   academy: [
-    { icon: <FiUser className="w-5 h-5" />, title: 'Estudiantes', href: '/dashboard/estudiantes' },
-    { icon: <FiBarChart className="w-5 h-5" />, title: 'Resultados', href: '/dashboard/results' },
-    { icon: <FiGlobe className="w-5 h-5" />, title: 'Instituciones', href: '/dashboard/institutions' },
-    { icon: <FiUsers className="w-5 h-5" />, title: 'Usuarios', href: '/dashboard/users' },
-    { icon: <FiTarget className="w-5 h-5" />, title: 'Estación Fedor', href: '/retos' }
+    { icon: <FiUser className="w-5 h-5" />, title: t('students'), href: '/dashboard/estudiantes' },
+    { icon: <FiBarChart className="w-5 h-5" />, title: t('results'), href: '/dashboard/results' },
+    { icon: <FiGlobe className="w-5 h-5" />, title: t('institutions'), href: '/dashboard/institutions' },
+    { icon: <FiUsers className="w-5 h-5" />, title: t('users'), href: '/dashboard/users' },
+    { icon: <FiTarget className="w-5 h-5" />, title: t('station'), href: '/retos' }
   ],
   admin: [
-    { icon: <FiPlusCircle className="w-5 h-5" />, title: 'Crear Diagnóstico', href: '/dashboard/diagnosis' },
-    { icon: <FiLayers className="w-5 h-5" />, title: 'Gestionar Módulos', href: '/dashboard/modules' },
-    { icon: <FiBook className="w-5 h-5" />, title: 'Crear Módulo', href: '/dashboard/modules/create' },
-    { icon: <FiBook className="w-5 h-5" />, title: 'Editar Libros', href: '/dashboard/curriculum' },
-    { icon: <FiBarChart className="w-5 h-5" />, title: 'Crear Simulador', href: '/dashboard/adminsimulator' },
-    { icon: <FiTarget className="w-5 h-5" />, title: 'Estación Fedor', href: '/retos' },
-    { icon: <FiMonitor className="w-5 h-5" />, title: 'Crear Simulacro', href: '/dashboard/adminsimulation' },
-    { icon: <FiGlobe className="w-5 h-5" />, title: 'Instituciones', href: '/dashboard/institutions' },
-    { icon: <FiUsers className="w-5 h-5" />, title: 'Usuarios', href: '/dashboard/users' },
-    { icon: <FiBarChart className="w-5 h-5" />, title: 'Resultados', href: '/dashboard/results' },
-    { icon: <FiTag className="w-5 h-5" />, title: 'Cupones', href: '/dashboard/coupons' },
-    { icon: <FiFileText className="w-5 h-5" />, title: 'Documentos Legales', href: '/dashboard/legal' }
+    { icon: <FiPlusCircle className="w-5 h-5" />, title: t('create_diagnosis'), href: '/dashboard/diagnosis' },
+    { icon: <FiLayers className="w-5 h-5" />, title: t('manage_modules'), href: '/dashboard/modules' },
+    { icon: <FiBook className="w-5 h-5" />, title: t('create_module'), href: '/dashboard/modules/create' },
+    { icon: <FiBook className="w-5 h-5" />, title: t('edit_books'), href: '/dashboard/curriculum' },
+    { icon: <FiBarChart className="w-5 h-5" />, title: t('create_simulator'), href: '/dashboard/adminsimulator' },
+    { icon: <FiTarget className="w-5 h-5" />, title: t('station'), href: '/retos' },
+    { icon: <FiMonitor className="w-5 h-5" />, title: t('create_simulation'), href: '/dashboard/adminsimulation' },
+    { icon: <FiGlobe className="w-5 h-5" />, title: t('institutions'), href: '/dashboard/institutions' },
+    { icon: <FiUsers className="w-5 h-5" />, title: t('users'), href: '/dashboard/users' },
+    { icon: <FiBarChart className="w-5 h-5" />, title: t('results'), href: '/dashboard/results' },
+    { icon: <FiTag className="w-5 h-5" />, title: t('coupons'), href: '/dashboard/coupons' },
+    { icon: <FiFileText className="w-5 h-5" />, title: t('legal_docs'), href: '/dashboard/legal' }
   ]
-};
+});
 
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const t = useTranslations('dashboard.sidebar');
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isClient, setIsClient] = useState(false);
@@ -102,6 +98,11 @@ export default function Sidebar() {
   const [modules, setModules] = useState<Module[]>([]);
   const isModuleDetailPage = /^\/dashboard\/modules\/(?!create(?:\/|$))[^/]+(?:\/.*)?$/.test(pathname ?? '');
   const isExpanded = pathname?.startsWith('/dashboard') && !isModuleDetailPage;
+
+  const roleMenuItems = useMemo(() => getRoleMenuItems(t), [t]);
+  const baseMenuItems: MenuItem[] = useMemo(() => [
+    { icon: <FiHome className="w-5 h-5" />, title: t('home'), href: '/dashboard' }
+  ], [t]);
 
   const isItemActive = (href: string) => {
     if (href === '/dashboard') {
@@ -170,45 +171,45 @@ export default function Sidebar() {
   // Combinamos las opciones base con las opciones específicas del rol
   const menuItems = useMemo(() => {
     let items = [
-    ...baseMenuItems,
-    ...(isClient && user && user.role ? roleMenuItems[user.role.toLowerCase() as keyof typeof roleMenuItems] || [] : [])
-  ];
-
-  if (user) {
-    const isAcademy = user.role?.toLowerCase() === 'academy';
-    
-    items = [
-      ...items,
-      ...(isAcademy ? [] : [{ icon: <FiShoppingCart className="w-5 h-5" />, title: 'Comprar', href: '/dashboard/buybooks' }]),
-      { icon: <FiUser className="w-5 h-5" />, title: 'Perfil', href: '/dashboard/profile' },
-      { icon: <FiHelpCircle className="w-5 h-5" />, title: 'Ayuda', href: '/dashboard/help' }
+      ...baseMenuItems,
+      ...(isClient && user && user.role ? roleMenuItems[user.role.toLowerCase() as keyof typeof roleMenuItems] || [] : [])
     ];
-  }
 
-  // Si el usuario es estudiante o profesor, actualizamos el submenu de módulos
-  if (user?.role?.toLowerCase() === 'student' || user?.role?.toLowerCase() === 'teacher') {
-    items = items.map(item => {
-      if (item.title === 'Mis Módulos') {
-        return {
-          ...item,
-          submenu: [
-            ...modules
-              .filter(module => hasExerciseAccess(module._id))
-              .map(module => ({
-                title: module.title,
-                href: `/dashboard/modules/${module._id}/exercises`,
-                moduleId: module._id
-              })),
-            { title: 'Descargas', href: '/dashboard/downloads' }
-          ]
-        };
-      }
-      return item;
-    });
-  }
+    if (user) {
+      const isAcademy = user.role?.toLowerCase() === 'academy';
+      
+      items = [
+        ...items,
+        ...(isAcademy ? [] : [{ icon: <FiShoppingCart className="w-5 h-5" />, title: t('buy'), href: '/dashboard/buybooks' }]),
+        { icon: <FiUser className="w-5 h-5" />, title: t('profile'), href: '/dashboard/profile' },
+        { icon: <FiHelpCircle className="w-5 h-5" />, title: t('help'), href: '/dashboard/help' }
+      ];
+    }
+
+    // Si el usuario es estudiante o profesor, actualizamos el submenu de módulos
+    if (user?.role?.toLowerCase() === 'student' || user?.role?.toLowerCase() === 'teacher') {
+      items = items.map(item => {
+        if (item.href === '/dashboard/cursos') {
+          return {
+            ...item,
+            submenu: [
+              ...modules
+                .filter(module => hasExerciseAccess(module._id))
+                .map(module => ({
+                  title: module.title,
+                  href: `/dashboard/modules/${module._id}/exercises`,
+                  moduleId: module._id
+                })),
+              { title: t('downloads'), href: '/dashboard/downloads' }
+            ]
+          };
+        }
+        return item;
+      });
+    }
 
     return items;
-  }, [hasExerciseAccess, isClient, modules, user]);
+  }, [baseMenuItems, hasExerciseAccess, isClient, modules, roleMenuItems, t, user]);
 
   useEffect(() => {
     const activeSubmenu = menuItems.find(item => isSubmenuActive(item.submenu));
@@ -255,7 +256,7 @@ export default function Sidebar() {
         <button
           onClick={toggleTheme}
           className="flex items-center justify-center p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-[#282828] transition-colors mb-2"
-          aria-label="Cambiar tema"
+          aria-label={t('toggle_theme')}
         >
           {theme === 'dark' ? (
             <FiSun className="w-5 h-5 text-yellow-400" />

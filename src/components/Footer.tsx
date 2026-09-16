@@ -1,15 +1,18 @@
 'use client';
 
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { trackMetaContact } from '@/lib/analytics/meta';
 import { trackTikTokContact } from '@/lib/analytics/tiktok';
 import { trackGTMGenerateLead } from '@/lib/analytics/google';
 
 export default function Footer() {
+  const t = useTranslations('footer');
+
   return (
     <footer className="relative bg-cover bg-center py-10" style={{ backgroundImage: 'url(/footerfedor.png)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-white text-xl mb-4">Síguenos en Nuestras Redes</h2>
+        <h2 className="text-white text-xl mb-4">{t('follow_us')}</h2>
         <div className="flex justify-center space-x-4 mb-4">
           {/* Facebook */}
           <a href="https://www.facebook.com/profile.php?id=100070309651651" target="_blank" rel="noopener noreferrer" className="bg-orange-500 text-white p-3 rounded-full hover:bg-orange-600 w-12 h-12 flex items-center justify-center">
@@ -49,8 +52,8 @@ export default function Footer() {
             </svg>
           </a>
         </div>
-        <p className="text-white mt-4">Matemáticas de Fedor. Todos los Derechos Reservados.</p>
+        <p className="text-white mt-4">{t('rights_reserved')}</p>
       </div>
     </footer>
   );
-} 
+}

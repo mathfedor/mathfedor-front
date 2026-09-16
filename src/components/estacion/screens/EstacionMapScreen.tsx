@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { ModuloEstacion, EstadoEstacion } from '../types/estacion.types';
 import { MODULOS, POS } from '../data/estacion-data';
 import { estacionAudio } from '../services/estacion-audio';
@@ -12,6 +13,8 @@ export default function EstacionMapScreen({
   estado,
   onSelectModulo,
 }: EstacionMapScreenProps) {
+  const t = useTranslations('retos.map');
+
   const estrellasModulo = (m: ModuloEstacion) => {
     return m.niveles.reduce((a, _, i) => a + (estado.progreso[`${m.id}-${i}`] || 0), 0);
   };
@@ -20,10 +23,10 @@ export default function EstacionMapScreen({
     <div className="w-full flex flex-col items-center justify-center p-4">
       <div className="text-center mb-4">
         <h2 className="text-2xl md:text-3xl font-black text-white tracking-wide" style={{ fontFamily: "'Baloo 2', sans-serif" }}>
-          🛰️ Estaciones de la Órbita Fedor
+          {t('title')}
         </h2>
         <p className="text-sm md:text-base text-[#B9C4E8]">
-          Selecciona una estación para iniciar sus misiones matemáticas y ganar gemas 💎
+          {t('subtitle')}
         </p>
       </div>
 

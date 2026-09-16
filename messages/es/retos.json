@@ -1,0 +1,48 @@
+{
+  "loading_access": "Verificando acceso a Estación Fedor...",
+  "topbar": {
+    "cadet": "Cadete",
+    "balance": "Saldo",
+    "lives": "Vidas",
+    "day": "Día",
+    "save_title": "Guardar progreso manualmente",
+    "exit_title": "Volver a la Estación Central",
+    "exit_aria": "Salir",
+    "teacher_title": "Panel Docente",
+    "toast_saved": "✓ Progreso guardado"
+  },
+  "doors": {
+    "map": "Mapa",
+    "shop": "Tienda",
+    "diary": "Bitácora",
+    "monitor": "Monitor",
+    "games": "Juegos"
+  },
+  "map": {
+    "title": "🛰️ Estaciones de la Órbita Fedor",
+    "subtitle": "Selecciona una estación para iniciar sus misiones matemáticas y ganar gemas 💎",
+    "base_core": "BASE CENTRAL",
+    "fedor": "FEDOR"
+  },
+  "victory": {
+    "almost": "¡Casi lo logras!",
+    "perfect": "¡Misión Perfecta!",
+    "completed": "¡Misión Cumplida!",
+    "earned": "Ganaste",
+    "no_hearts_desc": "Se acabaron las vidas, pero no te preocupes: puedes reintentarlo de inmediato.",
+    "perfect_desc": "¡Sin errores! Sigue adelante con las siguientes estaciones orbitales.",
+    "completed_desc": "¡Muy bien hecho! Puedes repetir la misión para ganar las 3 estrellas.",
+    "btn_continue": "Continuar al Módulo →"
+  },
+  "public": {
+    "hero_title_1": "Desafía tu mente",
+    "hero_title_2": "con retos",
+    "hero_title_3": "matemáticos",
+    "hero_title_4": "únicos",
+    "hero_subtitle": "Pon a prueba tus habilidades y descubre nuevas formas de resolver problemas",
+    "btn_start": "Comenzar Retos",
+    "section_title": "Retos Matemáticos",
+    "desc_1": "Pon a prueba tus habilidades con estos desafiantes retos matemáticos diseñados para estimular tu pensamiento lógico y creatividad.",
+    "desc_2": "Cada reto está cuidadosamente diseñado para ayudarte a desarrollar diferentes aspectos del razonamiento matemático, desde álgebra básica hasta geometría avanzada."
+  }
+}

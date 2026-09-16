@@ -1,0 +1,37 @@
+{
+  "nav": {
+    "home": "Início",
+    "modules": "Módulos",
+    "station": "Estação Fedor",
+    "login": "Entrar",
+    "logout": "Sair",
+    "profile": "Perfil",
+    "dashboard": "Painel de Controle"
+  },
+  "buttons": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "continue": "Continuar",
+    "buy_now": "Comprar agora",
+    "accept": "Aceitar",
+    "edit": "Editar",
+    "delete": "Excluir"
+  },
+  "common": {
+    "loading": "Carregando...",
+    "language": "Idioma",
+    "error": "Ocorreu um erro",
+    "success": "Operação bem-sucedida"
+  },
+  "footer": {
+    "follow_us": "Siga-nos nas Redes Sociais",
+    "rights_reserved": "Matemáticas de Fedor. Todos os Direitos Reservados."
+  },
+  "cookies": {
+    "text": "Utilizamos cookies para melhorar sua experiência. Leia nossa",
+    "policy_link": "política de utilização de cookies",
+    "or_manage": "ou gerencie os cookies.",
+    "accept_all": "Aceitar todos",
+    "reject_all": "Rejeitar todos"
+  }
+}

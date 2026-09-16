@@ -1,0 +1,48 @@
+{
+  "loading_access": "Zugriff auf Fedor-Station wird überprüft...",
+  "topbar": {
+    "cadet": "Kadett",
+    "balance": "Guthaben",
+    "lives": "Leben",
+    "day": "Tag",
+    "save_title": "Fortschritt manuell speichern",
+    "exit_title": "Zurück zur Zentralstation",
+    "exit_aria": "Verlassen",
+    "teacher_title": "Lehrer-Panel",
+    "toast_saved": "✓ Fortschritt gespeichert"
+  },
+  "doors": {
+    "map": "Karte",
+    "shop": "Shop",
+    "diary": "Logbuch",
+    "monitor": "Monitor",
+    "games": "Spiele"
+  },
+  "map": {
+    "title": "🛰️ Stationen der Fedor-Umlaufbahn",
+    "subtitle": "Wähle eine Station, um Mathe-Missionen zu starten und Edelsteine zu verdienen 💎",
+    "base_core": "KERN-BASIS",
+    "fedor": "FEDOR"
+  },
+  "victory": {
+    "almost": "Fast geschafft!",
+    "perfect": "Perfekte Mission!",
+    "completed": "Mission Erfüllt!",
+    "earned": "Du hast gewonnen",
+    "no_hearts_desc": "Keine Leben mehr übrig, aber keine Sorge: Du kannst es sofort wiederholen.",
+    "perfect_desc": "Fehlerfrei! Weiter geht's zu den nächsten Orbitalstationen.",
+    "completed_desc": "Sehr gut gemacht! Du kannst die Mission wiederholen, um alle 3 Sterne zu holen.",
+    "btn_continue": "Weiter zum Modul →"
+  },
+  "public": {
+    "hero_title_1": "Fordere deinen Geist heraus",
+    "hero_title_2": "mit einzigartigen",
+    "hero_title_3": "mathematischen",
+    "hero_title_4": "Herausforderungen",
+    "hero_subtitle": "Teste deine Fähigkeiten und entdecke neue Wege zur Problemlösung",
+    "btn_start": "Herausforderungen starten",
+    "section_title": "Mathe-Herausforderungen",
+    "desc_1": "Teste deine Fähigkeiten mit diesen mathematischen Aufgaben zur Förderung von Logik und Kreativität.",
+    "desc_2": "Jede Aufgabe ist sorgfältig konzipiert, um verschiedene Facetten des mathematischen Denkens zu schulen."
+  }
+}

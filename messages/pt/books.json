@@ -1,0 +1,97 @@
+{
+  "hero": {
+    "title_line1": "Aprenda matemática",
+    "title_highlight": "no seu próprio ritmo com",
+    "title_line2": "a tecnologia do futuro",
+    "view_modules": "Ver Módulos"
+  },
+  "intro": {
+    "text": "Prepare-se para o ensino fundamental, médio e superior, fortalecendo seu pensamento lógico com nossos módulos especializados."
+  },
+  "features": {
+    "tech_title": "Tecnologia interativa",
+    "tech_desc": "Aprenda com recursos digitais modernos",
+    "curriculum_title": "Currículo inclusivo",
+    "curriculum_desc": "Adaptado a todos os níveis e estilos de aprendizagem",
+    "autonomy_title": "Autonomia e confiança",
+    "autonomy_desc": "Aumente sua autoestima aprendendo no seu ritmo",
+    "icfes_title": "Preparação para Exames",
+    "icfes_desc": "Obtenha pontuações excelentes em provas e vestibulares",
+    "university_title": "Sucesso Pré-Universitário",
+    "university_desc": "Ingresse na faculdade com confiança e destaque-se desde o início",
+    "reinforce_title": "Reforço acadêmico",
+    "reinforce_desc": "Reforce temas que não ficaram claros na aula",
+    "prep_title": "Preparação eficaz",
+    "prep_desc": "Prepare-se com profundidade para provas e avaliações",
+    "recover_title": "Recupere a confiança",
+    "recover_desc": "Recupere sua confiança em matemática",
+    "accelerated_title": "Aprendizagem acelerada",
+    "accelerated_desc": "Avance mais rápido do que na escola tradicional"
+  },
+  "offer": {
+    "badge": "Oferta exclusiva!",
+    "limited": "Disponível apenas enquanto durarem os estoques.",
+    "books_desc": "Cada módulo tem 3 livros para download. O 1º ano possui dois.",
+    "cta": "Aproveitar Agora"
+  },
+  "testimonials": {
+    "title": "O que dizem nossos alunos",
+    "subtitle": "Histórias reais de sucesso com o Método Fedor",
+    "test1_quote": "“O Método Fedor foi criado para aprender matemática de forma mais fácil e divertida.”",
+    "test1_author": "María de los Ángeles Restrepo",
+    "test1_role": "Entrevista NOTI5",
+    "test2_quote": "“O método não só me ajudou no meu ano escolar, mas também mejorou meu rendimento em física e trigonometria.”",
+    "test2_author": "Sofia Caballero",
+    "test2_role": "Estudante do Ensino Médio",
+    "test3_quote": "“O método me levou a obter uma das melhores notas da cidade, pois aprimorou meu raciocínio e procedimentos analíticos.”",
+    "test3_author": "Ana Martínez",
+    "test3_role": "Estudante Pré-Universitária"
+  },
+  "stats": {
+    "satisfied_count": "10.000+",
+    "satisfied_label": "Alunos Satisfeitos",
+    "pass_rate": "95%",
+    "pass_rate_label": "Taxa de Aprovação",
+    "rating_val": "4.9/5",
+    "rating_label": "Classificação Média"
+  },
+  "catalog": {
+    "title": "Nossos Módulos de Aprendizagem",
+    "subtitle": "Escolha o módulo perfeito para as suas necessidades e compre com total segurança.",
+    "grado1_books": "O módulo contém 2 livros para download e um livro digital gamificado online:",
+    "other_books": "O módulo contém 3 livros para download e um livro digital gamificado online:",
+    "content_btn": "Conteúdo",
+    "content_desc": "Livros do módulo e conteúdos programáticos.",
+    "benefits_btn": "Benefícios",
+    "benefits_desc": "Metodologias lúdicas e ativas para aprender melhor.",
+    "ficha_btn": "Ficha Técnica",
+    "ficha_desc": "Detalhes de materiais, duração e estrutura do módulo.",
+    "buy_now": "Comprar Agora",
+    "close": "Fechar"
+  },
+  "international": {
+    "title": "Educação Internacional",
+    "subtitle": "Nosso método transcende fronteiras, oferecendo uma educação matemática de qualidade mundial adaptada para a comunidade hispanófona",
+    "global_title": "Alcance Global",
+    "global_desc": "Disponível para estudantes em todo o mundo, da Espanha à América Latina e Estados Unidos",
+    "standards_title": "Padrões Internacionais",
+    "standards_desc": "Atende aos mais elevados padrões educacionais internacionais, preparando alunos para universidades de renome",
+    "culture_title": "Cultura e Contexto",
+    "culture_desc": "Respeita e valoriza a diversidade cultural, integrando exemplos e contextos familiares de cada região",
+    "revolution_call": "Junte-se à revolução educacional que está transformando o aprendizado de matemática",
+    "badge_latam": "América Latina",
+    "badge_spain": "Espanha",
+    "badge_more": "E mais países"
+  },
+  "cta": {
+    "title": "Pronto para transformar sua aprendizagem?",
+    "subtitle": "Junte-se a milhares de estudantes que já estão alcançando suas metas acadêmicas",
+    "explore_modules": "Explorar Módulos",
+    "whatsapp_btn": "Falar pelo WhatsApp"
+  },
+  "whatsapp_floating": {
+    "aria_label": "Falar pelo WhatsApp"
+  },
+  "loading": "Carregando módulos...",
+  "error_loading": "Erro ao carregar os módulos"
+}

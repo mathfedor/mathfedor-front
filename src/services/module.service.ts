@@ -195,17 +195,27 @@ export const moduleService = {
     return response.json();
   },
 
-  async getModuleById(moduleId: string): Promise<Module> {
+  async getModuleById(moduleId: string, locale?: string): Promise<Module> {
     const token = authService.getToken();
     if (!token) {
       throw new Error('No se encontró el token de autenticación');
     }
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/learning/${moduleId}`, {
+    const headers: Record<string, string> = {
+      'Authorization': `Bearer ${token}`
+    };
+
+    if (locale) {
+      headers['Accept-Language'] = locale;
+    }
+
+    const url = locale
+      ? `${process.env.NEXT_PUBLIC_API_URL}/learning/${moduleId}?locale=${encodeURIComponent(locale)}`
+      : `${process.env.NEXT_PUBLIC_API_URL}/learning/${moduleId}`;
+
+    const response = await fetch(url, {
       method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+      headers
     });
 
     if (!response.ok) {

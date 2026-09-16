@@ -1,0 +1,48 @@
+{
+  "loading_access": "Vérification de l'accès à la Station Fedor...",
+  "topbar": {
+    "cadet": "Cadet",
+    "balance": "Solde",
+    "lives": "Vies",
+    "day": "Jour",
+    "save_title": "Sauvegarder le progrès manuellement",
+    "exit_title": "Retour à la Station Centrale",
+    "exit_aria": "Quitter",
+    "teacher_title": "Espace Enseignant",
+    "toast_saved": "✓ Progrès enregistré"
+  },
+  "doors": {
+    "map": "Carte",
+    "shop": "Boutique",
+    "diary": "Journal de bord",
+    "monitor": "Moniteur",
+    "games": "Jeux"
+  },
+  "map": {
+    "title": "🛰️ Stations de l'Orbite Fedor",
+    "subtitle": "Sélectionnez une station pour lancer des missions mathématiques et remporter des gemmes 💎",
+    "base_core": "BASE CENTRALE",
+    "fedor": "FEDOR"
+  },
+  "victory": {
+    "almost": "Presque réussi !",
+    "perfect": "Mission Parfaite !",
+    "completed": "Mission Accomplie !",
+    "earned": "Vous avez gagné",
+    "no_hearts_desc": "Vous n'avez plus de vies, mais ne vous inquiétez pas : vous pouvez réessayer immédiatement.",
+    "perfect_desc": "Sans faute ! Poursuivez vers les prochaines stations orbitales.",
+    "completed_desc": "Très bien joué ! Vous pouvez rejouer la mission pour décrocher les 3 étoiles.",
+    "btn_continue": "Continuer vers le Module →"
+  },
+  "public": {
+    "hero_title_1": "Défiez votre esprit",
+    "hero_title_2": "avec des défis",
+    "hero_title_3": "mathématiques",
+    "hero_title_4": "uniques",
+    "hero_subtitle": "Testez vos compétences et découvrez de nouvelles façons de résoudre des problèmes",
+    "btn_start": "Démarrer les Défis",
+    "section_title": "Défis Mathématiques",
+    "desc_1": "Testez vos compétences avec ces énigmes mathématiques conçues pour stimuler votre logique et créativité.",
+    "desc_2": "Chaque défi est conçu pour développer différents aspects du raisonnement mathématique, de l'algèbre à la géométrie."
+  }
+}

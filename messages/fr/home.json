@@ -1,0 +1,37 @@
+{
+  "hero": {
+    "title_line1": "Maîtrisez les mathématiques",
+    "title_highlight": "avec la Méthode Fedor",
+    "title_line2": "Et la technologie du futur",
+    "cta": "Acheter maintenant"
+  },
+  "description": "Matemáticas de Fedor allie innovation, inclusion et technologie pour que chaque élève devienne autonome et compétent au XXIe siècle.",
+  "features": {
+    "interactive_tech_title": "Technologie interactive",
+    "interactive_tech_desc": "Apprenez avec des ressources numériques modernes",
+    "inclusive_curriculum_title": "Programme inclusif",
+    "inclusive_curriculum_desc": "Adapté à tous les niveaux et styles d'apprentissage",
+    "confidence_title": "Autonomie et confiance",
+    "confidence_desc": "Renforcez votre estime de soi en apprenant à votre rythme",
+    "preicfes_title": "Préparation aux examens",
+    "preicfes_desc": "Obtenez d'excellents résultats aux épreuves",
+    "preuni_title": "Succès pré-universitaire",
+    "preuni_desc": "Entrez à l'université avec confiance et démarquez-vous dès le début"
+  },
+  "special_offer": {
+    "title": "Offre exclusive !",
+    "cta": "En profiter maintenant"
+  },
+  "options": {
+    "code_title": "Achat par code",
+    "code_desc": "Vous avez déjà un code ? Activez-le ici et commencez à apprendre.",
+    "code_btn": "Activer le code",
+    "direct_title": "Achat direct avec réduction",
+    "direct_desc": "Achetez aujourd'hui et recevez un accès immédiat avec une réduction spéciale.",
+    "direct_btn": "Acheter avec réduction"
+  },
+  "testimonial": {
+    "quote": "Apprendre à mon rythme m'a redonné confiance en mathématiques.",
+    "author": "Ana, 14 ans"
+  }
+}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   ModuloEstacion,
   NivelData,
@@ -46,6 +47,7 @@ const ESTADO_INICIAL: EstadoEstacion = {
 };
 
 export default function EstacionExperience() {
+  const t = useTranslations('retos');
   const [estado, setEstado] = useState<EstadoEstacion>(ESTADO_INICIAL);
   const [secActiva, setSecActiva] = useState<VistaSec>('mapa');
   const [moduloActivo, setModuloActivo] = useState<ModuloEstacion | null>(null);
@@ -295,8 +297,8 @@ export default function EstacionExperience() {
               type="button"
               onClick={handleGuardarManual}
               className="w-10 h-10 rounded-full bg-[#0A1028] border-[2.5px] border-[#070C1F] text-[#9CCBFF] flex items-center justify-center text-base hover:scale-105 active:scale-95 transition-all shadow"
-              title="Guardar progreso"
-              aria-label="Guardar"
+              title={t('topbar.save_title')}
+              aria-label={t('topbar.save_title')}
             >
               💾
             </button>
@@ -306,8 +308,8 @@ export default function EstacionExperience() {
               type="button"
               onClick={() => irA('mapa')}
               className="w-10 h-10 rounded-full bg-[#0A1028] border-[2.5px] border-[#070C1F] text-[#FF8A5C] flex items-center justify-center text-base hover:scale-105 active:scale-95 transition-all shadow"
-              title="Volver a la Estación Central"
-              aria-label="Salir"
+              title={t('topbar.exit_title')}
+              aria-label={t('topbar.exit_aria')}
             >
               🚪
             </button>
@@ -319,8 +321,8 @@ export default function EstacionExperience() {
               className={`w-10 h-10 rounded-full bg-[#0A1028] border-[2.5px] border-[#070C1F] flex items-center justify-center text-base hover:scale-105 active:scale-95 transition-all shadow ${
                 secActiva === 'docente' ? 'text-[#FFC94D]' : 'text-[#FFC94D]/80'
               }`}
-              title="Panel Docente"
-              aria-label="Panel Docente"
+              title={t('topbar.teacher_title')}
+              aria-label={t('topbar.teacher_title')}
             >
               🔑
             </button>
@@ -329,7 +331,7 @@ export default function EstacionExperience() {
           {/* Toast de Guardado */}
           {toastGuardado && (
             <div className="absolute -bottom-8 right-6 bg-[#173B2C] border-2 border-[#5BD672] text-[#5BD672] text-xs font-black px-3 py-1 rounded-full shadow-lg animate-bounce">
-              ✓ Progreso guardado
+              {t('topbar.toast_saved')}
             </div>
           )}
         </header>
@@ -339,11 +341,11 @@ export default function EstacionExperience() {
             ============================================================ */}
         <nav className="flex items-center gap-2.5 overflow-x-auto pb-1 mt-1 flex-wrap" aria-label="Zonas de la estación">
           {[
-            { id: 'mapa', icon: '🗺️', label: 'Mapa' },
-            { id: 'tienda', icon: '🛒', label: 'Tienda' },
-            { id: 'bitacora', icon: '📒', label: 'Bitácora', count: estado.bitacora.length },
-            { id: 'monitor', icon: '📊', label: 'Monitor' },
-            { id: 'juegos', icon: '🕹️', label: 'Juegos' },
+            { id: 'mapa', icon: '🗺️', label: t('doors.map') },
+            { id: 'tienda', icon: '🛒', label: t('doors.shop') },
+            { id: 'bitacora', icon: '📒', label: t('doors.diary'), count: estado.bitacora.length },
+            { id: 'monitor', icon: '📊', label: t('doors.monitor') },
+            { id: 'juegos', icon: '🕹️', label: t('doors.games') },
           ].map((door) => {
             const isActiva = secActiva === door.id;
             return (
@@ -455,10 +457,10 @@ export default function EstacionExperience() {
 
             <h3 className="text-2xl font-black text-white" style={{ fontFamily: "'Baloo 2', sans-serif" }}>
               {modalVictoria.sinCorazones
-                ? '¡Casi lo logras!'
+                ? t('victory.almost')
                 : modalVictoria.estrellas === 3
-                ? '¡Misión Perfecta!'
-                : '¡Misión Cumplida!'}
+                ? t('victory.perfect')
+                : t('victory.completed')}
             </h3>
 
             {/* Estrellas Obtenidas */}
@@ -480,16 +482,16 @@ export default function EstacionExperience() {
             {/* Recompensa */}
             {modalVictoria.pago > 0 && (
               <div className="px-5 py-2 bg-[#173B2C] border-2 border-[#5BD672] text-[#5BD672] font-black rounded-2xl text-base">
-                💎 Ganaste +{pesos(modalVictoria.pago)}
+                💎 {t('victory.earned')} +{pesos(modalVictoria.pago)}
               </div>
             )}
 
             <p className="text-xs md:text-sm text-[#8FA3D9] max-w-xs">
               {modalVictoria.sinCorazones
-                ? 'Se acabaron las vidas, pero no te preocupes: puedes reintentarlo de inmediato.'
+                ? t('victory.no_hearts_desc')
                 : modalVictoria.estrellas === 3
-                ? '¡Sin errores! Sigue adelante con las siguientes estaciones orbitales.'
-                : '¡Muy bien hecho! Puedes repetir la misión para ganar las 3 estrellas.'}
+                ? t('victory.perfect_desc')
+                : t('victory.completed_desc')}
             </p>
 
             <button
@@ -501,7 +503,7 @@ export default function EstacionExperience() {
               }}
               className="w-full py-3.5 bg-[#4FD8CB] hover:bg-[#38C0B2] text-[#070C1F] font-black rounded-2xl text-base shadow-xl transition-transform active:scale-95 cursor-pointer mt-2"
             >
-              Continuar al Módulo →
+              {t('victory.btn_continue')}
             </button>
           </div>
         </div>

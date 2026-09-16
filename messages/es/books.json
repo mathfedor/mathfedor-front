@@ -1,0 +1,97 @@
+{
+  "hero": {
+    "title_line1": "Aprende matemáticas",
+    "title_highlight": "a tu ritmo con",
+    "title_line2": "la tecnología del futuro",
+    "view_modules": "Ver Módulos"
+  },
+  "intro": {
+    "text": "Prepárate para la primaria, el bachillerato y la universidad, fortaleciendo tu pensamiento lógico con nuestros módulos especializados."
+  },
+  "features": {
+    "tech_title": "Tecnología interactiva",
+    "tech_desc": "Aprende con recursos digitales modernos",
+    "curriculum_title": "Currículo inclusivo",
+    "curriculum_desc": "Adaptado a todos los niveles y estilos de aprendizaje",
+    "autonomy_title": "Autonomía y confianza",
+    "autonomy_desc": "Eleva tu autoestima aprendiendo a tu ritmo",
+    "icfes_title": "Preparación Pre-ICFES",
+    "icfes_desc": "Obtén puntajes sobresalientes en las pruebas ICFES",
+    "university_title": "Éxito Pre-Universitario",
+    "university_desc": "Ingresa con confianza a la universidad y destaca desde el inicio",
+    "reinforce_title": "Refuerzo académico",
+    "reinforce_desc": "Refuerza temas que no quedaron claros en clase",
+    "prep_title": "Preparación efectiva",
+    "prep_desc": "Prepárate para exámenes y evaluaciones",
+    "recover_title": "Recupera confianza",
+    "recover_desc": "Recupera la confianza en matemáticas",
+    "accelerated_title": "Aprendizaje acelerado",
+    "accelerated_desc": "Avanza más rápido que el colegio"
+  },
+  "offer": {
+    "badge": "¡Oferta exclusiva!",
+    "limited": "Disponible solo hasta agotar existencias.",
+    "books_desc": "Cada módulo tiene 3 libros para descargar. Primero solo tiene dos.",
+    "cta": "Aprovechar Ahora"
+  },
+  "testimonials": {
+    "title": "Lo que dicen nuestros estudiantes",
+    "subtitle": "Historias reales de éxito con el Método Fedor",
+    "test1_quote": "“Se creó el Método Fedor para aprender matemáticas de una manera más fácil y divertida.”",
+    "test1_author": "María de los Ángeles Restrepo",
+    "test1_role": "Entrevista NOTI5",
+    "test2_quote": "“El método no sólo me ayudó con el grado que cursaba, sino también a mejorar el rendimiento académico y a entender materias como física y trigonometría.”",
+    "test2_author": "Sofia Caballero",
+    "test2_role": "Estudiante de Bachillerato",
+    "test3_quote": "“El método me llevó a ser uno de los mejores ICFES de Cali, dado que me permitió tener más razonamiento y perfeccionar procedimientos.”",
+    "test3_author": "Ana Martínez",
+    "test3_role": "Estudiante Pre-Universitaria"
+  },
+  "stats": {
+    "satisfied_count": "10.000+",
+    "satisfied_label": "Estudiantes Satisfechos",
+    "pass_rate": "95%",
+    "pass_rate_label": "Tasa de Aprobación",
+    "rating_val": "4.9/5",
+    "rating_label": "Calificación Promedio"
+  },
+  "catalog": {
+    "title": "Nuestros Módulos de Aprendizaje",
+    "subtitle": "Elige el módulo perfecto para tus necesidades y compra de forma segura.",
+    "grado1_books": "El módulo tiene 2 libros para descargar y un libro digital gamificado en línea:",
+    "other_books": "El módulo tiene 3 libros para descargar y un libro digital gamificado en línea:",
+    "content_btn": "Contenido",
+    "content_desc": "Libros del módulo y contenidos del plan.",
+    "benefits_btn": "Beneficios",
+    "benefits_desc": "Metodologías lúdicas y activas para aprender mejor.",
+    "ficha_btn": "Ficha Técnica",
+    "ficha_desc": "Detalles del material, duración y estructura del módulo.",
+    "buy_now": "Comprar Ahora",
+    "close": "Cerrar"
+  },
+  "international": {
+    "title": "Educación Internacional para Hispanohablantes",
+    "subtitle": "Nuestro método trasciende fronteras, ofreciendo una educación matemática de calidad mundial adaptada específicamente para la comunidad hispanohablante",
+    "global_title": "Alcance Global",
+    "global_desc": "Disponible para estudiantes hispanohablantes en todo el mundo, desde España hasta Latinoamérica y Estados Unidos",
+    "standards_title": "Estándares Internacionales",
+    "standards_desc": "Cumple con los más altos estándares educativos internacionales, preparando estudiantes para universidades de prestigio mundial",
+    "culture_title": "Cultura y Contexto",
+    "culture_desc": "Respeta y valora la diversidad cultural hispanohablante, integrando ejemplos y contextos familiares para cada región",
+    "revolution_call": "Únete a la revolución educativa que está transformando el aprendizaje de matemáticas en la comunidad hispanohablante mundial",
+    "badge_latam": "Latam",
+    "badge_spain": "España",
+    "badge_more": "Y más países"
+  },
+  "cta": {
+    "title": "¿Listo para transformar tu aprendizaje?",
+    "subtitle": "Únete a miles de estudiantes que ya están alcanzando sus metas académicas",
+    "explore_modules": "Explorar Módulos",
+    "whatsapp_btn": "Contactar por WhatsApp"
+  },
+  "whatsapp_floating": {
+    "aria_label": "Contactar por WhatsApp"
+  },
+  "loading": "Cargando módulos...",
+  "error_loading": "Error al cargar los módulos"
+}

@@ -1,0 +1,37 @@
+{
+  "hero": {
+    "title_line1": "Meistere die Mathematik",
+    "title_highlight": "mit der Fedor-Methode",
+    "title_line2": "Und der Technologie der Zukunft",
+    "cta": "Jetzt kaufen"
+  },
+  "description": "Matemáticas de Fedor verbindet Innovation, Inklusion und Technologie, damit jede Schülerin und jeder Schüler im 21. Jahrhundert selbstständig und kompetent wird.",
+  "features": {
+    "interactive_tech_title": "Interaktive Technologie",
+    "interactive_tech_desc": "Lerne mit modernen digitalen Ressourcen",
+    "inclusive_curriculum_title": "Inklusiver Lehrplan",
+    "inclusive_curriculum_desc": "Angepasst an alle Niveaus und Lernstile",
+    "confidence_title": "Autonomie und Selbstvertrauen",
+    "confidence_desc": "Stärke dein Selbstvertrauen, indem du in deinem eigenen Tempo lernst",
+    "preicfes_title": "Prüfungsvorbereitung",
+    "preicfes_desc": "Erziele hervorragende Ergebnisse bei Prüfungen",
+    "preuni_title": "Erfolg an der Universität",
+    "preuni_desc": "Starte voller Selbstvertrauen ins Studium und hebe dich von Beginn an ab"
+  },
+  "special_offer": {
+    "title": "Exklusives Angebot!",
+    "cta": "Jetzt nutzen"
+  },
+  "options": {
+    "code_title": "Kauf mit Code",
+    "code_desc": "Hast du bereits einen Code? Aktiviere ihn hier und beginne zu lernen.",
+    "code_btn": "Code aktivieren",
+    "direct_title": "Direktkauf mit Rabatt",
+    "direct_desc": "Kaufe noch heute und erhalte sofortigen Zugang mit Sonderabatt.",
+    "direct_btn": "Mit Rabatt kaufen"
+  },
+  "testimonial": {
+    "quote": "In meinem eigenen Tempo zu lernen hat mir das Vertrauen in die Mathematik zurückgegeben.",
+    "author": "Ana, 14 Jahre alt"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "hero": {
+    "title_line1": "Domina las matemáticas",
+    "title_highlight": "con el Método Fedor",
+    "title_line2": "Y la tecnología del futuro",
+    "cta": "Comprar ahora"
+  },
+  "description": "Matemáticas de Fedor combina innovación, inclusión y tecnología para que cada estudiante se convierta en un ser autónomo y competente en el siglo XXI.",
+  "features": {
+    "interactive_tech_title": "Tecnología interactiva",
+    "interactive_tech_desc": "Aprende con recursos digitales modernos",
+    "inclusive_curriculum_title": "Currículo inclusivo",
+    "inclusive_curriculum_desc": "Adaptado a todos los niveles y estilos de aprendizaje",
+    "confidence_title": "Autonomía y confianza",
+    "confidence_desc": "Eleva tu autoestima aprendiendo a tu ritmo",
+    "preicfes_title": "Preparación Pre-ICFES",
+    "preicfes_desc": "Obtén puntajes sobresalientes en las pruebas ICFES",
+    "preuni_title": "Éxito Pre-Universitario",
+    "preuni_desc": "Ingresa con confianza a la universidad y destaca desde el inicio"
+  },
+  "special_offer": {
+    "title": "¡Oferta exclusiva!",
+    "cta": "Aprovechar ahora"
+  },
+  "options": {
+    "code_title": "Compra por código",
+    "code_desc": "¿Ya tienes un código? Actívalo aquí y empieza a aprender.",
+    "code_btn": "Activar código",
+    "direct_title": "Compra directa con descuento",
+    "direct_desc": "Compra hoy y recibe tu acceso inmediato con descuento especial.",
+    "direct_btn": "Comprar con descuento"
+  },
+  "testimonial": {
+    "quote": "Aprender a mi ritmo me devolvió la confianza en las matemáticas.",
+    "author": "Ana, 14 años"
+  }
+}

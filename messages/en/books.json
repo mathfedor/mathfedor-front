@@ -1,0 +1,97 @@
+{
+  "hero": {
+    "title_line1": "Learn mathematics",
+    "title_highlight": "at your own pace with",
+    "title_line2": "the technology of the future",
+    "view_modules": "View Modules"
+  },
+  "intro": {
+    "text": "Get ready for elementary, middle school, high school, and university by strengthening your logical thinking with our specialized modules."
+  },
+  "features": {
+    "tech_title": "Interactive technology",
+    "tech_desc": "Learn with modern digital resources",
+    "curriculum_title": "Inclusive curriculum",
+    "curriculum_desc": "Tailored to all learning levels and styles",
+    "autonomy_title": "Autonomy and confidence",
+    "autonomy_desc": "Boost your self-esteem by learning at your own pace",
+    "icfes_title": "Standardized Test Prep",
+    "icfes_desc": "Achieve outstanding scores on exams and evaluations",
+    "university_title": "Pre-University Success",
+    "university_desc": "Enter college with confidence and stand out from day one",
+    "reinforce_title": "Academic reinforcement",
+    "reinforce_desc": "Reinforce topics that were not clear in class",
+    "prep_title": "Effective preparation",
+    "prep_desc": "Prepare thoroughly for exams and evaluations",
+    "recover_title": "Rebuild confidence",
+    "recover_desc": "Regain your confidence in mathematics",
+    "accelerated_title": "Accelerated learning",
+    "accelerated_desc": "Advance faster than traditional school"
+  },
+  "offer": {
+    "badge": "Exclusive offer!",
+    "limited": "Available only while supplies last.",
+    "books_desc": "Each module includes 3 downloadable books. Grade 1 includes two.",
+    "cta": "Claim Now"
+  },
+  "testimonials": {
+    "title": "What our students say",
+    "subtitle": "Real success stories with the Fedor Method",
+    "test1_quote": "“The Fedor Method was created to learn math in an easier and more enjoyable way.”",
+    "test1_author": "María de los Ángeles Restrepo",
+    "test1_role": "NOTI5 Interview",
+    "test2_quote": "“The method not only helped me with my current grade, but also improved my overall performance and understanding of physics and trigonometry.”",
+    "test2_author": "Sofia Caballero",
+    "test2_role": "High School Student",
+    "test3_quote": "“The method helped me achieve one of the highest test scores in Cali by sharpening my analytical reasoning and problem-solving skills.”",
+    "test3_author": "Ana Martínez",
+    "test3_role": "Pre-University Student"
+  },
+  "stats": {
+    "satisfied_count": "10,000+",
+    "satisfied_label": "Satisfied Students",
+    "pass_rate": "95%",
+    "pass_rate_label": "Pass Rate",
+    "rating_val": "4.9/5",
+    "rating_label": "Average Rating"
+  },
+  "catalog": {
+    "title": "Our Learning Modules",
+    "subtitle": "Choose the perfect module for your needs and purchase securely.",
+    "grado1_books": "This module includes 2 downloadable books and an interactive gamified digital book online:",
+    "other_books": "This module includes 3 downloadable books and an interactive gamified digital book online:",
+    "content_btn": "Content",
+    "content_desc": "Module books and plan curriculum syllabus.",
+    "benefits_btn": "Benefits",
+    "benefits_desc": "Playful and active learning methodologies for superior retention.",
+    "ficha_btn": "Data Sheet",
+    "ficha_desc": "Details of materials, duration, and module structure.",
+    "buy_now": "Buy Now",
+    "close": "Close"
+  },
+  "international": {
+    "title": "International Education for Spanish Speakers",
+    "subtitle": "Our method crosses borders, offering world-class mathematics education tailored specifically to the global Spanish-speaking community",
+    "global_title": "Global Reach",
+    "global_desc": "Available to Spanish-speaking students worldwide, from Spain to Latin America and the United States",
+    "standards_title": "International Standards",
+    "standards_desc": "Complies with the highest global education standards, preparing students for world-renowned universities",
+    "culture_title": "Culture and Context",
+    "culture_desc": "Respects and celebrates Spanish cultural diversity, integrating familiar examples and regional contexts",
+    "revolution_call": "Join the educational revolution transforming mathematics learning across the worldwide community",
+    "badge_latam": "LatAm",
+    "badge_spain": "Spain",
+    "badge_more": "And more countries"
+  },
+  "cta": {
+    "title": "Ready to transform your learning?",
+    "subtitle": "Join thousands of students who are already reaching their academic goals",
+    "explore_modules": "Explore Modules",
+    "whatsapp_btn": "Contact via WhatsApp"
+  },
+  "whatsapp_floating": {
+    "aria_label": "Contact via WhatsApp"
+  },
+  "loading": "Loading modules...",
+  "error_loading": "Error loading modules"
+}
