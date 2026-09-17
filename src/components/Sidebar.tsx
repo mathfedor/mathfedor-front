@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { usePathname, useRouter } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart, FiTag, FiHelpCircle, FiLayers, FiTarget } from 'react-icons/fi';
 import { useCallback, useMemo, useState, useEffect } from 'react';
@@ -89,6 +89,7 @@ const getRoleMenuItems = (t: (key: string) => string): Record<string, MenuItem[]
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const locale = useLocale();
   const t = useTranslations('dashboard.sidebar');
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
@@ -116,6 +117,15 @@ export default function Sidebar() {
     return submenu?.some(subItem => pathname === subItem.href || pathname?.startsWith(`${subItem.href}/`)) ?? false;
   }, [pathname]);
 
+  const loadModules = useCallback(async (activeLocale?: string) => {
+    try {
+      const allModules = await moduleService.getAllModules(activeLocale || locale);
+      setModules(allModules);
+    } catch (error) {
+      console.error('Error al cargar módulos:', error);
+    }
+  }, [locale]);
+
   useEffect(() => {
     setIsClient(true);
     const loadUserAndModules = () => {
@@ -124,7 +134,7 @@ export default function Sidebar() {
 
       // Cargar módulos si el usuario es estudiante o profesor
       if (currentUser?.role?.toLowerCase() === 'student' || currentUser?.role?.toLowerCase() === 'teacher') {
-        loadModules();
+        loadModules(locale);
       }
     };
 
@@ -141,16 +151,14 @@ export default function Sidebar() {
     return () => {
       window.removeEventListener('userUpdated', handleUserUpdate);
     };
-  }, []);
+  }, [loadModules, locale]);
 
-  const loadModules = async () => {
-    try {
-      const allModules = await moduleService.getAllModules();
-      setModules(allModules);
-    } catch (error) {
-      console.error('Error al cargar módulos:', error);
+  // Recargar módulos cuando cambie el idioma
+  useEffect(() => {
+    if (isClient && user && (user.role?.toLowerCase() === 'student' || user.role?.toLowerCase() === 'teacher')) {
+      loadModules(locale);
     }
-  };
+  }, [isClient, loadModules, locale, user]);
 
   const handleNavigation = (href: string) => {
     // Si es el enlace de ayuda, abrir WhatsApp en nueva pestaña

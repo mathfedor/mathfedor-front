@@ -14,10 +14,11 @@ export function bookBackendEnabled(): boolean {
   return Boolean(process.env.NEXT_PUBLIC_API_URL);
 }
 
-/** Cabeceras JSON + Authorization si hay sesión. */
-export function bookHeaders(): Record<string, string> {
+/** Cabeceras JSON + Authorization si hay sesión + Accept-Language opcional. */
+export function bookHeaders(locale?: string): Record<string, string> {
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
   const token = authService.getToken();
   if (token) headers.Authorization = `Bearer ${token}`;
+  if (locale) headers['Accept-Language'] = locale;
   return headers;
 }

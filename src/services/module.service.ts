@@ -161,17 +161,26 @@ export const moduleService = {
 
     return response.json();
   },
-  async getAllLearnings(): Promise<Module[]> {
+  async getAllLearnings(locale?: string): Promise<Module[]> {
     const token = authService.getToken();
     if (!token) {
       throw new Error('No se encontró el token de autenticación');
     }
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/learning`, {
+    const headers: Record<string, string> = {
+      'Authorization': `Bearer ${token}`
+    };
+    if (locale) {
+      headers['Accept-Language'] = locale;
+    }
+
+    const url = locale
+      ? `${process.env.NEXT_PUBLIC_API_URL}/learning?locale=${encodeURIComponent(locale)}`
+      : `${process.env.NEXT_PUBLIC_API_URL}/learning`;
+
+    const response = await fetch(url, {
       method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+      headers
     });
 
     if (!response.ok) {
@@ -182,9 +191,19 @@ export const moduleService = {
     return response.json();
   },
 
-  async getAllModules(): Promise<Module[]> { //Active modules only
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/learning/getlearnings`, {
-      method: 'GET'
+  async getAllModules(locale?: string): Promise<Module[]> { //Active modules only
+    const headers: Record<string, string> = {};
+    if (locale) {
+      headers['Accept-Language'] = locale;
+    }
+
+    const url = locale
+      ? `${process.env.NEXT_PUBLIC_API_URL}/learning/getlearnings?locale=${encodeURIComponent(locale)}`
+      : `${process.env.NEXT_PUBLIC_API_URL}/learning/getlearnings`;
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers
     });
 
     if (!response.ok) {
@@ -192,6 +211,44 @@ export const moduleService = {
       throw new Error(errorData.message || 'Error al obtener los módulos');
     }
 
+    return response.json();
+  },
+
+  async translateBook(slug: string, locale: string = 'en'): Promise<any> {
+    const token = authService.getToken();
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/learning/books/${slug}/translate?locale=${encodeURIComponent(locale)}`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al traducir libro');
+    }
+    return response.json();
+  },
+
+  async translateAllModules(locale: string = 'en'): Promise<any> {
+    const token = authService.getToken();
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/learning/modules/translate-all?locale=${encodeURIComponent(locale)}`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al traducir módulos');
+    }
     return response.json();
   },
 

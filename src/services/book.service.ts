@@ -220,9 +220,9 @@ const tutorialsCache: Record<string, Promise<UnitTutorial | null> | undefined> =
 const examplesCache: Record<string, Promise<LevelExample[]> | undefined> = {};
 
 export const bookService = {
-  /** Devuelve el libro completo (currículo + estructura) con deduplicación. */
-  async getBook(slug: string = BOOK_SLUG): Promise<Book> {
-    const cacheKey = slug;
+  /** Devuelve el libro completo (currículo + estructura) con deduplicación por idioma. */
+  async getBook(slug: string = BOOK_SLUG, locale?: string): Promise<Book> {
+    const cacheKey = `${slug}:${locale || 'es'}`;
     if (bookCache[cacheKey]) {
       return bookCache[cacheKey];
     }
@@ -230,10 +230,13 @@ export const bookService = {
     const promise = (async () => {
       if (bookBackendEnabled()) {
         try {
-          const res = await fetch(`${API_URL}/books/${slug}`, { headers: bookHeaders() });
+          const url = locale
+            ? `${API_URL}/books/${slug}?locale=${encodeURIComponent(locale)}`
+            : `${API_URL}/books/${slug}`;
+          const res = await fetch(url, { headers: bookHeaders(locale) });
           if (res.ok) {
             const rawData = await res.json();
-            console.log(`[book.service] getBook("${slug}") data:`, rawData);
+            console.log(`[book.service] getBook("${slug}", locale="${locale}") data:`, rawData);
             const data = rawData && rawData.bookCurriculum ? {
               ...rawData,
               ...rawData.bookCurriculum

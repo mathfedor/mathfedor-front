@@ -130,16 +130,26 @@ const normalizeText = (value: string) => value
 
 const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2 | 3) => {
   const normalizedId = normalizeText(routeId);
-  if (grade === 1 && (normalizedId === '1' || normalizedId === 'libro-1ro' || normalizedId === 'matematicas-fedor-1')) {
+  if (grade === 1 && (normalizedId === '1' || normalizedId === 'libro-1ro' || normalizedId === 'matematicas-fedor-1' || normalizedId === '6830d368fecd7406dc6f9525')) {
     return true;
   }
-  if (grade === 2 && (normalizedId === '2' || normalizedId === 'libro-2do' || normalizedId === 'matematicas-fedor-2')) {
+  if (grade === 2 && (normalizedId === '2' || normalizedId === 'libro-2do' || normalizedId === 'matematicas-fedor-2' || normalizedId === '6830d619fecd7406dc6f96ad')) {
     return true;
   }
-  if (grade === 3 && (normalizedId === '3' || normalizedId === 'libro-3ro' || normalizedId === 'matematicas-fedor-3')) {
+  if (grade === 3 && (normalizedId === '3' || normalizedId === 'libro-3ro' || normalizedId === 'matematicas-fedor-3' || normalizedId === '6832543f6fee7c84b2f077c0')) {
     return true;
   }
   if (!module) return false;
+
+  // Comprobación directa por slug
+  if (grade === 1 && (module.slug === 'libro-1ro' || module.slug === 'matematicas-fedor-1')) return true;
+  if (grade === 2 && (module.slug === 'matematicas-fedor-2' || module.slug === 'libro-2do')) return true;
+  if (grade === 3 && (module.slug === 'matematicas-fedor-3' || module.slug === 'libro-3ro')) return true;
+
+  // Comprobación directa por ID de MongoDB
+  if (grade === 1 && module._id === '6830d368fecd7406dc6f9525') return true;
+  if (grade === 2 && module._id === '6830d619fecd7406dc6f96ad') return true;
+  if (grade === 3 && module._id === '6832543f6fee7c84b2f077c0') return true;
 
   const haystack = normalizeText([
     module.group,
@@ -149,14 +159,14 @@ const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2
   ].filter(Boolean).join(' '));
 
   if (grade === 1) {
-    return /\bgrado\s*1\b|\bgrado1\b|\b1ro\b|\bprimero\b|\b1\s*°/.test(haystack);
+    return /\b(grado|grade|ano|annee|klasse)\s*1\b|\bgrado1\b|\bgrade1\b|\b1ro\b|\bprimero\b|\b1\s*°|\b1st\b/i.test(haystack);
   }
 
   if (grade === 2) {
-    return /\bgrado\s*2\b|\bgrado2\b|\b2do\b|\bsegundo\b|\b2\s*°/.test(haystack);
+    return /\b(grado|grade|ano|annee|klasse)\s*2\b|\bgrado2\b|\bgrade2\b|\b2do\b|\bsegundo\b|\b2\s*°|\b2nd\b/i.test(haystack);
   }
 
-  return /\bgrado\s*3\b|\bgrado3\b|\b3ro\b|\btercero\b|\b3\s*°/.test(haystack);
+  return /\b(grado|grade|ano|annee|klasse)\s*3\b|\bgrado3\b|\bgrade3\b|\b3ro\b|\btercero\b|\b3\s*°|\b3rd\b/i.test(haystack);
 };
 
 const isInformationalTopic = (topic?: Topic) => (
@@ -4435,15 +4445,33 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   };
 
   const isGrade1Module = useMemo(() => {
-    return moduleMatchesGrade(currentModule, resolvedParams.id, 1) || currentModule?.group === 'Grado1';
+    return (
+      moduleMatchesGrade(currentModule, resolvedParams.id, 1) ||
+      /grado\s*1|grade\s*1|grado1|grade1|1º\s*ano|1re\s*annee|1\.\s*klasse/i.test(currentModule?.group || '') ||
+      currentModule?.slug === 'libro-1ro' ||
+      currentModule?.slug === 'matematicas-fedor-1' ||
+      currentModule?._id === '6830d368fecd7406dc6f9525'
+    );
   }, [currentModule, resolvedParams.id]);
 
   const isGrade2Module = useMemo(() => {
-    return moduleMatchesGrade(currentModule, resolvedParams.id, 2) || currentModule?.group === 'Grado2';
+    return (
+      moduleMatchesGrade(currentModule, resolvedParams.id, 2) ||
+      /grado\s*2|grade\s*2|grado2|grade2|2º\s*ano|2e\s*annee|2\.\s*klasse/i.test(currentModule?.group || '') ||
+      currentModule?.slug === 'matematicas-fedor-2' ||
+      currentModule?.slug === 'libro-2do' ||
+      currentModule?._id === '6830d619fecd7406dc6f96ad'
+    );
   }, [currentModule, resolvedParams.id]);
 
   const isGrade3Module = useMemo(() => {
-    return moduleMatchesGrade(currentModule, resolvedParams.id, 3) || currentModule?.group === 'Grado3';
+    return (
+      moduleMatchesGrade(currentModule, resolvedParams.id, 3) ||
+      /grado\s*3|grade\s*3|grado3|grade3|3º\s*ano|3e\s*annee|3\.\s*klasse/i.test(currentModule?.group || '') ||
+      currentModule?.slug === 'matematicas-fedor-3' ||
+      currentModule?.slug === 'libro-3ro' ||
+      currentModule?._id === '6832543f6fee7c84b2f077c0'
+    );
   }, [currentModule, resolvedParams.id]);
 
   const isBookModule = useMemo(() => {

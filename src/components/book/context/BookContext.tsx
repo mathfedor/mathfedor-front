@@ -15,6 +15,7 @@ import {
   useMemo,
   type ReactNode,
 } from 'react';
+import { useLocale } from 'next-intl';
 import Swal from 'sweetalert2';
 import type { Book, LevelRef, Exercise } from '@/types/book.types';
 import type { GamificationCatalog, ShopItem } from '@/types/gamification.types';
@@ -127,6 +128,7 @@ interface ResultReward {
 const BookContext = createContext<BookContextValue | null>(null);
 
 export function BookProvider({ children, slug }: { children: ReactNode; slug: string }) {
+  const locale = useLocale();
   const [loading, setLoading] = useState(true);
   const [book, setBook] = useState<Book | null>(null);
   const [catalog, setCatalog] = useState<GamificationCatalog | null>(null);
@@ -195,7 +197,7 @@ export function BookProvider({ children, slug }: { children: ReactNode; slug: st
     let active = true;
     (async () => {
       const [b, c, p] = await Promise.all([
-        bookService.getBook(slug),
+        bookService.getBook(slug, locale),
         bookService.getGamificationCatalog(slug),
         bookProgressService.getProgress(slug),
       ]);
@@ -218,7 +220,7 @@ export function BookProvider({ children, slug }: { children: ReactNode; slug: st
     return () => {
       active = false;
     };
-  }, [slug]);
+  }, [slug, locale]);
 
   const goScreen = useCallback((s: BookScreen) => {
     setScreen((prev) => {

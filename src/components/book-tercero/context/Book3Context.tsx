@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { Book, Unit, Topic, Level, LevelExample } from '@/types/book.types';
 import { bookService } from '@/services/book.service';
+import { useLocale } from 'next-intl';
 
 export type Book3Screen =
   | 'setup'
@@ -88,6 +89,7 @@ export function Book3Provider({
   children: React.ReactNode;
   slug?: string;
 }) {
+  const locale = useLocale();
   const [book, setBook] = useState<Book | null>(null);
   const [loading, setLoading] = useState(true);
   const [screen, setScreen] = useState<Book3Screen>('setup');
@@ -112,7 +114,7 @@ export function Book3Provider({
     let active = true;
     (async () => {
       try {
-        const loadedBook = await bookService.getBook(slug);
+        const loadedBook = await bookService.getBook(slug, locale);
         if (!active) return;
         setBook(loadedBook);
 
@@ -155,7 +157,7 @@ export function Book3Provider({
     return () => {
       active = false;
     };
-  }, [slug]);
+  }, [slug, locale]);
 
   const goScreen = useCallback((s: Book3Screen) => {
     setScreen(s);
