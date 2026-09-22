@@ -18,6 +18,7 @@ import { useModuleAccess } from '@/contexts/ModuleAccessContext';
 import { LearningResult, learningResultsService } from '@/services/learning-results.service';
 import { LearningComment, LearningReply, learningCommentsService } from '@/services/learning-comments.service';
 import BookExperience from '@/components/book/BookExperience';
+import Book1Experience from '@/components/book-primero/Book1Experience';
 import Book3Experience from '@/components/book-tercero/Book3Experience';
 import '@/app/[locale]/dashboard/libro-2do/book.css';
 
@@ -4484,6 +4485,23 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     return '';
   }, [isGrade1Module, isGrade2Module]);
 
+  if (isGrade1Module) {
+    return (
+      <div className="flex min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">
+        <Sidebar />
+        <AlertDialog
+          isOpen={isAlertOpen}
+          onClose={() => setIsAlertOpen(false)}
+          title={alertMessage.title}
+          message={alertMessage.message}
+        />
+        <div className="flex-1 overflow-y-auto">
+          <Book1Experience slug="libro-1ro" />
+        </div>
+      </div>
+    );
+  }
+
   if (isGrade3Module) {
     return (
       <div className="flex min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">
@@ -4501,7 +4519,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     );
   }
 
-  if (isBookModule) {
+  if (isGrade2Module) {
     return (
       <div className="flex min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">
         <Sidebar />
@@ -4512,7 +4530,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
           message={alertMessage.message}
         />
         <div className="flex-1 overflow-y-auto">
-          <BookExperience slug={bookSlug} />
+          <BookExperience slug="matematicas-fedor-2" />
         </div>
       </div>
     );

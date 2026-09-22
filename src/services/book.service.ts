@@ -190,16 +190,13 @@ export function resolvePhysicalLevelKey(levelKey: string, slug: string, book?: B
   const lNum = parseInt(m[3], 10);
 
   if (isBook1) {
-    if (book) {
-      const topic = book.units[uIdx]?.topics[tIdx];
-      if (topic) {
-        return `${topic.id}-n${lNum}`;
-      }
+    const topicId =
+      book?.units[uIdx]?.topics[tIdx]?.id ||
+      (bookCurriculum1.UNITS[uIdx]?.topics[tIdx] as { id?: string } | undefined)?.id;
+    if (topicId) {
+      return `${topicId}-n${lNum}`;
     }
-    // Prefijos por unidad conocidos para Grado 1°
-    const prefixMap = ['con', 'sum', 'res', 'lec', 'geo', 'med', 'est'];
-    const prefix = prefixMap[uIdx] || `u${uIdx}`;
-    return `${prefix}_t${tIdx}-n${lNum}`;
+    return levelKey;
   } else {
     // Alias para Grado 2°
     const aliasMap: Record<string, string> = { u1: 'sub', u2: 'mul', u3: 'div' };
