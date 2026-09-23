@@ -125,7 +125,7 @@ interface ResultReward {
   fastestMs?: number;
 }
 
-const BookContext = createContext<BookContextValue | null>(null);
+export const BookContext = createContext<BookContextValue | null>(null);
 
 export function BookProvider({ children, slug }: { children: ReactNode; slug: string }) {
   const locale = useLocale();

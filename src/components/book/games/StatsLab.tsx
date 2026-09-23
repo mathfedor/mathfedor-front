@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo, useState, useEffect } from 'react';
-import { useBook } from '../context/BookContext';
+import { useMemo, useState, useEffect, useContext } from 'react';
+import { BookContext } from '../context/BookContext';
 
 interface Row {
   id: number;
@@ -315,8 +315,15 @@ const STYLE_SHEET = `
 }
 `;
 
-export default function StatsLab({ onClose }: { onClose: () => void }) {
-  const { grantReward } = useBook();
+export default function StatsLab({
+  onClose,
+  onGrantReward,
+}: {
+  onClose: () => void;
+  onGrantReward?: (xp: number, coins: number) => void;
+}) {
+  const bookCtx = useContext(BookContext);
+  const grantReward = onGrantReward || bookCtx?.grantReward || (() => {});
 
   // --- Persistent State ---
   const [title, setTitle] = useState(() => {

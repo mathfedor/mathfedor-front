@@ -2551,6 +2551,71 @@ button, .fedor-book .av-btn, .fedor-book .unit-card, .fedor-book .tc {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   GRADE 1 — Sticky Launch CTA
+   ═══════════════════════════════════════════════════════════════════ */
+@keyframes f1stky_bob {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-6px) rotate(-3deg); }
+}
+@keyframes f1stky_ring {
+  0% { box-shadow: 0 0 0 0 rgba(255, 29, 78, .7), 0 8px 20px rgba(0, 0, 0, .4); }
+  70% { box-shadow: 0 0 0 16px rgba(255, 29, 78, 0), 0 8px 20px rgba(0, 0, 0, .4); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 29, 78, 0), 0 8px 20px rgba(0, 0, 0, .4); }
+}
+.fedor-book #f1IntroSticky {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9996;
+  background: linear-gradient(135deg, #FF1D4E, #FF8C2A, #F5C518);
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 15px;
+  padding: 12px 22px;
+  border: 3px solid #fff;
+  border-radius: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .4);
+  animation: f1stky_bob 1.6s ease-in-out infinite, f1stky_ring 1.8s ease-in-out infinite;
+  letter-spacing: .02em;
+  max-width: 90vw;
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s;
+}
+.fedor-book #f1IntroSticky:hover {
+  transform: translateY(-3px) scale(1.04);
+}
+.fedor-book #f1IntroSticky .em {
+  font-size: 24px;
+  line-height: 1;
+}
+.fedor-book #f1IntroSticky .x {
+  margin-left: 8px;
+  font-size: 13px;
+  opacity: .85;
+  background: rgba(0, 0, 0, .22);
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgba(255, 255, 255, .4);
+}
+@media (max-width: 600px) {
+  .fedor-book #f1IntroSticky {
+    font-size: 13px;
+    padding: 10px 18px;
+    bottom: 14px;
+    right: 14px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    GRADE 1 — Action Bar & Panels
    ═══════════════════════════════════════════════════════════════════ */
 .fedor-book .f1-action-bar {
@@ -2728,6 +2793,245 @@ button, .fedor-book .av-btn, .fedor-book .unit-card, .fedor-book .tc {
   font-weight: 900;
   font-size: 12px;
   font-family: 'Nunito', sans-serif;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   GRADE 1 — Daily Reward, Brand, Mission, Challenge, Global Progress & Map
+   ═══════════════════════════════════════════════════════════════════ */
+.fedor-book .daily-reward {
+  background: linear-gradient(135deg, #1A4030, #16876A);
+  border-radius: var(--r-lg, 20px);
+  padding: 12px 18px;
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: 0 4px 16px rgba(22, 135, 106, .3);
+  color: #fff;
+}
+.fedor-book .daily-reward:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(22, 135, 106, .4);
+}
+.fedor-book .dr-icon {
+  font-size: 30px;
+  animation: float 2.5s ease-in-out infinite;
+}
+.fedor-book .dr-body {
+  flex: 1;
+}
+.fedor-book .dr-title {
+  font-size: 13px;
+  font-weight: 900;
+  color: #fff;
+}
+.fedor-book .dr-sub {
+  font-size: 11px;
+  color: rgba(255, 255, 255, .65);
+  font-weight: 700;
+}
+.fedor-book .dr-badge {
+  font-size: 10px;
+  font-weight: 900;
+  background: rgba(245, 197, 24, .22);
+  color: #FFE066;
+  border: 1px solid rgba(245, 197, 24, .4);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.fedor-book .fedor-brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 0.85rem;
+  background: linear-gradient(135deg, #FEF0E6, #FFE2C8);
+  border: 1.5px solid #FBBF7A;
+  border-radius: var(--r-lg, 20px);
+  padding: 10px 18px;
+}
+.fedor-book .fedor-brand-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #3D1468, #6C28B4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.fedor-book .fedor-brand-txt {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--orange-d, #BA340A);
+}
+.fedor-book .fedor-brand-sub {
+  font-size: 10px;
+  color: var(--muted, #666);
+  font-weight: 700;
+}
+
+.fedor-book .daily-mission-card {
+  background: linear-gradient(135deg, #1E0848, #7B2FBE, #E8650A);
+  border-radius: 18px;
+  padding: 1rem 1.15rem;
+  margin-bottom: 0.85rem;
+  color: #fff;
+  box-shadow: 0 8px 30px rgba(123, 47, 190, .4);
+  position: relative;
+  overflow: hidden;
+}
+.fedor-book .dm-progress-track {
+  height: 8px;
+  background: rgba(0, 0, 0, .35);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: .5rem;
+}
+.fedor-book .dm-progress-fill {
+  height: 8px;
+  background: linear-gradient(90deg, #F5C518, #FF8C2A);
+  border-radius: 4px;
+  transition: width .8s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.fedor-book .daily-challenge {
+  background: linear-gradient(135deg, #1A4030, #16876A);
+  border-radius: var(--r-lg, 20px);
+  padding: 12px 16px;
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: 0 4px 16px rgba(22, 135, 106, .25);
+  color: #fff;
+}
+.fedor-book .daily-challenge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(22, 135, 106, .35);
+}
+
+.fedor-book .prog-global {
+  background: var(--white, #FFFFFF);
+  border: 1.5px solid var(--border, #DDD8F5);
+  border-radius: var(--r-lg, 20px);
+  padding: 14px 18px;
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0,0,0,0.06));
+}
+.fedor-book .pg-label {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text, #1A0A3C);
+  flex: 1;
+}
+.fedor-book .pg-bar {
+  flex: 2;
+  height: 10px;
+  background: #EEE;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.fedor-book .pg-fill {
+  height: 10px;
+  background: linear-gradient(90deg, #7B2FBE, #A864E8);
+  border-radius: 5px;
+  transition: width .8s cubic-bezier(.34, 1.56, .64, 1);
+}
+.fedor-book .pg-pct {
+  font-size: 14px;
+  font-weight: 900;
+  color: #7B2FBE;
+  min-width: 38px;
+  text-align: right;
+}
+
+.fedor-book .progress-map {
+  background: var(--white, #FFFFFF);
+  border: 1.5px solid var(--border, #DDD8F5);
+  border-radius: var(--r-lg, 20px);
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 0.85rem;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0,0,0,0.06));
+}
+.fedor-book .pm-title {
+  font-size: 12px;
+  font-weight: 900;
+  color: #7B2FBE;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: .85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.fedor-book .pm-path {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.fedor-book .pm-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: transform .2s;
+}
+.fedor-book .pm-step:hover {
+  transform: scale(1.1);
+}
+.fedor-book .pm-bubble {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border: 2.5px solid;
+  transition: all .3s;
+  position: relative;
+}
+.fedor-book .pm-bubble.done {
+  background: #DCF5EE;
+  border-color: #16876A;
+  box-shadow: 0 0 0 3px rgba(22, 135, 106, .2);
+}
+.fedor-book .pm-bubble.active {
+  background: #EEEDFE;
+  border-color: #7B2FBE;
+  box-shadow: 0 0 0 3px rgba(108, 40, 180, .2);
+}
+.fedor-book .pm-bubble.locked {
+  background: #F5F3FF;
+  border-color: #DDD8F5;
+  opacity: .45;
+}
+.fedor-book .pm-label {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--muted, #666);
+  text-align: center;
+  max-width: 52px;
+  line-height: 1.2;
+}
+.fedor-book .pm-connector {
+  font-size: 12px;
+  color: var(--muted, #999);
+  flex-shrink: 0;
+  margin-top: -16px;
 }
 
 /* LEVEL DOTS (1ro) */

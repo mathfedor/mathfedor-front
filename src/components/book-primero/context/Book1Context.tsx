@@ -18,7 +18,11 @@ export type Book1Screen =
   | 'estandares'
   | 'definiciones'
   | 'results'
-  | 'shop';
+  | 'shop'
+  | 'galaxy'
+  | 'report'
+  | 'profile'
+  | 'diary';
 
 export interface StudentProfile1 {
   name: string;
@@ -72,6 +76,8 @@ interface Book1ContextType {
     summary: LessonResultsSummary1
   ) => void;
   updateStats: (earnedCoins: number, earnedStars: number, earnedXp: number) => void;
+  grantReward: (xp: number, coins: number) => void;
+  selectAvatar: (avatar: string) => void;
   resetStudent: () => void;
 }
 
@@ -181,9 +187,13 @@ export function Book1Provider({
                   email: st?.email || currentUser.email || '',
                   avatar: '🧑‍🚀',
                 });
+                setScreen('home');
+                foundStudent = true;
               }
             }
-            setScreen('setup');
+            if (!foundStudent) {
+              setScreen('setup');
+            }
           }
 
           try {
@@ -318,6 +328,20 @@ export function Book1Provider({
     });
   }, [streak]);
 
+  const selectAvatar = useCallback((av: string) => {
+    setStudent((prev) => {
+      const next = { ...prev, avatar: av };
+      try {
+        localStorage.setItem(STORAGE_KEY_STUDENT, JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+  }, []);
+
+  const grantReward = useCallback((xp: number, c: number) => {
+    updateStats(c, 0, xp);
+  }, [updateStats]);
+
   function updatePersistentStats(c: number, s: number, x: number, strk: number) {
     try {
       localStorage.setItem(
@@ -352,6 +376,8 @@ export function Book1Provider({
         startLevel,
         saveLessonScore,
         updateStats,
+        grantReward,
+        selectAvatar,
         resetStudent,
       }}
     >

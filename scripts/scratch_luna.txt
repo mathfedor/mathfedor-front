@@ -1,0 +1,401 @@
+14000:       wrap = document.createElement('div');
+14001:       wrap.id = 'fedor1JourneyWrap';
+14002:       anchor.parentNode.insertBefore(wrap, anchor.nextSibling);
+14003:     }
+14004:     var c = countDoneBlocks();
+14005:     var ASTEROIDS = Math.min(Math.max(c.total, 8), 14);
+14006:     var currentAst = Math.max(0, Math.min(c.done, ASTEROIDS-1));
+14007:     var arrived = c.done >= ASTEROIDS;
+14008:     var starterClass = c.done===0 ? 'starter' : '';
+14009: 
+14010:     var asteroids = Array.from({length:ASTEROIDS}).map(function(_, i){
+14011:       var cls = 'fj1-ast' + (i<c.done ? ' done' : (i===currentAst && !arrived ? ' current' : ''));
+14012:       return '<div class="'+cls+'"></div>';
+14013:     }).join('');
+14014: 
+14015:     var shipLeft;
+14016:     if(arrived) shipLeft = '100%';
+14017:     else {
+14018:       shipLeft = ((currentAst+0.5)/ASTEROIDS*100)+'%';
+14019:     }
+14020: 
+14021:     wrap.innerHTML = ''+
+14022:       '<div class="fj1-header">'+
+14023:         '<span class="fj1-title">🚀 Viaje a la Luna</span>'+
+14024:         '<span class="fj1-progress">'+c.done+' / '+c.total+' bloques</span>'+
+14025:       '</div>'+
+14026:       '<div class="fj1-track">'+
+14027:         '<div class="fj1-earth '+starterClass+'">'+
+14028:           (c.done===0 ? '<div class="fj1-start-here"><div class="fj1-start-pill">¡EMPIEZA AQUÍ!</div><div class="fj1-start-arrow">⬇️</div></div>' : '')+
+14029:           '<div class="fj1-planet-label">🌍 Tierra</div>'+
+14030:         '</div>'+
+14031:         '<div class="fj1-ast-row" id="fj1AstRow">'+
+14032:           asteroids+
+14033:           '<div class="fj1-ship" id="fj1Ship" style="left:'+shipLeft+'">'+
+14034:             '<div class="fj1-flame"></div>'+
+14035:             '<svg class="f1ship-svg" viewBox="0 0 60 60" width="50" height="50">'+
+14036:               '<defs>'+
+14037:                 '<linearGradient id="f1ShCh" x1="0" y1="0" x2="0" y2="1">'+
+14038:                   '<stop offset="0" stop-color="#FFFFFF"/>'+
+14039:                   '<stop offset=".3" stop-color="#E8EFFF"/>'+
+14040:                   '<stop offset=".55" stop-color="#A8BBE6"/>'+
+14041:                   '<stop offset=".75" stop-color="#5A6E9C"/>'+
+14042:                   '<stop offset="1" stop-color="#2A3A6E"/>'+
+14043:                 '</linearGradient>'+
+14044:                 '<radialGradient id="f1Port" cx=".4" cy=".35">'+
+14045:                   '<stop offset="0" stop-color="#FFFFFF"/>'+
+14046:                   '<stop offset=".3" stop-color="#A8DFFF"/>'+
+14047:                   '<stop offset=".7" stop-color="#1E6FB8"/>'+
+14048:                   '<stop offset="1" stop-color="#0A2E5A"/>'+
+14049:                 '</radialGradient>'+
+14050:                 '<linearGradient id="f1Fin" x1="0" x2="1">'+
+14051:                   '<stop offset="0" stop-color="#FF6F8A"/>'+
+14052:                   '<stop offset=".5" stop-color="#FF1D4E"/>'+
+14053:                   '<stop offset="1" stop-color="#9B0028"/>'+
+14054:                 '</linearGradient>'+
+14055:               '</defs>'+
+14056:               '<g transform="translate(0,2)">'+
+14057:                 '<path d="M52 26 L18 12 L18 22 L4 22 L4 30 L18 30 L18 40 Z" fill="url(#f1ShCh)" stroke="#1A2A4E" stroke-width="1.5" stroke-linejoin="round"/>'+
+14058:                 '<path d="M48 26 L20 16 L20 22" stroke="rgba(255,255,255,.65)" stroke-width="1.5" fill="none" stroke-linecap="round"/>'+
+14059:                 '<circle cx="28" cy="26" r="5" fill="url(#f1Port)" stroke="#0A2E5A" stroke-width="1.2"/>'+
+14060:                 '<circle cx="26" cy="24" r="1.5" fill="#fff" opacity=".85"/>'+
+14061:                 '<path d="M18 22 L12 16 L18 18 Z" fill="url(#f1Fin)" stroke="#5A0014" stroke-width=".8"/>'+
+14062:                 '<path d="M18 30 L12 36 L18 32 Z" fill="url(#f1Fin)" stroke="#5A0014" stroke-width=".8"/>'+
+14063:                 '<circle cx="50" cy="26" r="2" fill="#FFEE99"><animate attributeName="r" values="2;3.5;2" dur="1.2s" repeatCount="indefinite"/></circle>'+
+14064:               '</g>'+
+14065:             '</svg>'+
+14066:           '</div>'+
+14067:         '</div>'+
+14068:         '<div class="fj1-moon">'+
+14069:           '<div class="fj1-planet-label">🌙 Luna</div>'+
+14070:         '</div>'+
+14071:       '</div>'+
+14072:       '<div class="fj1-legend">'+
+14073:         '<span>🌟 = bloque listo</span>'+
+14074:         '<span>🔴 = aquí estás</span>'+
+14075:         '<span>⚫ = por jugar</span>'+
+14076:       '</div>'+
+14077:       (arrived ? '<div class="fj1-celebrate-msg">🎉 ¡Llegaste a la LUNA! ¡Eres un experto! 🌙</div>' : '');
+14078:     return true;
+14079:   }
+14080:   window.refreshJourney = buildJourney;
+14081: 
+14082:   function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+14083:   ready(function(){
+14084:     setTimeout(function(){ if(!buildJourney()) setTimeout(buildJourney, 2000); }, 2000);
+14085:   });
+14086: 
+14087:   // Refresh on screen change
+14088:   setInterval(function(){
+14089:     var home = document.querySelector('#screen-home');
+14090:     if(home && home.classList.contains('active')){
+14091:       buildJourney();
+14092:     }
+14093:   }, 3500);
+14094: })();
+14095: /* FEDOR_1RO_JOURNEY_END */
+14096: </script>
+14097: 
+14098: 
+14099: <script>
+14100: /* ═══════════════════════════════════════════════════════════════════════════
+14101:    FEDOR_1RO_ACTIONBAR — Barra "Panel de Comando" con botones grandes para 5-7
+14102:    ═══════════════════════════════════════════════════════════════════════════ */
+14103: (function(){
+14104:   'use strict';
+14105:   if(window.__fedor1_actionbar) return; window.__fedor1_actionbar = true;
+14106: 
+14107:   var css = document.createElement('style');
+14108:   css.textContent = [
+14109:     '#fedor1ActionBar{position:relative;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;background:linear-gradient(135deg,#1A0A3C,#2A0F60,#0A1B40);padding:1rem;border-radius:20px;margin:.85rem 0;box-shadow:0 12px 40px rgba(0,0,0,.55),inset 0 0 30px rgba(91,191,255,.15);border:2.5px solid rgba(91,191,255,.4);z-index:5}',
+14110:     '#fedor1ActionBar::before{content:"⚡ PANEL DE COMANDO";position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#FF1D4E,#F5C518);color:#fff;font-size:11px;font-weight:900;padding:4px 16px;border-radius:14px;letter-spacing:.12em;box-shadow:0 4px 12px rgba(255,29,78,.5)}',
+14111:     '.ab1-btn{flex:1;min-width:104px;background:rgba(255,255,255,.10);border:2.5px solid rgba(255,255,255,.22);color:#fff;font-weight:900;font-size:14px;padding:12px 8px;border-radius:16px;cursor:pointer;font-family:Nunito,sans-serif;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .2s;backdrop-filter:blur(8px);min-height:80px}',
+14112:     '.ab1-btn:hover{transform:translateY(-4px) scale(1.05);box-shadow:0 10px 26px rgba(91,191,255,.45);border-color:rgba(245,197,24,.7)}',
+14113:     '.ab1-btn:active{transform:translateY(-1px) scale(1)}',
+14114:     '.ab1-ico{font-size:32px;line-height:1;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}',
+14115:     '.ab1-lbl{font-size:12px;font-weight:900;letter-spacing:.02em;text-shadow:0 1px 2px rgba(0,0,0,.5)}',
+14116:     '.ab1-btn.intro{background:linear-gradient(135deg,#FF8C2A,#F5C518);color:#3A1A00}',
+14117:     '.ab1-btn.album{background:linear-gradient(135deg,#9B0066,#FF1DAA)}',
+14118:     '.ab1-btn.tienda{background:linear-gradient(135deg,#16876A,#24C496)}',
+14119:     '.ab1-btn.mascot{background:linear-gradient(135deg,#6C28B4,#9B5CFF)}',
+14120:     '.ab1-btn.galaxia{background:linear-gradient(135deg,#0E6BA8,#3AA0FF)}',
+14121:   ].join('\n');
+14122:   document.head.appendChild(css);
+14123: 
+14124:   function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+14125:   ready(function(){ setTimeout(installBar, 2400); });
+14126: 
+14127:   function installBar(){
+14128:     if(document.getElementById('fedor1ActionBar')) return;
+14129:     var anchor = document.getElementById('fedor1JourneyWrap') ||
+14130:                  document.getElementById('galaxyMapWrap') ||
+14131:                  document.querySelector('.hero-banner');
+14132:     if(!anchor || !anchor.parentNode){ setTimeout(installBar, 1000); return; }
+14133: 
+14134:     var bar = document.createElement('div');
+14135:     bar.id = 'fedor1ActionBar';
+14136:     var actions = [
+14137:       {cls:'intro',   ico:'🎬', lbl:'Despegue',  fn:'openLaunchIntro'},
+14138:       {cls:'album',   ico:'📔', lbl:'Stickers',  fn:'openStickerBook'},
+14139:       {cls:'tienda',  ico:'🛒', lbl:'Tienda',    fn:'openSpaceShop'},
+14140:       {cls:'galaxia', ico:'🌌', lbl:'Galaxia 3D',fn:'openGalaxy'},
+14141:       {cls:'mascot',  ico:'🐲', lbl:'Mascota',   fn:'_kj1_focusMascot'},
+14142:     ];
+14143:     bar.innerHTML = actions.map(function(a){
+14144:       return '<button class="ab1-btn '+a.cls+'" data-fn="'+a.fn+'">'+
+14145:         '<span class="ab1-ico">'+a.ico+'</span>'+
+14146:         '<span class="ab1-lbl">'+a.lbl+'</span>'+
+14147:       '</button>';
+14148:     }).join('');
+14149:     anchor.parentNode.insertBefore(bar, anchor.nextSibling);
+14150: 
+14151:     window._kj1_focusMascot = function(){
+14152:       var m = document.querySelector('.kj1-mascot');
+14153:       if(m){
+14154:         m.style.boxShadow = '0 0 0 8px rgba(245,197,24,.6),0 6px 18px rgba(0,0,0,.3)';
+14155:         setTimeout(function(){ m.style.boxShadow = ''; }, 1500);
+14156:         if(window.kj1SayBubble) kj1SayBubble('¡Hola amiguito! 💖', 2500);
+14157:       }
+14158:     };
+14159: 
+14160:     bar.querySelectorAll('.ab1-btn').forEach(function(b){
+14161:       b.addEventListener('click', function(){
+14162:         var fn = b.getAttribute('data-fn');
+14163:         try{
+14164:           if(typeof window[fn]==='function'){ window[fn](); }
+14165:         }catch(e){}
+14166:       });
+14167:     });
+14168:   }
+14169: })();
+14170: /* FEDOR_1RO_ACTIONBAR_END */
+14171: </script>
+14172: 
+14173: <script>
+14174: /* ═══════════════════════════════════════════════════════════════════════════
+14175:    FEDOR_1RO_BIGGER — Tamaños aumentados para niños de 5-7 años
+14176:    MCQ +20%, pregunta +15%, badges +10%, inputs +10%
+14177:    ═══════════════════════════════════════════════════════════════════════════ */
+14178: (function(){
+14179:   'use strict';
+14180:   if(window.__fedor1_bigger) return; window.__fedor1_bigger = true;
+14181:   var css = document.createElement('style');
+14182:   css.textContent = [
+14183:     /* Bigger MCQ buttons (+20%) */
+14184:     '.mcq-btn{font-size:28px !important;padding:22px 12px !important;min-height:78px !important;border-width:3px !important}',
+14185:     '.mcq-btn-wide{font-size:22px !important}',
+14186:     /* Bigger question text (+15%) */
+14187:     '.ex-question{font-size:34px !important;line-height:1.35 !important}',
+14188:     /* Bigger input (+12%) */
+14189:     '.ex-input{font-size:38px !important;width:180px !important;padding:12px !important;border-width:3px !important}',
+14190:     /* Bigger mascot in exercises */
+14191:     '.ex-mascot{font-size:62px !important}',
+14192:     /* Bigger context text */
+14193:     '.ex-context-txt{font-size:17px !important}',
+14194:     /* Bigger feedback */
+14195:     '.ex-feedback{font-size:18px !important;min-height:30px !important}',
+14196:     /* Bigger hint */
+14197:     '.ex-hint-box{font-size:14px !important;padding:10px 16px !important}',
+14198:     /* Bigger primary buttons */
+14199:     '.btn-ok{font-size:18px !important;padding:16px !important}',
+14200:     /* Tablet adapt */
+14201:     '@media(max-width:600px){',
+14202:     '  .mcq-btn{font-size:22px !important;padding:18px 10px !important;min-height:66px !important}',
+14203:     '  .ex-question{font-size:24px !important}',
+14204:     '  .ex-input{font-size:30px !important;width:150px !important}',
+14205:     '  .ex-mascot{font-size:50px !important}',
+14206:     '}',
+14207:   ].join('\n');
+14208:   document.head.appendChild(css);
+14209: })();
+14210: /* FEDOR_1RO_BIGGER_END */
+14211: </script>
+14212: 
+14213: <script>
+14214: /* ═══════════════════════════════════════════════════════════════════════════
+14215:    FEDOR_1RO_INTRO_PROMO — Promoción del despegue muy visible y motivadora
+14216:    1) Mega CTA animado dentro del hero banner ("¡Mira el despegue!")
+14217:    2) Botón flotante sticky con cohete animado (siempre visible)
+14218:    3) Pill grande con cohete animado en cabecera
+14219:    4) Globo de la mascota que recuerda ver la intro las primeras visitas
+14220:    ═══════════════════════════════════════════════════════════════════════════ */
+14221: (function(){
+14222:   'use strict';
+14223:   if(window.__fedor1_intropromo) return; window.__fedor1_intropromo = true;
+14224: 
+14225:   /* ─── ESTILOS ─── */
+14226:   var css = document.createElement('style');
+14227:   css.textContent = [
+14228:     /* HERO mega CTA card */
+14229:     '@keyframes f1cta_pulse{0%,100%{transform:scale(1);box-shadow:0 12px 36px rgba(255,29,78,.55),0 0 0 0 rgba(255,224,102,.7)}50%{transform:scale(1.035);box-shadow:0 18px 48px rgba(255,29,78,.7),0 0 0 18px rgba(255,224,102,0)}}',
+14230:     '@keyframes f1cta_rocketFly{0%{transform:translate(0,0) rotate(-12deg)}50%{transform:translate(2px,-4px) rotate(-8deg)}100%{transform:translate(0,0) rotate(-12deg)}}',
+14231:     '@keyframes f1cta_flame{0%,100%{transform:scaleY(1) scaleX(1);opacity:.95}50%{transform:scaleY(1.4) scaleX(.75);opacity:1}}',
+14232:     '@keyframes f1cta_starsFlow{from{background-position:0 0,0 0,0 0}to{background-position:120px 0,-90px 0,80px 0}}',
+14233:     '@keyframes f1cta_shine{0%{transform:translateX(-150%) skewX(-22deg)}40%,100%{transform:translateX(220%) skewX(-22deg)}}',
+14234:     '@keyframes f1cta_arrow{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}',
+14235:     '@keyframes f1cta_bounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-8px)}60%{transform:translateY(-4px)}}',
+14236:     '@keyframes f1cta_hdrRocket{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(-3px) rotate(8deg)}100%{transform:translateY(0) rotate(0)}}',
+14237:     /* HERO CTA card (BIG) */
+14238:     '#f1IntroHeroCTA{position:relative;display:flex;align-items:center;gap:14px;margin:14px auto 0;padding:14px 18px;background:linear-gradient(135deg,#FF1D4E 0%,#FF8C2A 50%,#F5C518 100%);background-size:200% 200%;border:3px solid #FFF7C2;border-radius:24px;cursor:pointer;font-family:Nunito,sans-serif;color:#fff;font-weight:900;box-shadow:0 12px 36px rgba(255,29,78,.55);animation:f1cta_pulse 2s ease-in-out infinite,bgShift 6s ease-in-out infinite;overflow:hidden;max-width:480px;text-align:left;z-index:3}',
+14239:     '#f1IntroHeroCTA::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 10% 30%,rgba(255,255,255,.85) 1px,transparent 2px),radial-gradient(circle at 70% 60%,rgba(255,255,255,.75) 1px,transparent 2px),radial-gradient(circle at 40% 80%,rgba(255,255,255,.65) 1px,transparent 2px);background-size:80px 80px,60px 60px,90px 90px;animation:f1cta_starsFlow 8s linear infinite;opacity:.55;pointer-events:none}',
+14240:     '#f1IntroHeroCTA::after{content:"";position:absolute;top:0;left:0;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);transform:translateX(-150%) skewX(-22deg);animation:f1cta_shine 3.5s ease-in-out infinite 1.5s;pointer-events:none}',
+14241:     '.f1cta-rocket-wrap{position:relative;width:74px;height:74px;flex-shrink:0;z-index:2}',
+14242:     '.f1cta-rocket{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:56px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));animation:f1cta_rocketFly 1.6s ease-in-out infinite;text-shadow:0 0 18px rgba(255,247,194,.7)}',
+14243:     '.f1cta-flame{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:22px;height:32px;background:radial-gradient(ellipse at 50% 20%,#FFEE99,#FF8800 60%,#FF1D4E 90%,transparent 100%);border-radius:50% 50% 30% 30%;filter:blur(1px);animation:f1cta_flame .12s linear infinite;z-index:1}',
+14244:     '.f1cta-body{flex:1;min-width:0;position:relative;z-index:2}',
+14245:     '.f1cta-pretitle{font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:#FFF7C2;text-shadow:0 1px 3px rgba(0,0,0,.35)}',
+14246:     '.f1cta-title{font-family:Baloo 2,sans-serif;font-size:21px;font-weight:900;line-height:1.15;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.45);margin-top:2px;letter-spacing:.01em}',
+14247:     '.f1cta-sub{font-size:12px;font-weight:800;color:rgba(255,255,255,.92);margin-top:3px;letter-spacing:.02em}',
+14248:     '.f1cta-arrow{font-size:32px;color:#FFF;flex-shrink:0;text-shadow:0 2px 6px rgba(0,0,0,.4);animation:f1cta_arrow 1s ease-in-out infinite;z-index:2}',
+14249:     /* SEEN STATE — tone down once kid has watched it once */
+14250:     '#f1IntroHeroCTA.seen{animation:none;background:linear-gradient(135deg,#9B5CFF,#3AA0FF);border-color:rgba(255,255,255,.4);box-shadow:0 6px 18px rgba(108,40,180,.35)}',
+14251:     '#f1IntroHeroCTA.seen::after{display:none}',
+14252:     '#f1IntroHeroCTA.seen .f1cta-title{font-size:18px}',
+14253:     /* HEADER pill — bigger, brighter, animated */
+14254:     '.hdr-btn.f1-hdr-intro{background:linear-gradient(135deg,#FF1D4E,#F5C518) !important;color:#fff !important;border:2px solid #FFF7C2 !important;font-size:13px !important;padding:7px 14px !important;font-weight:900 !important;border-radius:22px !important;box-shadow:0 4px 14px rgba(255,29,78,.4) !important;animation:f1cta_pulse 2.2s ease-in-out infinite !important;letter-spacing:.02em !important}',
+14255:     '.hdr-btn.f1-hdr-intro:hover{background:linear-gradient(135deg,#F5C518,#FF1D4E) !important;color:#fff !important;transform:translateY(-1px)}',
+14256:     '.f1-hdr-rocket-ico{display:inline-block;animation:f1cta_hdrRocket 1.2s ease-in-out infinite;margin-right:3px}',
+14257:     '.hdr-btn.f1-hdr-intro.seen{background:rgba(255,255,255,.95) !important;color:#3D1468 !important;border-color:#9B5CFF !important;animation:none !important;box-shadow:var(--shadow-sm) !important}',
+14258:     /* STICKY floating button */
+14259:     '@keyframes f1stky_bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-3deg)}}',
+14260:     '@keyframes f1stky_ring{0%{box-shadow:0 0 0 0 rgba(255,29,78,.7),0 8px 20px rgba(0,0,0,.4)}70%{box-shadow:0 0 0 16px rgba(255,29,78,0),0 8px 20px rgba(0,0,0,.4)}100%{box-shadow:0 0 0 0 rgba(255,29,78,0),0 8px 20px rgba(0,0,0,.4)}}',
+14261:     '#f1IntroSticky{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9996;background:linear-gradient(135deg,#FF1D4E,#FF8C2A,#F5C518);color:#fff;font-family:Nunito,sans-serif;font-weight:900;font-size:15px;padding:12px 22px;border:3px solid #fff;border-radius:30px;cursor:pointer;display:none;align-items:center;gap:10px;box-shadow:0 8px 20px rgba(0,0,0,.4),0 0 0 0 rgba(255,29,78,.7);animation:f1stky_bob 1.6s ease-in-out infinite,f1stky_ring 1.8s ease-in-out infinite;letter-spacing:.02em;max-width:90vw;backdrop-filter:blur(8px)}',
+14262:     '#f1IntroSticky.on{display:flex}',
+14263:     '#f1IntroSticky:hover{transform:translateX(-50%) translateY(-3px) scale(1.04)}',
+14264:     '#f1IntroSticky .em{font-size:24px;line-height:1;animation:f1cta_rocketFly 1.4s ease-in-out infinite;display:inline-block}',
+14265:     '#f1IntroSticky .x{margin-left:8px;font-size:13px;opacity:.85;background:rgba(0,0,0,.18);border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.4)}',
+14266:     /* HINT bubble from mascot */
+14267:     '@keyframes f1hint_pop{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.1);opacity:1}100%{transform:scale(1);opacity:1}}',
+14268:     /* RESPONSIVE */
+14269:     '@media(max-width:600px){',
+14270:     '  #f1IntroHeroCTA{padding:12px 14px;gap:10px;border-radius:20px}',
+14271:     '  .f1cta-rocket-wrap{width:60px;height:60px}',
+14272:     '  .f1cta-rocket{font-size:44px}',
+14273:     '  .f1cta-title{font-size:17px}',
+14274:     '  .f1cta-sub{font-size:11px}',
+14275:     '  .f1cta-arrow{font-size:24px}',
+14276:     '  #f1IntroSticky{font-size:13px;padding:10px 18px;bottom:14px}',
+14277:     '  #f1IntroSticky .em{font-size:20px}',
+14278:     '}',
+14279:     '@media(max-width:380px){',
+14280:     '  .f1cta-pretitle{font-size:9px}',
+14281:     '  .f1cta-title{font-size:15px}',
+14282:     '  .f1cta-rocket-wrap{width:52px;height:52px}',
+14283:     '  .f1cta-rocket{font-size:38px}',
+14284:     '}',
+14285:   ].join('\n');
+14286:   document.head.appendChild(css);
+14287: 
+14288:   function isSeen(){
+14289:     try{ return !!localStorage.getItem('fedor1_intro_seen'); }catch(e){ return false; }
+14290:   }
+14291:   function launch(){
+14292:     if(typeof window.openLaunchIntro==='function'){ window.openLaunchIntro(); }
+14293:   }
+14294: 
+14295:   /* ─── HEADER PILL (más grande, con cohete animado) ─── */
+14296:   function installHeader(){
+14297:     var hdr = document.querySelector('.hdr-btns');
+14298:     if(!hdr) return false;
+14299:     var existing = document.getElementById('f1IntroHdrBtn');
+14300:     if(!existing){
+14301:       var b = document.createElement('button');
+14302:       b.id = 'f1IntroHdrBtn';
+14303:       b.className = 'hdr-btn f1-hdr-intro';
+14304:       b.innerHTML = '<span class="f1-hdr-rocket-ico">🚀</span> Ver despegue';
+14305:       b.onclick = launch;
+14306:       hdr.insertBefore(b, hdr.firstChild);
+14307:       existing = b;
+14308:     }
+14309:     if(isSeen()) existing.classList.add('seen');
+14310:     return true;
+14311:   }
+14312: 
+14313:   /* ─── HERO MEGA CTA CARD ─── */
+14314:   function installHeroCTA(){
+14315:     if(document.getElementById('f1IntroHeroCTA')) return true;
+14316:     // Try hero banner first
+14317:     var hero = document.querySelector('.hero-banner') ||
+14318:                document.querySelector('#screen-home .hero-banner') ||
+14319:                document.querySelector('#screen-home');
+14320:     if(!hero) return false;
+14321: 
+14322:     var cta = document.createElement('div');
+14323:     cta.id = 'f1IntroHeroCTA';
+14324:     cta.setAttribute('role','button');
+14325:     cta.setAttribute('tabindex','0');
+14326:     cta.innerHTML =
+14327:       '<div class="f1cta-rocket-wrap"><div class="f1cta-flame"></div><div class="f1cta-rocket">🚀</div></div>'+
+14328:       '<div class="f1cta-body">'+
+14329:         '<div class="f1cta-pretitle">🎬 video del despegue</div>'+
+14330:         '<div class="f1cta-title">¡Mira la aventura a la Luna!</div>'+
+14331:         '<div class="f1cta-sub">El astronauta sale del laboratorio y vuela 🌍 → 🌙</div>'+
+14332:       '</div>'+
+14333:       '<div class="f1cta-arrow">›</div>';
+14334:     cta.addEventListener('click', launch);
+14335:     cta.addEventListener('keypress', function(e){ if(e.key==='Enter'||e.key===' '){ launch(); } });
+14336: 
+14337:     // Put inside hero if possible (after its main inner content)
+14338:     if(hero.classList.contains('hero-banner')){
+14339:       hero.appendChild(cta);
+14340:     } else {
+14341:       hero.insertBefore(cta, hero.firstChild);
+14342:     }
+14343:     if(isSeen()){
+14344:       cta.classList.add('seen');
+14345:       cta.querySelector('.f1cta-pretitle').textContent = '🎬 ¿quieres verla otra vez?';
+14346:       cta.querySelector('.f1cta-title').textContent = '🚀 Repetir el despegue';
+14347:     }
+14348:     return true;
+14349:   }
+14350: 
+14351:   /* ─── STICKY FLOATING BUTTON (muy llamativo, solo si no ha visto) ─── */
+14352:   function installSticky(){
+14353:     if(document.getElementById('f1IntroSticky')) return;
+14354:     if(isSeen()) return; // ya la vio: no molestar
+14355:     var b = document.createElement('button');
+14356:     b.id = 'f1IntroSticky';
+14357:     b.innerHTML = '<span class="em">🚀</span><span>¡Mira el despegue!</span><span class="x" id="f1IntroStickyX" title="Cerrar">×</span>';
+14358:     b.addEventListener('click', function(e){
+14359:       if(e.target && e.target.id==='f1IntroStickyX'){
+14360:         b.classList.remove('on');
+14361:         return;
+14362:       }
+14363:       launch();
+14364:     });
+14365:     document.body.appendChild(b);
+14366:     // Show after a brief delay
+14367:     setTimeout(function(){
+14368:       // Solo si el home está activo + hay estudiante
+14369:       var home = document.querySelector('#screen-home');
+14370:       var student = document.getElementById('studentBtn');
+14371:       var homeActive = home && home.classList.contains('active');
+14372:       var hasStudent = student && getComputedStyle(student).display!=='none';
+14373:       if(homeActive && hasStudent){ b.classList.add('on'); }
+14374:     }, 2500);
+14375:   }
+14376: 
+14377:   /* ─── MASCOT BUBBLE HINT (1 vez) ─── */
+14378:   function maybeMascotHint(){
+14379:     if(isSeen()) return;
+14380:     try{
+14381:       if(localStorage.getItem('fedor1_intro_hinted')) return;
+14382:     }catch(e){}
+14383:     setTimeout(function(){
+14384:       if(window.kj1SayBubble){
+14385:         window.kj1SayBubble('¡Toca el cohete y mira mi viaje a la Luna! 🚀🌙', 5500);
+14386:         try{ localStorage.setItem('fedor1_intro_hinted','1'); }catch(e){}
+14387:       }
+14388:     }, 5500);
+14389:   }
+14390: 
+14391:   /* ─── Watcher: oculta sticky cuando vio la intro o salió del home ─── */
+14392:   function watchHomeAndSeen(){
+14393:     setInterval(function(){
+14394:       var stky = document.getElementById('f1IntroSticky');
+14395:       var home = document.querySelector('#screen-home');
+14396:       var homeActive = home && home.classList.contains('active');
+14397:       var seen = isSeen();
+14398:       if(stky){
+14399:         if(seen){ stky.classList.remove('on'); }
+14400:         else if(homeActive){ stky.classList.add('on'); }

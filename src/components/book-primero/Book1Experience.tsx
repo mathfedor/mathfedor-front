@@ -1,9 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Book1Provider, useBook1 } from './context/Book1Context';
 import BookHeader1ro from './shared/BookHeader1ro';
 import Grade1FloatingButtons from './shared/Grade1FloatingButtons';
+import LaunchIntro from '@/components/book/shared/LaunchIntro';
+import StatsLab from '@/components/book/games/StatsLab';
 
 import SetupScreen1ro from './screens/SetupScreen1ro';
 import HomeScreen1ro from './screens/HomeScreen1ro';
@@ -16,9 +18,16 @@ import TablasConteoScreen1ro from './screens/TablasConteoScreen1ro';
 import ConceptosScreen1ro from './screens/ConceptosScreen1ro';
 import DefinicionesScreen1ro from './screens/DefinicionesScreen1ro';
 import RetosScreen1ro from './screens/RetosScreen1ro';
+import GalaxyScreen1ro from './screens/GalaxyScreen1ro';
+import ReportScreen1ro from './screens/ReportScreen1ro';
+import ProfileScreen1ro from './screens/ProfileScreen1ro';
+import DiaryScreen1ro from './screens/DiaryScreen1ro';
+import ShopScreen1ro from './screens/ShopScreen1ro';
 
 function Book1Shell() {
-  const { screen, loading } = useBook1();
+  const { screen, loading, grantReward } = useBook1();
+  const [showIntro, setShowIntro] = useState(false);
+  const [showStatsLab, setShowStatsLab] = useState(false);
 
   if (loading) {
     return (
@@ -60,7 +69,12 @@ function Book1Shell() {
       case 'setup':
         return <SetupScreen1ro />;
       case 'home':
-        return <HomeScreen1ro />;
+        return (
+          <HomeScreen1ro
+            onOpenIntro={() => setShowIntro(true)}
+            onOpenStatsLab={() => setShowStatsLab(true)}
+          />
+        );
       case 'unit':
         return <UnitScreen1ro />;
       case 'lesson':
@@ -79,8 +93,23 @@ function Book1Shell() {
         return <DefinicionesScreen1ro />;
       case 'retos':
         return <RetosScreen1ro />;
+      case 'galaxy':
+        return <GalaxyScreen1ro />;
+      case 'report':
+        return <ReportScreen1ro />;
+      case 'profile':
+        return <ProfileScreen1ro />;
+      case 'diary':
+        return <DiaryScreen1ro />;
+      case 'shop':
+        return <ShopScreen1ro />;
       default:
-        return <HomeScreen1ro />;
+        return (
+          <HomeScreen1ro
+            onOpenIntro={() => setShowIntro(true)}
+            onOpenStatsLab={() => setShowStatsLab(true)}
+          />
+        );
     }
   };
 
@@ -93,11 +122,30 @@ function Book1Shell() {
         color: 'var(--text)',
       }}
     >
-      <div className="app">
-        <BookHeader1ro />
+      <div className="app" style={{ maxWidth: '980px', margin: '0 auto', padding: '5.75rem 1rem 4rem' }}>
+        <BookHeader1ro
+          onOpenIntro={() => setShowIntro(true)}
+          onOpenStatsLab={() => setShowStatsLab(true)}
+        />
         <main style={{ paddingBottom: '3rem' }}>{renderScreen()}</main>
-        <Grade1FloatingButtons />
+        <Grade1FloatingButtons
+          onOpenIntro={() => setShowIntro(true)}
+        />
       </div>
+
+      {showIntro && (
+        <LaunchIntro
+          isGrade1={true}
+          onClose={() => setShowIntro(false)}
+        />
+      )}
+
+      {showStatsLab && (
+        <StatsLab
+          onClose={() => setShowStatsLab(false)}
+          onGrantReward={grantReward}
+        />
+      )}
     </div>
   );
 }

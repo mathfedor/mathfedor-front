@@ -4,7 +4,11 @@ import React, { useState } from 'react';
 import { useBook1 } from '../context/Book1Context';
 import { fedorTTS } from '@/services/tts.service';
 
-export default function Grade1FloatingButtons() {
+interface Grade1FloatingButtonsProps {
+  onOpenIntro?: () => void;
+}
+
+export default function Grade1FloatingButtons({ onOpenIntro }: Grade1FloatingButtonsProps = {}) {
   const { screen, goScreen, student } = useBook1();
   const [bubbleText, setBubbleText] = useState<string | null>(null);
 

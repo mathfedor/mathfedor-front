@@ -1,17 +1,18 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { useBook } from '../context/BookContext';
+import { useEffect, useRef, useState, useContext } from 'react';
+import { BookContext } from '../context/BookContext';
 import dynamic from 'next/dynamic';
 
 const CinematicScene = dynamic(() => import('./CinematicScene'), { ssr: false });
 
-export default function LaunchIntro({ onClose }: { onClose: () => void }) {
-  const { book } = useBook();
+export default function LaunchIntro({ onClose, isGrade1: isGrade1Prop }: { onClose: () => void; isGrade1?: boolean }) {
+  const bookCtx = useContext(BookContext);
+  const book = bookCtx?.book;
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const isGrade1 = book?.slug === 'libro-1ro';
-  const isGrade2 = book?.slug === 'libro-2do' || book?.slug === 'matematicas-fedor-2';
+  const isGrade1 = isGrade1Prop !== undefined ? isGrade1Prop : (book?.slug === 'libro-1ro');
+  const isGrade2 = isGrade1Prop ? false : (book?.slug === 'libro-2do' || book?.slug === 'matematicas-fedor-2');
 
   useEffect(() => {
     if (!isGrade1 && !isGrade2) return;

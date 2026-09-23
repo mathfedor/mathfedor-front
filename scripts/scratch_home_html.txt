@@ -1,0 +1,356 @@
+1065:   </div>
+1066: </div>
+1067: 
+1068: <!-- HEADER -->
+1069: <header class="hdr">
+1070:   <div class="logo-area" onclick="goScreen('home')" style="cursor:pointer;display:flex;align-items:center;gap:8px">
+1071:     <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0;box-shadow:0 0 0 2.5px rgba(245,197,24,.5),0 4px 16px rgba(123,47,190,.5)">
+1072:       <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" width="44" height="44">
+1073:   <defs>
+1074:     <radialGradient id="sp44" cx="38%" cy="32%">
+1075:       <stop offset="0%" stop-color="#6A20A8"/><stop offset="55%" stop-color="#1A0848"/><stop offset="100%" stop-color="#080E30"/>
+1076:     </radialGradient>
+1077:     <radialGradient id="hb44" cx="40%" cy="30%">
+1078:       <stop offset="0%" stop-color="#F8F8F8"/><stop offset="70%" stop-color="#D0D0D8"/><stop offset="100%" stop-color="#A8A8B8"/>
+1079:     </radialGradient>
+1080:     <radialGradient id="fp44" cx="35%" cy="30%">
+1081:       <stop offset="0%" stop-color="#FF9030"/><stop offset="60%" stop-color="#E86010"/><stop offset="100%" stop-color="#903000"/>
+1082:     </radialGradient>
+1083:     <radialGradient id="vs44" cx="30%" cy="25%">
+1084:       <stop offset="0%" stop-color="#1A3060"/><stop offset="100%" stop-color="#050A18"/>
+1085:     </radialGradient>
+1086:   </defs>
+1087:   <!-- Space background -->
+1088:   <circle cx="22" cy="22" r="22" fill="url(#sp44)"/>
+1089:   <!-- Stars -->
+1090:   <circle cx="7"  cy="7"  r="0.9" fill="white" opacity=".9"/>
+1091:   <circle cx="37" cy="9"  r="0.7" fill="white" opacity=".8"/>
+1092:   <circle cx="39" cy="30" r="0.5" fill="white" opacity=".7"/>
+1093:   <circle cx="5"  cy="30" r="0.6" fill="white" opacity=".7"/>
+1094:   <circle cx="18" cy="40" r="0.5" fill="white" opacity=".6"/>
+1095:   <!-- Teal nebula glow at bottom -->
+1096:   <ellipse cx="22" cy="40" rx="14" ry="6" fill="#00B4D8" opacity=".2"/>
+1097:   <!-- Helmet body (white/gray rounded) -->
+1098:   <ellipse cx="22" cy="23" rx="13" ry="14" fill="url(#hb44)"/>
+1099:   <!-- Orange faceplate border (thick ring) -->
+1100:   <ellipse cx="22" cy="23" rx="13" ry="14" fill="none" stroke="#E86010" stroke-width="2.5" opacity=".9"/>
+1101:   <!-- Dark visor (oval inside) -->
+1102:   <ellipse cx="22" cy="22" rx="7.5" ry="6.5" fill="url(#vs44)"/>
+1103:   <!-- Visor sheen (light reflection) -->
+1104:   <ellipse cx="19" cy="19" rx="2.8" ry="1.8" fill="rgba(255,255,255,0.28)" transform="rotate(-15,19,19)"/>
+1105:   <ellipse cx="24" cy="24" rx="1.2" ry="0.8" fill="rgba(255,255,255,0.12)"/>
+1106:   <!-- Orange faceplate fill (around visor) -->
+1107:   <ellipse cx="22" cy="23" rx="11" ry="11.5" fill="#E86010" opacity=".0"/>
+1108:   <!-- White rim highlight on top of helmet -->
+1109:   <path d="M12,15 Q22,9 32,15" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.5" stroke-linecap="round"/>
+1110:   <!-- Bottom neck connector (white) -->
+1111:   <rect x="17" y="35" width="10" height="4" rx="2" fill="#D0D0D8"/>
+1112:   <rect x="19" y="33" width="6" height="3" rx="1.5" fill="#B8B8C8"/>
+1113: </svg>
+1114:     </div>
+1115:     <div style="line-height:1">
+1116:       <div style="font-size:9px;font-weight:900;color:#7B2FBE;letter-spacing:.06em;text-transform:uppercase">Matemáticas de</div>
+1117:       <div style="font-family:'Baloo 2',sans-serif;font-size:17px;font-weight:900;color:#E8650A;text-shadow:0 1px 0 rgba(245,197,24,.5)">feDOR</div>
+1118:     </div>
+1119:   </div>
+1120:   <div class="hdr-mid">
+1121:     <span class="grade-pill">1° Grado</span>
+1122:   </div>
+1123:   <div class="hdr-btns">
+1124:     <div class="coin-hdr" id="coinHdr"><span>🪙</span><span id="coinCount">0</span></div>
+1125:     <div class="streak-hdr" id="streakHdr"><span>🔥</span><span id="streakCount">0</span></div>
+1126:     <button class="hdr-btn student" id="studentBtn" onclick="goScreen('home')">🏠 Inicio</button>
+1127:     <button class="hdr-btn report-btn" id="reportHdrBtn" style="display:none" onclick="goScreen('report')">📊 Reporte</button>
+1128:     <button class="hdr-btn" id="teacherHdrBtn" style="display:none" onclick="doExport()">👩‍🏫 Exportar</button>
+1129:     <button class="hdr-btn" id="profileHdrBtn" style="display:none;background:#EEEDFE;border-color:#C5BFEE;color:var(--purple)" onclick="goScreen('profile')"><span id="hdrAvatarSpan">🧑‍🚀</span> Perfil</button>
+1130:     <button class="hdr-btn" id="shopHdrBtn" style="display:none;background:linear-gradient(135deg,#16876A,#24C496);color:#fff;border-color:#16876A" onclick="openShop()">🛒 Tienda</button>
+1131:     <button class="hdr-btn" id="dlBtn" style="display:none;background:linear-gradient(135deg,#E8650A,#FF8C2A);color:#fff;border-color:#E8650A" onclick="downloadBook()">⬇ Guardar</button>
+1132:   </div>
+1133: </header>
+1134: <div style="display:none"><div id="xpBarFill"></div><span id="xpCount"></span></div>
+1135: <!-- Global toast / flame elements (must exist in DOM) -->
+1136: <div id="xpToast" style="position:fixed;top:68px;right:14px;z-index:9999;background:linear-gradient(135deg,#F5C518,#FF8C2A);color:#2A0F60;font-size:14px;font-weight:900;padding:8px 18px;border-radius:20px;box-shadow:0 6px 20px rgba(245,197,24,.5);opacity:0;transform:translateY(-12px) scale(.9);transition:all .35s;pointer-events:none"></div>
+1137: <div id="streakFlame" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);z-index:9998;font-family:'Baloo 2',sans-serif;font-size:52px;font-weight:900;color:#FF8C2A;text-shadow:0 0 30px rgba(232,101,10,.8);pointer-events:none;transition:all .4s cubic-bezier(.34,1.56,.64,1)">🔥 ×<span id="sfNum">3</span></div>
+1138: 
+1139: <!-- ════════════════════════════════════════
+1140:      SCREEN: SETUP
+1141: ════════════════════════════════════════ -->
+1142: <div class="screen active" id="screen-setup">
+1143:   <div class="setup-wrap">
+1144:     <div class="setup-hero">
+1145:       <div class="starfield" id="setupStars"></div>
+1146:       <div class="setup-planet"></div>
+1147:       <div class="setup-ring"></div>
+1148:       <span id="setupAstro" style="display:none">🧑‍🚀</span><div style="display:flex;justify-content:center;margin-bottom:.5rem;position:relative;z-index:1"><div style="width:100px;height:100px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 4px rgba(245,197,24,.6),0 8px 32px rgba(0,0,0,.5);animation:float 3s ease-in-out infinite"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+1149:   <defs>
+1150:     <radialGradient id="sp100" cx="38%" cy="32%">
+1151:       <stop offset="0%" stop-color="#7A28C0"/><stop offset="55%" stop-color="#1A0848"/><stop offset="100%" stop-color="#080E30"/>
+1152:     </radialGradient>
+1153:     <radialGradient id="hb100" cx="40%" cy="28%">
+1154:       <stop offset="0%" stop-color="#FAFAFA"/><stop offset="65%" stop-color="#D4D4DC"/><stop offset="100%" stop-color="#AAAAB8"/>
+1155:     </radialGradient>
+1156:     <radialGradient id="fp100" cx="35%" cy="30%">
+1157:       <stop offset="0%" stop-color="#FFA040"/><stop offset="55%" stop-color="#E86010"/><stop offset="100%" stop-color="#8A3000"/>
+1158:     </radialGradient>
+1159:     <radialGradient id="vs100" cx="30%" cy="25%">
+1160:       <stop offset="0%" stop-color="#1E3870"/><stop offset="100%" stop-color="#040A18"/>
+1161:     </radialGradient>
+1162:   </defs>
+1163:   <!-- Space bg -->
+1164:   <circle cx="50" cy="50" r="50" fill="url(#sp100)"/>
+1165:   <!-- Stars -->
+1166:   <circle cx="12" cy="14" r="2"   fill="white" opacity=".9"/>
+1167:   <circle cx="82" cy="18" r="1.5" fill="white" opacity=".8"/>
+1168:   <circle cx="88" cy="68" r="1.2" fill="white" opacity=".7"/>
+1169:   <circle cx="10" cy="72" r="1.5" fill="white" opacity=".7"/>
+1170:   <circle cx="55" cy="88" r="1"   fill="white" opacity=".6"/>
+1171:   <circle cx="30" cy="85" r="0.8" fill="white" opacity=".5"/>
+1172:   <!-- Teal nebula -->
+1173:   <ellipse cx="50" cy="88" rx="32" ry="12" fill="#00B4D8" opacity=".18"/>
+1174:   <!-- Orange glow ring (decorative) -->
+1175:   <circle cx="50" cy="50" r="44" fill="none" stroke="#E86010" stroke-width="1" opacity=".3"/>
+1176:   <!-- Helmet body -->
+1177:   <ellipse cx="50" cy="52" rx="30" ry="32" fill="url(#hb100)"/>
+1178:   <!-- Orange border ring -->
+1179:   <ellipse cx="50" cy="52" rx="30" ry="32" fill="none" stroke="#E86010" stroke-width="5" opacity=".95"/>
+1180:   <ellipse cx="50" cy="52" rx="28" ry="30" fill="none" stroke="#FF8C2A" stroke-width="1.5" opacity=".5"/>
+1181:   <!-- Dark visor -->
+1182:   <ellipse cx="50" cy="50" rx="17" ry="15" fill="url(#vs100)"/>
+1183:   <!-- Visor sheen -->
+1184:   <ellipse cx="43" cy="43" rx="6.5" ry="4" fill="rgba(255,255,255,0.3)" transform="rotate(-20,43,43)"/>
+1185:   <ellipse cx="55" cy="54" rx="2.5" ry="1.5" fill="rgba(255,255,255,0.12)"/>
+1186:   <!-- Helmet white highlight -->
+1187:   <path d="M26,34 Q50,22 74,34" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="3" stroke-linecap="round"/>
+1188:   <!-- Neck connector -->
+1189:   <rect x="37" y="80" width="26" height="9"  rx="4.5" fill="#D0D0D8"/>
+1190:   <rect x="41" y="76" width="18" height="7"  rx="3.5" fill="#C0C0CC"/>
+1191: </svg></div></div>
+1192:       <div class="setup-title">¡Bienvenido a<br><em>Matemáticas de Fedor!</em></div>
+1193:       <div class="setup-sub">El mejor libro interactivo de matemáticas para 1° grado</div>
+1194:       <div class="setup-badges">
+1195:         <span class="s-badge sb-purple">🎮 Gamificado</span>
+1196:         <span class="s-badge sb-teal">✅ MEN Colombia</span>
+1197:         <span class="s-badge sb-orange">🏆 3 Niveles</span>
+1198:         <span class="s-badge sb-blue">📊 Reporte Docente</span>
+1199:       </div>
+1200:     </div>
+1201:     <div class="setup-body">
+1202:       <div style="background:linear-gradient(135deg,#FEF0E6,#FFE2C8);border:1.5px solid #FBBF7A;border-radius:var(--r-md);padding:12px 16px;margin-bottom:1.5rem;display:flex;align-items:center;gap:10px">
+1203:         <span style="font-size:22px">💡</span>
+1204:         <div style="font-size:12px;font-weight:700;color:#7A3200">Este libro es el <strong>complemento digital</strong> del método Fedor. Úsalo junto al libro en Excel para una experiencia completa.</div>
+1205:       </div>
+1206: 
+1207:       <div style="font-size:12px;font-weight:900;color:var(--purple);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Elige tu astronauta</div>
+1208:       <div class="avatar-pick" id="avatarPick">
+1209:         <div class="av-btn sel" onclick="selAvatar(this,'🧑‍🚀')">🧑‍🚀</div>
+1210:         <div class="av-btn" onclick="selAvatar(this,'👩‍🚀')">👩‍🚀</div>
+1211:         <div class="av-btn" onclick="selAvatar(this,'🦁')">🦁</div>
+1212:         <div class="av-btn" onclick="selAvatar(this,'🐯')">🐯</div>
+1213:         <div class="av-btn" onclick="selAvatar(this,'🦊')">🦊</div>
+1214:         <div class="av-btn" onclick="selAvatar(this,'🐸')">🐸</div>
+1215:         <div class="av-btn" onclick="selAvatar(this,'🦋')">🦋</div>
+1216:         <div class="av-btn" onclick="selAvatar(this,'🦄')">🦄</div>
+1217:         <div class="av-btn" onclick="selAvatar(this,'🐉')">🐉</div>
+1218:         <div class="av-btn" onclick="selAvatar(this,'🤖')">🤖</div>
+1219:       </div>
+1220: 
+1221:       <div class="field-grid">
+1222:         <div class="field field-full">
+1223:           <label class="flabel">Tu nombre</label>
+1224:           <input class="finput" id="f-name" placeholder="Ej: Valentina García" autocomplete="off"/>
+1225:         </div>
+1226:         <div class="field">
+1227:           <label class="flabel">Colegio</label>
+1228:           <input class="finput" id="f-school" placeholder="Nombre del colegio"/>
+1229:         </div>
+1230:         <div class="field">
+1231:           <label class="flabel">Ciudad</label>
+1232:           <input class="finput" id="f-city" placeholder="Tu ciudad"/>
+1233:         </div>
+1234:         <div class="field">
+1235:           <label class="flabel">Docente</label>
+1236:           <input class="finput" id="f-teacher" placeholder="Nombre del docente"/>
+1237:         </div>
+1238:         <div class="field">
+1239:           <label class="flabel">Correo (opcional)</label>
+1240:           <input class="finput" id="f-email" type="email" placeholder="correo@ejemplo.com"/>
+1241:         </div>
+1242:       </div>
+1243:       <button class="btn-launch" onclick="enterBook()">🚀 ¡Comenzar aventura!</button>
+1244:       <div class="launch-note">Tus avances se guardan mientras tengas la página abierta</div>
+1245:     </div>
+1246:   </div>
+1247: </div>
+1248: 
+1249: <!-- ════════════════════════════════════════
+1250:      SCREEN: HOME
+1251: ════════════════════════════════════════ -->
+1252: <div class="screen" id="screen-home">
+1253:   <div class="hero-banner">
+1254:     <div class="starfield" id="homeStars"></div>
+1255:     <div class="hero-planet"></div>
+1256:     <div class="hero-ring"></div>
+1257:     <span id="heroAstro" style="display:none">🧑‍🚀</span>
+1258: <div style="display:flex;justify-content:center;margin-bottom:.65rem;position:relative;z-index:1">
+1259:     <div id="heroAvatarCircle" style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#7B2FBE,#A864E8);box-shadow:0 0 0 4px rgba(245,197,24,.6),0 8px 28px rgba(123,47,190,.5);display:flex;align-items:center;justify-content:center;font-size:52px;animation:float 3.2s ease-in-out infinite;flex-shrink:0">🧑‍🚀</div>
+1260:   </div>
+1261:     <!-- Hero text & stats (below avatar) -->
+1262:     <div class="hero-title" style="position:relative;z-index:1">¡Hola, <em id="heroName">Astronauta</em>!</div>
+1263:     <div class="hero-tag" id="heroTag" style="position:relative;z-index:1;color:#FFE066;font-size:13px;font-weight:800;letter-spacing:.04em;text-shadow:0 1px 4px rgba(0,0,0,.5)">Explorador Estelar</div>
+1264:     <div class="hero-stats" style="position:relative;z-index:1;display:flex;gap:14px;justify-content:center;margin:.4rem 0">
+1265:       <span class="hs-item"><span id="heroCoins">0</span>🪙</span>
+1266:       <span class="hs-item"><span id="heroStars">0</span>⭐</span>
+1267:     </div>
+1268:   </div>
+1269:   <!-- ══ GALAXY MAP ══ -->
+1270:   <div id="galaxyMapWrap" onclick="openGalaxyMap()" style="background:linear-gradient(180deg,#020B18,#050E2A,#0A1840);border-radius:20px;padding:1rem 1.1rem .85rem;margin-bottom:.85rem;position:relative;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.6);cursor:pointer;min-height:130px">
+1271:     <canvas id="galaxyCanvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+1272:     <div style="position:relative;z-index:2">
+1273:       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+1274:         <div><div style="font-size:9px;font-weight:900;color:rgba(245,197,24,.7);text-transform:uppercase;letter-spacing:.12em">🌌 Universo Fedor</div>
+1275:           <div style="font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:900;color:#fff;margin-top:1px">Galaxia del Saber</div></div>
+1276:         <div style="text-align:right"><div id="streakDisplay" style="font-size:18px;font-weight:900;color:#FF8C2A">0🔥</div>
+1277:           <div style="font-size:9px;color:rgba(255,255,255,.4);font-weight:700">mejor racha</div></div>
+1278:       </div>
+1279:       <div id="advPath" style="display:none"></div><div id="planetRow" style="display:flex;align-items:flex-end;justify-content:space-between;padding:.25rem 0"></div>
+1280:       <div style="text-align:center;font-size:10px;color:rgba(255,255,255,.3);font-weight:700;margin-top:.35rem">👆 Toca para explorar · arrastra para viajar</div>
+1281:     </div>
+1282:   </div>
+1283: 
+1284:   <!-- ══ GALAXY MODAL — UNIVERSO FEDOR ══ -->
+1285:   <div id="galaxyModal" style="display:none;position:fixed;inset:0;z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif;touch-action:none">
+1286:     <!-- Main canvas (stars, ship animation) -->
+1287:     <canvas id="uCanvas" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
+1288: 
+1289:     <!-- HUD Top bar -->
+1290:     <div style="position:absolute;top:0;left:0;right:0;z-index:20;background:linear-gradient(180deg,rgba(0,0,20,.85),transparent);padding:10px 14px 20px;display:flex;align-items:center;justify-content:space-between">
+1291:       <div>
+1292:         <div style="font-size:11px;font-weight:900;color:rgba(245,197,24,.7);text-transform:uppercase;letter-spacing:.12em">🌌 Universo Fedor</div>
+1293:         <div id="gHudStatus" style="font-size:13px;font-weight:900;color:#fff;margin-top:2px">Nave lista para despegar 🚀</div>
+1294:       </div>
+1295:       <div style="display:flex;align-items:center;gap:10px">
+1296:         <div style="text-align:center;background:rgba(255,255,255,.1);border-radius:10px;padding:5px 10px;border:1px solid rgba(255,255,255,.15)">
+1297:           <div id="gHudXP" style="font-size:14px;font-weight:900;color:#F5C518">0</div>
+1298:           <div style="font-size:8px;color:rgba(255,255,255,.5);font-weight:700">XP</div>
+1299:         </div>
+1300:         <button onclick="closeGalaxyMap()" style="background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);color:#fff;border-radius:50%;width:38px;height:38px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent">×</button>
+1301:       </div>
+1302:     </div>
+1303: 
+1304:     <!-- Planet info panel (slides up from bottom) -->
+1305:     <div id="gPlanetPanel" style="display:none;position:absolute;bottom:0;left:0;right:0;z-index:25;background:linear-gradient(0deg,#050525 85%,transparent);border-radius:22px 22px 0 0;padding:1.25rem 1.25rem 2rem;transform:translateY(100%);transition:transform .4s cubic-bezier(.34,1.56,.64,1)">
+1306:       <div style="width:40px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:0 auto .85rem"></div>
+1307:       <div style="display:flex;align-items:center;gap:14px;margin-bottom:.85rem">
+1308:         <div id="gPpIcon" style="font-size:48px;filter:drop-shadow(0 0 16px rgba(255,255,255,.4))"></div>
+1309:         <div style="flex:1">
+1310:           <div id="gPpName" style="font-size:18px;font-weight:900;color:#fff;line-height:1.2"></div>
+1311:           <div id="gPpDesc" style="font-size:11px;color:rgba(255,255,255,.55);margin-top:3px;line-height:1.4"></div>
+1312:         </div>
+1313:         <div style="text-align:right">
+1314:           <div id="gPpPct" style="font-size:22px;font-weight:900;color:#FF8C2A;font-family:'Baloo 2',sans-serif"></div>
+1315:           <div style="font-size:9px;color:rgba(255,255,255,.4);font-weight:700">completado</div>
+1316:         </div>
+1317:       </div>
+1318:       <!-- Level progress bars -->
+1319:       <div id="gPpLevels" style="display:grid;gap:6px;margin-bottom:1rem"></div>
+1320:       <!-- Mini game prompt if unlocked -->
+1321:       <div id="gPpGame" style="display:none;background:linear-gradient(135deg,rgba(245,197,24,.15),rgba(232,101,10,.1));border:1.5px solid rgba(245,197,24,.3);border-radius:12px;padding:.75rem;margin-bottom:.85rem;text-align:center">
+1322:         <div style="font-size:12px;font-weight:900;color:#F5C518;margin-bottom:4px">🎮 Mini desafío desbloqueado</div>
+1323:         <div id="gPpGameTxt" style="font-size:11px;color:rgba(255,255,255,.7)"></div>
+1324:       </div>
+1325:       <button id="gPpBtn" style="width:100%;padding:13px;font-size:14px;font-weight:900;background:linear-gradient(135deg,#F5C518,#FF8C2A);color:#2A0F60;border:none;border-radius:14px;cursor:pointer;font-family:'Nunito',sans-serif;box-shadow:0 6px 20px rgba(245,197,24,.35)">🚀 ¡Viajar a este planeta!</button>
+1326:     </div>
+1327: 
+1328:     <!-- Journey progress HUD bottom left -->
+1329:     <div style="position:absolute;bottom:20px;left:14px;z-index:20;display:flex;flex-direction:column;gap:4px" id="gJourneyHud"></div>
+1330:   </div>
+1331: 
+1332: 
+1333:   <!-- ══ TEACHER PANEL ══ -->
+1334:   <div style="background:linear-gradient(135deg,#140830,#1E0848);border-radius:18px;padding:1rem 1.1rem;margin-bottom:.85rem;position:relative;overflow:hidden">
+1335:     <div style="position:absolute;inset:0;opacity:.06;background:repeating-linear-gradient(45deg,#7B2FBE 0,#7B2FBE 1px,transparent 1px,transparent 8px)"></div>
+1336:     <div style="position:relative;z-index:1">
+1337:       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem;flex-wrap:wrap;gap:6px">
+1338:         <div style="display:flex;align-items:center;gap:8px">
+1339:           <div style="width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#F5C518,#FF8C2A);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📊</div>
+1340:           <div><div style="font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:900;color:#fff">Centro de Informes</div>
+1341:             <div style="font-size:9px;color:rgba(255,255,255,.5);font-weight:700">Seguimiento docente y familia</div></div>
+1342:         </div>
+1343:         <button onclick="goScreen('report')" style="background:linear-gradient(135deg,#F5C518,#FF8C2A);color:#2A0F60;border:none;border-radius:10px;padding:7px 14px;font-size:12px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif">Ver informe →</button>
+1344:       </div>
+1345:       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:.65rem">
+1346:         <div style="background:rgba(255,255,255,.08);border-radius:10px;padding:.5rem;text-align:center">
+1347:           <div id="qs-xp" style="font-size:16px;font-weight:900;color:#FF8C2A;font-family:'Baloo 2',sans-serif">0</div>
+1348:           <div style="font-size:8px;color:rgba(255,255,255,.5);font-weight:700;text-transform:uppercase">XP Total</div></div>
+1349:         <div style="background:rgba(255,255,255,.08);border-radius:10px;padding:.5rem;text-align:center">
+1350:           <div id="qs-done" style="font-size:16px;font-weight:900;color:#24C496;font-family:'Baloo 2',sans-serif">0</div>
+1351:           <div style="font-size:8px;color:rgba(255,255,255,.5);font-weight:700;text-transform:uppercase">Niveles ✅</div></div>
+1352:         <div style="background:rgba(255,255,255,.08);border-radius:10px;padding:.5rem;text-align:center">
+1353:           <div id="qs-streak" style="font-size:16px;font-weight:900;color:#FF8C2A;font-family:'Baloo 2',sans-serif">0🔥</div>
+1354:           <div style="font-size:8px;color:rgba(255,255,255,.5);font-weight:700;text-transform:uppercase">Racha</div></div>
+1355:       </div>
+1356:       <div id="qs-bars" style="display:grid;gap:4px;margin-bottom:.65rem"></div>
+1357:       <button onclick="goScreen('report');setTimeout(runAIAnalysis,500)" style="width:100%;padding:9px;font-size:12px;font-weight:900;background:rgba(245,197,24,.12);color:#F5C518;border:1.5px solid rgba(245,197,24,.25);border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif">🤖 Análisis IA Fedor</button>
+1358:     </div>
+1359:   </div>
+1360: 
+1361:   <!-- FEDOR BRAND -->
+1362:   <div class="daily-reward" id="dailyRewardBtn" onclick="claimDaily()">
+1363:     <span class="dr-icon">🎁</span>
+1364:     <div class="dr-body">
+1365:       <div class="dr-title">Recompensa diaria</div>
+1366:       <div class="dr-sub">¡Entra cada día y gana XP extra!</div>
+1367:     </div>
+1368:     <span class="dr-badge" id="dailyBadge">¡Disponible!</span>
+1369:   </div>
+1370:   <div class="fedor-brand">
+1371:     <div style="display:flex;align-items:center;gap:10px">
+1372:       <div class="fedor-brand-logo"><span style="font-size:20px">🚀</span></div>
+1373:       <div>
+1374:         <div class="fedor-brand-txt">Matemáticas de Fedor</div>
+1375:         <div class="fedor-brand-sub">Libro Interactivo · Grado 1° · Colombia</div>
+1376:       </div>
+1377:     </div>
+1378:     <div style="text-align:right">
+1379:       <div style="font-size:11px;font-weight:700;color:var(--muted)">¿Tienes el libro Excel?</div>
+1380:       <div style="font-size:11px;font-weight:900;color:var(--orange-d)">Úsalos juntos 📊</div>
+1381:     </div>
+1382:   </div>
+1383: 
+1384:   <!-- DAILY CHALLENGE -->
+1385:   <div class="daily-challenge" id="dailyChallenge" onclick="startDailyChallenge()">
+1386:     <span class="dc-icon">⚡</span>
+1387:     <div class="dc-body">
+1388:       <div class="dc-title">Desafío del día · <span id="dailyDateLbl"></span></div>
+1389:       <div class="dc-sub">¡Gana el doble de monedas hoy!</div>
+1390:     </div>
+1391:     <span class="dc-badge">🏅 x2</span>
+1392:   </div>
+1393: 
+1394:   <!-- GLOBAL PROGRESS -->
+1395:   <div class="prog-global">
+1396:     <div class="pg-label">📚 Progreso total</div>
+1397:     <div class="pg-bar"><div class="pg-fill" id="globalFill" style="width:0%"></div></div>
+1398:     <div class="pg-pct" id="globalPct">0%</div>
+1399:   </div>
+1400: 
+1401:   <!-- PROGRESS MAP -->
+1402:   <div class="progress-map">
+1403:     <div class="pm-title">🗺️ Mapa de progreso — Unidad 1</div>
+1404:     <div class="pm-path" id="progressMap"></div>
+1405:   </div>
+1406: 
+1407:   <!-- UNITS -->
+1408:   <div class="sec-title">📦 Unidades de aprendizaje</div>
+1409: 
+1410:   <!-- UNIT 1 -->
+1411:   <!-- UNIT 1 -->
+1412:   <div class="unit-card uc-purple" onclick="goUnit(0)">
+1413:     <div class="uc-row">
+1414:       <div class="uc-icon-wrap" style="background:#EEEDFE"><span style="font-size:26px">➕</span></div>
+1415:       <div class="uc-info">
+1416:         <div class="uc-name">Unidad 1 — Adición y Números</div>
+1417:         <div class="uc-meta">5 temas · Conteo, Suma, Decena, Recta, Problemas</div>
+1418:         <div class="uc-prog-bar"><div class="uc-prog-fill" id="u0bar" style="width:0%"></div></div>
+1419:       </div>
+1420:       <div class="uc-right"><div class="uc-pct" id="u0pct">0%</div></div>

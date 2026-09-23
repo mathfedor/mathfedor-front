@@ -1,0 +1,61 @@
+16070:   function insertCard(){
+16071:     if(document.getElementById('fedorLabCard')) return;
+16072:     var anchor = document.getElementById('fedorActionBar') || document.getElementById('fedorJourneyWrap') || document.getElementById('galaxyMapWrap');
+16073:     if(!anchor || !anchor.parentNode){ setTimeout(insertCard, 1000); return; }
+16074: 
+16075:     var card = document.createElement('div');
+16076:     card.id = 'fedorLabCard';
+16077:     card.onclick = function(){ if(typeof window.openStatsLab==='function') window.openStatsLab(); };
+16078:     // Mini preview chart (4 bars)
+16079:     var preview = ''+
+16080:       '<svg viewBox="0 0 120 80" width="120" height="80">'+
+16081:         '<rect x="10" y="50" width="18" height="22" fill="#FF1D4E" rx="2"/>'+
+16082:         '<rect x="36" y="32" width="18" height="40" fill="#F5C518" rx="2"/>'+
+16083:         '<rect x="62" y="20" width="18" height="52" fill="#3AA0FF" rx="2"/>'+
+16084:         '<rect x="88" y="38" width="18" height="34" fill="#9B5CFF" rx="2"/>'+
+16085:         '<line x1="6" y1="72" x2="114" y2="72" stroke="#fff" stroke-width="1.5"/>'+
+16086:       '</svg>';
+16087:     card.innerHTML = ''+
+16088:       '<div class="flc-row">'+
+16089:         '<div class="flc-icon">🧪</div>'+
+16090:         '<div class="flc-info">'+
+16091:           '<div class="flc-title">Laboratorio de Estadística</div>'+
+16092:           '<div class="flc-sub">¡Crea tus propias encuestas! Mete datos, mira el gráfico cambiar en vivo y genera preguntas para tus amigos.</div>'+
+16093:           '<div class="flc-cta">🚀 ABRIR LABORATORIO →</div>'+
+16094:         '</div>'+
+16095:         '<div class="flc-preview">'+preview+'</div>'+
+16096:       '</div>';
+16097:     // Insert AFTER the action bar
+16098:     anchor.parentNode.insertBefore(card, anchor.nextSibling);
+16099:   }
+16100: })();
+16101: /* FEDOR_1RO_PORTED_LAB_CARD_END */
+16102: </script>
+16103: <script>
+16104: /* ═══════════════════════════════════════════════════════════════════════════
+16105:    FEDOR_1RO_PORTED_TABLAS — Juego interactivo de tablas de multiplicar
+16106:    - Selector de tabla (1-10) con visualización grande
+16107:    - Modo "Práctica" con tarjeta + respuesta
+16108:    - Modo "Reto" con tiempo y puntos
+16109:    - Visualización de cada multiplicación con grupos de emojis
+16110:    ═══════════════════════════════════════════════════════════════════════════ */
+16111: (function(){
+16112:   'use strict';
+16113:   if(window.__fedor1_tablas_ported) return; window.__fedor1_tablas_ported = true;
+16114: 
+16115:   var css = document.createElement('style');
+16116:   css.textContent = [
+16117:     '#fedorTablasBtn{position:fixed;bottom:370px;right:14px;background:linear-gradient(135deg,#FF1D4E,#F5C518);color:#fff;border:none;border-radius:50%;width:54px;height:54px;cursor:pointer;font-size:22px;z-index:9996;box-shadow:0 8px 22px rgba(255,29,78,.55);animation:fjPlanetBob 2.6s ease-in-out infinite;font-weight:900;font-family:Baloo 2,sans-serif}',
+16118:     '.tb-bg{position:fixed;inset:0;background:rgba(8,4,30,.85);backdrop-filter:blur(8px);z-index:99990;display:flex;align-items:center;justify-content:center;padding:14px;animation:v3fade .25s}',
+16119:     '.tb-card{background:#fff;border-radius:22px;max-width:760px;width:100%;max-height:94vh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.6)}',
+16120:     '.tb-head{background:linear-gradient(135deg,#FF1D4E,#F5C518);color:#fff;padding:1.2rem 1.4rem;border-radius:22px 22px 0 0;display:flex;align-items:center;gap:12px;font-family:Baloo 2,sans-serif;font-weight:900;font-size:18px}',
+16121:     '.tb-body{padding:1.2rem 1.4rem}',
+16122:     '.tb-selector{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:1rem}',
+16123:     '.tb-num-btn{padding:14px 0;border:none;border-radius:12px;background:linear-gradient(135deg,#6C28B4,#9B5CFF);color:#fff;font-weight:900;font-size:22px;cursor:pointer;font-family:Baloo 2,sans-serif;min-height:50px;transition:transform .15s;box-shadow:0 4px 12px rgba(108,40,180,.3)}',
+16124:     '.tb-num-btn:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(108,40,180,.5)}',
+16125:     '.tb-num-btn.active{background:linear-gradient(135deg,#16876A,#24C496);box-shadow:0 6px 18px rgba(22,135,106,.55)}',
+16126:     '.tb-mode-toggle{display:flex;gap:6px;margin-bottom:1rem;justify-content:center}',
+16127:     '.tb-mode-btn{padding:10px 18px;border:none;border-radius:14px;font-weight:900;cursor:pointer;font-size:13px;font-family:Nunito,sans-serif;color:#fff;min-height:44px;background:#999}',
+16128:     '.tb-mode-btn.active{background:linear-gradient(135deg,#16876A,#24C496);box-shadow:0 6px 16px rgba(22,135,106,.5)}',
+16129:     '.tb-table-display{background:linear-gradient(135deg,#FFF8DC,#FFE7C9);border:3px solid #FF8C2A;border-radius:14px;padding:1rem;font-family:Baloo 2,sans-serif}',
+16130:     '.tb-row-line{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-radius:10px;margin-bottom:4px;background:rgba(255,255,255,.6);font-size:18px;font-weight:900;color:#7A3200;border-left:5px solid #FF8C2A}',
