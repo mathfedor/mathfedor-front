@@ -3,6 +3,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Script from 'next/script';
+import Link from 'next/link';
+import { usersService } from '@/services/users.service';
+import { authService } from '@/services/auth.service';
 
 // ============================================================================
 // GUÍA PARA DEVELOPERS / MARKETING: INTEGRACIONES ADICIONALES
@@ -55,12 +58,103 @@ export default function LandingGrado11() {
   const [buyerPhone, setBuyerPhone] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Modal de registro para módulo gratis
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [registerName, setRegisterName] = useState('');
+  const [registerEmail, setRegisterEmail] = useState('');
+  const [registerPassword, setRegisterPassword] = useState('');
+  const [registerTermsAccepted, setRegisterTermsAccepted] = useState(true);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [registerError, setRegisterError] = useState('');
+  const [registerSuccess, setRegisterSuccess] = useState(false);
+
   // FAQ accordion state
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   // Referencia a la sección de oferta para ViewContent
   const offerSectionRef = useRef<HTMLDivElement | null>(null);
   const hasFiredViewContent = useRef(false);
+
+  // Manejador del registro para el módulo gratis
+  const handleFreeRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setRegisterError('');
+
+    if (!registerName.trim() || !registerEmail.trim() || !registerPassword.trim()) {
+      setRegisterError('Por favor completa todos los campos.');
+      return;
+    }
+
+    if (registerPassword.length < 6) {
+      setRegisterError('La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
+
+    if (!registerTermsAccepted) {
+      setRegisterError('Debes aceptar los términos y la política de privacidad.');
+      return;
+    }
+
+    setIsRegistering(true);
+
+    try {
+      await usersService.createUser({
+        name: registerName.trim(),
+        email: registerEmail.trim(),
+        password: registerPassword,
+        rol: 'Student',
+        legalConsents: {
+          termsAndPrivacyAccepted: true,
+          termsVersion: '1.0',
+          privacyPolicyVersion: '1.0',
+          commercialCommunicationsAccepted: true,
+          commercialCommunicationsAcceptedAt: new Date().toISOString(),
+        },
+      });
+
+      // Tracking analítica de registro
+      if (typeof window !== 'undefined' && window.fbq) {
+        window.fbq('track', 'CompleteRegistration', {
+          content_name: 'modulo_gratis_grado_11',
+          status: true,
+        });
+      }
+      if (typeof window !== 'undefined' && window.dataLayer) {
+        window.dataLayer.push({
+          event: 'sign_up',
+          method: 'email',
+          grade: 'Grado 11 Gratis',
+        });
+      }
+
+      setRegisterSuccess(true);
+
+      // Intentar auto-login para que entre directo
+      try {
+        await authService.login({
+          email: registerEmail.trim(),
+          password: registerPassword,
+        });
+        setTimeout(() => {
+          window.location.href = '/dashboard/mis-modulos';
+        }, 1200);
+      } catch {
+        setTimeout(() => {
+          window.location.href = '/login?registered=true';
+        }, 1500);
+      }
+    } catch (err: any) {
+      let msg = 'Ocurrió un error al registrar el usuario. Por favor verifica tus datos e intenta nuevamente.';
+      if (err?.response?.data?.message) {
+        msg = err.response.data.message;
+      } else if (err?.message) {
+        msg = err.message;
+      }
+      setRegisterError(msg);
+    } finally {
+      setIsRegistering(false);
+    }
+  };
 
   // 1. Meta Pixel PageView automático & IntersectionObserver para ViewContent
   useEffect(() => {
@@ -329,20 +423,8 @@ export default function LandingGrado11() {
               El único programa digital en Colombia diseñado para que estudiantes de 11° dominen el pensamiento matemático a su propio ritmo, sin frustración y enfocados en las competencias que realmente definen su puntaje.
             </p>
 
-            {/* CTA Hero */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
-              <button
-                type="button"
-                id="hero-cta-btn"
-                onClick={handleCtaClick}
-                className="w-full sm:w-auto bg-[#FF6B00] hover:bg-[#EA580C] text-white font-black text-lg sm:text-xl py-4 px-10 rounded-2xl shadow-[0_10px_30px_rgba(255,107,0,0.4)] hover:shadow-[0_15px_35px_rgba(255,107,0,0.5)] transition-all duration-200 hover:-translate-y-1 active:translate-y-0 cursor-pointer text-center"
-              >
-                Quiero este módulo
-              </button>
-            </div>
-
             {/* Micro-copy de confianza */}
-            <p className="text-xs sm:text-sm text-blue-200 font-semibold flex items-center justify-center gap-2 mb-12">
+            <p className="text-xs sm:text-sm text-blue-200 font-semibold flex items-center justify-center gap-2 mb-8">
               <span>🔒 Pago 100% seguro con Wompi</span>
               <span>•</span>
               <span>⚡ Acceso digital inmediato</span>
@@ -350,20 +432,123 @@ export default function LandingGrado11() {
               <span>🎓 Garantía 7 días</span>
             </p>
 
-            {/* Placeholder multimedia Hero */}
-            <div className="relative max-w-3xl mx-auto rounded-2xl sm:rounded-3xl overflow-hidden border-4 border-white/20 shadow-2xl bg-slate-900/80 aspect-video flex flex-col items-center justify-center p-6 text-center">
-              {/* [EDITAR: Video o Mockup interactivo] */}
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#FF6B00]/90 text-white flex items-center justify-center mb-3 shadow-lg group-hover:scale-110 transition-transform">
-                <svg className="w-8 h-8 sm:w-10 sm:h-10 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
+            {/* =================================================================== */}
+            {/* SECCIÓN DE 2 VIDEOS: LANZAMIENTO ESPECIAL Y MÉTODO FEDOR ENTERO */}
+            {/* =================================================================== */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto text-left">
+              {/* VIDEO 1: LANZAMIENTO ESPECIAL (MÓDULO GRATIS) */}
+              <div className="rounded-3xl bg-slate-900/85 backdrop-blur-md border-2 border-emerald-400/40 p-5 sm:p-7 shadow-2xl flex flex-col justify-between hover:border-emerald-400/70 transition-all duration-300">
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="inline-flex items-center gap-1.5 bg-emerald-500/20 border border-emerald-400/50 text-emerald-300 text-xs font-black uppercase px-3 py-1 rounded-full">
+                      <span>🎁</span>
+                      <span>Opción 1 • Lanzamiento Especial</span>
+                    </span>
+                    <span className="text-[11px] font-bold text-emerald-200/90 bg-white/10 px-2.5 py-0.5 rounded-md">
+                      Acceso en Línea
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl sm:text-2xl font-black text-white mb-2 font-['Baloo_2',sans-serif]">
+                    Módulo Gratis (Libro Digital)
+                  </h3>
+
+                  {/* Video 1 */}
+                  <div className="relative rounded-2xl overflow-hidden border border-white/20 bg-black aspect-video mb-4 shadow-lg">
+                    <video
+                      src="/lanzamiento-especial.mp4"
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+
+                  {/* Frase explicativa clara */}
+                  <div className="bg-emerald-950/40 border border-emerald-500/30 rounded-xl p-3.5 mb-5 text-xs sm:text-sm text-emerald-100 leading-relaxed">
+                    <p className="flex items-start gap-2">
+                      <span className="text-base shrink-0">📖</span>
+                      <span>
+                        <strong className="text-emerald-300">Importante:</strong> El módulo gratuito es <strong>solo el libro digital dentro de la plataforma</strong> para estudiar y practicar en línea (no incluye descargas de libros en PDF ni simulacros).
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  {/* Botón Quiero el módulo gratis */}
+                  <button
+                    type="button"
+                    id="hero-free-btn"
+                    onClick={() => setShowRegisterModal(true)}
+                    className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black text-base sm:text-lg py-4 px-6 rounded-2xl shadow-[0_8px_25px_rgba(16,185,129,0.35)] hover:shadow-[0_12px_30px_rgba(16,185,129,0.45)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer flex items-center justify-center gap-2 text-center"
+                  >
+                    <span>Quiero el módulo gratis</span>
+                    <span className="text-xl">✨</span>
+                  </button>
+
+                  <p className="text-[11px] text-center text-blue-200/80 mt-2.5 font-medium">
+                    ⚡ Registro gratuito en 30 segundos • Creas tu usuario y contraseña
+                  </p>
+                </div>
               </div>
-              <p className="text-white font-bold text-sm sm:text-base">
-                [EDITAR: Video de presentación del Módulo de 11° o Mockup de la plataforma]
-              </p>
-              <p className="text-blue-200 text-xs mt-1">
-                Visualiza cómo es la experiencia interactiva del estudiante adentro
-              </p>
+
+              {/* VIDEO 2: MÉTODO FEDOR ENTERO (MÓDULO COMPLETO CON WOMPI) */}
+              <div className="rounded-3xl bg-slate-900/85 backdrop-blur-md border-2 border-[#FF6B00]/70 p-5 sm:p-7 shadow-2xl flex flex-col justify-between hover:border-[#FF6B00] transition-all duration-300 ring-2 ring-[#FF6B00]/25">
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="inline-flex items-center gap-1.5 bg-[#FF6B00]/25 border border-[#FF6B00]/70 text-orange-200 text-xs font-black uppercase px-3 py-1 rounded-full shadow-xs">
+                      <span>⚡</span>
+                      <span>Opción 2 • Módulo Completo Oficial</span>
+                    </span>
+                    <span className="text-[11px] font-bold text-orange-200 bg-[#FF6B00]/40 px-2.5 py-0.5 rounded-md">
+                      Acceso Total + Descargas
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl sm:text-2xl font-black text-white mb-2 font-['Baloo_2',sans-serif]">
+                    Método Fedor Entero: Grado 11°
+                  </h3>
+
+                  {/* Video 2 */}
+                  <div className="relative rounded-2xl overflow-hidden border border-white/20 bg-black aspect-video mb-4 shadow-lg">
+                    <video
+                      src="/metodo-fedor-entero.mp4"
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+
+                  {/* Frase explicativa clara */}
+                  <div className="bg-orange-950/40 border border-orange-500/30 rounded-xl p-3.5 mb-5 text-xs sm:text-sm text-orange-100 leading-relaxed">
+                    <p className="flex items-start gap-2">
+                      <span className="text-base shrink-0">🎓</span>
+                      <span>
+                        <strong className="text-orange-300">Módulo completo:</strong> Viene con el módulo completo, es decir, el <strong>libro digital interactivo</strong> y todas las <strong>descargas de ayuda</strong> (3 libros PDF imprimibles, resúmenes de fórmulas y simulacros ICFES).
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  {/* Botón Pagar en Wompi */}
+                  <button
+                    type="button"
+                    id="hero-cta-btn"
+                    onClick={handleCtaClick}
+                    className="w-full bg-[#FF6B00] hover:bg-[#EA580C] text-white font-black text-base sm:text-lg py-4 px-6 rounded-2xl shadow-[0_8px_25px_rgba(255,107,0,0.45)] hover:shadow-[0_12px_30px_rgba(255,107,0,0.55)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer flex items-center justify-center gap-2 text-center"
+                  >
+                    <span>Quiero este módulo</span>
+                    <span className="text-xl">🔒</span>
+                  </button>
+
+                  <p className="text-[11px] text-center text-blue-200/80 mt-2.5 font-medium">
+                    🔒 Pago 100% seguro con Wompi • $203.000 COP pago único • Garantía 7 días
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -1000,6 +1185,153 @@ export default function LandingGrado11() {
           </div>
         </div>
       )}
+
+      {/* =================================================================== */}
+      {/* MODAL DE REGISTRO RÁPIDO PARA EL MÓDULO GRATUITO */}
+      {/* =================================================================== */}
+      {showRegisterModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-gray-100">
+            {/* Botón cerrar */}
+            <button
+              type="button"
+              onClick={() => {
+                setShowRegisterModal(false);
+                setRegisterError('');
+              }}
+              className="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 text-gray-600 font-black flex items-center justify-center hover:bg-gray-200 transition-colors"
+              aria-label="Cerrar modal"
+            >
+              ✕
+            </button>
+
+            <div className="text-center mb-6">
+              <span className="text-xs font-black text-emerald-700 uppercase tracking-wider bg-emerald-100 px-3.5 py-1.5 rounded-full inline-block">
+                🎁 Acceso Gratuito • Libro Digital
+              </span>
+              <h3 className="text-2xl font-black text-gray-900 mt-2 font-['Baloo_2',sans-serif]">
+                Crea tu cuenta de acceso gratis
+              </h3>
+              <p className="text-gray-600 text-xs mt-1.5 leading-relaxed">
+                Podrás leer y resolver los ejercicios interactivos del <strong>libro digital de Grado 11°</strong> dentro de la plataforma sin costo.
+              </p>
+            </div>
+
+            {/* Aviso aclaratorio importante */}
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4 text-[12px] text-amber-900 leading-snug">
+              <span className="font-bold">Nota:</span> Esta modalidad gratuita te da acceso al <strong>libro digital en línea</strong>. Si luego deseas descargar los 3 libros en PDF y presentar los simulacros ICFES, podrás adquirir el módulo completo.
+            </div>
+
+            {registerError && (
+              <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold">
+                ⚠️ {registerError}
+              </div>
+            )}
+
+            {registerSuccess ? (
+              <div className="text-center py-6">
+                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 text-3xl font-black flex items-center justify-center mx-auto mb-3">
+                  ✓
+                </div>
+                <h4 className="text-xl font-black text-gray-900 mb-1 font-['Baloo_2',sans-serif]">
+                  ¡Cuenta creada con éxito!
+                </h4>
+                <p className="text-gray-600 text-sm">
+                  Iniciando tu sesión y abriendo la plataforma...
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleFreeRegister} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1">
+                    Nombre completo:
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Ej. Sofía Rodríguez"
+                    value={registerName}
+                    onChange={(e) => setRegisterName(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 font-semibold text-sm text-gray-800"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1">
+                    Correo electrónico:
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="correo@ejemplo.com"
+                    value={registerEmail}
+                    onChange={(e) => setRegisterEmail(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 font-semibold text-sm text-gray-800"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1">
+                    Crea tu contraseña (mínimo 6 caracteres):
+                  </label>
+                  <input
+                    type="password"
+                    required
+                    minLength={6}
+                    placeholder="••••••••"
+                    value={registerPassword}
+                    onChange={(e) => setRegisterPassword(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 font-semibold text-sm text-gray-800"
+                  />
+                </div>
+
+                <div className="flex items-start gap-2.5 pt-1">
+                  <input
+                    type="checkbox"
+                    id="terms-check"
+                    checked={registerTermsAccepted}
+                    onChange={(e) => setRegisterTermsAccepted(e.target.checked)}
+                    className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                  />
+                  <label htmlFor="terms-check" className="text-[11px] text-gray-600 leading-snug cursor-pointer">
+                    Acepto los{' '}
+                    <Link href="/legal/terminos" target="_blank" className="text-emerald-700 underline font-semibold">
+                      Términos de servicio
+                    </Link>{' '}
+                    y la{' '}
+                    <Link href="/legal/privacidad" target="_blank" className="text-emerald-700 underline font-semibold">
+                      Política de privacidad
+                    </Link>
+                    .
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isRegistering}
+                  className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black text-base py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all cursor-pointer mt-2 flex items-center justify-center gap-2"
+                >
+                  {isRegistering ? (
+                    <span>Creando tu cuenta gratuita...</span>
+                  ) : (
+                    <>
+                      <span>Crear mi cuenta y acceder gratis</span>
+                      <span>✨</span>
+                    </>
+                  )}
+                </button>
+
+                <div className="text-center pt-2">
+                  <p className="text-[11px] text-gray-500 font-medium">
+                    🔒 Tus datos están protegidos. Acceso digital inmediato sin tarjeta de crédito.
+                  </p>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }
+
