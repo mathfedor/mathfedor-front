@@ -201,17 +201,30 @@ export const moduleService = {
       ? `${process.env.NEXT_PUBLIC_API_URL}/learning/getlearnings?locale=${encodeURIComponent(locale)}`
       : `${process.env.NEXT_PUBLIC_API_URL}/learning/getlearnings`;
 
-    const response = await fetch(url, {
-      method: 'GET',
-      headers
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Error al obtener los módulos');
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers,
+        signal: controller.signal
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al obtener los módulos');
+      }
+
+      return response.json();
+    } catch (err) {
+      if (err instanceof Error && err.name === 'AbortError') {
+        throw new Error('La solicitud tardó demasiado. Por favor intenta de nuevo.');
+      }
+      throw err;
+    } finally {
+      clearTimeout(timeoutId);
     }
-
-    return response.json();
   },
 
   async translateBook(slug: string, locale: string = 'en'): Promise<any> {
