@@ -61,7 +61,27 @@ const PRODUCT_ID = 'modulo-grado-11';
 function GraciasContent() {
   const searchParams = useSearchParams();
   const transactionRef = searchParams.get('ref') || searchParams.get('id') || `FEDOR-${Date.now()}`;
+  const gradeParam = searchParams.get('grade');
   const hasFiredPurchase = useRef(false);
+
+  // Determinar producto dinámicamente según referencia o query param
+  let resolvedProductName = PRODUCT_NAME;
+  let resolvedProductId = PRODUCT_ID;
+  let resolvedSubheading = 'Has dado el paso más importante para asegurar un resultado sobresaliente en el <strong>ICFES Saber 11°</strong> y tu ingreso universitario.';
+
+  if (gradeParam === '1' || transactionRef.includes('FEDOR-G1-')) {
+    resolvedProductName = 'Módulo Matemáticas Grado 1° Primaria';
+    resolvedProductId = 'modulo-grado-1';
+    resolvedSubheading = 'Has dado el paso más importante para construir las bases numéricas de tu hijo(a) y despertar su amor por las matemáticas desde <strong>1° de primaria</strong>.';
+  } else if (gradeParam === '2' || transactionRef.includes('FEDOR-G2-')) {
+    resolvedProductName = 'Módulo Matemáticas Grado 2° Primaria';
+    resolvedProductId = 'modulo-grado-2';
+    resolvedSubheading = 'Has dado el paso más importante para que tu hijo(a) domine las operaciones con reagrupación y la resolución de problemas cotidianos en <strong>2° de primaria</strong>.';
+  } else if (gradeParam === '3' || transactionRef.includes('FEDOR-G3-')) {
+    resolvedProductName = 'Módulo Matemáticas Grado 3° Primaria';
+    resolvedProductId = 'modulo-grado-3';
+    resolvedSubheading = 'Has dado el paso más importante para que tu hijo(a) domine las tablas de multiplicar, la división y se prepare para las <strong>Pruebas SABER 3°</strong>.';
+  }
 
   useEffect(() => {
     if (hasFiredPurchase.current) return;
@@ -70,8 +90,8 @@ function GraciasContent() {
     // 1. Disparar evento Purchase en Meta Pixel (Client-Side)
     if (typeof window !== 'undefined' && window.fbq) {
       window.fbq('track', 'Purchase', {
-        content_name: PRODUCT_NAME,
-        content_ids: [PRODUCT_ID],
+        content_name: resolvedProductName,
+        content_ids: [resolvedProductId],
         content_type: 'product',
         value: PURCHASE_VALUE,
         currency: PURCHASE_CURRENCY,
@@ -89,8 +109,8 @@ function GraciasContent() {
           currency: PURCHASE_CURRENCY,
           items: [
             {
-              item_id: PRODUCT_ID,
-              item_name: PRODUCT_NAME,
+              item_id: resolvedProductId,
+              item_name: resolvedProductName,
               price: PURCHASE_VALUE,
               quantity: 1,
             },
@@ -98,7 +118,7 @@ function GraciasContent() {
         },
       });
     }
-  }, [transactionRef]);
+  }, [transactionRef, resolvedProductName, resolvedProductId]);
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
@@ -117,15 +137,16 @@ function GraciasContent() {
           ¡Felicitaciones y bienvenido a Matemáticas de Fedor!
         </h1>
 
-        <p className="text-gray-600 text-base sm:text-lg max-w-xl mx-auto mb-6">
-          Has dado el paso más importante para asegurar un resultado sobresaliente en el <strong>ICFES Saber 11°</strong> y asegurar tu ingreso universitario.
-        </p>
+        <p
+          className="text-gray-600 text-base sm:text-lg max-w-xl mx-auto mb-6"
+          dangerouslySetInnerHTML={{ __html: resolvedSubheading }}
+        />
 
         {/* Resumen de compra */}
         <div className="bg-[#FFFDF5] border-2 border-[#FDE68A] rounded-2xl p-5 mb-8 text-left text-sm text-gray-700 max-w-md mx-auto">
           <div className="flex justify-between py-1 border-b border-orange-100 font-medium">
             <span className="text-gray-500">Producto:</span>
-            <span className="font-bold text-gray-900">{PRODUCT_NAME}</span>
+            <span className="font-bold text-gray-900">{resolvedProductName}</span>
           </div>
           <div className="flex justify-between py-1 border-b border-orange-100 font-medium">
             <span className="text-gray-500">Referencia:</span>

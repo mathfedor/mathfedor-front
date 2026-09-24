@@ -1084,6 +1084,343 @@ export default function HomeScreen1ro({ onOpenIntro, onOpenStatsLab }: HomeScree
         ))}
       </div>
 
+      {/* ══ SECCIÓN 15: RECURSOS EXTRA ══ */}
+      <div
+        style={{
+          marginTop: '2rem',
+          marginBottom: '0.85rem',
+          fontSize: '13px',
+          fontWeight: 900,
+          color: '#D97706',
+          textTransform: 'uppercase',
+          letterSpacing: '.1em',
+          paddingLeft: '6px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          fontFamily: "'Nunito', sans-serif",
+        }}
+      >
+        <span style={{ fontSize: '15px' }}>✨</span> RECURSOS EXTRA
+      </div>
+
+      {/* Bloque 1: Tablas de Conteo, Conceptos, Retos */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '1.5rem' }}>
+        {/* 1. Tablas de Conteo */}
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('tablas-conteo')}
+          style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '16px 22px',
+            borderRadius: '20px',
+            background: 'linear-gradient(135deg, #FFFFFF 45%, #F0F8FF 100%)',
+            border: '1.5px solid rgba(255, 255, 255, 0.95)',
+            boxShadow: '0 8px 24px rgba(0, 40, 80, 0.12), 0 2px 6px rgba(0, 40, 80, 0.06)',
+            cursor: 'pointer',
+            transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            style={{
+              width: 54,
+              height: 54,
+              borderRadius: 16,
+              background: 'linear-gradient(135deg, #1A6CB4, #4DA6FF)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: 'inset 0 -3px 8px rgba(0,0,0,0.14), 0 6px 18px rgba(26,108,180,0.35)',
+              flexShrink: 0,
+            }}
+          >
+            <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+              <rect x="2" y="2" width="13" height="13" rx="4" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.4)" strokeWidth="0.8" />
+              <text x="8.5" y="11.5" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="900" fontFamily="'Baloo 2', Nunito, sans-serif">1</text>
+              <rect x="19" y="2" width="13" height="13" rx="4" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.4)" strokeWidth="0.8" />
+              <text x="25.5" y="11.5" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="900" fontFamily="'Baloo 2', Nunito, sans-serif">2</text>
+              <rect x="2" y="19" width="13" height="13" rx="4" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.4)" strokeWidth="0.8" />
+              <text x="8.5" y="28.5" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="900" fontFamily="'Baloo 2', Nunito, sans-serif">3</text>
+              <rect x="19" y="19" width="13" height="13" rx="4" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.4)" strokeWidth="0.8" />
+              <text x="25.5" y="28.5" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="900" fontFamily="'Baloo 2', Nunito, sans-serif">4</text>
+            </svg>
+          </div>
+          <div style={{ flex: 1, minWidth: 0, textAlign: 'left' }}>
+            <div style={{ fontSize: '18px', fontWeight: 900, color: '#0A3A6A', fontFamily: "'Baloo 2', sans-serif", lineHeight: 1.2, marginBottom: '3px' }}>
+              Tablas de Conteo
+            </div>
+            <div style={{ fontSize: '12.5px', fontWeight: 700, color: 'rgba(20, 60, 100, 0.72)', letterSpacing: '0.01em' }}>
+              Ranges 1-10, 1-20, 1-30, 1-50, 1-100
+            </div>
+          </div>
+          <div style={{ fontSize: '24px', color: '#1A6CB4', fontWeight: 900, marginLeft: 'auto', flexShrink: 0 }}>→</div>
+        </div>
+
+        {/* 2. Conceptos */}
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('conceptos')}
+          style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '16px 22px',
+            borderRadius: '20px',
+            background: 'linear-gradient(135deg, #FFFFFF 45%, #E8FAF1 100%)',
+            border: '1.5px solid rgba(255, 255, 255, 0.95)',
+            boxShadow: '0 8px 24px rgba(0, 40, 80, 0.12), 0 2px 6px rgba(0, 40, 80, 0.06)',
+            cursor: 'pointer',
+            transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            style={{
+              width: 54,
+              height: 54,
+              borderRadius: 16,
+              background: 'linear-gradient(135deg, #00A86B, #2ECC71)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: 'inset 0 -3px 8px rgba(0,0,0,0.14), 0 6px 18px rgba(0,168,107,0.35)',
+              flexShrink: 0,
+            }}
+          >
+            <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+              <rect x="4" y="9" width="13" height="18" rx="3" fill="#00E5FF" />
+              <rect x="6.5" y="11" width="8" height="14" rx="1.5" fill="#E0F7FA" />
+              <rect x="11" y="6" width="13" height="21" rx="3" fill="#FF2A6D" />
+              <rect x="13.5" y="8" width="8" height="17" rx="1.5" fill="#FFE4EC" />
+              <rect x="18" y="11" width="13" height="16" rx="3" fill="#FFB703" />
+              <rect x="20.5" y="13" width="8" height="12" rx="1.5" fill="#FFF9C4" />
+            </svg>
+          </div>
+          <div style={{ flex: 1, minWidth: 0, textAlign: 'left' }}>
+            <div style={{ fontSize: '18px', fontWeight: 900, color: '#0A3A6A', fontFamily: "'Baloo 2', sans-serif", lineHeight: 1.2, marginBottom: '3px' }}>
+              Conceptos
+            </div>
+            <div style={{ fontSize: '12.5px', fontWeight: 700, color: 'rgba(20, 60, 100, 0.72)', letterSpacing: '0.01em' }}>
+              Definiciones técnicas de cada operación
+            </div>
+          </div>
+          <div style={{ fontSize: '24px', color: '#1A6CB4', fontWeight: 900, marginLeft: 'auto', flexShrink: 0 }}>→</div>
+        </div>
+
+        {/* 3. Retos Matemáticos */}
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('retos')}
+          style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '16px 22px',
+            borderRadius: '20px',
+            background: 'linear-gradient(135deg, #FFFFFF 45%, #FFF6E6 100%)',
+            border: '1.5px solid rgba(255, 255, 255, 0.95)',
+            boxShadow: '0 8px 24px rgba(0, 40, 80, 0.12), 0 2px 6px rgba(0, 40, 80, 0.06)',
+            cursor: 'pointer',
+            transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            style={{
+              width: 54,
+              height: 54,
+              borderRadius: 16,
+              background: 'linear-gradient(135deg, #FF7A00, #FFAE00)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: 'inset 0 -3px 8px rgba(0,0,0,0.14), 0 6px 18px rgba(255,122,0,0.35)',
+              flexShrink: 0,
+            }}
+          >
+            <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+              <path d="M8 8H4a3 3 0 00-3 3v2a3 3 0 003 3h4" stroke="#FFA000" strokeWidth="2.5" strokeLinecap="round" />
+              <path d="M26 8h4a3 3 0 013 3v2a3 3 0 01-3 3h-4" stroke="#FFA000" strokeWidth="2.5" strokeLinecap="round" />
+              <path d="M8 6h18v9c0 4.97-4.03 9-9 9s-9-4.03-9-9V6z" fill="#FFC107" />
+              <path d="M10 6h14v8c0 3.866-3.134 7-7 7s-7-3.134-7-7V6z" fill="#FFD54F" />
+              <rect x="15" y="24" width="4" height="4" fill="#FFA000" />
+              <path d="M9 28h16a1 1 0 011 1v1a2 2 0 01-2 2H10a2 2 0 01-2-2v-1a1 1 0 011-1z" fill="#FF8F00" />
+              <polygon points="17,11 18.2,13.5 21,13.9 19,15.8 19.5,18.5 17,17.2 14.5,18.5 15,15.8 13,13.9 15.8,13.5" fill="#FF8F00" />
+            </svg>
+          </div>
+          <div style={{ flex: 1, minWidth: 0, textAlign: 'left' }}>
+            <div style={{ fontSize: '18px', fontWeight: 900, color: '#0A3A6A', fontFamily: "'Baloo 2', sans-serif", lineHeight: 1.2, marginBottom: '3px' }}>
+              Retos Matemáticos
+            </div>
+            <div style={{ fontSize: '12.5px', fontWeight: 700, color: 'rgba(20, 60, 100, 0.72)', letterSpacing: '0.01em' }}>
+              Desafíos para primer grado
+            </div>
+          </div>
+          <div style={{ fontSize: '24px', color: '#1A6CB4', fontWeight: 900, marginLeft: 'auto', flexShrink: 0 }}>→</div>
+        </div>
+      </div>
+
+      {/* Bloque 2: Definiciones FEDOR, Estándares MEN, Problemas Cotidianos */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '2.5rem' }}>
+        {/* 4. Definiciones FEDOR */}
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('definiciones')}
+          style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '16px 22px',
+            borderRadius: '20px',
+            background: 'linear-gradient(135deg, #FFFFFF 45%, #F5F0FF 100%)',
+            border: '1.5px solid rgba(255, 255, 255, 0.95)',
+            boxShadow: '0 8px 24px rgba(0, 40, 80, 0.12), 0 2px 6px rgba(0, 40, 80, 0.06)',
+            cursor: 'pointer',
+            transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            style={{
+              width: 54,
+              height: 54,
+              borderRadius: 16,
+              background: 'linear-gradient(135deg, #7B2FBE, #A864E8)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: 'inset 0 -3px 8px rgba(0,0,0,0.14), 0 6px 18px rgba(123,47,190,0.35)',
+              flexShrink: 0,
+            }}
+          >
+            <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+              <rect x="4" y="9" width="13" height="18" rx="3" fill="#00E5FF" />
+              <rect x="6.5" y="11" width="8" height="14" rx="1.5" fill="#E0F7FA" />
+              <rect x="11" y="6" width="13" height="21" rx="3" fill="#FF2A6D" />
+              <rect x="13.5" y="8" width="8" height="17" rx="1.5" fill="#FFE4EC" />
+              <rect x="18" y="11" width="13" height="16" rx="3" fill="#FFB703" />
+              <rect x="20.5" y="13" width="8" height="12" rx="1.5" fill="#FFF9C4" />
+            </svg>
+          </div>
+          <div style={{ flex: 1, minWidth: 0, textAlign: 'left' }}>
+            <div style={{ fontSize: '18px', fontWeight: 900, color: '#0A3A6A', fontFamily: "'Baloo 2', sans-serif", lineHeight: 1.2, marginBottom: '3px' }}>
+              Definiciones FEDOR
+            </div>
+            <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#0A1830', letterSpacing: '0.01em' }}>
+              Conceptos matemáticos claros para 1°
+            </div>
+          </div>
+        </div>
+
+        {/* 5. Estándares MEN */}
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('estandares')}
+          style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '16px 22px',
+            borderRadius: '20px',
+            background: 'linear-gradient(135deg, #FFFFFF 45%, #F0FDF9 100%)',
+            border: '1.5px solid rgba(255, 255, 255, 0.95)',
+            boxShadow: '0 8px 24px rgba(0, 40, 80, 0.12), 0 2px 6px rgba(0, 40, 80, 0.06)',
+            cursor: 'pointer',
+            transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            style={{
+              width: 54,
+              height: 54,
+              borderRadius: 16,
+              background: '#FFFFFF',
+              border: '2px solid rgba(0, 40, 80, 0.08)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 900,
+              fontSize: '22px',
+              color: '#0A1830',
+              boxShadow: '0 4px 14px rgba(0, 40, 80, 0.08)',
+              flexShrink: 0,
+              fontFamily: "'Nunito', sans-serif",
+              letterSpacing: '-0.02em',
+            }}
+          >
+            CO
+          </div>
+          <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', textAlign: 'left' }}>
+            <div style={{ fontSize: '18px', fontWeight: 900, color: '#4A607A', fontFamily: "'Baloo 2', sans-serif" }}>
+              Estándares MEN
+            </div>
+            <div style={{ fontSize: '15px', fontWeight: 900, color: '#0A1830' }}>
+              Programa de 1° Colombia
+            </div>
+          </div>
+        </div>
+
+        {/* 6. Problemas Cotidianos */}
+        <div
+          className="feat-btn"
+          onClick={() => goScreen('problemas')}
+          style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '16px 22px',
+            borderRadius: '20px',
+            background: 'linear-gradient(135deg, #FFFFFF 45%, #E8FAF1 100%)',
+            border: '1.5px solid rgba(255, 255, 255, 0.95)',
+            boxShadow: '0 8px 24px rgba(0, 40, 80, 0.12), 0 2px 6px rgba(0, 40, 80, 0.06)',
+            cursor: 'pointer',
+            transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            style={{
+              width: 54,
+              height: 54,
+              borderRadius: 16,
+              background: 'linear-gradient(135deg, #0E5240, #16876A)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: 'inset 0 -3px 8px rgba(0,0,0,0.14), 0 6px 18px rgba(14,82,64,0.35)',
+              flexShrink: 0,
+            }}
+          >
+            <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+              <path d="M4 6h4l3.5 13h13.5l3-10H10" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              <rect x="13" y="10" width="5" height="5" rx="1.5" fill="#38BDF8" />
+              <rect x="19" y="8" width="5" height="7" rx="1.5" fill="#A7F3D0" />
+              <circle cx="13" cy="24" r="2.2" fill="#FFFFFF" />
+              <circle cx="23" cy="24" r="2.2" fill="#FFFFFF" />
+            </svg>
+          </div>
+          <div style={{ flex: 1, minWidth: 0, textAlign: 'left' }}>
+            <div style={{ fontSize: '18px', fontWeight: 900, color: '#0A3A6A', fontFamily: "'Baloo 2', sans-serif", lineHeight: 1.2, marginBottom: '3px' }}>
+              Problemas Cotidianos
+            </div>
+            <div style={{ fontSize: '12.5px', fontWeight: 700, color: 'rgba(20, 60, 100, 0.72)', letterSpacing: '0.01em' }}>
+              Conteo de monedas + compras + 4 operaciones
+            </div>
+          </div>
+          <div style={{ fontSize: '24px', color: '#1A6CB4', fontWeight: 900, marginLeft: 'auto', flexShrink: 0 }}>→</div>
+        </div>
+      </div>
+
       {/* Modales Interactivos */}
       {showStatsLabLocal && (
         <StatsLab

@@ -82,14 +82,17 @@ function Book1Shell() {
       case 'results':
         return <ResultsScreen1ro />;
       case 'estandares':
+      case 'estandares-men':
         return <EstandaresScreen1ro />;
       case 'problemas':
+      case 'problemas-cotidianos':
         return <ProblemasScreen1ro />;
       case 'tablas-conteo':
         return <TablasConteoScreen1ro />;
       case 'conceptos':
         return <ConceptosScreen1ro />;
       case 'definiciones':
+      case 'definiciones-fedor':
         return <DefinicionesScreen1ro />;
       case 'retos':
         return <RetosScreen1ro />;
