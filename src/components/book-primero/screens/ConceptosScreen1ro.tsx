@@ -42,7 +42,8 @@ export default function ConceptosScreen1ro() {
   return (
     <div
       style={{
-        maxWidth: '760px',
+        maxWidth: '1140px',
+        width: '100%',
         margin: '0 auto',
         padding: '1.25rem 1rem',
         fontFamily: "'Nunito', sans-serif",

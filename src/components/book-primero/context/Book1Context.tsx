@@ -66,7 +66,9 @@ interface Book1ContextType {
   lastResults: LessonResultsSummary1 | null;
   dark: boolean;
   setDark: (d: boolean) => void;
-  goScreen: (s: Book1Screen) => void;
+  goScreen: (s: Book1Screen, options?: { autoRunAI?: boolean }) => void;
+  reportAutoRunAI: boolean;
+  setReportAutoRunAI: (val: boolean) => void;
   startStudent: (st: StudentProfile1) => void;
   selectUnit: (uIdx: number) => void;
   selectTopic: (tIdx: number) => void;
@@ -111,6 +113,7 @@ export function Book1Provider({
   const [book, setBook] = useState<Book | null>(null);
   const [loading, setLoading] = useState(true);
   const [screen, setScreen] = useState<Book1Screen>('setup');
+  const [reportAutoRunAI, setReportAutoRunAI] = useState(false);
   const [student, setStudent] = useState<StudentProfile1>(defaultStudent);
 
   const [coins, setCoins] = useState(0);
@@ -230,7 +233,10 @@ export function Book1Provider({
     };
   }, [slug, locale]);
 
-  const goScreen = useCallback((s: Book1Screen) => {
+  const goScreen = useCallback((s: Book1Screen, options?: { autoRunAI?: boolean }) => {
+    if (options?.autoRunAI) {
+      setReportAutoRunAI(true);
+    }
     setScreen(s);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
@@ -375,6 +381,8 @@ export function Book1Provider({
         dark,
         setDark,
         goScreen,
+        reportAutoRunAI,
+        setReportAutoRunAI,
         startStudent,
         selectUnit,
         selectTopic,

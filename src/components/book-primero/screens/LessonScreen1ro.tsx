@@ -203,7 +203,8 @@ export default function LessonScreen1ro() {
     <div
       className="lesson-screen-1ro"
       style={{
-        maxWidth: '720px',
+        maxWidth: '1080px',
+        width: '100%',
         margin: '0 auto',
         padding: '1rem',
         fontFamily: "'Nunito', sans-serif",

@@ -117,7 +117,7 @@ export default function BookHeader1ro({ onOpenIntro, onOpenStatsLab }: BookHeade
         position: 'relative',
         top: 0,
         width: '100%',
-        maxWidth: '960px',
+        maxWidth: '1280px',
         margin: '0 auto 24px auto',
         background: '#FFFFFF',
         border: '1.5px solid #DDD8F5',

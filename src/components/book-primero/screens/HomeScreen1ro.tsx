@@ -144,7 +144,7 @@ export default function HomeScreen1ro({ onOpenIntro, onOpenStatsLab }: HomeScree
   }, []);
 
   return (
-    <div className="screen active" id="screen-home" style={{ maxWidth: '960px', margin: '0 auto', position: 'relative' }}>
+    <div className="screen active" id="screen-home" style={{ maxWidth: '1280px', width: '100%', margin: '0 auto', position: 'relative' }}>
       {/* Hero Banner del Estudiante */}
       <div
         className="hero-banner"
@@ -767,7 +767,7 @@ export default function HomeScreen1ro({ onOpenIntro, onOpenStatsLab }: HomeScree
 
           <button
             type="button"
-            onClick={() => goScreen('report')}
+            onClick={() => goScreen('report', { autoRunAI: true })}
             style={{
               width: '100%',
               padding: '9px',

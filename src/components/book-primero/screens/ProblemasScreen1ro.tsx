@@ -44,7 +44,8 @@ export default function ProblemasScreen1ro() {
   return (
     <div
       style={{
-        maxWidth: '720px',
+        maxWidth: '1140px',
+        width: '100%',
         margin: '0 auto',
         padding: '1.25rem 1rem',
         fontFamily: "'Nunito', sans-serif",

@@ -125,7 +125,7 @@ function Book1Shell() {
         color: 'var(--text)',
       }}
     >
-      <div className="app" style={{ maxWidth: '980px', margin: '0 auto', padding: '5.75rem 1rem 4rem' }}>
+      <div className="app" style={{ maxWidth: '1280px', width: '100%', margin: '0 auto', padding: '4.75rem 1.5rem 4rem' }}>
         <BookHeader1ro
           onOpenIntro={() => setShowIntro(true)}
           onOpenStatsLab={() => setShowStatsLab(true)}

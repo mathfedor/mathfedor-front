@@ -41,7 +41,8 @@ export default function UnitScreen1ro() {
   return (
     <div
       style={{
-        maxWidth: '820px',
+        maxWidth: '1240px',
+        width: '100%',
         margin: '0 auto',
         padding: '1.25rem 1rem',
         fontFamily: "'Nunito', sans-serif",
