@@ -12,9 +12,10 @@ import { authService } from '@/services/auth.service';
 // ============================================================================
 const PRODUCT_ID = 'modulo-grado-3';
 const PRODUCT_NAME = 'Módulo Matemáticas Grado 3° Primaria';
-const PRICE_COP = 203000;
+const PRICE_COP = 149000;
 const REGULAR_PRICE_COP = 350000;
 const AMOUNT_IN_CENTS = PRICE_COP * 100;
+const COUPON_CODE = '1RFBWBQ7';
 const WHATSAPP_URL =
   'https://wa.me/573107199897?text=Hola,%20tengo%20una%20pregunta%20sobre%20el%20M%C3%B3dulo%20de%203%C2%B0%20Primaria';
 
@@ -24,6 +25,7 @@ export default function LandingGrado3() {
   const [buyerName, setBuyerName] = useState('');
   const [buyerEmail, setBuyerEmail] = useState('');
   const [buyerPhone, setBuyerPhone] = useState('');
+  const [couponInput, setCouponInput] = useState(COUPON_CODE);
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Modal de registro para módulo gratis
@@ -335,10 +337,15 @@ export default function LandingGrado3() {
         />
       </noscript>
 
+      {/* Top Banner de Cupón del Video */}
+      <div className="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 text-slate-950 py-2.5 px-4 text-center font-black text-xs sm:text-sm shadow-md sticky top-0 z-50">
+        🎟️ Pon el cupón <span className="bg-slate-950 text-amber-300 px-2 py-0.5 rounded font-mono font-black select-all">1RFBWBQ7</span> que menciona el video para obtener el descuento a <strong>$149.000 COP</strong>
+      </div>
+
       {/* =================================================================== */}
       {/* 1. HEADER MÍNIMO */}
       {/* =================================================================== */}
-      <header className="w-full bg-[#FF6B00] shadow-md sticky top-0 z-40">
+      <header className="w-full bg-[#FF6B00] shadow-md z-40">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center">
             <Image
@@ -388,6 +395,12 @@ export default function LandingGrado3() {
             <p className="text-base sm:text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed font-normal mb-8 sm:mb-10">
               El método interactivo que transforma el grado más desafiante de la primaria en un camino de éxito, dominio de las 4 operaciones y preparación con ventaja para las Pruebas SABER 3°.
             </p>
+
+            {/* Aviso destacado del cupón */}
+            <div className="inline-flex items-center justify-center gap-2 bg-amber-400 text-slate-950 font-black px-5 py-3 rounded-2xl text-sm sm:text-base shadow-xl mb-6 border-2 border-white max-w-xl mx-auto">
+              <span className="text-xl">🎟️</span>
+              <span>Pon el cupón <strong className="bg-slate-950 text-amber-300 px-2 py-0.5 rounded font-mono font-black select-all">1RFBWBQ7</strong> que menciona el video para obtener el descuento a $149.000 COP</span>
+            </div>
 
             {/* CTA Hero */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
@@ -519,11 +532,21 @@ export default function LandingGrado3() {
                   </div>
 
                   {/* Frase explicativa clara */}
-                  <div className="bg-orange-950/40 border border-orange-500/30 rounded-xl p-3.5 mb-5 text-xs sm:text-sm text-orange-100 leading-relaxed">
+                  <div className="bg-orange-950/40 border border-orange-500/30 rounded-xl p-3.5 mb-3 text-xs sm:text-sm text-orange-100 leading-relaxed">
                     <p className="flex items-start gap-2">
                       <span className="text-base shrink-0">🎓</span>
                       <span>
                         <strong className="text-orange-300">Módulo completo:</strong> Viene con el módulo completo, es decir, el <strong>libro digital interactivo</strong> y todas las <strong>descargas de ayuda</strong> (3 libros PDF imprimibles, tablas razonadas y simulacros tipo SABER 3°).
+                      </span>
+                    </p>
+                  </div>
+
+                  {/* Banner cupón mencionado en el video */}
+                  <div className="bg-amber-400/20 border-2 border-amber-400/60 rounded-xl p-3.5 mb-5 text-xs sm:text-sm text-amber-100 leading-relaxed">
+                    <p className="flex items-start gap-2">
+                      <span className="text-base shrink-0">🎟️</span>
+                      <span>
+                        <strong className="text-amber-300">¿Viste el video?</strong> Pon el cupón <strong className="bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded tracking-wider text-xs sm:text-sm select-all">1RFBWBQ7</strong> que menciona el video para obtener el descuento a <strong>$149.000 COP</strong>.
                       </span>
                     </p>
                   </div>
@@ -542,7 +565,7 @@ export default function LandingGrado3() {
                   </button>
 
                   <p className="text-[11px] text-center text-blue-200/80 mt-2.5 font-medium">
-                    🔒 Incluye libro digital + descargas completas • Pago Wompi
+                    🔒 Pago 100% seguro con Wompi • $149.000 COP con cupón • Garantía 7 días
                   </p>
                 </div>
               </div>
@@ -871,6 +894,17 @@ export default function LandingGrado3() {
                 </span>
               </div>
 
+              {/* Cupón del video */}
+              <div className="bg-amber-50 border-2 border-dashed border-amber-400 rounded-2xl p-4 mb-6 max-w-md mx-auto">
+                <div className="flex items-center justify-center gap-2 text-amber-900 font-black text-sm mb-1">
+                  <span>🎟️</span>
+                  <span>¡Descuento especial del video!</span>
+                </div>
+                <p className="text-xs sm:text-sm text-amber-800 leading-snug">
+                  Coloca el cupón <strong className="bg-amber-200 text-amber-950 px-2 py-0.5 rounded font-black tracking-wider text-sm select-all">1RFBWBQ7</strong> que menciona el video para obtener el descuento a <strong>$149.000 COP</strong>.
+                </p>
+              </div>
+
               {/* Botón CTA */}
               <button
                 type="button"
@@ -1048,7 +1082,7 @@ export default function LandingGrado3() {
             </button>
 
             <p className="text-xs sm:text-sm text-blue-200 mt-4">
-              Acceso completo por ${PRICE_COP.toLocaleString('es-CO')} COP • Pago único • Garantía de 7 días
+              Acceso completo por ${PRICE_COP.toLocaleString('es-CO')} COP con cupón 1RFBWBQ7 • Pago único • Garantía de 7 días
             </p>
           </div>
         </section>
@@ -1158,6 +1192,23 @@ export default function LandingGrado3() {
                   onChange={(e) => setBuyerPhone(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-200 font-semibold text-sm text-gray-800"
                 />
+              </div>
+
+              <div>
+                <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1 flex items-center justify-between">
+                  <span>Cupón de descuento:</span>
+                  <span className="text-emerald-600 text-[11px] font-bold">✓ Descuento del video</span>
+                </label>
+                <input
+                  type="text"
+                  value={couponInput}
+                  onChange={(e) => setCouponInput(e.target.value)}
+                  placeholder="1RFBWBQ7"
+                  className="w-full px-4 py-2.5 rounded-xl border border-amber-300 bg-amber-50/50 font-mono font-bold text-sm text-gray-800 uppercase focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-200"
+                />
+                <p className="text-[11px] text-gray-500 mt-1">
+                  Coloca el cupón <strong>1RFBWBQ7</strong> mencionado en el video para obtener el precio con descuento.
+                </p>
               </div>
 
               <button

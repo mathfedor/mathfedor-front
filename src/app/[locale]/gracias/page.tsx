@@ -9,7 +9,7 @@ import { useSearchParams } from 'next/navigation';
 // ============================================================================
 // VARIABLES DE CONVERSIÓN CONFIGURABLES
 // ============================================================================
-const PURCHASE_VALUE = 203000; // Valor de la compra en COP (fácilmente editable)
+const PURCHASE_VALUE = 149000; // Valor de la compra en COP (fácilmente editable)
 const PURCHASE_CURRENCY = 'COP'; // Moneda
 const PRODUCT_NAME = 'Módulo Matemáticas Grado 11';
 const PRODUCT_ID = 'modulo-grado-11';
@@ -37,7 +37,7 @@ const PRODUCT_ID = 'modulo-grado-11';
  *     },
  *     custom_data: {
  *       currency: 'COP',
- *       value: 203000,
+ *       value: 149000,
  *       content_name: 'Módulo Matemáticas Grado 11',
  *       content_ids: ['modulo-grado-11'],
  *       order_id: transactionId
@@ -50,7 +50,7 @@ const PRODUCT_ID = 'modulo-grado-11';
  * if (typeof window !== 'undefined' && window.gtag) {
  *   window.gtag('event', 'conversion', {
  *     send_to: 'AW-XXXXXXXXX/YYYYYYYYYYYYYY', // Tu ID y Label de conversión
- *     value: 203000,
+ *     value: 149000,
  *     currency: 'COP',
  *     transaction_id: transactionId
  *   });

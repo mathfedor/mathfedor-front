@@ -30,7 +30,7 @@ import { authService } from '@/services/auth.service';
  *     },
  *     custom_data: {
  *       currency: 'COP',
- *       value: 203000,
+ *       value: 149000,
  *       content_name: 'Módulo Matemáticas Grado 11',
  *       content_ids: ['modulo-grado-11']
  *     }
@@ -42,7 +42,7 @@ import { authService } from '@/services/auth.service';
  * if (typeof window !== 'undefined' && window.gtag) {
  *   window.gtag('event', 'conversion', {
  *     send_to: 'AW-XXXXXXXXX/YYYYYYYYYYYYYY', // Reemplazar con ID y Label de conversión real
- *     value: 203000,
+ *     value: 149000,
  *     currency: 'COP',
  *     transaction_id: reference
  *   });
@@ -50,12 +50,23 @@ import { authService } from '@/services/auth.service';
  */
 
 
+// ============================================================================
+// CONFIGURACIÓN DE PRODUCTO Y PRECIO - GRADO 11°
+// ============================================================================
+const PRODUCT_ID = 'modulo-grado-11';
+const PRODUCT_NAME = 'Módulo Matemáticas Grado 11';
+const PRICE_COP = 149000;
+const REGULAR_PRICE_COP = 350000;
+const AMOUNT_IN_CENTS = PRICE_COP * 100;
+const COUPON_CODE = '1RFBWBQ7';
+
 export default function LandingGrado11() {
   // Modal de checkout directo
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const [buyerName, setBuyerName] = useState('');
   const [buyerEmail, setBuyerEmail] = useState('');
   const [buyerPhone, setBuyerPhone] = useState('');
+  const [couponInput, setCouponInput] = useState(COUPON_CODE);
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Modal de registro para módulo gratis
@@ -183,7 +194,7 @@ export default function LandingGrado11() {
                 content_name: 'Módulo Matemáticas Grado 11',
                 content_ids: ['modulo-grado-11'],
                 content_type: 'product',
-                value: 203000,
+                value: PRICE_COP,
                 currency: 'COP',
               });
             }
@@ -194,12 +205,12 @@ export default function LandingGrado11() {
                 event: 'view_item',
                 ecommerce: {
                   currency: 'COP',
-                  value: 203000,
+                  value: PRICE_COP,
                   items: [
                     {
-                      item_id: 'modulo-grado-11',
-                      item_name: 'Módulo Matemáticas Grado 11',
-                      price: 203000,
+                      item_id: PRODUCT_ID,
+                      item_name: PRODUCT_NAME,
+                      price: PRICE_COP,
                       quantity: 1,
                     },
                   ],
@@ -232,7 +243,7 @@ export default function LandingGrado11() {
         content_name: 'Módulo Matemáticas Grado 11',
         content_ids: ['modulo-grado-11'],
         content_type: 'product',
-        value: 203000,
+        value: PRICE_COP,
         currency: 'COP',
       });
     }
@@ -243,12 +254,12 @@ export default function LandingGrado11() {
         event: 'begin_checkout',
         ecommerce: {
           currency: 'COP',
-          value: 203000,
+          value: PRICE_COP,
           items: [
             {
-              item_id: 'modulo-grado-11',
-              item_name: 'Módulo Matemáticas Grado 11',
-              price: 203000,
+              item_id: PRODUCT_ID,
+              item_name: PRODUCT_NAME,
+              price: PRICE_COP,
               quantity: 1,
             },
           ],
@@ -270,7 +281,7 @@ export default function LandingGrado11() {
 
     setIsProcessing(true);
     const reference = `FEDOR-G11-${Date.now()}`;
-    const amountInCents = 20300000; // $203.000 COP en centavos
+    const amountInCents = AMOUNT_IN_CENTS; // $149.000 COP en centavos
     const publicKey = process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY || 'pub_prod_dummy';
 
     // Si el Widget de Wompi está cargado
@@ -369,10 +380,15 @@ export default function LandingGrado11() {
         />
       </noscript>
 
+      {/* Top Banner de Cupón del Video */}
+      <div className="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 text-slate-950 py-2.5 px-4 text-center font-black text-xs sm:text-sm shadow-md sticky top-0 z-50">
+        🎟️ Pon el cupón <span className="bg-slate-950 text-amber-300 px-2 py-0.5 rounded font-mono font-black select-all">1RFBWBQ7</span> que menciona el video para obtener el descuento a <strong>$149.000 COP</strong>
+      </div>
+
       {/* =================================================================== */}
       {/* 1. HEADER MÍNIMO (Solo logo, sin enlaces externos ni menú) */}
       {/* =================================================================== */}
-      <header className="w-full bg-[#FF6B00] shadow-md sticky top-0 z-40">
+      <header className="w-full bg-[#FF6B00] shadow-md z-40">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center">
             <Image
@@ -419,9 +435,15 @@ export default function LandingGrado11() {
             </h1>
 
             {/* Subheadline */}
-            <p className="text-base sm:text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed font-normal mb-8 sm:mb-10">
+            <p className="text-base sm:text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed font-normal mb-6 sm:mb-8">
               El único programa digital en Colombia diseñado para que estudiantes de 11° dominen el pensamiento matemático a su propio ritmo, sin frustración y enfocados en las competencias que realmente definen su puntaje.
             </p>
+
+            {/* Aviso destacado del cupón */}
+            <div className="inline-flex items-center justify-center gap-2 bg-amber-400 text-slate-950 font-black px-5 py-3 rounded-2xl text-sm sm:text-base shadow-xl mb-6 border-2 border-white max-w-xl mx-auto">
+              <span className="text-xl">🎟️</span>
+              <span>Pon el cupón <strong className="bg-slate-950 text-amber-300 px-2 py-0.5 rounded font-mono font-black select-all">1RFBWBQ7</strong> que menciona el video para obtener el descuento a $149.000 COP</span>
+            </div>
 
             {/* Micro-copy de confianza */}
             <p className="text-xs sm:text-sm text-blue-200 font-semibold flex items-center justify-center gap-2 mb-8">
@@ -522,11 +544,21 @@ export default function LandingGrado11() {
                   </div>
 
                   {/* Frase explicativa clara */}
-                  <div className="bg-orange-950/40 border border-orange-500/30 rounded-xl p-3.5 mb-5 text-xs sm:text-sm text-orange-100 leading-relaxed">
+                  <div className="bg-orange-950/40 border border-orange-500/30 rounded-xl p-3.5 mb-3 text-xs sm:text-sm text-orange-100 leading-relaxed">
                     <p className="flex items-start gap-2">
                       <span className="text-base shrink-0">🎓</span>
                       <span>
                         <strong className="text-orange-300">Módulo completo:</strong> Viene con el módulo completo, es decir, el <strong>libro digital interactivo</strong> y todas las <strong>descargas de ayuda</strong> (3 libros PDF imprimibles, resúmenes de fórmulas y simulacros ICFES).
+                      </span>
+                    </p>
+                  </div>
+
+                  {/* Banner cupón mencionado en el video */}
+                  <div className="bg-amber-400/20 border-2 border-amber-400/60 rounded-xl p-3.5 mb-5 text-xs sm:text-sm text-amber-100 leading-relaxed">
+                    <p className="flex items-start gap-2">
+                      <span className="text-base shrink-0">🎟️</span>
+                      <span>
+                        <strong className="text-amber-300">¿Viste el video?</strong> Pon el cupón <strong className="bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded tracking-wider text-xs sm:text-sm select-all">1RFBWBQ7</strong> que menciona el video para obtener el descuento a <strong>$149.000 COP</strong>.
                       </span>
                     </p>
                   </div>
@@ -545,7 +577,7 @@ export default function LandingGrado11() {
                   </button>
 
                   <p className="text-[11px] text-center text-blue-200/80 mt-2.5 font-medium">
-                    🔒 Pago 100% seguro con Wompi • $203.000 COP pago único • Garantía 7 días
+                    🔒 Pago 100% seguro con Wompi • $149.000 COP con cupón • Garantía 7 días
                   </p>
                 </div>
               </div>
@@ -862,17 +894,28 @@ export default function LandingGrado11() {
               {/* Precios */}
               <div className="mb-8">
                 <span className="text-gray-400 text-lg sm:text-xl line-through font-bold block mb-1">
-                  [EDITAR: Antes $350.000 COP]
+                  Antes ${REGULAR_PRICE_COP.toLocaleString('es-CO')} COP
                 </span>
                 <div className="flex items-baseline justify-center gap-2">
                   <span className="text-4xl sm:text-6xl font-black text-gray-900 font-['Baloo_2',sans-serif]">
-                    $203.000
+                    ${PRICE_COP.toLocaleString('es-CO')}
                   </span>
                   <span className="text-gray-600 font-bold text-lg sm:text-xl">COP</span>
                 </div>
                 <span className="inline-block mt-2 text-xs font-black text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">
                   Pago único • Sin mensualidades ni cobros automáticos
                 </span>
+              </div>
+
+              {/* Cupón del video */}
+              <div className="bg-amber-50 border-2 border-dashed border-amber-400 rounded-2xl p-4 mb-6 max-w-md mx-auto">
+                <div className="flex items-center justify-center gap-2 text-amber-900 font-black text-sm mb-1">
+                  <span>🎟️</span>
+                  <span>¡Descuento especial del video!</span>
+                </div>
+                <p className="text-xs sm:text-sm text-amber-800 leading-snug">
+                  Coloca el cupón <strong className="bg-amber-200 text-amber-950 px-2 py-0.5 rounded font-black tracking-wider text-sm select-all">1RFBWBQ7</strong> que menciona el video para obtener el descuento a <strong>$149.000 COP</strong>.
+                </p>
               </div>
 
               {/* Mismo botón CTA */}
@@ -1052,7 +1095,7 @@ export default function LandingGrado11() {
             </button>
 
             <p className="text-xs sm:text-sm text-blue-200 mt-4">
-              Acceso completo por $203.000 COP • Pago único • Garantía de 7 días
+              Acceso completo por ${PRICE_COP.toLocaleString('es-CO')} COP con cupón 1RFBWBQ7 • Pago único • Garantía de 7 días
             </p>
           </div>
         </section>
@@ -1114,7 +1157,7 @@ export default function LandingGrado11() {
                 Módulo Matemáticas 11°
               </h3>
               <p className="text-gray-500 text-xs mt-1">
-                Total a pagar: <strong className="text-gray-900 text-sm">$203.000 COP</strong>
+                Total a pagar: <strong className="text-gray-900 text-sm">${PRICE_COP.toLocaleString('es-CO')} COP</strong>
               </p>
             </div>
 
@@ -1159,6 +1202,23 @@ export default function LandingGrado11() {
                   onChange={(e) => setBuyerPhone(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-200 font-semibold text-sm text-gray-800"
                 />
+              </div>
+
+              <div>
+                <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1 flex items-center justify-between">
+                  <span>Cupón de descuento:</span>
+                  <span className="text-emerald-600 text-[11px] font-bold">✓ Descuento del video</span>
+                </label>
+                <input
+                  type="text"
+                  value={couponInput}
+                  onChange={(e) => setCouponInput(e.target.value)}
+                  placeholder="1RFBWBQ7"
+                  className="w-full px-4 py-2.5 rounded-xl border border-amber-300 bg-amber-50/50 font-mono font-bold text-sm text-gray-800 uppercase focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-200"
+                />
+                <p className="text-[11px] text-gray-500 mt-1">
+                  Coloca el cupón <strong>1RFBWBQ7</strong> mencionado en el video para obtener el precio con descuento.
+                </p>
               </div>
 
               <button

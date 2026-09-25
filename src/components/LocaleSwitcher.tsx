@@ -31,6 +31,21 @@ export default function LocaleSwitcher({ className = '' }: { className?: string 
     // Persistir cookie NEXT_LOCALE (httpOnly: false, sameSite: lax, maxAge: 365 días)
     document.cookie = `NEXT_LOCALE=${nextLocale}; path=/; max-age=31536000; SameSite=Lax`;
 
+    // Disparar traducción automática en backend para el nuevo idioma en segundo plano (fire-and-forget)
+    if (nextLocale !== 'es') {
+      try {
+        const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        fetch(`${apiBaseUrl}/learning/modules/translate-all?locale=${nextLocale}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        }).catch(() => {});
+      } catch (_) {}
+    }
+
     // Transición no bloqueante sin recargar la página completa
     startTransition(() => {
       router.replace(pathname, { locale: nextLocale });
