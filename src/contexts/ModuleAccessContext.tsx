@@ -83,13 +83,17 @@ export function ModuleAccessProvider({ children }: { children: ReactNode }) {
         }
         // else: 'none' — sin acceso
 
-        accessMap[moduleId] = {
+        const accessInfo: ModuleAccessInfo = {
           type: accessType,
           canAccessExercises,
           canAccessDownloads,
           expiresAt,
           group,
         };
+
+        accessMap[moduleId] = accessInfo;
+        if (module.slug) accessMap[module.slug] = accessInfo;
+        if (module.group) accessMap[module.group] = accessInfo;
       }
 
       // También verificar acceso institucional para módulos no cubiertos
@@ -120,7 +124,16 @@ export function ModuleAccessProvider({ children }: { children: ReactNode }) {
   }, [loadModuleAccess]);
 
   const hasExerciseAccess = useCallback((moduleId: string) => {
-    const info = moduleAccess[moduleId];
+    const norm = (moduleId || '').toLowerCase().trim();
+    if (
+      norm === '1' || norm === '2' || norm === '3' ||
+      norm === 'libro-1ro' || norm === 'libro-2do' || norm === 'libro-3ro' ||
+      norm === 'matematicas-fedor-1' || norm === 'matematicas-fedor-2' || norm === 'matematicas-fedor-3' ||
+      norm === '6830d368fecd7406dc6f9525' || norm === '6830d619fecd7406dc6f96ad' || norm === '6832543f6fee7c84b2f077c0'
+    ) {
+      return true;
+    }
+    const info = moduleAccess[moduleId] || moduleAccess[norm];
     return info?.canAccessExercises || false;
   }, [moduleAccess]);
 

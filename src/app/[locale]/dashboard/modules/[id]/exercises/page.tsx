@@ -543,7 +543,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
   const [user, setUser] = useState<User | null>(null);
   const [currentModule, setCurrentModule] = useState<Module | null>(null);
   const router = useRouter();
-  const { hasExerciseAccess } = useModuleAccess();
+  const { hasExerciseAccess, isLoading: isLoadingAccess } = useModuleAccess();
   const totalSteps = diagnosticConfigs[0]?.topics?.reduce((total, topic) => total + (topicHasExercises(topic) ? 2 : 1), 0) || 0;
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: string }>({});
   const [results, setResults] = useState<ModuleResultsState>(emptyResults);
@@ -606,10 +606,20 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
           throw new Error('No se encontró información del usuario');
         }
 
-        // Verificar acceso al módulo usando el ID resuelto
-        if (!hasExerciseAccess(resolvedParams.id)) {
-          router.replace('/dashboard');
-          return;
+        // Grados 1, 2 y 3 siempre tienen acceso garantizado a ejercicios (Free Trial)
+        const isGradeBook =
+          moduleMatchesGrade(null, resolvedParams.id, 1) ||
+          moduleMatchesGrade(null, resolvedParams.id, 2) ||
+          moduleMatchesGrade(null, resolvedParams.id, 3);
+
+        if (!isGradeBook) {
+          if (isLoadingAccess) {
+            return;
+          }
+          if (!hasExerciseAccess(resolvedParams.id)) {
+            router.replace('/dashboard');
+            return;
+          }
         }
 
         setUser(userData);
@@ -624,7 +634,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     };
 
     checkAuthAndAccess();
-  }, [router, resolvedParams.id, hasExerciseAccess]);
+  }, [router, resolvedParams.id, hasExerciseAccess, isLoadingAccess]);
 
   useEffect(() => {
     const fetchDiagnosticConfig = async () => {

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { useLocale } from 'next-intl';
 import type { Book } from '@/types/book.types';
 import { bookService } from '@/services/book.service';
 import { bookProgressService } from '@/services/book-progress.service';
@@ -106,6 +107,7 @@ export function Book1Provider({
   children: React.ReactNode;
   slug?: string;
 }) {
+  const locale = useLocale();
   const [book, setBook] = useState<Book | null>(null);
   const [loading, setLoading] = useState(true);
   const [screen, setScreen] = useState<Book1Screen>('setup');
@@ -129,7 +131,7 @@ export function Book1Provider({
     setLoading(true);
 
     Promise.all([
-      bookService.getBook(slug),
+      bookService.getBook(slug, locale),
       bookProgressService.getProgress(slug),
     ])
       .then(([b, p]) => {
@@ -226,7 +228,7 @@ export function Book1Provider({
     return () => {
       mounted = false;
     };
-  }, [slug]);
+  }, [slug, locale]);
 
   const goScreen = useCallback((s: Book1Screen) => {
     setScreen(s);
