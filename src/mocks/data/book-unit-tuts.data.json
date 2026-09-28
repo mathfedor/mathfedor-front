@@ -43,6 +43,28 @@
     "División exacta: residuo = 0",
     "División inexacta: sobran algunos items"
    ]
+  },
+  {
+   "icon": "📐",
+   "title": "¡Unidad 5 — Geometría!",
+   "text": "Magnitudes proporcionales, líneas y figuras del mundo real.",
+   "steps": [
+    "Más cantidad → más costo (directamente proporcional)",
+    "Líneas: horizontal, vertical, oblicua",
+    "Perímetro = suma de todos los lados",
+    "Área = largo × ancho (en m²)"
+   ]
+  },
+  {
+   "icon": "📊",
+   "title": "¡Unidad 6 — Estadística!",
+   "text": "Aprenderás a organizar datos, leer tablas y gráficos de barras interactivos.",
+   "steps": [
+    "Recolección y conteo de datos organizados",
+    "Tablas de frecuencia y marcas de conteo",
+    "Pictogramas interactivos y gráficos de barras",
+    "Interpretación y análisis para responder preguntas"
+   ]
   }
  ]
 }

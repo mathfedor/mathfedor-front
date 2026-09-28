@@ -346,6 +346,13 @@ export default function ExamplesPanel1ro({
           explainHtml={firstExerciseExplain}
         />
       )}
+
+      <style>{`
+        .ex-explain svg {
+          max-width: 100% !important;
+          height: auto !important;
+        }
+      `}</style>
     </div>
   );
 }
@@ -528,22 +535,36 @@ function ExampleCardClean({
 
       {/* Explicación didáctica */}
       {ex.explain && (
-        <div
-          className="ex-explain"
-          style={{
-            background: '#FFF8E0',
-            borderRadius: '12px',
-            padding: '0.75rem 1rem',
-            border: '1.5px solid #F5C518',
-            color: '#3A2000',
-            marginTop: '0.75rem',
-            fontSize: '13.5px',
-            lineHeight: 1.5,
-            fontWeight: 800,
-          }}
-        >
-          💡 {ex.explain}
-        </div>
+        /<[a-z][\s\S]*>/i.test(ex.explain) ? (
+          <div
+            className="ex-explain"
+            style={{
+              marginTop: '0.75rem',
+              textAlign: 'left',
+              width: '100%',
+              overflowX: 'auto',
+            }}
+            dangerouslySetInnerHTML={{ __html: ex.explain }}
+          />
+        ) : (
+          <div
+            className="ex-explain"
+            style={{
+              background: '#FFF8E0',
+              borderRadius: '12px',
+              padding: '0.75rem 1rem',
+              border: '1.5px solid #F5C518',
+              color: '#3A2000',
+              marginTop: '0.75rem',
+              fontSize: '13.5px',
+              lineHeight: 1.5,
+              fontWeight: 800,
+              textAlign: 'left',
+            }}
+          >
+            💡 {ex.explain}
+          </div>
+        )
       )}
     </div>
   );
