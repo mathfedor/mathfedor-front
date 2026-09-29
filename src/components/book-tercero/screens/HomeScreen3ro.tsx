@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useBook3 } from '../context/Book3Context';
+import bookCurriculum3 from '@/mocks/data/book-curriculum-3.data.json';
 import { fedorSpeak } from '../shared/Grade3Speech';
 import Swal from 'sweetalert2';
 import ProblemasModal3ro from '../shared/ProblemasModal3ro';
@@ -108,7 +109,7 @@ const CANONICAL_UNITS_3RO: CanonicalUnit3ro[] = [
     index: 4,
     name: 'Unidad 5 — Problemas SABER',
     meta: '5 temas · Operaciones mixtas · Evaluación estilo SABER',
-    icon: '🏆',
+    icon: '📝',
     iconBg: '#F3E8FF',
     accentClass: 'uc-purple',
     accentGradient: 'linear-gradient(90deg, #F5C518, #FF8C2A)',
@@ -288,6 +289,50 @@ const COMMAND_PANEL_ACTIONS = [
   { id: 'pcotid', cls: 'probcot', ico: '🧮', lbl: 'P.Cotid.', color: 'linear-gradient(135deg, #2A1070, #6C28B4)', textColor: '#FFFFFF' },
 ];
 
+export interface ConceptoDia3ro {
+  t: string;
+  tx: string;
+  ej: string;
+}
+
+export const CONCEPTOS_DEL_DIA_3RO: ConceptoDia3ro[] = [
+  {
+    t: 'Sustracción',
+    tx: 'La sustracción encuentra la diferencia entre dos números.',
+    ej: 'Ejemplo: 7 + 5 = 12',
+  },
+  {
+    t: 'Adición',
+    tx: 'La adición une dos cantidades para obtener un total.',
+    ej: 'Ejemplo: 7 + 5 = 12',
+  },
+  {
+    t: 'Multiplicación',
+    tx: 'La multiplicación es una suma repetida de igual valor.',
+    ej: 'Ejemplo: 4 × 3 = 12',
+  },
+  {
+    t: 'División',
+    tx: 'La división reparte en partes iguales.',
+    ej: 'Ejemplo: 12 ÷ 4 = 3',
+  },
+  {
+    t: 'Sistema Decimal',
+    tx: 'Nuestro sistema usa Unidades, Decenas, Centenas y Miles.',
+    ej: 'Ejemplo: 253 = 200 + 50 + 3',
+  },
+  {
+    t: 'Fracción',
+    tx: 'Una fracción expresa parte de un todo.',
+    ej: 'Ejemplo: ½ es la mitad',
+  },
+  {
+    t: 'Estadística',
+    tx: 'La estadística organiza y analiza datos.',
+    ej: 'Ejemplo: Tabla de frecuencias',
+  },
+];
+
 export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
   const {
     book,
@@ -302,6 +347,8 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
     setActiveProblemasNivel,
     setActiveProblemasTab,
     updateStats,
+    setReportAutoRunAI,
+    startLevel,
   } = useBook3();
 
   const [claimedDaily, setClaimedDaily] = useState(false);
@@ -311,6 +358,8 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
   const [showGuiaModal, setShowGuiaModal] = useState(false);
   const [activeCommandModal, setActiveCommandModal] = useState<string | null>(null);
   const [showStatsLabModal, setShowStatsLabModal] = useState(false);
+  const [conceptIndex, setConceptIndex] = useState(0);
+  const activeConcept = CONCEPTOS_DEL_DIA_3RO[conceptIndex];
   const miniCanvasRef = useRef<HTMLCanvasElement>(null);
 
   // Rangos de Fedor y progreso de XP
@@ -378,26 +427,73 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
     return prevPct >= 50;
   };
 
-  // Calcular progreso total del libro
-  const totalUnits = book?.units?.length || 5;
-  let totalLevelsCount = 0;
-  let passedLevelsCount = 0;
+  // Garantizar acceso a las 13 unidades canónicas y sus 195 bloques
+  const sourceUnits = useMemo(() => {
+    if (book?.units && Array.isArray(book.units) && book.units.length >= 13) {
+      return book.units;
+    }
+    return ((bookCurriculum3 as any).UNITS || []) as any[];
+  }, [book]);
 
-  (book?.units || []).forEach((u) => {
-    (u.topics || []).forEach((t) => {
-      (t.levels || []).forEach((lv, li) => {
-        totalLevelsCount++;
-        const key = `${t.id}-n${li + 1}`;
-        if ((scores[key] || 0) >= 70) {
-          passedLevelsCount++;
-        }
+  const allBlocks = useMemo(() => {
+    const blocks: Array<{
+      ui: number;
+      ti: number;
+      li: number;
+      label: string;
+      topicId: string;
+      isDone: boolean;
+    }> = [];
+
+    sourceUnits.forEach((u: any, ui: number) => {
+      (u.topics || []).forEach((t: any, ti: number) => {
+        (t.levels || []).forEach((lv: any, li: number) => {
+          const key1 = `${t.id}-n${li + 1}`;
+          const key2 = `u${ui}t${ti}-n${li + 1}`;
+          const key3 = `u${ui}_t${ti}_l${li}`;
+          const score = Math.max(scores[key1] || 0, scores[key2] || 0, scores[key3] || 0);
+          const isDone = score >= 70;
+          blocks.push({
+            ui,
+            ti,
+            li,
+            label: `${u.short || u.name} · ${t.title || t.name} · Nivel ${li + 1}`,
+            topicId: t.id,
+            isDone,
+          });
+        });
       });
     });
-  });
 
-  const progressPct = totalLevelsCount > 0
-    ? Math.round((passedLevelsCount / totalLevelsCount) * 100)
-    : 0;
+    return blocks;
+  }, [sourceUnits, scores]);
+
+  const totalLevelsCount = allBlocks.length || 195;
+  const passedLevelsCount = allBlocks.filter((b) => b.isDone).length;
+  const currentBlockIndex = allBlocks.findIndex((b) => !b.isDone);
+  const currentPos = currentBlockIndex === -1 ? allBlocks.length : currentBlockIndex;
+  const shipPct =
+    totalLevelsCount <= 1
+      ? 0
+      : Math.max(0, Math.min(100, (currentPos / (totalLevelsCount - 1)) * 100));
+
+  let journeyMessage = '✨ Resuelve bloques para avanzar tu nave';
+  if (currentPos === 0) {
+    journeyMessage = '🌅 ¡La nave está en Mercurio, lista para empezar!';
+  } else if (currentPos >= totalLevelsCount) {
+    journeyMessage = '🏆 ¡Llegaste a Plutón! ¡Misión cumplida!';
+  } else if (passedLevelsCount / totalLevelsCount >= 0.75) {
+    journeyMessage = `🛰️ ¡Casi llegas a Plutón! ${Math.round((100 * passedLevelsCount) / totalLevelsCount)}% del viaje completado`;
+  } else if (passedLevelsCount / totalLevelsCount >= 0.5) {
+    journeyMessage = '🌠 ¡Mitad del camino! Sigue resolviendo bloques';
+  } else if (passedLevelsCount / totalLevelsCount >= 0.25) {
+    journeyMessage = `🚀 ¡La nave avanza! ${passedLevelsCount} bloques superados`;
+  }
+
+  const progressPct =
+    totalLevelsCount > 0
+      ? Math.round((passedLevelsCount / totalLevelsCount) * 100)
+      : 0;
 
   const handleClaimDaily = () => {
     if (claimedDaily) {
@@ -877,309 +973,900 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
 
 
       {/* ══════════════════════════════════════════════════════════
-          7. TRAVESÍA MERCURIO → PLUTÓN (Imagen 4 Medio-Abajo)
+          7. TRAVESÍA MERCURIO → PLUTÓN (Idéntico a HTML / Imagen)
       ══════════════════════════════════════════════════════════ */}
       <div className="section-card-wrap">
-        <div className="bg-gradient-to-b from-[#020611] via-[#0A1840] to-[#1A0D40] border border-blue-900/60 rounded-2xl p-4 shadow-xl text-white relative overflow-hidden">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-xs md:text-sm font-black text-[#FFD66B] uppercase tracking-wider flex items-center gap-2">
+        <div className="bg-gradient-to-b from-[#020611] via-[#0A1840] to-[#1A0D40] border border-blue-900/60 rounded-2xl p-4 md:p-5 shadow-2xl text-white relative overflow-hidden">
+          {/* Fondo estrellado cósmico */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-60"
+            style={{
+              backgroundImage: `
+                radial-gradient(circle at 15% 30%, rgba(255,255,255,0.7) 1px, transparent 1.5px),
+                radial-gradient(circle at 45% 70%, rgba(255,255,255,0.6) 1px, transparent 1.5px),
+                radial-gradient(circle at 75% 20%, rgba(255,255,255,0.5) 1px, transparent 1.5px),
+                radial-gradient(circle at 90% 80%, rgba(255,255,255,0.8) 1px, transparent 1.5px),
+                radial-gradient(circle at 25% 90%, rgba(255,255,255,0.5) 1px, transparent 1.5px)
+              `,
+              backgroundSize: '240px 240px, 200px 200px, 300px 300px, 160px 160px, 250px 250px',
+            }}
+          />
+
+          {/* Cabecera */}
+          <div className="relative z-10 flex items-center justify-between mb-4">
+            <h3 className="text-xs md:text-sm font-black text-[#FFD66B] uppercase tracking-wider flex items-center gap-2 drop-shadow-[0_0_12px_rgba(255,214,107,0.5)]">
               <span>🚀</span>
               <span>TRAVESÍA MERCURIO → PLUTÓN</span>
             </h3>
-            <span className="text-[10px] font-black bg-white/10 border border-amber-300/40 px-2.5 py-0.5 rounded-full text-amber-200">
-              {passedLevelsCount} / {totalLevelsCount || 195} bloques
+            <span className="text-[11px] md:text-xs font-black bg-white/10 border border-amber-300/40 px-3 py-1 rounded-full text-white tracking-wide">
+              {passedLevelsCount} / {totalLevelsCount} bloques
             </span>
           </div>
 
-          {/* Visual Track */}
-          <div className="relative py-4 flex items-center justify-between gap-1 overflow-x-auto scrollbar-none px-2">
+          {/* Visual Track Area */}
+          <div className="relative z-10 py-4 px-2 flex items-center justify-between gap-2 overflow-x-auto scrollbar-none">
             {/* Mercurio con INICIA AQUÍ */}
             <div className="flex flex-col items-center shrink-0 relative">
-              <span className="absolute -top-4 text-[9px] font-black bg-gradient-to-r from-red-500 to-amber-500 text-white px-2 py-0.5 rounded-full shadow-md animate-pulse whitespace-nowrap">
-                INICIA AQUÍ
+              {passedLevelsCount === 0 && (
+                <div className="absolute -top-7 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none z-30">
+                  <div className="bg-gradient-to-r from-[#FF1D4E] to-[#F5C518] text-white font-black text-[9px] md:text-[10px] px-2.5 py-0.5 rounded-full border border-white shadow-[0_4px_14px_rgba(255,29,78,0.7)] whitespace-nowrap animate-bounce uppercase tracking-wider">
+                    INICIA AQUÍ
+                  </div>
+                </div>
+              )}
+              <div
+                className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center relative cursor-pointer hover:scale-105 transition-transform"
+                style={{
+                  background: 'radial-gradient(circle at 35% 30%, #FFE484 0%, #F5C518 25%, #D48B28 50%, #7E4A15 80%, #3A200A 100%)',
+                  boxShadow: '0 0 30px rgba(245,197,24,0.6), inset -6px -6px 14px rgba(0,0,0,0.6)',
+                }}
+                onClick={() => selectUnit(0)}
+                title="Mercurio · Iniciar Unidad 1"
+              />
+              <span className="text-[10px] md:text-[11px] font-black text-[#FFD66B] mt-1.5 whitespace-nowrap drop-shadow">
+                ☿ Mercurio
               </span>
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#C9A674] via-[#7E5A30] to-[#3A2410] shadow-lg shadow-amber-900/60 flex items-center justify-center text-xl mt-2 border border-amber-300/40">
-                🪐
-              </div>
-              <span className="text-[9px] font-black text-amber-300 mt-1">Mercurio</span>
             </div>
 
-            {/* Dotted Star Trail */}
-            <div className="flex-1 flex items-center justify-around px-2 min-w-[200px]">
-              {Array.from({ length: 22 }).map((_, i) => (
+            {/* Densa hilera orbital continua de 195 bloques/asteroides */}
+            <div className="flex-1 relative mx-2 h-14 flex items-center min-w-[280px]">
+              {/* Línea central guía */}
+              <div
+                className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[2px] pointer-events-none opacity-40"
+                style={{
+                  backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,214,107,0.8) 0 8px, transparent 8px 14px)',
+                }}
+              />
+
+              {/* 195 Asteroides */}
+              <div className="relative w-full flex items-center justify-between gap-[1px] md:gap-[2px] z-10">
+                {allBlocks.map((b, idx) => {
+                  const isDone = b.isDone;
+                  const isCurrent = idx === currentPos;
+                  return (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => startLevel(b.ui, b.ti, b.li)}
+                      title={b.label}
+                      className={`rounded-full transition-all duration-300 p-0 border-0 focus:outline-none shrink-0 ${
+                        isDone
+                          ? 'w-2 h-2 md:w-2.5 md:h-2.5 bg-gradient-to-r from-[#FFEE99] to-[#F5C518] shadow-[0_0_6px_rgba(245,197,24,0.9)] scale-110'
+                          : isCurrent
+                          ? 'w-2.5 h-2.5 md:w-3 md:h-3 bg-gradient-to-r from-[#FF89A8] to-[#FF1D4E] shadow-[0_0_8px_rgba(255,29,78,1)] animate-pulse'
+                          : 'w-1 h-1 md:w-1.5 md:h-1.5 bg-[#A89684]/60 hover:bg-[#F5C518] hover:scale-150'
+                      }`}
+                    />
+                  );
+                })}
+              </div>
+
+              {/* Nave espacial con llama propulsora sobre la órbita */}
+              <div
+                className="absolute top-1/2 -translate-y-1/2 z-20 pointer-events-none transition-all duration-1000 ease-out flex items-center"
+                style={{
+                  left: `clamp(0%, ${shipPct}%, calc(100% - 42px))`,
+                }}
+              >
+                {/* Llama */}
                 <div
-                  key={i}
-                  className={`w-2 h-2 rounded-full ${i < passedLevelsCount ? 'bg-amber-400 shadow-sm shadow-amber-300' : 'bg-white/25'}`}
+                  className="w-3.5 h-4.5 rounded-l-full -mr-1 animate-pulse"
+                  style={{
+                    background: 'radial-gradient(ellipse, #FFEE99, #FF8800 60%, transparent)',
+                  }}
                 />
-              ))}
+                {/* Cohete SVG original de MatematicasDeFedor_3° */}
+                <svg
+                  viewBox="0 0 48 48"
+                  width="42"
+                  height="42"
+                  className="drop-shadow-[0_0_10px_rgba(91,191,255,0.8)]"
+                >
+                  <defs>
+                    <linearGradient id="fjShipGrad" x1="0" x2="1">
+                      <stop offset="0" stopColor="#FFFFFF" />
+                      <stop offset="1" stopColor="#A8B8E6" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d="M44 24 L18 12 L18 22 L8 22 L8 26 L18 26 L18 36 Z"
+                    fill="url(#fjShipGrad)"
+                    stroke="#1A3A6A"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
+                  <circle cx="26" cy="24" r="4" fill="#5BBFFF" stroke="#1A3A6A" strokeWidth="1.5" />
+                  <path d="M18 22 L14 18 L18 18 Z" fill="#FF1D4E" />
+                  <path d="M18 26 L14 30 L18 30 Z" fill="#FF1D4E" />
+                </svg>
+              </div>
             </div>
 
             {/* Plutón */}
             <div className="flex flex-col items-center shrink-0">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#4A3B69] to-[#1C162E] shadow-md flex items-center justify-center text-lg border border-purple-400/30">
-                🌑
-              </div>
-              <span className="text-[9px] font-bold text-gray-400 mt-1">Plutón</span>
+              <div
+                className="w-11 h-11 md:w-13 md:h-13 rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
+                style={{
+                  background: 'radial-gradient(circle at 35% 30%, #E0D6B8 0%, #8C7E62 50%, #3D3424 100%)',
+                  boxShadow: '0 0 20px rgba(224,214,184,0.4), inset -5px -5px 12px rgba(0,0,0,0.6)',
+                }}
+                onClick={() => selectUnit(12)}
+                title="Plutón · Unidad 13 Final"
+              />
+              <span className="text-[10px] md:text-[11px] font-bold text-gray-300 mt-1.5 whitespace-nowrap">
+                ♇ Plutón
+              </span>
             </div>
           </div>
 
-          {/* Leyenda */}
-          <div className="border-t border-white/10 pt-2.5 mt-2 flex items-center justify-between text-[9px] font-bold text-gray-300 flex-wrap gap-2">
-            <div className="flex items-center gap-3">
-              <span>☁ = bloque pendiente</span>
-              <span>⭐ = bloque dominado</span>
-              <span>🚀 = posición actual</span>
+          {/* Leyenda y Mensaje */}
+          <div className="relative z-10 border-t border-white/10 pt-3 mt-1">
+            <div className="flex items-center justify-center gap-2 text-[10px] text-[#C5BFEE] font-extrabold flex-wrap">
+              <span className="bg-black/50 px-3 py-1 rounded-full border border-amber-300/30">
+                ⚪ = bloque pendiente
+              </span>
+              <span className="bg-black/50 px-3 py-1 rounded-full border border-amber-300/30">
+                ⭐ = bloque dominado
+              </span>
+              <span className="bg-black/50 px-3 py-1 rounded-full border border-amber-300/30">
+                🚀 = posición actual
+              </span>
             </div>
-            <span className="text-amber-300 font-extrabold">
-              👩‍🚀 ¡La nave está en Mercurio, lista para empezar!
-            </span>
+            <div className="text-center text-xs md:text-sm font-black text-[#FFD66B] mt-2.5 drop-shadow-[0_0_12px_rgba(255,214,107,0.5)]">
+              {journeyMessage}
+            </div>
           </div>
         </div>
       </div>
 
       {/* ══════════════════════════════════════════════════════════
-          8. CENTRO DE INFORMES (Imagen 4 Abajo & Imagen 5 Arriba)
+          8. CENTRO DE INFORMES (Exacto a HTML MatematicasDeFedor_3° / Imagen)
       ══════════════════════════════════════════════════════════ */}
       <div className="section-card-wrap">
-        <div className="bg-gradient-to-r from-[#140830] to-[#1E0848] border border-purple-500/35 rounded-2xl p-4 shadow-xl text-white">
-          <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-amber-400 to-orange-500 flex items-center justify-center text-base shrink-0">
-                📊
+        <div
+          style={{
+            background: 'linear-gradient(135deg, #140830, #1E0848)',
+            borderRadius: '18px',
+            padding: '1rem 1.1rem',
+            marginBottom: '.85rem',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Subtle striped pattern overlay */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              opacity: 0.06,
+              background: 'repeating-linear-gradient(45deg, #7B2FBE 0, #7B2FBE 1px, transparent 1px, transparent 8px)',
+              pointerEvents: 'none',
+            }}
+          />
+
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            {/* Cabecera */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '.65rem',
+                flexWrap: 'wrap',
+                gap: '6px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div
+                  style={{
+                    width: '34px',
+                    height: '34px',
+                    borderRadius: '10px',
+                    background: 'linear-gradient(135deg, #F5C518, #FF8C2A)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '18px',
+                    flexShrink: 0,
+                  }}
+                >
+                  📊
+                </div>
+                <div>
+                  <div
+                    style={{
+                      fontFamily: "'Baloo 2', sans-serif",
+                      fontSize: '14px',
+                      fontWeight: 900,
+                      color: '#ffffff',
+                      lineHeight: '1.2',
+                    }}
+                  >
+                    Centro de Informes
+                  </div>
+                  <div
+                    style={{
+                      fontSize: '9px',
+                      color: 'rgba(255, 255, 255, 0.5)',
+                      fontWeight: 700,
+                    }}
+                  >
+                    Seguimiento docente y familia
+                  </div>
+                </div>
               </div>
-              <div>
-                <h4 className="font-['Baloo_2',sans-serif] text-sm font-black text-white leading-tight">
-                  Centro de Informes
-                </h4>
-                <p className="text-[9px] font-bold text-purple-200/70">
-                  Seguimiento docente y familia
-                </p>
+              <button
+                type="button"
+                onClick={() => goScreen('report')}
+                style={{
+                  background: 'linear-gradient(135deg, #F5C518, #FF8C2A)',
+                  color: '#2A0F60',
+                  border: 'none',
+                  borderRadius: '10px',
+                  padding: '7px 14px',
+                  fontSize: '12px',
+                  fontWeight: 900,
+                  cursor: 'pointer',
+                  fontFamily: "'Nunito', sans-serif",
+                }}
+              >
+                Ver informe →
+              </button>
+            </div>
+
+            {/* 3 Tarjetas de Resumen (XP Total, Niveles ✅, Racha) */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: '6px',
+                marginBottom: '.65rem',
+              }}
+            >
+              <div
+                style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  borderRadius: '10px',
+                  padding: '.5rem',
+                  textAlign: 'center',
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: 900,
+                    color: '#FF8C2A',
+                    fontFamily: "'Baloo 2', sans-serif",
+                    lineHeight: '1.2',
+                  }}
+                >
+                  {totalXP}
+                </div>
+                <div
+                  style={{
+                    fontSize: '8px',
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  XP Total
+                </div>
+              </div>
+
+              <div
+                style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  borderRadius: '10px',
+                  padding: '.5rem',
+                  textAlign: 'center',
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: 900,
+                    color: '#24C496',
+                    fontFamily: "'Baloo 2', sans-serif",
+                    lineHeight: '1.2',
+                  }}
+                >
+                  {passedLevelsCount}
+                </div>
+                <div
+                  style={{
+                    fontSize: '8px',
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Niveles ✅
+                </div>
+              </div>
+
+              <div
+                style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  borderRadius: '10px',
+                  padding: '.5rem',
+                  textAlign: 'center',
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: 900,
+                    color: '#FF8C2A',
+                    fontFamily: "'Baloo 2', sans-serif",
+                    lineHeight: '1.2',
+                  }}
+                >
+                  {streak}🔥
+                </div>
+                <div
+                  style={{
+                    fontSize: '8px',
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Racha
+                </div>
               </div>
             </div>
+
+            {/* 13 Barras de Unidades (Idénticas al script de MatematicasDeFedor_3°) */}
+            <div
+              style={{
+                display: 'grid',
+                gap: '4px',
+                marginBottom: '.65rem',
+              }}
+            >
+              {CANONICAL_UNITS_3RO.map((u) => {
+                const unitData = ((book?.units && book.units[u.index]) ||
+                  (bookCurriculum3 as any).UNITS?.[u.index]) as any;
+
+                let uTot = 0;
+                let uPassed = 0;
+
+                (unitData?.topics || []).forEach((t: any, ti: number) => {
+                  (t.levels || []).forEach((lv: any, li: number) => {
+                    uTot++;
+                    const k1 = `${t.id}-n${li + 1}`;
+                    const k2 = `u${u.index}t${ti}-n${li + 1}`;
+                    const k3 = `u${u.index}_t${ti}_l${li}`;
+                    const sc = Math.max(scores[k1] || 0, scores[k2] || 0, scores[k3] || 0);
+                    if (sc >= 70) uPassed++;
+                  });
+                });
+
+                const pct = uTot > 0 ? Math.round((uPassed / uTot) * 100) : 0;
+                const col = pct >= 70 ? '#24C496' : pct >= 50 ? '#F5C518' : '#7B2FBE';
+
+                return (
+                  <div
+                    key={u.index}
+                    onClick={() => selectUnit(u.index)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '7px',
+                      cursor: 'pointer',
+                    }}
+                    title={`${u.name}: ${pct}% completado (${uPassed}/${uTot} niveles)`}
+                  >
+                    <span
+                      style={{
+                        fontSize: '11px',
+                        width: '18px',
+                        textAlign: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      {u.icon}
+                    </span>
+                    <div
+                      style={{
+                        flex: 1,
+                        height: '5px',
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        borderRadius: '3px',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: '5px',
+                          background: col,
+                          width: `${pct}%`,
+                          borderRadius: '3px',
+                          transition: 'width 1.2s',
+                        }}
+                      />
+                    </div>
+                    <span
+                      style={{
+                        fontSize: '10px',
+                        fontWeight: 900,
+                        color: col,
+                        minWidth: '28px',
+                        textAlign: 'right',
+                        fontFamily: "'Nunito', sans-serif",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {pct}%
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Botón inferior: Análisis IA Fedor */}
             <button
               type="button"
               onClick={() => {
-                Swal.fire({
-                  title: '📊 Centro de Informes',
-                  html: `
-                    <div style="text-align:left;font-size:13px;line-height:1.6">
-                      <p><b>Estudiante:</b> ${student.name || 'Astronauta'}</p>
-                      <p><b>XP Total:</b> ${totalXP} XP</p>
-                      <p><b>Niveles dominados:</b> ${passedLevelsCount} de ${totalLevelsCount || 195}</p>
-                      <p><b>Racha activa:</b> ${streak} días</p>
-                    </div>
-                  `,
-                  icon: 'info',
-                  confirmButtonText: 'Cerrar',
-                  confirmButtonColor: '#7B2FBE',
-                });
+                setReportAutoRunAI(true);
+                goScreen('report');
               }}
-              className="bg-gradient-to-r from-[#F5C518] to-[#FF8C2A] text-[#2A0F60] font-black text-xs px-3.5 py-1.5 rounded-lg cursor-pointer hover:opacity-95"
+              style={{
+                width: '100%',
+                padding: '9px',
+                fontSize: '12px',
+                fontWeight: 900,
+                background: 'rgba(245, 197, 24, 0.12)',
+                color: '#F5C518',
+                border: '1.5px solid rgba(245, 197, 24, 0.25)',
+                borderRadius: '10px',
+                cursor: 'pointer',
+                fontFamily: "'Nunito', sans-serif",
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+              }}
             >
-              Ver informe →
+              <span>🤖</span>
+              <span>Análisis IA Fedor</span>
             </button>
           </div>
-
-          <div className="grid grid-cols-3 gap-2 mb-3">
-            <div className="bg-white/8 rounded-xl p-2 text-center">
-              <div className="text-base font-black text-amber-400 font-['Baloo_2',sans-serif] leading-tight">
-                {totalXP}
-              </div>
-              <div className="text-[8px] font-bold text-gray-300 uppercase mt-0.5">
-                XP TOTAL
-              </div>
-            </div>
-            <div className="bg-white/8 rounded-xl p-2 text-center">
-              <div className="text-base font-black text-emerald-400 font-['Baloo_2',sans-serif] leading-tight">
-                {passedLevelsCount}
-              </div>
-              <div className="text-[8px] font-bold text-gray-300 uppercase mt-0.5">
-                NIVEL FIT
-              </div>
-            </div>
-            <div className="bg-white/8 rounded-xl p-2 text-center">
-              <div className="text-base font-black text-orange-400 font-['Baloo_2',sans-serif] leading-tight">
-                {streak}🔥
-              </div>
-              <div className="text-[8px] font-bold text-gray-300 uppercase mt-0.5">
-                RACHA
-              </div>
-            </div>
-          </div>
-
-          {/* Mini line indicators */}
-          <div className="space-y-1.5 mb-3 max-h-48 overflow-y-auto pr-1">
-            {CANONICAL_UNITS_3RO.map((u) => {
-              const unit = book?.units?.[u.index];
-              let uTot = 0, uPassed = 0;
-              (unit?.topics || []).forEach((t) => {
-                (t.levels || []).forEach((lv, li) => {
-                  uTot++;
-                  const key = `${t.id}-n${li + 1}`;
-                  if ((scores[key] || 0) >= 70) uPassed++;
-                });
-              });
-              const pct = uTot > 0 ? Math.round((uPassed / uTot) * 100) : 0;
-              return (
-                <div key={u.index} className="flex items-center gap-2 text-[9px] text-gray-300 font-bold">
-                  <span className="w-3 text-center">{u.icon}</span>
-                  <span className="w-16 truncate text-[8px] text-gray-400">{u.name.split('—')[0].trim()}</span>
-                  <div className="flex-1 bg-white/10 h-1.5 rounded-full overflow-hidden">
-                    <div className="bg-amber-400 h-full rounded-full transition-all duration-300" style={{ width: `${pct}%` }} />
-                  </div>
-                  <span className="w-6 text-right font-mono">{pct}%</span>
-                </div>
-              );
-            })}
-          </div>
-
-          <button
-            type="button"
-            onClick={() => {
-              fedorSpeak('Analizando tu progreso con Inteligencia Artificial. ¡Vas por muy buen camino!');
-              Swal.fire({
-                title: '🤖 Análisis Pedagógico IA',
-                html: `
-                  <div style="text-align:left;font-size:13px;line-height:1.6">
-                    <p><b>Diagnóstico:</b> El estudiante demuestra entusiasmo y ritmo constante.</p>
-                    <p><b>Recomendación:</b> Avanzar con los 5 temas de la <b>Unidad 1: Adición y Números</b> para fortalecer el conteo y la recta numérica.</p>
-                  </div>
-                `,
-                icon: 'success',
-                confirmButtonText: '¡Continuar!',
-                confirmButtonColor: '#7B2FBE',
-              });
-            }}
-            className="w-full py-2 px-3 rounded-xl bg-amber-400/15 border border-amber-400/30 text-amber-300 font-black text-xs cursor-pointer hover:bg-amber-400/25 flex items-center justify-center gap-2"
-          >
-            <span>🤖</span>
-            <span>Análisis IA Fedor</span>
-          </button>
         </div>
       </div>
 
       {/* ══════════════════════════════════════════════════════════
           9. RECOMPENSA DIARIA (Imagen 5 Arriba)
       ══════════════════════════════════════════════════════════ */}
+      {/* ══════════════════════════════════════════════════════════
+          9. RECOMPENSA DIARIA (Imagen 5 Arriba / HTML)
+      ══════════════════════════════════════════════════════════ */}
       <div className="section-card-wrap">
         <div
           onClick={handleClaimDaily}
-          className="bg-gradient-to-r from-[#0E684D] to-[#16876A] border border-emerald-400/35 rounded-2xl p-3.5 shadow-lg flex items-center gap-3 cursor-pointer hover:scale-[1.006] transition-transform text-white"
+          style={{
+            background: 'linear-gradient(135deg, #1A4030, #16876A)',
+            borderRadius: '16px',
+            padding: '12px 18px',
+            marginBottom: '.85rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            cursor: 'pointer',
+            transition: 'all .2s ease',
+            boxShadow: '0 4px 16px rgba(22, 135, 106, .3)',
+          }}
+          className="hover:scale-[1.006]"
         >
-          <span className="text-3xl">🎁</span>
-          <div className="flex-1 min-w-0">
-            <h4 className="font-black text-sm tracking-wide text-emerald-100">
+          <span style={{ fontSize: '30px' }} className="animate-bounce">🎁</span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div
+              style={{
+                fontFamily: "'Baloo 2', sans-serif",
+                fontSize: '13px',
+                fontWeight: 900,
+                color: '#ffffff',
+                lineHeight: '1.2',
+              }}
+            >
               Recompensa diaria
-            </h4>
-            <p className="text-[11px] font-bold text-emerald-200/90">
+            </div>
+            <div
+              style={{
+                fontSize: '11px',
+                color: 'rgba(255, 255, 255, 0.65)',
+                fontWeight: 700,
+              }}
+            >
               ¡Entra cada día y gana XP extra!
-            </p>
+            </div>
           </div>
-          <span className={`text-[11px] font-black px-3 py-1 rounded-full shadow-sm ${claimedDaily ? 'bg-emerald-800/80 text-emerald-200' : 'bg-emerald-400 text-emerald-950 animate-pulse'}`}>
+          <span
+            style={{
+              fontSize: '10px',
+              fontWeight: 900,
+              background: 'rgba(245, 197, 24, 0.22)',
+              color: '#FFE066',
+              border: '1px solid rgba(245, 197, 24, 0.4)',
+              padding: '3px 12px',
+              borderRadius: '20px',
+              whiteSpace: 'nowrap',
+            }}
+          >
             {claimedDaily ? '¡Reclamado!' : '¡Disponible!'}
           </span>
         </div>
       </div>
 
       {/* ══════════════════════════════════════════════════════════
-          10. MATEMÁTICAS DE FEDOR / LIBRO EXCEL (Imagen 5 Medio)
+          10. MATEMÁTICAS DE FEDOR / LIBRO EXCEL (Imagen 5 Medio / HTML)
       ══════════════════════════════════════════════════════════ */}
       <div className="section-card-wrap">
-        <div className="bg-[#FFF4EB] border border-[#FAD0B0] rounded-2xl p-3.5 shadow-sm flex items-center justify-between gap-3 text-[#180D38]">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-700 to-indigo-600 flex items-center justify-center text-lg text-white">
-              🚀
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '10px',
+            marginBottom: '.85rem',
+            background: 'linear-gradient(135deg, #FEF0E6, #FFE2C8)',
+            border: '1.5px solid #FBBF7A',
+            borderRadius: '16px',
+            padding: '10px 18px',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div
+              style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle at 35% 35%, #3D1468, #6C28B4)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                boxShadow: '0 4px 12px rgba(61, 20, 104, 0.35)',
+              }}
+            >
+              <span style={{ fontSize: '20px' }}>🚀</span>
             </div>
             <div>
-              <h4 className="font-black text-xs md:text-sm text-[#7A3200]">
+              <div
+                style={{
+                  fontFamily: "'Baloo 2', sans-serif",
+                  fontSize: '15px',
+                  fontWeight: 900,
+                  color: '#E8650A',
+                  lineHeight: '1.2',
+                }}
+              >
                 Matemáticas de Fedor
-              </h4>
-              <p className="text-[10px] font-bold text-gray-500">
+              </div>
+              <div
+                style={{
+                  fontSize: '10px',
+                  color: '#888888',
+                  fontWeight: 700,
+                }}
+              >
                 Libro Interactivo · Grado 3° · Colombia
-              </p>
-            </div>
-          </div>
-          <div className="text-right shrink-0">
-            <div className="text-[10px] font-bold text-gray-500">¿Tienes el libro Excel?</div>
-            <div className="text-[10px] font-black text-[#E8650A]">Úsalos juntos 📊</div>
-          </div>
-        </div>
-      </div>
-
-      {/* ══════════════════════════════════════════════════════════
-          11. MISIÓN DEL DÍA (Imagen 5 Medio)
-      ══════════════════════════════════════════════════════════ */}
-      <div className="section-card-wrap">
-        <div className="bg-gradient-to-r from-[#7B2FBE] via-[#9847E0] to-[#E8650A] rounded-2xl p-4 shadow-lg text-white">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2.5">
-              <span className="text-2xl">🎯</span>
-              <div>
-                <span className="text-[9px] font-black tracking-widest text-amber-300 uppercase">
-                  MISIÓN DEL DÍA
-                </span>
-                <h4 className="text-xs md:text-sm font-black leading-tight">
-                  Gana 200 XP en el día
-                </h4>
               </div>
             </div>
-            <span className="text-[10px] font-black bg-white/15 px-2.5 py-0.5 rounded-full border border-white/25">
-              🔒 +100 XP · +60 🪙
-            </span>
           </div>
-
-          <div className="w-full bg-black/20 h-2 rounded-full overflow-hidden mt-2">
+          <div style={{ textAlign: 'right', flexShrink: 0 }}>
             <div
-              className="bg-amber-300 h-full rounded-full transition-all"
-              style={{ width: `${Math.min(100, Math.max(4, (totalXP / 200) * 100))}%` }}
-            />
-          </div>
-
-          <div className="text-[9px] font-bold text-white/80 mt-1">
-            {totalXP} / 200
+              style={{
+                fontSize: '11px',
+                fontWeight: 700,
+                color: '#888888',
+              }}
+            >
+              ¿Tienes el libro Excel?
+            </div>
+            <div
+              style={{
+                fontSize: '11px',
+                fontWeight: 900,
+                color: '#E8650A',
+              }}
+            >
+              Úsalos juntos 📊
+            </div>
           </div>
         </div>
       </div>
 
       {/* ══════════════════════════════════════════════════════════
-          12. DESAFÍO DEL DÍA (Imagen 5 Medio-Abajo)
+          11. MISIÓN DEL DÍA (Imagen 5 Medio / HTML)
       ══════════════════════════════════════════════════════════ */}
       <div className="section-card-wrap">
-        <div className="bg-gradient-to-r from-[#0A3D2E] to-[#125A44] border border-emerald-500/40 rounded-2xl p-3.5 shadow-md flex items-center justify-between text-white">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl text-amber-300">⚡</span>
-            <div>
-              <h4 className="font-black text-xs md:text-sm">
-                Desafío del día · {new Date().toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'short' })}
-              </h4>
-              <p className="text-[10px] font-bold text-emerald-200/90">
-                ¡Gana el doble de monedas hoy!
-              </p>
+        <div
+          style={{
+            background: 'linear-gradient(135deg, #1E0848, #7B2FBE 45%, #E8650A 100%)',
+            borderRadius: '18px',
+            padding: '1rem 1.15rem',
+            marginBottom: '.85rem',
+            color: '#fff',
+            boxShadow: '0 8px 30px rgba(123, 47, 190, 0.4)',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', position: 'relative', zIndex: 1 }}>
+            <div
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '14px',
+                background: 'rgba(0, 0, 0, 0.35)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '26px',
+                flexShrink: 0,
+                border: '1.5px solid rgba(255, 224, 102, 0.4)',
+              }}
+            >
+              🎯
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div
+                style={{
+                  fontSize: '10px',
+                  fontWeight: 900,
+                  color: 'rgba(255, 224, 102, 0.85)',
+                  letterSpacing: '.15em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                MISIÓN DEL DÍA
+              </div>
+              <div
+                style={{
+                  fontFamily: "'Baloo 2', sans-serif",
+                  fontSize: '15px',
+                  fontWeight: 900,
+                  color: '#ffffff',
+                  lineHeight: '1.2',
+                  marginTop: '2px',
+                }}
+              >
+                Logra una racha de 5 correctas
+              </div>
+              <div
+                style={{
+                  height: '8px',
+                  background: 'rgba(0, 0, 0, 0.35)',
+                  borderRadius: '4px',
+                  overflow: 'hidden',
+                  marginTop: '.5rem',
+                }}
+              >
+                <div
+                  style={{
+                    height: '8px',
+                    background: 'linear-gradient(90deg, #F5C518, #FF8C2A)',
+                    borderRadius: '4px',
+                    width: `${Math.min(100, Math.round((Math.min(5, streak) / 5) * 100))}%`,
+                    transition: 'width .8s cubic-bezier(.34, 1.56, .64, 1)',
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  color: 'rgba(255, 255, 255, 0.75)',
+                  marginTop: '4px',
+                }}
+              >
+                <span>{Math.min(5, streak)} / 5</span>
+                <span style={{ color: '#F5C518' }}>+140 XP · +90 🪙</span>
+              </div>
+            </div>
+            <div style={{ flexShrink: 0 }}>
+              {streak >= 5 ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    updateStats(90, 0, 140);
+                    Swal.fire({
+                      title: '🎉 ¡Misión completada!',
+                      text: 'Has ganado +140 XP y +90 🪙',
+                      icon: 'success',
+                      confirmButtonText: '¡Genial!',
+                      confirmButtonColor: '#7B2FBE',
+                    });
+                  }}
+                  style={{
+                    background: 'linear-gradient(135deg, #F5C518, #FF8C2A)',
+                    color: '#2A0F60',
+                    border: 'none',
+                    borderRadius: '12px',
+                    padding: '10px 14px',
+                    fontSize: '12px',
+                    fontWeight: 900,
+                    cursor: 'pointer',
+                    fontFamily: "'Nunito', sans-serif",
+                    boxShadow: '0 4px 14px rgba(245, 197, 24, 0.5)',
+                  }}
+                  className="animate-pulse"
+                >
+                  🎁 RECLAMAR
+                </button>
+              ) : (
+                <div
+                  style={{
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '12px',
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '22px',
+                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                  }}
+                  title="Bloqueado hasta alcanzar racha de 5"
+                >
+                  🔒
+                </div>
+              )}
             </div>
           </div>
-          <span className="bg-amber-400 text-purple-950 font-black text-xs px-2.5 py-0.5 rounded-full shadow-sm">
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════════════════════
+          12. DESAFÍO DEL DÍA (Imagen 5 Medio-Abajo / HTML)
+      ══════════════════════════════════════════════════════════ */}
+      <div className="section-card-wrap">
+        <div
+          onClick={() => {
+            selectUnit(0);
+            fedorSpeak('¡Desafío del día! Resuelve ejercicios hoy para ganar el doble de monedas.');
+          }}
+          style={{
+            background: 'linear-gradient(135deg, #1A4030, #16876A)',
+            borderRadius: '16px',
+            padding: '12px 18px',
+            marginBottom: '.85rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            cursor: 'pointer',
+            transition: 'all .2s ease',
+            boxShadow: '0 4px 16px rgba(22, 135, 106, .25)',
+          }}
+          className="hover:scale-[1.006]"
+        >
+          <span style={{ fontSize: '32px', color: '#FF8C2A' }} className="animate-pulse">⚡</span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div
+              style={{
+                fontFamily: "'Baloo 2', sans-serif",
+                fontSize: '13px',
+                fontWeight: 900,
+                color: '#ffffff',
+                lineHeight: '1.2',
+              }}
+            >
+              Desafío del día · {new Intl.DateTimeFormat('es-CO', { weekday: 'long', day: 'numeric', month: 'short' }).format(new Date())}
+            </div>
+            <div
+              style={{
+                fontSize: '11px',
+                color: 'rgba(255, 255, 255, 0.65)',
+                fontWeight: 700,
+              }}
+            >
+              ¡Gana el doble de monedas hoy!
+            </div>
+          </div>
+          <span
+            style={{
+              fontSize: '11px',
+              fontWeight: 900,
+              background: 'rgba(245, 197, 24, 0.25)',
+              color: '#FFE066',
+              border: '1px solid rgba(245, 197, 24, 0.4)',
+              padding: '3px 12px',
+              borderRadius: '20px',
+              whiteSpace: 'nowrap',
+            }}
+          >
             🏅 x2
           </span>
         </div>
       </div>
 
       {/* ══════════════════════════════════════════════════════════
-          13. PROGRESO TOTAL (Imagen 5 Abajo)
+          13. PROGRESO TOTAL (Imagen 5 Abajo / HTML)
       ══════════════════════════════════════════════════════════ */}
       <div className="section-card-wrap">
-        <div className="bg-white border border-[#DDD8F5] rounded-2xl p-3.5 shadow-xs flex items-center gap-4 text-[#180D38]">
-          <span className="text-xs font-black text-gray-700 flex items-center gap-1.5 shrink-0">
-            <span>📚</span> Progreso total
-          </span>
-          <div className="flex-1 bg-gray-100 h-2.5 rounded-full overflow-hidden">
+        <div
+          style={{
+            background: '#ffffff',
+            border: '1.5px solid #E5E7EB',
+            borderRadius: '16px',
+            padding: '14px 18px',
+            marginBottom: '.85rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '14px',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+          }}
+        >
+          <div
+            style={{
+              fontSize: '13px',
+              fontWeight: 800,
+              color: '#2D3748',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <span style={{ fontSize: '16px' }}>📚</span>
+            <span>Progreso total</span>
+          </div>
+          <div
+            style={{
+              flex: 1,
+              height: '10px',
+              background: '#EEEEEE',
+              borderRadius: '5px',
+              overflow: 'hidden',
+            }}
+          >
             <div
-              className="bg-gradient-to-r from-[#7B2FBE] to-[#E8650A] h-full rounded-full transition-all duration-500"
-              style={{ width: `${progressPct}%` }}
+              style={{
+                height: '10px',
+                background: 'linear-gradient(90deg, #7B2FBE, #A864E8)',
+                borderRadius: '5px',
+                width: `${progressPct}%`,
+                transition: 'width .8s cubic-bezier(.34, 1.56, .64, 1)',
+              }}
             />
           </div>
-          <span className="text-xs font-black text-[#7B2FBE] shrink-0">
+          <div
+            style={{
+              fontSize: '14px',
+              fontWeight: 900,
+              color: '#7B2FBE',
+              minWidth: '38px',
+              textAlign: 'right',
+              fontFamily: "'Nunito', sans-serif",
+            }}
+          >
             {progressPct}%
-          </span>
+          </div>
         </div>
       </div>
 
@@ -1273,12 +1960,13 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
         {/* Vertical List of Unit Cards */}
         <div className="space-y-3">
           {CANONICAL_UNITS_3RO.map((u) => {
-            const unit = book?.units?.[u.index];
+            const unit = ((book?.units && book.units[u.index]) ||
+              (bookCurriculum3 as any).UNITS?.[u.index]) as any;
             let unitTotalEx = 0;
             let unitPassedEx = 0;
 
-            (unit?.topics || []).forEach((t) => {
-              (t.levels || []).forEach((lv, li) => {
+            (unit?.topics || []).forEach((t: any) => {
+              (t.levels || []).forEach((lv: any, li: number) => {
                 unitTotalEx++;
                 const key = `${t.id}-n${li + 1}`;
                 if ((scores[key] || 0) >= 70) {
@@ -1349,6 +2037,238 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
               </React.Fragment>
             );
           })}
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════════════════════
+          17. SECCIÓN: TRAVESÍA PLUTÓN — VENUS (HTML / Imagen)
+      ══════════════════════════════════════════════════════════ */}
+      <div className="section-card-wrap mb-6" id="seccionViajeVenus">
+        <div className="mb-2">
+          <span className="inline-flex items-center gap-1.5 text-[#581c87] text-[12px] font-black uppercase tracking-wider">
+            <span>🪐</span> TRAVESÍA PLUTÓN — VENUS
+          </span>
+        </div>
+        <div
+          style={{
+            background: 'linear-gradient(135deg, #1A0A3C, #2A0F60)',
+            borderRadius: '18px',
+            padding: '1.4rem 1.2rem',
+            color: '#fff',
+            textAlign: 'center',
+            boxShadow: '0 8px 24px rgba(26, 10, 60, 0.4)',
+          }}
+        >
+          <div
+            style={{
+              fontSize: '44px',
+              marginBottom: '.6rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+              gap: '12px',
+              userSelect: 'none',
+            }}
+          >
+            <span>🚀</span>
+            <span style={{ fontSize: '24px', opacity: 0.85 }}>→</span>
+            <span>🪐</span>
+            <span style={{ fontSize: '24px', opacity: 0.85 }}>→</span>
+            <span>☄️</span>
+            <span style={{ fontSize: '24px', opacity: 0.85 }}>→</span>
+            <span>🌕</span>
+            <span style={{ fontSize: '24px', opacity: 0.85 }}>→</span>
+            <span>🌟</span>
+            <span style={{ fontSize: '24px', opacity: 0.85 }}>→</span>
+            <span>🪐</span>
+            <span style={{ fontSize: '24px', opacity: 0.85 }}>→</span>
+            <span>☁️</span>
+            <span style={{ fontSize: '24px', opacity: 0.85 }}>→</span>
+            <span>🟡</span>
+          </div>
+          <p
+            style={{
+              fontSize: '14px',
+              opacity: 0.9,
+              margin: '0 auto',
+              maxWidth: '650px',
+              lineHeight: 1.5,
+              fontWeight: 500,
+            }}
+          >
+            La nave de Fedor viaja desde <strong style={{ color: '#FFE066' }}>Plutón</strong> hasta <strong style={{ color: '#FFE066' }}>Venus</strong> resolviendo operaciones matemáticas en cada planeta.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              playSound('click');
+              fedorSpeak('¡Iniciando viaje de Plutón a Venus! Explora los planetas y resuelve las operaciones.');
+              setShowUniversoModal(true);
+            }}
+            style={{
+              marginTop: '1.2rem',
+              background: 'linear-gradient(135deg, #FF1D4E, #FF6B35)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '12px',
+              padding: '12px 28px',
+              fontSize: '14px',
+              fontWeight: 800,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              boxShadow: '0 4px 16px rgba(255, 29, 78, 0.45)',
+              transition: 'all 0.2s ease',
+            }}
+            className="hover:scale-105 active:scale-95"
+          >
+            🚀 ¡Iniciar Travesía!
+          </button>
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════════════════════
+          18. SECCIÓN: DESAFÍO DEL DÍA (HTML / Imagen)
+      ══════════════════════════════════════════════════════════ */}
+      <div className="section-card-wrap mb-6" id="seccionDesafioDia">
+        <div className="mb-2">
+          <span className="inline-flex items-center gap-1.5 text-[#581c87] text-[12px] font-black uppercase tracking-wider">
+            <span>⚡</span> DESAFÍO DEL DÍA
+          </span>
+        </div>
+        <div
+          style={{
+            background: 'linear-gradient(135deg, #C62828, #FF8A80)',
+            borderRadius: '18px',
+            padding: '1.4rem 1.2rem',
+            color: '#fff',
+            textAlign: 'center',
+            boxShadow: '0 8px 24px rgba(198, 40, 40, 0.35)',
+          }}
+        >
+          <div style={{ fontSize: '42px', marginBottom: '.4rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+            <span>⚡</span>
+            <span>🧮</span>
+          </div>
+          <p
+            id="desafioTitulo"
+            style={{
+              fontSize: '18px',
+              fontWeight: 800,
+              margin: '0 0 .3rem 0',
+              fontFamily: "'Baloo 2', sans-serif",
+            }}
+          >
+            ¡El desafío de hoy está listo!
+          </p>
+          <p
+            style={{
+              fontSize: '14px',
+              opacity: 0.9,
+              margin: '0 auto',
+              maxWidth: '600px',
+              fontWeight: 500,
+            }}
+          >
+            Resuelve 10 ejercicios sin errores para ganar la medalla del día.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              playSound('click');
+              fedorSpeak('¡Desafío aceptado! Responde los ejercicios para ganar tu medalla.');
+              setShowProblemasModal(true);
+            }}
+            style={{
+              marginTop: '1.2rem',
+              background: '#ffffff',
+              color: '#C62828',
+              border: 'none',
+              borderRadius: '12px',
+              padding: '12px 28px',
+              fontSize: '15px',
+              fontWeight: 900,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              boxShadow: '0 4px 14px rgba(0, 0, 0, 0.15)',
+              transition: 'all 0.2s ease',
+            }}
+            className="hover:scale-105 active:scale-95"
+          >
+            ⚡ ¡Aceptar Desafío!
+          </button>
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════════════════════
+          19. SECCIÓN: CONCEPTO DEL DÍA (HTML / Imagen)
+      ══════════════════════════════════════════════════════════ */}
+      <div className="section-card-wrap mb-8" id="seccionConceptoDia">
+        <div className="mb-2">
+          <span className="inline-flex items-center gap-1.5 text-[#581c87] text-[12px] font-black uppercase tracking-wider">
+            <span>💡</span> CONCEPTO DEL DÍA
+          </span>
+        </div>
+        <div
+          id="conceptoDiaContent"
+          onClick={() => {
+            playSound('click');
+            const nextIdx = (conceptIndex + 1) % CONCEPTOS_DEL_DIA_3RO.length;
+            setConceptIndex(nextIdx);
+            const nextConcept = CONCEPTOS_DEL_DIA_3RO[nextIdx];
+            fedorSpeak(`${nextConcept.t}: ${nextConcept.tx}`);
+          }}
+          title="Toca para explorar otro concepto"
+          style={{
+            background: 'linear-gradient(135deg, #11998E, #38EF7D)',
+            borderRadius: '18px',
+            padding: '1.4rem',
+            color: '#000',
+            cursor: 'pointer',
+            boxShadow: '0 8px 24px rgba(17, 153, 142, 0.3)',
+            transition: 'transform 0.2s ease',
+          }}
+          className="hover:scale-[1.008] active:scale-[0.99]"
+        >
+          <div style={{ fontSize: '36px', marginBottom: '.4rem' }}>💡</div>
+          <p
+            id="conceptoTitulo"
+            style={{
+              fontSize: '18px',
+              fontWeight: 900,
+              margin: '0 0 .25rem 0',
+              fontFamily: "'Baloo 2', sans-serif",
+              color: '#074F3A',
+            }}
+          >
+            {activeConcept.t}
+          </p>
+          <p
+            id="conceptoTexto"
+            style={{
+              fontSize: '14px',
+              margin: '0 0 .8rem 0',
+              fontWeight: 600,
+              color: '#0f382c',
+            }}
+          >
+            {activeConcept.tx}
+          </p>
+          <div
+            id="conceptoEjemplo"
+            style={{
+              background: 'rgba(255, 255, 255, 0.55)',
+              borderRadius: '12px',
+              padding: '10px 14px',
+              fontSize: '15px',
+              fontWeight: 800,
+              color: '#074F3A',
+              display: 'inline-block',
+              backdropFilter: 'blur(4px)',
+            }}
+          >
+            {activeConcept.ej}
+          </div>
         </div>
       </div>
 

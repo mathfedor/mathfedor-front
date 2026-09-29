@@ -13,7 +13,8 @@ export type Book3Screen =
   | 'problemas'
   | 'results'
   | 'definiciones'
-  | 'estandares';
+  | 'estandares'
+  | 'report';
 
 export interface StudentProfile3 {
   name: string;
@@ -63,6 +64,8 @@ interface Book3ContextType {
   setActiveProblemasNivel: (n: number) => void;
   activeProblemasTab: 'ejemplos' | 'practica';
   setActiveProblemasTab: (t: 'ejemplos' | 'practica') => void;
+  reportAutoRunAI: boolean;
+  setReportAutoRunAI: (v: boolean) => void;
   updateStats: (earnedCoins: number, earnedStars: number, earnedXp: number) => void;
   resetStudent: () => void;
 }
@@ -108,6 +111,7 @@ export function Book3Provider({
   const [dark, setDark] = useState(false);
   const [activeProblemasNivel, setActiveProblemasNivel] = useState(0);
   const [activeProblemasTab, setActiveProblemasTab] = useState<'ejemplos' | 'practica'>('ejemplos');
+  const [reportAutoRunAI, setReportAutoRunAI] = useState(false);
 
   // Load Book and saved state from localStorage
   useEffect(() => {
@@ -300,6 +304,8 @@ export function Book3Provider({
         setActiveProblemasNivel,
         activeProblemasTab,
         setActiveProblemasTab,
+        reportAutoRunAI,
+        setReportAutoRunAI,
         updateStats,
         resetStudent,
       }}

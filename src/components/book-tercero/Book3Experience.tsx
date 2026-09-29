@@ -10,6 +10,7 @@ import ProblemasScreen3ro from './screens/ProblemasScreen3ro';
 import ResultsScreen3ro from './screens/ResultsScreen3ro';
 import EstandaresScreen3ro from './screens/EstandaresScreen3ro';
 import DefinicionesScreen3ro from './screens/DefinicionesScreen3ro';
+import ReportScreen3ro from './screens/ReportScreen3ro';
 import Grade3FloatingButtons from './shared/Grade3FloatingButtons';
 import LaunchIntro3ro from './shared/LaunchIntro3ro';
 import WelcomeIntroModal3ro from './shared/WelcomeIntroModal3ro';
@@ -71,6 +72,7 @@ function Book3Shell() {
         {screen === 'results' && <ResultsScreen3ro />}
         {screen === 'estandares' && <EstandaresScreen3ro />}
         {screen === 'definiciones' && <DefinicionesScreen3ro />}
+        {screen === 'report' && <ReportScreen3ro />}
       </div>
 
       {/* ══ 4 Botones Flotantes y Tab Contenido (visibles fuera de lección activa y setup) ══ */}
