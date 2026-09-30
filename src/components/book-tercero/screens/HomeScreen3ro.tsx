@@ -11,6 +11,8 @@ import MascotaModal3ro from '../shared/MascotaModal3ro';
 import GuiaDocenteModal3ro from '../shared/GuiaDocenteModal3ro';
 import CommandPanelModals3ro from '../shared/CommandPanelModals3ro';
 import StatsLabModal3ro from '../shared/StatsLabModal3ro';
+import RetoEspacialModal3ro from '../shared/RetoEspacialModal3ro';
+import ExamenFinalModal3ro from '../shared/ExamenFinalModal3ro';
 
 interface HomeScreen3roProps {
   onOpenIntro: () => void;
@@ -358,6 +360,8 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
   const [showGuiaModal, setShowGuiaModal] = useState(false);
   const [activeCommandModal, setActiveCommandModal] = useState<string | null>(null);
   const [showStatsLabModal, setShowStatsLabModal] = useState(false);
+  const [showRetoEspacialModal, setShowRetoEspacialModal] = useState(false);
+  const [showExamenFinalModal, setShowExamenFinalModal] = useState(false);
   const [conceptIndex, setConceptIndex] = useState(0);
   const activeConcept = CONCEPTOS_DEL_DIA_3RO[conceptIndex];
   const miniCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -524,6 +528,10 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
       setShowMascotaModal(true);
     } else if (action.id === 'pcotid') {
       setShowProblemasModal(true);
+    } else if (action.id === 'espacial') {
+      setShowRetoEspacialModal(true);
+    } else if (action.id === 'examen') {
+      setShowExamenFinalModal(true);
     } else {
       setActiveCommandModal(action.id);
     }
@@ -2103,8 +2111,8 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
             type="button"
             onClick={() => {
               playSound('click');
-              fedorSpeak('¡Iniciando viaje de Plutón a Venus! Explora los planetas y resuelve las operaciones.');
-              setShowUniversoModal(true);
+              fedorSpeak('¡Reto Espacial! Completa misiones diarias para ganar monedas y experiencia.');
+              setShowRetoEspacialModal(true);
             }}
             style={{
               marginTop: '1.2rem',
@@ -2176,8 +2184,8 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
             type="button"
             onClick={() => {
               playSound('click');
-              fedorSpeak('¡Desafío aceptado! Responde los ejercicios para ganar tu medalla.');
-              setShowProblemasModal(true);
+              fedorSpeak('¡Desafío del Día! Examen Final del Libro.');
+              setShowExamenFinalModal(true);
             }}
             style={{
               marginTop: '1.2rem',
@@ -2325,6 +2333,18 @@ export default function HomeScreen3ro({ onOpenIntro }: HomeScreen3roProps) {
       <StatsLabModal3ro
         isOpen={showStatsLabModal}
         onClose={() => setShowStatsLabModal(false)}
+      />
+
+      {/* ══ Modal Reto Espacial (Popup exacto de la imagen) ══ */}
+      <RetoEspacialModal3ro
+        isOpen={showRetoEspacialModal}
+        onClose={() => setShowRetoEspacialModal(false)}
+      />
+
+      {/* ══ Modal Examen Final del Libro (Exacto a la imagen del usuario) ══ */}
+      <ExamenFinalModal3ro
+        isOpen={showExamenFinalModal}
+        onClose={() => setShowExamenFinalModal(false)}
       />
 
       <style jsx>{`
