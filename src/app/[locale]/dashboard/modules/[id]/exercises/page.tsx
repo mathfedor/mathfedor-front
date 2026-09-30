@@ -20,6 +20,7 @@ import { LearningComment, LearningReply, learningCommentsService } from '@/servi
 import BookExperience from '@/components/book/BookExperience';
 import Book1Experience from '@/components/book-primero/Book1Experience';
 import Book3Experience from '@/components/book-tercero/Book3Experience';
+import Book4Experience from '@/components/book-cuarto/Book4Experience';
 import '@/app/[locale]/dashboard/libro-2do/book.css';
 
 type FireworkStyle = CSSProperties & Record<`--${string}`, string>;
@@ -4485,6 +4486,16 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     );
   }, [currentModule, resolvedParams.id]);
 
+  const isGrade4Module = useMemo(() => {
+    return (
+      moduleMatchesGrade(currentModule, resolvedParams.id, 4) ||
+      /grado\s*4|grade\s*4|grado4|grade4|4º\s*ano|4e\s*annee|4\.\s*klasse/i.test(currentModule?.group || '') ||
+      currentModule?.slug === 'matematicas-fedor-4' ||
+      currentModule?.slug === 'libro-4to' ||
+      currentModule?._id === '6832543f6fee7c84b2f077c1'
+    );
+  }, [currentModule, resolvedParams.id]);
+
   const isBookModule = useMemo(() => {
     return isGrade1Module || isGrade2Module;
   }, [isGrade1Module, isGrade2Module]);
@@ -4507,6 +4518,23 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         />
         <div className="flex-1 overflow-y-auto">
           <Book1Experience slug="libro-1ro" />
+        </div>
+      </div>
+    );
+  }
+
+  if (isGrade4Module) {
+    return (
+      <div className="flex min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">
+        <Sidebar />
+        <AlertDialog
+          isOpen={isAlertOpen}
+          onClose={() => setIsAlertOpen(false)}
+          title={alertMessage.title}
+          message={alertMessage.message}
+        />
+        <div className="flex-1 overflow-y-auto">
+          <Book4Experience slug="matematicas-fedor-4" />
         </div>
       </div>
     );

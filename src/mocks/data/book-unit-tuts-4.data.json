@@ -1,0 +1,211 @@
+{
+  "UNIT_TUTS": [
+    {
+      "icon": "➕",
+      "title": "¡Unidad 1 — Operaciones Básicas · Adición y Sistema Decimal!",
+      "text": "Aprende los números naturales hasta los millones y suma como un verdadero piloto espacial.",
+      "steps": [
+        "Números Naturales Conteo y Posición: Hasta centenas de mil",
+        "Adición sin llevar: Sumas sin llevar de 1 a 500",
+        "Adición con llevadas: Sumas con llevadas de 1 a 500",
+        "Problemas Verbales: Problemas verbales de suma · Ábaco Fedor sobre 100"
+      ]
+    },
+    {
+      "icon": "➖",
+      "title": "¡Unidad 1 — Operaciones Básicas · Sustracción!",
+      "text": "Aprende a restar como un piloto: minuendo, sustraendo y diferencia. ¡La operación inversa de la suma!",
+      "steps": [
+        "Concepto y Partes de la Resta: Minuendo, sustraendo y diferencia",
+        "Restas con Préstamo Múltiple: Prestando en varias columnas",
+        "Problemas de Sustracción: Situaciones contextuales"
+      ]
+    },
+    {
+      "icon": "✖️",
+      "title": "¡Unidad 1 — Operaciones Básicas · Multiplicación!",
+      "text": "Multiplicar es sumar el mismo número varias veces. ¡Domina las tablas y multiplica con cifras grandes!",
+      "steps": [
+        "Concepto y Tablas: Tablas del 2 al 9",
+        "Tablas de Multiplicar: Del 2 al 12",
+        "Multiplicación: Cifras grandes"
+      ]
+    },
+    {
+      "icon": "➗",
+      "title": "¡Unidad 1 — Operaciones Básicas · División!",
+      "text": "Dividir es repartir en partes iguales. ¡La operación inversa de la multiplicación!",
+      "steps": [
+        "Concepto y Partes de la División: Dividendo, divisor, cociente, residuo",
+        "División Exacta: Sin residuo",
+        "División con Residuo: Cuando queda un sobrante"
+      ]
+    },
+    {
+      "icon": "🧩",
+      "title": "¡Unidad 1 — Operaciones Básicas · Problemas!",
+      "text": "Resuelve problemas reales combinando las 4 operaciones. Sumy, Math y Jack te necesitan.",
+      "steps": [
+        "Problemas Cotidianos: Aditivos, multiplicativos y combinados",
+        "Problemas Numéricos SABER: Doble, mitad, triple, perímetro",
+        "Problemas Contextuales SABER: Situaciones cotidianas"
+      ]
+    },
+    {
+      "icon": "🔢",
+      "title": "¡Unidad 2 — Divisores y Factores!",
+      "text": "Aprende sobre divisores, números primos y compuestos, y los múltiplos.",
+      "steps": [
+        "Divisores de un Número: Encuentra los divisores exactos",
+        "Números Primos y Compuestos: Identifica primos vs compuestos",
+        "Múltiplos de un Número: La tabla del número"
+      ]
+    },
+    {
+      "icon": "🧮",
+      "title": "¡Unidad 3 — MCD y MCM!",
+      "text": "Herramientas clave para fracciones.",
+      "steps": [
+        "Máximo Común Divisor (MCD): Mayor divisor común",
+        "Mínimo Común Múltiplo (MCM): Menor múltiplo común",
+        "Problemas MCD y MCM (Lucas, Sora): Repartir, coincidir, cortar en partes iguales"
+      ]
+    },
+    {
+      "icon": "🧊",
+      "title": "¡Unidad 4 — Fracciones!",
+      "text": "Simplificar, sumar, restar, multiplicar y dividir fracciones.",
+      "steps": [
+        "Simplificación: A la mínima expresión",
+        "Fracciones Homogéneas: Mismo denominador",
+        "Fracciones Heterogéneas: Distinto denominador",
+        "Multiplicación y División: Multiplica cruzado / invierte"
+      ]
+    },
+    {
+      "icon": "🍕",
+      "title": "¡Unidad 5 — Aplicaciones con Fracciones!",
+      "text": "Problemas cotidianos con fracciones y MCD/MCM.",
+      "steps": [
+        "Problemas con Fracciones: Situaciones cotidianas",
+        "Problemas con MCD y MCM: Repartir y coincidir",
+        "Aplicaciones Fracciones (Leo, Apolo, Sora): Problemas de recorrido y reparto con fracciones"
+      ]
+    },
+    {
+      "icon": "⚡",
+      "title": "¡Unidad 6 — Potenciación!",
+      "text": "Potencias, propiedades y raíces cuadradas.",
+      "steps": [
+        "Concepto de Potencia: Base elevada a exponente",
+        "Raíz y Propiedades: Producto, cociente, raíz"
+      ]
+    },
+    {
+      "icon": "√",
+      "title": "¡Unidad 6 — Radicación!",
+      "text": "La radicación es la operación inversa de la potenciación: √25 = 5 porque 5 × 5 = 25. Aprende sus propiedades y úsala en el teorema de Pitágoras y en problemas de áreas.",
+      "steps": [
+        "¿Qué es la radicación?: Índice, radicando y raíz; cuadrados perfectos.",
+        "Propiedades de la radicación: Raíz de un producto y de un cociente.",
+        "Teorema de Pitágoras: La hipotenusa y los catetos de un triángulo rectángulo.",
+        "Aplicaciones de la raíz cuadrada: Del área de un cuadrado a su lado, baldosas y perímetros."
+      ]
+    },
+    {
+      "icon": "📏",
+      "title": "¡Unidad 7 — Sistema Métrico Decimal!",
+      "text": "Longitud, área, volumen y perímetro con el sistema métrico.",
+      "steps": [
+        "Longitud: Conversiones mm/cm/m/km",
+        "Área: Superficie (m²)",
+        "Volumen: Espacio 3D (m³)",
+        "Perímetro: Suma de lados"
+      ]
+    },
+    {
+      "icon": "🔢",
+      "title": "¡Unidad 8 — Números Decimales!",
+      "text": "Un número decimal es otra forma de escribir una fracción. Aprende a pasar entre fracción, decimal y porcentaje, a reconocer sus tipos y a operar con ellos.",
+      "steps": [
+        "¿Qué son los números decimales?: Parte entera y decimal; la fracción como cociente.",
+        "Fracciones, decimales y porcentajes: Un mismo valor escrito de tres formas.",
+        "Tipos de números decimales: Exactos, periódicos puros, periódicos mixtos y no periódicos.",
+        "Suma y resta de decimales: Igualar cifras decimales con ceros y operar."
+      ]
+    },
+    {
+      "icon": "⚖️",
+      "title": "¡Unidad 9 — Proporciones!",
+      "text": "Compara cantidades con razones, reconoce proporciones y resuelve problemas con la regla de tres simple.",
+      "steps": [
+        "Razón y proporción: Comparar cantidades con un cociente.",
+        "Regla de tres simple directa: Si una cantidad aumenta, la otra también.",
+        "Proporciones en la vida diaria: Recetas, escalas, mezclas y tablas."
+      ]
+    },
+    {
+      "icon": "⚖️",
+      "title": "¡Unidad 10 — Ecuaciones!",
+      "text": "Una ecuación es una igualdad con una incógnita: como una balanza en equilibrio. Aprende a hallar el valor que falta y a resolver problemas con ecuaciones.",
+      "steps": [
+        "Igualdades y balanzas: La igualdad como equilibrio: hallar el número o el peso que falta.",
+        "Ecuaciones de suma y resta: x + a = b y x − a = b, con varios términos.",
+        "Ecuaciones con multiplicación: ax = b y ax + b = c.",
+        "Ecuaciones con fraccionarios: (a/b)x = c/d."
+      ]
+    },
+    {
+      "icon": "％",
+      "title": "¡Unidad 11 — Porcentaje!",
+      "text": "Aprende a leer, comparar y calcular porcentajes: desde una cuadrícula de 100 hasta descuentos, intereses y gráficas.",
+      "steps": [
+        "Qué es el porcentaje: Un porcentaje es una razón sobre 100.",
+        "Hallar el porcentaje de una cantidad: Calcular el p % de N y sus inversas.",
+        "Problemas con porcentaje: Descuentos, intereses, precio final y gráficas."
+      ]
+    },
+    {
+      "icon": "📐",
+      "title": "¡Unidad 12 — Geometría y Estadística!",
+      "text": "Figuras geométricas y análisis de datos.",
+      "steps": [
+        "Ángulos y Figuras Geométricas: Ángulos, polígonos, simetría, traslación y rotación",
+        "Perímetro y Área: Cuadrados y rectángulos",
+        "Volumen: Cubos y prismas",
+        "Geometría con Jack (Excel): Áreas, perímetros y volúmenes en contexto"
+      ]
+    },
+    {
+      "icon": "⚖️",
+      "title": "¡Unidad 13 — Magnitudes!",
+      "text": "Una magnitud es cualquier propiedad que se puede medir con números. Descubre cuándo dos magnitudes crecen juntas (directa) y cuándo una sube mientras la otra baja (inversa).",
+      "steps": [
+        "Magnitudes directamente proporcionales: Tablas, gráficas y la constante de proporcionalidad.",
+        "Magnitudes inversamente proporcionales: Repartos y trabajo compartido: más personas, menos para cada una.",
+        "¿Directa o inversa?: Reconocer qué relación hay entre dos magnitudes.",
+        "Regla de tres simple inversa: Se invierte una razón de la proporción."
+      ]
+    },
+    {
+      "icon": "📊",
+      "title": "¡Unidad 14 — Probabilidad!",
+      "text": "Organiza los datos del salón en tablas de frecuencia y léelos en gráficas de barras, líneas y circulares.",
+      "steps": [
+        "Experimentos Aleatorios: Favorables / posibles",
+        "Probabilidad con Roxy y Jack (Excel): Dados, monedas, vasijas"
+      ]
+    },
+    {
+      "icon": "🔟",
+      "title": "¡Unidad 15 — Sistema Decimal!",
+      "text": "El sistema decimal se basa en potencias de 10. Lee y escribe décimas, centésimas y milésimas, ubícalas en la recta y opera con ellas.",
+      "steps": [
+        "Fracciones decimales y valor de posición: Décimas, centésimas y milésimas: lectura, escritura y comparación.",
+        "Decimales en la recta numérica: Leer y ubicar números decimales en la recta.",
+        "Suma y resta con decimales: Sumar y restar enteros y decimales alineando la coma.",
+        "Multiplicación y división con decimales: Multiplicar un entero por un decimal y dividir entre decimales."
+      ]
+    }
+  ]
+}

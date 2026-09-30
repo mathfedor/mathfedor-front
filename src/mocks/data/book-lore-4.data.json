@@ -1,0 +1,39 @@
+{
+  "LORE_CHAPTERS": [
+    {
+      "id": "ch0",
+      "unit": 0,
+      "emoji": "🌍",
+      "title": "Capítulo 1 — La partida",
+      "text": "El Capitán Fedor recibe la llamada del Almirante Estelar: «La Galaxia del Saber está perdiendo sus números». Despega de la Tierra a bordo del cohete Cadete con un mapa antiguo del universo de las matemáticas. Tu misión empieza aquí."
+    },
+    {
+      "id": "ch1",
+      "unit": 1,
+      "emoji": "🔴",
+      "title": "Capítulo 2 — Marte y la Tienda",
+      "text": "En Marte, Fedor encuentra una tienda mágica que abre y cierra con números. Para entrar, hay que descubrir qué se vendió: minuendo menos sustraendo igual diferencia. Las puertas rojas se abren y un mapa del próximo planeta brilla en la pared."
+    },
+    {
+      "id": "ch2",
+      "unit": 2,
+      "emoji": "🪐",
+      "title": "Capítulo 3 — Los anillos de Saturno",
+      "text": "Saturno guarda en sus anillos la Tabla Mágica. Fedor escucha a Jack contar regalos en grupos iguales. Multiplicar es sumar el mismo número. Cuando completas la tabla del 1 al 10, los anillos se iluminan y revelan la siguiente coordenada."
+    },
+    {
+      "id": "ch3",
+      "unit": 3,
+      "emoji": "🔵",
+      "title": "Capítulo 4 — Las aguas de Neptuno",
+      "text": "Bajo el océano azul de Neptuno, Fedor reparte chocolatinas entre los astronautas. Algunas reparticiones son perfectas (residuo cero), otras dejan sobras. Cada vez que aciertas una división, una corriente te empuja más profundo, hacia el corazón del planeta."
+    },
+    {
+      "id": "ch4",
+      "unit": 4,
+      "emoji": "☀️",
+      "title": "Capítulo 5 — La Estrella Final",
+      "text": "En el Sol, el Monstruo de las Sombras intenta apagar todas las matemáticas del universo. Fedor lo enfrenta con perímetros, áreas y figuras. Si llegas hasta aquí y vences, te coronarán Almirante Estelar y la galaxia recordará tu nombre por siempre."
+    }
+  ]
+}
