@@ -110,6 +110,10 @@ export default function LessonScreen3ro() {
     return (level?.exercises || []) as unknown as Grade3Exercise[];
   }, [level]);
 
+  const maxTimer = useMemo(() => {
+    return (currentUnit === 10 && currentTopic === 0 && currentLevel >= 3) ? 70 : 35;
+  }, [currentUnit, currentTopic, currentLevel]);
+
   const [curExIndex, setCurExIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [inputVal, setInputVal] = useState('');
@@ -119,6 +123,11 @@ export default function LessonScreen3ro() {
   >([]);
   const [timerSeconds, setTimerSeconds] = useState(35);
   const [isAnswered, setIsAnswered] = useState(false);
+  const isAnsweredRef = React.useRef(false);
+
+  useEffect(() => {
+    isAnsweredRef.current = isAnswered;
+  }, [isAnswered]);
 
   // Load level examples
   useEffect(() => {
@@ -131,10 +140,14 @@ export default function LessonScreen3ro() {
 
   // Timer for current exercise
   useEffect(() => {
-    if (showingExamples || isAnswered || exercises.length === 0) return;
+    if (showingExamples || exercises.length === 0) return;
 
-    setTimerSeconds(35);
+    setTimerSeconds(maxTimer);
+    setIsAnswered(false);
+    isAnsweredRef.current = false;
+
     const interval = setInterval(() => {
+      if (isAnsweredRef.current) return;
       setTimerSeconds((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
@@ -147,13 +160,14 @@ export default function LessonScreen3ro() {
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [curExIndex, showingExamples, isAnswered]);
+  }, [curExIndex, showingExamples, maxTimer]);
 
   const curExercise = exercises[curExIndex];
 
   const handleTimeOut = () => {
-    if (!curExercise || isAnswered) return;
+    if (!curExercise || isAnsweredRef.current) return;
     setIsAnswered(true);
+    isAnsweredRef.current = true;
     setFeedback({
       ok: false,
       message: `⏰ ¡Tiempo agotado! La respuesta correcta era: ${curExercise.ans}`,
@@ -178,6 +192,7 @@ export default function LessonScreen3ro() {
   const checkAnswer = (userAns: string) => {
     if (isAnswered || !curExercise) return;
     setIsAnswered(true);
+    isAnsweredRef.current = true;
 
     const isCorrect =
       String(userAns).trim().toLowerCase() === String(curExercise.ans).trim().toLowerCase();
@@ -207,6 +222,7 @@ export default function LessonScreen3ro() {
 
   const moveToNext = (currentLog: typeof answersLog) => {
     setIsAnswered(false);
+    isAnsweredRef.current = false;
     setSelectedOption(null);
     setInputVal('');
     setFeedback(null);
@@ -245,119 +261,170 @@ export default function LessonScreen3ro() {
   const curExample = examples[exampleIdx] || examples[0];
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-gray-900 font-sans p-3 md:p-6 pb-24 select-none">
-      {/* ════ MODO 1: PANEL DE EJEMPLOS DIDÁCTICOS (WIZARD - IMAGEN 2) ════ */}
-      {showingExamples && examples.length > 0 ? (
-        <div className="w-full max-w-5xl mx-auto">
-          {/* Top Bar with Return, Topic Title & Level Badge */}
-          <div className="mb-3">
-            <button
-              type="button"
-              onClick={() => goScreen('unit')}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 hover:text-purple-900 cursor-pointer transition-colors mb-2"
-            >
-              <span>←</span>
-              <span>Volver a temas</span>
-            </button>
+    <div className="w-full max-w-full mx-auto py-2 md:py-4 px-2 md:px-0 select-none font-sans">
+      <div
+        style={{
+          background: '#FFFFFF',
+          borderRadius: '24px',
+          padding: '1.5rem 2rem',
+          boxShadow: '0 8px 30px rgba(0, 0, 0, 0.05)',
+          border: '1.5px solid rgba(226, 232, 240, 0.8)',
+          width: '100%',
+          boxSizing: 'border-box',
+        }}
+      >
+        {/* Back button */}
+        <div style={{ marginBottom: '12px' }}>
+          <button
+            type="button"
+            onClick={() => goScreen('unit')}
+            style={{
+              color: '#7B2FBE',
+              fontSize: '12px',
+              fontWeight: 800,
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: 0,
+            }}
+            className="hover:opacity-80 transition-opacity"
+          >
+            <span>←</span> Volver a temas
+          </button>
+        </div>
 
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <h1 className="text-lg md:text-xl font-black text-[#1E1B4B] flex items-center gap-2">
-                  <span>{topic?.icon || '🔢'}</span>
-                  <span>{topic?.title}</span>
-                </h1>
-                <div className="mt-1 flex items-center gap-2">
-                  <span
-                    className="inline-flex items-center gap-1 text-xs font-black px-2 py-0.5 rounded-md border shadow-xs"
-                    style={{
-                      background: theme.badgeBg,
-                      color: theme.badgeColor,
-                      borderColor: theme.accent,
-                    }}
-                  >
-                    <span>{level.short || `N${currentLevel + 1}`}</span>
-                    <button
-                      type="button"
-                      onClick={() => fedorSpeak(`${topic?.title}, ${theme.headerTxt}`)}
-                      title="Escuchar"
-                      className="cursor-pointer hover:scale-110 transition-transform"
-                    >
-                      🔊
-                    </button>
-                  </span>
-                </div>
-              </div>
-
-              <div className="text-right">
-                <span className="text-xs font-bold text-gray-400 font-mono">
-                  0/{exercises.length || 21}
-                </span>
-              </div>
+        {/* Title and Progress Row */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '6px' }}>
+          <div>
+            <div style={{ fontSize: '18px', fontWeight: 900, color: '#1E1B4B', display: 'flex', alignItems: 'center', gap: '8px', fontFamily: "'Baloo 2', sans-serif" }}>
+              <span>{topic?.icon || '🔢'}</span>
+              <span>{topic?.title || 'Adición y Conteo'}</span>
             </div>
-
-            {/* Faint divider line */}
-            <div className="w-full h-px bg-purple-200/60 mt-3 mb-4" />
+            <div style={{ marginTop: '4px' }}>
+              <span
+                style={{
+                  background: theme.badgeBg || '#DCF5EE',
+                  color: theme.badgeColor || '#074F3A',
+                  fontSize: '11px',
+                  fontWeight: 900,
+                  padding: '2px 8px',
+                  borderRadius: '6px',
+                  display: 'inline-block',
+                }}
+              >
+                {level?.short || `N${currentLevel + 1}`}
+              </span>
+            </div>
           </div>
 
-          {/* ══ THE BIG COLORED WIZARD CARD (Imagen 2) ══ */}
+          <div style={{ textAlign: 'right' }}>
+            <span style={{ fontSize: '12px', fontWeight: 800, color: '#94A3B8', fontFamily: 'monospace' }}>
+              {answersLog.filter((a) => a.ok).length}/{exercises.length || 21}
+            </span>
+            {!showingExamples && (
+              <div style={{ fontSize: '11px', fontWeight: 800, color: '#94A3B8', marginTop: '2px' }}>
+                Ejercicio {curExIndex + 1} de {exercises.length || 21}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Full-width Divider / Track Bar */}
+        <div style={{ height: '3px', background: '#F1F5F9', borderRadius: '2px', width: '100%', margin: '8px 0 16px', overflow: 'hidden' }}>
           <div
-            className="w-full rounded-[24px] md:rounded-[28px] p-5 md:p-8 text-white shadow-2xl relative overflow-hidden transition-all duration-300"
+            style={{
+              height: '100%',
+              width: showingExamples ? '0%' : `${((curExIndex) / (exercises.length || 1)) * 100}%`,
+              background: '#24C496',
+              transition: 'width 0.3s ease',
+            }}
+          />
+        </div>
+
+        {/* ════ MODO 1: PANEL DE EJEMPLOS DIDÁCTICOS (Idéntico a Imagen 2) ════ */}
+        {showingExamples && examples.length > 0 ? (
+          <div
             style={{
               background: theme.grad,
+              borderRadius: '24px',
+              padding: '1.4rem 1.75rem',
+              color: '#ffffff',
+              boxShadow: '0 12px 35px rgba(0, 0, 0, 0.25)',
+              position: 'relative',
+              overflow: 'hidden',
+              width: '100%',
+              boxSizing: 'border-box',
             }}
           >
-            {/* Top Pill Badge */}
-            <div className="flex items-center justify-between gap-2 mb-4">
-              <div className="inline-flex items-center gap-2 bg-black/25 text-[#F5C518] text-[10px] md:text-[11px] font-black uppercase px-3 py-1.5 rounded-lg border border-white/10 shadow-xs">
-                <span>■</span>
-                <span>EJEMPLOS INTERACTIVOS · MÉTODO FEDOR</span>
+            {/* Top Badge with 🔊 button */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', marginBottom: '1.1rem' }}>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  background: 'rgba(0, 0, 0, 0.28)',
+                  border: '1px solid rgba(245, 197, 24, 0.4)',
+                  borderRadius: '24px',
+                  padding: '3px 4px 3px 12px',
+                  gap: '8px',
+                }}
+              >
+                <span style={{ color: '#F5C518', fontSize: '10.5px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '.12em' }}>
+                  ▪ EJEMPLOS INTERACTIVOS · MÉTODO FEDOR
+                </span>
                 <button
                   type="button"
                   onClick={() => {
                     if (curExample) {
-                      fedorSpeak(`${curExample.q}. La respuesta es ${curExample.a}.`);
+                      fedorSpeak(`${curExample.q}. ${curExample.a ? `La respuesta es ${curExample.a}.` : ''}`);
                     }
                   }}
-                  title="Escuchar ejemplo"
-                  className="cursor-pointer hover:scale-120 transition-transform ml-0.5 text-xs text-white"
+                  title="Escuchar"
+                  style={{
+                    background: '#ffffff',
+                    border: 'none',
+                    borderRadius: '12px',
+                    padding: '3px 10px',
+                    fontSize: '13px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#2563EB',
+                  }}
+                  className="hover:scale-110 active:scale-95 transition-transform"
                 >
                   🔊
                 </button>
               </div>
-
-              <button
-                type="button"
-                onClick={() => setShowingExamples(false)}
-                className="inline-flex items-center gap-1.5 text-xs font-black bg-white/15 hover:bg-white/25 text-white px-3 py-1.5 rounded-xl border border-white/20 cursor-pointer transition-colors shadow-xs"
-              >
-                <span>Practicar</span>
-                <span>▶</span>
-              </button>
             </div>
 
             {/* Subheader: Level Header (Left) and Topic (Right) */}
-            <div className="flex items-start justify-between gap-4 mb-4">
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '16px', marginBottom: '1.25rem' }}>
               <div>
-                <h2 className="text-base md:text-xl font-black text-white leading-tight">
+                <div style={{ fontSize: '20px', fontWeight: 900, color: '#ffffff', fontFamily: "'Baloo 2', sans-serif", lineHeight: 1.2 }}>
                   {theme.headerTxt}
-                </h2>
-                <p className="text-xs md:text-sm font-semibold text-white/80 mt-0.5">
+                </div>
+                <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)', fontWeight: 600, marginTop: '3px' }}>
                   {theme.sub} - {topic?.title}
-                </p>
+                </div>
               </div>
 
-              <div className="text-right shrink-0">
-                <div className="text-[10px] font-black uppercase tracking-wider text-amber-400">
+              <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                <div style={{ fontSize: '10px', fontWeight: 900, color: '#FF8C2A', textTransform: 'uppercase', letterSpacing: '.08em' }}>
                   TEMA
                 </div>
-                <div className="text-xs md:text-sm font-black text-amber-300 max-w-[200px] truncate">
+                <div style={{ fontSize: '13px', fontWeight: 900, color: '#FF8C2A', fontFamily: "'Baloo 2', sans-serif" }}>
                   {topic?.title}
                 </div>
               </div>
             </div>
 
-            {/* Stepper Navigation Bar: [ ◄ ] EJEMPLO X/N [ ► ] */}
-            <div className="bg-[#200E4A] border border-purple-800/60 rounded-2xl p-2 md:p-2.5 flex items-center justify-between mb-4 shadow-lg">
+            {/* Navigation Bar: [ ◀ ]  EJEMPLO X/N  [ ▶ ] */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '14px', marginBottom: '1.15rem', width: '100%' }}>
               <button
                 type="button"
                 disabled={exampleIdx === 0}
@@ -365,303 +432,528 @@ export default function LessonScreen3ro() {
                   setExampleIdx((prev) => Math.max(0, prev - 1));
                   setExampleStep(0);
                 }}
-                className="w-12 h-10 rounded-xl bg-purple-900/60 hover:bg-purple-800 border border-purple-500/30 text-white flex items-center justify-center font-black text-lg cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed transition-all active:scale-95 shadow-sm"
+                style={{
+                  flex: 1,
+                  background: '#241355',
+                  border: '1.5px solid rgba(255, 255, 255, 0.22)',
+                  borderRadius: '12px',
+                  height: '46px',
+                  color: '#ffffff',
+                  fontSize: '18px',
+                  cursor: exampleIdx === 0 ? 'not-allowed' : 'pointer',
+                  opacity: exampleIdx === 0 ? 0.35 : 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.15s ease',
+                  boxShadow: '0 4px 12px rgba(36, 19, 85, 0.35)',
+                }}
+                className="hover:scale-[1.01] active:scale-[0.99]"
               >
-                ◄
+                ◀
               </button>
 
-              <div className="text-center">
-                <div className="text-[9px] uppercase tracking-wider text-purple-200/70 font-black">
+              <div style={{ textAlign: 'center', minWidth: '100px', flexShrink: 0 }}>
+                <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.06em' }}>
                   EJEMPLO
                 </div>
-                <div className="text-base md:text-xl font-black font-['Baloo_2',sans-serif] leading-tight text-[#F5C518]">
-                  {exampleIdx + 1} <span className="text-xs md:text-sm text-white/60">/ {examples.length}</span>
+                <div style={{ fontSize: '20px', fontWeight: 900, color: '#F5C518', fontFamily: "'Baloo 2', sans-serif", lineHeight: 1.1 }}>
+                  {exampleIdx + 1} <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.65)', fontWeight: 700 }}>/ {examples.length || 10}</span>
                 </div>
               </div>
 
               <button
                 type="button"
-                disabled={exampleIdx === examples.length - 1}
+                disabled={exampleIdx >= (examples.length || 10) - 1}
                 onClick={() => {
-                  setExampleIdx((prev) => Math.min(examples.length - 1, prev + 1));
+                  setExampleIdx((prev) => Math.min((examples.length || 10) - 1, prev + 1));
                   setExampleStep(0);
                 }}
-                className="w-12 h-10 rounded-xl bg-purple-900/60 hover:bg-purple-800 border border-purple-500/30 text-white flex items-center justify-center font-black text-lg cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed transition-all active:scale-95 shadow-sm"
+                style={{
+                  flex: 1,
+                  background: '#241355',
+                  border: '1.5px solid rgba(255, 255, 255, 0.22)',
+                  borderRadius: '12px',
+                  height: '46px',
+                  color: '#ffffff',
+                  fontSize: '18px',
+                  cursor: exampleIdx >= (examples.length || 10) - 1 ? 'not-allowed' : 'pointer',
+                  opacity: exampleIdx >= (examples.length || 10) - 1 ? 0.35 : 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.15s ease',
+                  boxShadow: '0 4px 12px rgba(36, 19, 85, 0.35)',
+                }}
+                className="hover:scale-[1.01] active:scale-[0.99]"
               >
-                ►
+                ▶
               </button>
             </div>
 
-            {/* Interactive Example Card */}
-            {curExample && (
-              <div className="bg-black/20 border border-white/15 rounded-2xl p-4 md:p-6 mb-4 backdrop-blur-xs shadow-inner">
-                {/* Question */}
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-amber-400/20 border border-amber-300/40 flex items-center justify-center text-xl shrink-0 shadow-sm">
-                    {curExample.icon || '🟡'}
-                  </div>
-                  <h3 className="text-lg md:text-2xl font-black text-white font-['Baloo_2',sans-serif] tracking-wide">
-                    {curExample.q}
-                  </h3>
+            {/* Example Card */}
+            <div
+              style={{
+                background: 'rgba(255, 255, 255, 0.08)',
+                border: '1.5px solid rgba(255, 255, 255, 0.18)',
+                borderRadius: '18px',
+                padding: '1.25rem',
+                width: '100%',
+                boxSizing: 'border-box',
+              }}
+            >
+              {/* Question */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: exampleStep > 0 ? '1rem' : '1.1rem' }}>
+                <div
+                  style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '12px',
+                    background: 'rgba(255, 255, 255, 0.12)',
+                    border: '2px solid rgba(255, 255, 255, 0.25)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '20px',
+                    flexShrink: 0,
+                  }}
+                >
+                  {curExample?.icon || '🟡'}
                 </div>
-
-                {/* Step 1: Visual Representation */}
-                {exampleStep >= 1 && curExample.vis && (
-                  <div
-                    className="my-3.5 p-4 bg-white rounded-xl shadow-inner text-gray-900 overflow-x-auto flex justify-center items-center animate-fadeIn border border-gray-200"
-                    dangerouslySetInnerHTML={{ __html: curExample.vis }}
-                  />
-                )}
-
-                {/* Step 2: Answer Box */}
-                {exampleStep >= 2 && (
-                  <div className="my-3.5 p-3.5 bg-emerald-950/70 border-2 border-emerald-400/80 rounded-xl flex items-center gap-3.5 text-white animate-fadeIn shadow-md">
-                    <span className="text-2xl md:text-3xl">✅</span>
-                    <div>
-                      <div className="text-[10px] uppercase font-black tracking-wider text-emerald-300">
-                        Respuesta Correcta
-                      </div>
-                      <div className="text-lg md:text-2xl font-black font-['Baloo_2',sans-serif] text-white">
-                        {curExample.a}
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Step 3: Explanation Step-by-Step */}
-                {exampleStep >= 3 && curExample.explain && (
-                  <div className="my-3.5 p-4 bg-amber-950/60 border border-amber-400/60 rounded-xl text-white animate-fadeIn shadow-md">
-                    <div className="text-[11px] font-black uppercase tracking-wider text-amber-300 mb-2.5 flex items-center gap-1.5">
-                      <span>📖</span>
-                      <span>Paso a paso</span>
-                    </div>
-                    <div className="space-y-1.5 text-xs md:text-sm">
-                      {curExample.explain.split('\n').filter(l => l.trim()).map((line, lIdx) => (
-                        <div key={lIdx} className="flex items-start gap-2 py-0.5">
-                          <span className="w-5 h-5 rounded-full bg-amber-400 text-purple-950 font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">
-                            {lIdx + 1}
-                          </span>
-                          <span className="text-amber-100 font-medium leading-relaxed">{line}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Progressive Action Button (Pill button) */}
-                <div className="mt-4">
-                  {exampleStep === 0 && (
-                    <button
-                      type="button"
-                      onClick={() => setExampleStep(curExample.vis ? 1 : 2)}
-                      className="w-full py-3 px-6 rounded-xl bg-[#4A1E8A] hover:bg-[#5E27AD] text-white font-black text-xs md:text-sm border border-[#C5BFEE]/40 shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99]"
-                    >
-                      <span>👁️</span>
-                      <span>{curExample.vis ? 'Ver visual' : 'Ver respuesta'}</span>
-                    </button>
-                  )}
-
-                  {exampleStep === 1 && (
-                    <button
-                      type="button"
-                      onClick={() => setExampleStep(2)}
-                      className="w-full py-3 px-6 rounded-xl bg-[#4A1E8A] hover:bg-[#5E27AD] text-white font-black text-xs md:text-sm border border-[#C5BFEE]/40 shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99]"
-                    >
-                      <span>💡</span>
-                      <span>Ver respuesta</span>
-                    </button>
-                  )}
-
-                  {exampleStep === 2 && curExample.explain && (
-                    <button
-                      type="button"
-                      onClick={() => setExampleStep(3)}
-                      className="w-full py-3 px-6 rounded-xl bg-[#1A5C2A] hover:bg-[#237A38] text-white font-black text-xs md:text-sm border border-[#90EE90]/40 shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99]"
-                    >
-                      <span>📖</span>
-                      <span>Ver explicación paso a paso</span>
-                    </button>
-                  )}
-
-                  {exampleStep >= 3 && (
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setExampleStep(0)}
-                        className="w-1/2 py-2.5 px-4 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-xs border border-white/20 transition-all cursor-pointer text-center"
-                      >
-                        🔄 Repetir ejemplo
-                      </button>
-                      {exampleIdx < examples.length - 1 ? (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setExampleIdx(prev => prev + 1);
-                            setExampleStep(0);
-                          }}
-                          className="w-1/2 py-2.5 px-4 rounded-xl bg-[#4A1E8A] hover:bg-[#5E27AD] text-white font-black text-xs border border-[#C5BFEE]/40 transition-all cursor-pointer text-center"
-                        >
-                          Siguiente ejemplo ▶
-                        </button>
-                      ) : null}
-                    </div>
-                  )}
+                <div style={{ fontSize: '18px', fontWeight: 900, color: '#ffffff', fontFamily: "'Baloo 2', sans-serif" }}>
+                  {curExample?.q || '1 + 2 = ?'}
                 </div>
+              </div>
 
-                {/* Big Button: ¡Comenzar Ejercicios! */}
-                {(exampleIdx === examples.length - 1 || exampleStep >= 2) && (
+              {/* Step 1: Visual Representation */}
+              {exampleStep >= 1 && curExample?.vis && (
+                <div
+                  className="my-3 p-4 bg-white rounded-xl shadow-inner text-gray-900 overflow-x-auto flex justify-center items-center border border-gray-200"
+                  dangerouslySetInnerHTML={{ __html: curExample.vis }}
+                />
+              )}
+
+              {/* Step 2: Answer Box */}
+              {exampleStep >= 2 && curExample?.a && (
+                <div
+                  style={{
+                    background: 'rgba(36, 196, 150, 0.20)',
+                    border: '2px solid #24C496',
+                    borderRadius: '14px',
+                    padding: '0.75rem 1rem',
+                    marginBottom: '0.8rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                  }}
+                >
+                  <span style={{ fontSize: '28px' }}>✅</span>
+                  <div>
+                    <div style={{ fontSize: '11px', color: '#90EE90', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.08em' }}>
+                      Respuesta
+                    </div>
+                    <div style={{ fontSize: '22px', fontWeight: 900, color: '#ffffff', fontFamily: "'Baloo 2', sans-serif" }}>
+                      {curExample.a}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 3: Explanation Step-by-Step */}
+              {exampleStep >= 3 && curExample?.explain && (
+                <div
+                  style={{
+                    background: 'rgba(245, 197, 24, 0.14)',
+                    border: '2px solid rgba(245, 197, 24, 0.5)',
+                    borderRadius: '14px',
+                    padding: '0.85rem 1rem',
+                    marginBottom: '0.8rem',
+                  }}
+                >
+                  <div style={{ fontSize: '11px', color: '#F5C518', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: '.5rem' }}>
+                    📖 Paso a paso
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    {curExample.explain.split('\n').filter((l: string) => l.trim()).map((line: string, idx: number) => (
+                      <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '13px', fontWeight: 600 }}>
+                        <span style={{ background: '#F5C518', color: '#2A0F60', borderRadius: '6px', padding: '1px 7px', fontSize: '11px', fontWeight: 900 }}>
+                          {idx + 1}
+                        </span>
+                        <span style={{ color: '#ffffff', lineHeight: 1.4 }}>{line}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Action Button: 👁️ Ver visual / 💡 Ver respuesta / 📖 Ver explicación paso a paso */}
+              <div>
+                {exampleStep === 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setExampleStep(curExample?.vis ? 1 : 2)}
+                    style={{
+                      width: '100%',
+                      background: '#4A1E8A',
+                      border: '2px solid #C5BFEE',
+                      color: '#ffffff',
+                      padding: '11px 18px',
+                      borderRadius: '12px',
+                      cursor: 'pointer',
+                      fontSize: '13.5px',
+                      fontWeight: 900,
+                      fontFamily: "'Nunito', sans-serif",
+                      boxShadow: '0 4px 14px rgba(74, 30, 138, 0.4)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                    }}
+                    className="hover:scale-[1.008] active:scale-[0.99] transition-transform"
+                  >
+                    <span>👁️ Ver visual</span>
+                  </button>
+                )}
+
+                {exampleStep === 1 && (
+                  <button
+                    type="button"
+                    onClick={() => setExampleStep(2)}
+                    style={{
+                      width: '100%',
+                      background: '#4A1E8A',
+                      border: '2px solid #C5BFEE',
+                      color: '#ffffff',
+                      padding: '11px 18px',
+                      borderRadius: '12px',
+                      cursor: 'pointer',
+                      fontSize: '13.5px',
+                      fontWeight: 900,
+                      fontFamily: "'Nunito', sans-serif",
+                      boxShadow: '0 4px 14px rgba(74, 30, 138, 0.4)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                    }}
+                    className="hover:scale-[1.008] active:scale-[0.99] transition-transform"
+                  >
+                    <span>💡 Ver respuesta</span>
+                  </button>
+                )}
+
+                {exampleStep === 2 && curExample?.explain && (
+                  <button
+                    type="button"
+                    onClick={() => setExampleStep(3)}
+                    style={{
+                      width: '100%',
+                      background: '#1A5C2A',
+                      border: '2px solid #90EE90',
+                      color: '#ffffff',
+                      padding: '11px 18px',
+                      borderRadius: '12px',
+                      cursor: 'pointer',
+                      fontSize: '13.5px',
+                      fontWeight: 900,
+                      fontFamily: "'Nunito', sans-serif",
+                      boxShadow: '0 4px 14px rgba(26, 92, 42, 0.4)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                    }}
+                    className="hover:scale-[1.008] active:scale-[0.99] transition-transform"
+                  >
+                    <span>📖 Ver explicación paso a paso</span>
+                  </button>
+                )}
+
+                {/* Start exercises button */}
+                {(exampleIdx === (examples.length || 10) - 1 || exampleStep >= 2) && (
                   <button
                     type="button"
                     onClick={() => setShowingExamples(false)}
-                    className="w-full mt-3 py-3.5 px-6 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 hover:from-amber-300 hover:to-orange-300 text-purple-950 font-black text-sm md:text-base rounded-2xl shadow-xl shadow-amber-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer flex items-center justify-center gap-2"
+                    style={{
+                      width: '100%',
+                      marginTop: '0.85rem',
+                      padding: '13px',
+                      fontSize: '15px',
+                      fontWeight: 900,
+                      background: 'linear-gradient(135deg, #F5C518, #FF8C2A)',
+                      color: '#2A0F60',
+                      border: 'none',
+                      borderRadius: '14px',
+                      cursor: 'pointer',
+                      fontFamily: "'Nunito', sans-serif",
+                      letterSpacing: '.03em',
+                      boxShadow: '0 6px 20px rgba(245, 197, 24, 0.45)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                    }}
+                    className="hover:scale-[1.01] active:scale-[0.99] transition-transform"
                   >
-                    <span>¡Comenzar Ejercicios!</span>
-                    <span>🚀</span>
-                    <span className="text-xs opacity-80">({exercises.length} preguntas)</span>
+                    <span>🎮 ¡Empezar {exercises.length || 20} ejercicios!</span>
                   </button>
                 )}
               </div>
-            )}
-
-            {/* Carousel Dots at the bottom */}
-            <div className="flex items-center justify-center gap-2 pt-2 pb-1">
-              {examples.map((_, dotIdx) => (
-                <button
-                  key={dotIdx}
-                  type="button"
-                  onClick={() => {
-                    setExampleIdx(dotIdx);
-                    setExampleStep(0);
-                  }}
-                  className={`cursor-pointer transition-all duration-300 ${
-                    dotIdx === exampleIdx
-                      ? 'w-6 h-2 rounded-full bg-[#F5C518] shadow-sm'
-                      : 'w-2 h-2 rounded-full bg-white/35 hover:bg-white/60'
-                  }`}
-                  aria-label={`Ir al ejemplo ${dotIdx + 1}`}
-                />
-              ))}
             </div>
-          </div>
-        </div>
-      ) : (
-        /* ════ MODO 2: EJERCICIOS INTERACTIVOS (QUIZ) ════ */
-        <div className="max-w-3xl mx-auto">
-          {/* Top Bar with Return & Back to Examples */}
-          <div className="flex items-center justify-between gap-3 mb-4">
-            <button
-              type="button"
-              onClick={() => goScreen('unit')}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 hover:text-purple-900 bg-white px-3.5 py-1.5 rounded-full border border-purple-200 cursor-pointer transition-colors shadow-xs"
+
+            {/* Dots Indicator (pequeños círculos horizontales, píldora amarilla activa) */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '6px',
+                marginTop: '1rem',
+                height: '10px',
+                maxHeight: '10px',
+                lineHeight: 1,
+              }}
             >
-              <span>←</span>
-              <span>Volver a temas</span>
-            </button>
-
-            {examples.length > 0 && (
-              <button
-                type="button"
-                onClick={() => setShowingExamples(true)}
-                className="inline-flex items-center gap-1.5 text-xs font-black text-amber-700 bg-amber-50 hover:bg-amber-100 px-3.5 py-1.5 rounded-full border border-amber-300 cursor-pointer transition-colors shadow-xs"
-              >
-                <span>💡</span>
-                <span>Ver Ejemplos Didácticos</span>
-              </button>
-            )}
-          </div>
-
-          <div className="max-w-2xl mx-auto bg-[#130B29]/95 border border-purple-500/30 rounded-3xl p-5 md:p-7 shadow-2xl animate-fadeIn text-white">
-          {/* Progress dots & Timer */}
-          <div className="flex items-center justify-between gap-4 mb-4 pb-3 border-b border-purple-800/30">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-black text-purple-200">
-                Pregunta {curExIndex + 1} de {exercises.length}
-              </span>
-            </div>
-
-            {/* Timer countdown bar */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-amber-300">
-                ⏱️ {timerSeconds}s
-              </span>
-              <div className="w-20 h-2 bg-white/10 rounded-full overflow-hidden">
-                <div
-                  className={`h-full transition-all duration-1000 rounded-full ${
-                    timerSeconds < 10
-                      ? 'bg-red-500'
-                      : timerSeconds < 20
-                      ? 'bg-amber-400'
-                      : 'bg-emerald-400'
-                  }`}
-                  style={{ width: `${(timerSeconds / 35) * 100}%` }}
-                />
-              </div>
+              {(examples.length > 0 ? examples : Array.from({ length: 10 })).map((_, dotIdx) => {
+                const isActive = dotIdx === exampleIdx;
+                return (
+                  <button
+                    key={dotIdx}
+                    type="button"
+                    onClick={() => {
+                      setExampleIdx(dotIdx);
+                      setExampleStep(0);
+                    }}
+                    style={{
+                      width: isActive ? '22px' : '8px',
+                      minWidth: isActive ? '22px' : '8px',
+                      maxWidth: isActive ? '22px' : '8px',
+                      height: '8px',
+                      minHeight: '8px',
+                      maxHeight: '8px',
+                      padding: 0,
+                      margin: 0,
+                      border: 'none',
+                      borderRadius: '4px',
+                      background: isActive ? '#F5C518' : 'rgba(255, 255, 255, 0.35)',
+                      cursor: 'pointer',
+                      flexShrink: 0,
+                      display: 'inline-block',
+                      transition: 'all 0.25s ease',
+                    }}
+                    title={`Ir al ejemplo ${dotIdx + 1}`}
+                  />
+                );
+              })}
             </div>
           </div>
-
-          {curExercise ? (
-            <div>
-              {/* Badges and Points */}
-              <div className="flex items-center justify-between gap-2 mb-3">
-                <div className="flex items-center gap-2">
-                  {curExercise.badge && (
-                    <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-md bg-purple-800/60 border border-purple-400/40 text-purple-200">
-                      {curExercise.badge}
-                    </span>
-                  )}
-                  {curExercise.mascot && (
-                    <span className="text-base">{curExercise.mascot}</span>
-                  )}
-                </div>
-                <span className="text-xs font-black text-amber-400 bg-amber-400/10 border border-amber-400/30 px-2 py-0.5 rounded-md">
-                  ⭐ +{curExercise.pts || 25} pts
+        ) : (
+          /* ════ MODO 2: EJERCICIOS INTERACTIVOS (Idéntico a Imagen de Usuario) ════ */
+          <div
+            style={{
+              background: '#FFFFFF',
+              border: '1.5px solid #E9D5FF',
+              borderRadius: '20px',
+              overflow: 'hidden',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
+              width: '100%',
+              boxSizing: 'border-box',
+            }}
+          >
+            {/* Top Bar: Badge (Conteo) | Counter (1/21) | Pts (⭐ 27 pts) */}
+            <div
+              style={{
+                padding: '0.75rem 1.25rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                background: 'linear-gradient(135deg, #F8F5FF, #F0EDFF)',
+                borderBottom: '1px solid #F0EDF8',
+              }}
+            >
+              {/* Left Badge */}
+              <div>
+                <span
+                  style={{
+                    background: curExercise?.bst ? curExercise.bst.split('background:')[1]?.split(';')[0] || '#DCF5EE' : '#DCF5EE',
+                    color: curExercise?.bst ? curExercise.bst.split('color:')[1]?.split(';')[0] || '#074F3A' : '#074F3A',
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    padding: '4px 12px',
+                    borderRadius: '20px',
+                    display: 'inline-block',
+                  }}
+                >
+                  {curExercise?.badge || 'Conteo'}
                 </span>
               </div>
 
-              {/* Question Statement with 🔊 Button */}
-              <div className="flex items-start justify-between gap-3 mb-4 bg-white/5 p-4 rounded-2xl border border-purple-400/20">
-                <h2 className="text-base md:text-lg font-black text-white leading-relaxed">
-                  {curExercise.q}
-                </h2>
+              {/* Center Counter */}
+              <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#64748B', fontFamily: 'monospace' }}>
+                {curExIndex + 1} / {exercises.length || 21}
+              </div>
+
+              {/* Right Points */}
+              <div>
+                <span
+                  style={{
+                    background: '#FEF3D6',
+                    color: '#B45309',
+                    fontSize: '11px',
+                    fontWeight: 900,
+                    padding: '4px 12px',
+                    borderRadius: '20px',
+                    border: '1px solid rgba(245, 197, 24, 0.3)',
+                    display: 'inline-block',
+                  }}
+                >
+                  ⭐ {curExercise?.pts || 27} pts
+                </span>
+              </div>
+            </div>
+
+            {/* Timer Bar (Purple fill countdown) */}
+            <div style={{ height: '5px', background: '#F3E8FF', width: '100%', overflow: 'hidden' }}>
+              <div
+                style={{
+                  height: '100%',
+                  width: `${Math.max(0, Math.min(100, (timerSeconds / maxTimer) * 100))}%`,
+                  background: timerSeconds < 10 ? '#EF4444' : timerSeconds < 20 ? '#F59E0B' : '#7B2FBE',
+                  transition: 'width 1s linear, background 0.4s ease',
+                  borderRadius: '0 3px 3px 0',
+                }}
+              />
+            </div>
+
+            {/* Exercise Body */}
+            <div style={{ padding: '2.5rem 1.5rem 2rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              {/* Mascot / Icon (e.g. 1 2 / 3 4 blue squircle) */}
+              <div
+                style={{
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '12px',
+                  background: '#3B82F6',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#FFFFFF',
+                  boxShadow: '0 4px 14px rgba(59, 130, 246, 0.35)',
+                  marginBottom: '10px',
+                }}
+              >
+                {curExercise?.mascot === '🔢' || !curExercise?.mascot ? (
+                  <div style={{ fontSize: '13px', fontWeight: 900, lineHeight: 1.15, textAlign: 'center', fontFamily: "'Baloo 2', sans-serif" }}>
+                    <div>1 2</div>
+                    <div>3 4</div>
+                  </div>
+                ) : (
+                  <span style={{ fontSize: '24px' }}>{curExercise.mascot}</span>
+                )}
+              </div>
+
+              {/* Context visual (e.g. 🔵 + 🟡 🟡) */}
+              {curExercise?.ctx && (
+                <div style={{ fontSize: '22px', letterSpacing: '4px', marginBottom: '10px', textAlign: 'center', lineHeight: 1.4 }}>
+                  {curExercise.ctx}
+                </div>
+              )}
+
+              {/* Figure renderer for SVG / Objects if needed */}
+              {(curExercise?.countEmoji || curExercise?.visObjs || curExercise?.pA) && (
+                <FigureRenderer3ro
+                  ctx={curExercise.ctx}
+                  countEmoji={curExercise.countEmoji}
+                  countN={curExercise.countN}
+                  visObjs={curExercise.visObjs}
+                  pA={curExercise.pA}
+                  pB={curExercise.pB}
+                  pOp={curExercise.pOp}
+                  pIco={curExercise.pIco}
+                  pIco2={curExercise.pIco2}
+                  pNameA={curExercise.pNameA}
+                  pNameB={curExercise.pNameB}
+                  className="my-3"
+                />
+              )}
+
+              {/* Question Statement with 🔊 button */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '1.75rem' }}>
+                <span style={{ fontSize: '32px', fontWeight: 900, color: '#1E1B4B', fontFamily: "'Baloo 2', sans-serif" }}>
+                  {curExercise?.q}
+                </span>
                 <button
                   type="button"
-                  onClick={() => fedorSpeak(curExercise.q)}
-                  title="Escuchar pregunta"
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-sm transition-colors cursor-pointer border border-white/20 shrink-0"
+                  onClick={() => fedorSpeak(`${curExercise?.q}.`)}
+                  title="Escuchar enunciado"
+                  style={{
+                    background: '#FFFFFF',
+                    border: '1.5px solid #CBD5E1',
+                    borderRadius: '8px',
+                    padding: '3px 8px',
+                    fontSize: '14px',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#64748B',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+                  }}
+                  className="hover:scale-105 active:scale-95 transition-transform"
                 >
                   🔊
                 </button>
               </div>
 
-              {/* Figure Renderer (SVG geometric shapes, cubes, fractions, counters) */}
-              <FigureRenderer3ro
-                ctx={curExercise.ctx}
-                countEmoji={curExercise.countEmoji}
-                countN={curExercise.countN}
-                visObjs={curExercise.visObjs}
-                pA={curExercise.pA}
-                pB={curExercise.pB}
-                pOp={curExercise.pOp}
-                pIco={curExercise.pIco}
-                pIco2={curExercise.pIco2}
-                pNameA={curExercise.pNameA}
-                pNameB={curExercise.pNameB}
-                className="my-4"
-              />
-
-              {/* Hint Box (if any) */}
-              {curExercise.hint && (
-                <div className="bg-amber-500/15 border border-amber-400/30 rounded-xl p-3 mb-4 text-xs font-bold text-amber-200 flex items-center gap-2">
+              {/* Hint (if any) */}
+              {curExercise?.hint && (
+                <div
+                  style={{
+                    background: '#FFFBEB',
+                    border: '1px solid #FCD34D',
+                    borderRadius: '12px',
+                    padding: '8px 16px',
+                    marginBottom: '1.25rem',
+                    color: '#92400E',
+                    fontSize: '12.5px',
+                    fontWeight: 700,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                  }}
+                >
                   <span>💡</span>
                   <span>{curExercise.hint}</span>
                 </div>
               )}
 
-              {/* Multiple Choice Options (MCQ) */}
-              {curExercise.type === 'mcq' && curExercise.opts && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-4">
+              {/* Multiple Choice Options (2-column grid, matching screenshot) */}
+              {curExercise?.type === 'mcq' && curExercise.opts && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '14px', width: '100%', maxWidth: '850px', marginBottom: '1rem' }}>
                   {curExercise.opts.map((opt, oIdx) => {
                     const isSelected = selectedOption === opt;
+                    const isCorrectOpt = isAnswered && String(opt).trim().toLowerCase() === String(curExercise.ans).trim().toLowerCase();
+                    const isWrongSelected = isAnswered && isSelected && !isCorrectOpt;
+
+                    let btnBg = '#FFFFFF';
+                    let btnBorder = '#E2E8F0';
+                    let btnColor = '#1E1B4B';
+
+                    if (isCorrectOpt) {
+                      btnBg = '#DCF5EE';
+                      btnBorder = '#24C496';
+                      btnColor = '#074F3A';
+                    } else if (isWrongSelected) {
+                      btnBg = '#FEE8E1';
+                      btnBorder = '#EF4444';
+                      btnColor = '#7A1800';
+                    } else if (isSelected) {
+                      btnBg = '#EEEDFE';
+                      btnBorder = '#7B2FBE';
+                      btnColor = '#7B2FBE';
+                    }
+
                     return (
                       <button
                         key={oIdx}
@@ -671,11 +963,24 @@ export default function LessonScreen3ro() {
                           setSelectedOption(opt);
                           checkAnswer(opt);
                         }}
-                        className={`p-3.5 rounded-2xl border text-sm md:text-base font-black text-center transition-all cursor-pointer shadow-md ${
-                          isSelected
-                            ? 'bg-amber-400 text-purple-950 border-amber-300 scale-102 shadow-amber-400/40'
-                            : 'bg-white/10 hover:bg-white/20 border-white/20 text-white hover:border-amber-400/50'
-                        } ${isAnswered ? 'cursor-not-allowed opacity-80' : ''}`}
+                        style={{
+                          background: btnBg,
+                          border: `2px solid ${btnBorder}`,
+                          borderRadius: '16px',
+                          padding: '16px 12px',
+                          minHeight: '68px',
+                          fontSize: '22px',
+                          fontWeight: 900,
+                          color: btnColor,
+                          fontFamily: "'Baloo 2', sans-serif",
+                          cursor: isAnswered ? 'default' : 'pointer',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'all 0.18s ease',
+                        }}
+                        className="hover:scale-[1.01] active:scale-[0.99]"
                       >
                         {opt}
                       </button>
@@ -684,69 +989,157 @@ export default function LessonScreen3ro() {
                 </div>
               )}
 
-              {/* Text / Numeric Input */}
-              {curExercise.type === 'input' && (
-                <div className="my-4">
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      value={inputVal}
-                      disabled={isAnswered}
-                      onChange={(e) => setInputVal(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && inputVal.trim() && !isAnswered) {
-                          checkAnswer(inputVal.trim());
-                        }
-                      }}
-                      placeholder="Escribe tu respuesta aquí"
-                      className="flex-1 bg-white/10 border border-purple-400/40 rounded-2xl px-4 py-3 text-base font-black text-white placeholder-purple-300/40 focus:outline-none focus:border-amber-400"
-                    />
-                    <button
-                      type="button"
-                      disabled={!inputVal.trim() || isAnswered}
-                      onClick={() => checkAnswer(inputVal.trim())}
-                      className="px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-500 text-purple-950 font-black text-sm rounded-2xl shadow-lg disabled:opacity-50 cursor-pointer transition-all active:scale-95"
-                    >
-                      Comprobar
-                    </button>
-                  </div>
+              {/* Numeric / Text Input */}
+              {curExercise?.type === 'input' && (
+                <div style={{ margin: '1rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px', width: '100%', maxWidth: '360px' }}>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    value={inputVal}
+                    disabled={isAnswered}
+                    autoFocus
+                    onChange={(e) => setInputVal(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && inputVal.trim() && !isAnswered) {
+                        checkAnswer(inputVal.trim());
+                      }
+                    }}
+                    placeholder="?"
+                    style={{
+                      width: '180px',
+                      fontSize: '34px',
+                      fontWeight: 900,
+                      textAlign: 'center',
+                      border: '2.5px solid #C5BFEE',
+                      borderRadius: '16px',
+                      padding: '12px',
+                      background: '#F7F5FF',
+                      color: '#1E1B4B',
+                      outline: 'none',
+                      fontFamily: "'Baloo 2', sans-serif",
+                    }}
+                  />
+                  <button
+                    type="button"
+                    disabled={!inputVal.trim() || isAnswered}
+                    onClick={() => checkAnswer(inputVal.trim())}
+                    style={{
+                      width: '100%',
+                      padding: '13px',
+                      fontSize: '15px',
+                      fontWeight: 900,
+                      background: 'linear-gradient(135deg, #7B2FBE, #9B5CE5)',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: '14px',
+                      cursor: isAnswered || !inputVal.trim() ? 'not-allowed' : 'pointer',
+                      opacity: isAnswered || !inputVal.trim() ? 0.6 : 1,
+                      fontFamily: "'Nunito', sans-serif",
+                      boxShadow: '0 6px 18px rgba(108, 40, 180, 0.35)',
+                    }}
+                    className="hover:scale-[1.01] active:scale-[0.99] transition-transform"
+                  >
+                    ✅ Confirmar
+                  </button>
                 </div>
               )}
 
-              {/* Feedback box */}
+              {/* Sequence Type */}
+              {curExercise?.type === 'seq' && (
+                <div style={{ margin: '1rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px', width: '100%', maxWidth: '360px' }}>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    value={inputVal}
+                    disabled={isAnswered}
+                    onChange={(e) => setInputVal(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && inputVal.trim() && !isAnswered) {
+                        checkAnswer(inputVal.trim());
+                      }
+                    }}
+                    placeholder="?"
+                    style={{
+                      width: '140px',
+                      fontSize: '28px',
+                      fontWeight: 900,
+                      textAlign: 'center',
+                      border: '2.5px solid #C5BFEE',
+                      borderRadius: '14px',
+                      padding: '10px',
+                      background: '#F7F5FF',
+                      color: '#1E1B4B',
+                      outline: 'none',
+                    }}
+                  />
+                  <button
+                    type="button"
+                    disabled={!inputVal.trim() || isAnswered}
+                    onClick={() => checkAnswer(inputVal.trim())}
+                    style={{
+                      width: '100%',
+                      padding: '13px',
+                      fontSize: '15px',
+                      fontWeight: 900,
+                      background: 'linear-gradient(135deg, #7B2FBE, #9B5CE5)',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: '14px',
+                      cursor: isAnswered || !inputVal.trim() ? 'not-allowed' : 'pointer',
+                      opacity: isAnswered || !inputVal.trim() ? 0.6 : 1,
+                    }}
+                  >
+                    ✅ Confirmar
+                  </button>
+                </div>
+              )}
+
+              {/* Feedback Banner */}
               {feedback && (
                 <div
-                  className={`mt-4 p-4 rounded-2xl border text-center text-sm font-black animate-popIn ${
-                    feedback.ok
-                      ? 'bg-emerald-900/60 border-emerald-500 text-emerald-200'
-                      : 'bg-red-900/60 border-red-500 text-red-200'
-                  }`}
+                  style={{
+                    marginTop: '1rem',
+                    padding: '12px 20px',
+                    borderRadius: '14px',
+                    textAlign: 'center',
+                    fontSize: '15px',
+                    fontWeight: 900,
+                    background: feedback.ok ? '#DCF5EE' : '#FEE8E1',
+                    border: `2px solid ${feedback.ok ? '#24C496' : '#EF4444'}`,
+                    color: feedback.ok ? '#074F3A' : '#7A1800',
+                    width: '100%',
+                    maxWidth: '650px',
+                    animation: 'popIn 0.3s ease',
+                  }}
                 >
                   {feedback.message}
                 </div>
               )}
 
-              {/* Button to review examples */}
-              <div className="mt-6 flex justify-center">
+              {/* Button to review didactic examples */}
+              <div style={{ marginTop: '1.75rem' }}>
                 <button
                   type="button"
                   onClick={() => setShowingExamples(true)}
-                  className="text-xs font-bold text-purple-300 hover:text-white underline cursor-pointer bg-transparent border-none"
+                  style={{
+                    fontSize: '12px',
+                    fontWeight: 800,
+                    color: '#7B2FBE',
+                    background: 'none',
+                    border: 'none',
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                  }}
+                  className="hover:opacity-80"
                 >
                   📖 Ver explicación y ejemplos de este nivel
                 </button>
               </div>
             </div>
-          ) : (
-            <div className="text-center py-8">
-              <p className="text-sm font-bold text-gray-400">
-                No hay ejercicios configurados para este nivel.
-              </p>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-    )}
-  </div>
-);
+    </div>
+  );
 }

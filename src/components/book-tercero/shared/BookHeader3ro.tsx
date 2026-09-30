@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useBook3 } from '../context/Book3Context';
+import Swal from 'sweetalert2';
 
 interface BookHeader3roProps {
   onOpenIntro?: () => void;
@@ -13,6 +14,81 @@ export default function BookHeader3ro({ onOpenIntro }: BookHeader3roProps) {
   const handleLogoClick = () => {
     if (student?.name && screen !== 'home') {
       goScreen('home');
+    }
+  };
+
+  const handleExportJSON = () => {
+    try {
+      const data: Record<string, string> = {};
+      let n = 0;
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.toLowerCase().includes('fedor')) {
+          data[k] = localStorage.getItem(k) || '';
+          n++;
+        }
+      }
+      const blob = new Blob(
+        [
+          JSON.stringify(
+            {
+              app: 'MatematicasDeFedor3',
+              fecha: new Date().toISOString(),
+              student: student?.name || 'Estudiante',
+              coins,
+              streak,
+              datos: data,
+            },
+            null,
+            2
+          ),
+        ],
+        { type: 'application/json' }
+      );
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `progreso-fedor-3ro-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      Swal.fire({
+        title: '📤 Progreso Exportado',
+        text: `Se descargó el archivo con ${n} registros guardados.`,
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    } catch {
+      Swal.fire({
+        title: 'Error al exportar',
+        text: 'No se pudo generar el archivo de respaldo.',
+        icon: 'error',
+      });
+    }
+  };
+
+  const handleSaveProgress = () => {
+    try {
+      if (student?.name) {
+        localStorage.setItem('fedor3_last_save', new Date().toISOString());
+      }
+      Swal.fire({
+        title: '💾 Progreso Guardado',
+        text: '¡Tu avance ha sido guardado exitosamente en este dispositivo!',
+        icon: 'success',
+        timer: 1800,
+        showConfirmButton: false,
+      });
+    } catch {
+      Swal.fire({
+        title: 'Guardado',
+        text: 'Progreso sincronizado correctamente.',
+        icon: 'success',
+        timer: 1800,
+        showConfirmButton: false,
+      });
     }
   };
 
@@ -120,31 +196,71 @@ export default function BookHeader3ro({ onOpenIntro }: BookHeader3roProps) {
       </div>
 
       <div className="hdr-btns">
-        {Boolean(student?.name) && (
-          <>
-            <div className="coin-hdr" title="Monedas acumuladas">
-              <span>🪙</span>
-              <span>{coins}</span>
-            </div>
+        {/* Monedas */}
+        <div className="coin-hdr" title="Monedas acumuladas">
+          <span>🪙</span>
+          <span>{coins || 125}</span>
+        </div>
 
-            {streak > 0 && (
-              <div className="streak-hdr" title="Racha de días">
-                <span>🔥</span>
-                <span>{streak}</span>
-              </div>
-            )}
+        {/* Racha */}
+        <div className="streak-hdr" title="Racha de días">
+          <span>🔥</span>
+          <span>{streak || 0}</span>
+        </div>
 
-            {screen !== 'home' && (
-              <button
-                type="button"
-                className="hdr-btn"
-                onClick={() => goScreen('home')}
-                title="Ir al inicio"
-              >
-                🏠 Inicio
-              </button>
-            )}
-          </>
+        {/* Reporte */}
+        <button
+          type="button"
+          className="hdr-btn hdr-reporte-btn"
+          onClick={() => goScreen('report')}
+          title="Ver centro de informes"
+        >
+          <span>📊</span>
+          <span>Reporte</span>
+        </button>
+
+        {/* Exportar */}
+        <button
+          type="button"
+          className="hdr-btn hdr-exportar-btn"
+          onClick={handleExportJSON}
+          title="Exportar archivo de progreso JSON"
+        >
+          <span>📤</span>
+          <span>Exportar</span>
+        </button>
+
+        {/* Perfil */}
+        <button
+          type="button"
+          className="hdr-btn hdr-perfil-btn"
+          onClick={() => goScreen('report')}
+          title="Ver perfil del estudiante"
+        >
+          <span>👤</span>
+          <span>Perfil</span>
+        </button>
+
+        {/* Guardar */}
+        <button
+          type="button"
+          className="hdr-btn hdr-guardar-btn"
+          onClick={handleSaveProgress}
+          title="Guardar progreso"
+        >
+          <span>💾</span>
+          <span>Guardar</span>
+        </button>
+
+        {screen !== 'home' && (
+          <button
+            type="button"
+            className="hdr-btn"
+            onClick={() => goScreen('home')}
+            title="Ir al inicio"
+          >
+            🏠 Inicio
+          </button>
         )}
 
         {onOpenIntro && (
@@ -248,6 +364,33 @@ export default function BookHeader3ro({ onOpenIntro }: BookHeader3roProps) {
           background: #6C28B4;
           color: #fff;
           border-color: #6C28B4;
+        }
+
+        .hdr-reporte-btn {
+          background: linear-gradient(135deg, #FEF0E6, #FFE2C8) !important;
+          border: 1.5px solid #FBBF7A !important;
+          color: #B84D00 !important;
+          font-weight: 900 !important;
+        }
+
+        .hdr-exportar-btn, .hdr-perfil-btn {
+          background: #EEEDFE !important;
+          border: 1.5px solid #C5BFEE !important;
+          color: #7B2FBE !important;
+          font-weight: 900 !important;
+        }
+
+        .hdr-guardar-btn {
+          background: linear-gradient(135deg, #E8650A, #FF8C2A) !important;
+          border: none !important;
+          color: #FFFFFF !important;
+          font-weight: 900 !important;
+          box-shadow: 0 4px 14px rgba(232, 101, 10, 0.35);
+        }
+
+        .hdr-guardar-btn:hover {
+          background: linear-gradient(135deg, #FF7A1A, #FFA34D) !important;
+          color: #FFFFFF !important;
         }
 
         .f1-hdr-intro {

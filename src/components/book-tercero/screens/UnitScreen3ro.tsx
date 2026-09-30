@@ -63,8 +63,8 @@ export default function UnitScreen3ro() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 font-sans p-4 md:p-8 pb-28 select-none">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 font-sans p-2 sm:p-4 md:p-6 pb-28 select-none">
+      <div className="w-full max-w-full mx-auto">
         {/* Top bar: Volver al inicio & Tutorial */}
         <div className="flex items-center justify-between mb-4">
           <button

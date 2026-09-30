@@ -48,14 +48,12 @@ function Book3Shell() {
   }
 
   return (
-    <div className={`fedor-book fedor-book-3 ${dark ? 'dark' : ''} ${screen === 'setup' || screen === 'home' ? 'bg-[#F0EDFF] text-[#180D38]' : 'bg-[#07091B] text-white'} min-h-screen relative`}>
+    <div className={`fedor-book fedor-book-3 ${dark ? 'dark' : ''} ${screen === 'setup' || screen === 'home' || screen === 'lesson' || screen === 'unit' ? 'bg-[#F0EDFF] text-[#180D38]' : 'bg-[#07091B] text-white'} min-h-screen relative`}>
       <div style={{ maxWidth: '1320px', margin: '0 auto', width: '100%', boxSizing: 'border-box', position: 'relative' }}>
         {/* ══ Header Superior de Fedor 3° con Logo de Casco ══ */}
-        {screen !== 'lesson' && (
-          <div style={{ padding: '3.5rem 1rem 0.5rem' }}>
-            <BookHeader3ro onOpenIntro={() => setShowLaunchIntro(true)} />
-          </div>
-        )}
+        <div style={{ padding: '2.5rem 1rem 0.5rem' }}>
+          <BookHeader3ro onOpenIntro={() => setShowLaunchIntro(true)} />
+        </div>
 
         {/* ══ Current Screen Router ══ */}
         {screen === 'setup' && (
