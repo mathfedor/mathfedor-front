@@ -83,7 +83,7 @@ function Book4Shell() {
     >
       <div style={{ maxWidth: '1320px', margin: '0 auto', width: '100%', boxSizing: 'border-box', position: 'relative' }}>
         {/* ══ Header Superior de Fedor 4° con Escudo y Casco Dorado ══ */}
-        <div style={{ padding: '2.5rem 1rem 0.5rem' }}>
+        <div style={{ padding: '5.25rem 1rem 0.5rem' }}>
           <BookHeader4to
             onOpenIntro={() => setShowLaunchIntro(true)}
             onOpenGalaxy={() => setShowGalaxyModal(true)}

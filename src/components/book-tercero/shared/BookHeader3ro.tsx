@@ -292,6 +292,8 @@ export default function BookHeader3ro({ onOpenIntro }: BookHeader3roProps) {
           max-width: 1320px;
           box-sizing: border-box;
           backdrop-filter: blur(16px);
+          position: relative;
+          z-index: 30;
         }
 
         .hdr-left {

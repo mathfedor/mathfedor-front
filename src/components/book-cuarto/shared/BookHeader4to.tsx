@@ -283,8 +283,8 @@ export default function BookHeader4to({ onOpenIntro, onOpenGalaxy }: BookHeader4
           justify-content: space-between;
           gap: 12px;
           position: sticky;
-          top: 12px;
-          z-index: 1000;
+          top: calc(4rem + 12px);
+          z-index: 40;
           font-family: 'Nunito', sans-serif;
         }
 
