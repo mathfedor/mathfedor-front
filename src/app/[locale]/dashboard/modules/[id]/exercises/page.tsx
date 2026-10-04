@@ -130,7 +130,7 @@ const normalizeText = (value: string) => value
   .trim()
   .toLowerCase();
 
-const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2 | 3) => {
+const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2 | 3 | 4) => {
   const normalizedId = normalizeText(routeId);
   if (grade === 1 && (normalizedId === '1' || normalizedId === 'libro-1ro' || normalizedId === 'matematicas-fedor-1' || normalizedId === '6830d368fecd7406dc6f9525')) {
     return true;
@@ -141,17 +141,22 @@ const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2
   if (grade === 3 && (normalizedId === '3' || normalizedId === 'libro-3ro' || normalizedId === 'matematicas-fedor-3' || normalizedId === '6832543f6fee7c84b2f077c0')) {
     return true;
   }
+  if (grade === 4 && (normalizedId === '4' || normalizedId === 'libro-4to' || normalizedId === 'matematicas-fedor-4' || normalizedId === '6832543f6fee7c84b2f077c1')) {
+    return true;
+  }
   if (!module) return false;
 
   // Comprobación directa por slug
   if (grade === 1 && (module.slug === 'libro-1ro' || module.slug === 'matematicas-fedor-1')) return true;
   if (grade === 2 && (module.slug === 'matematicas-fedor-2' || module.slug === 'libro-2do')) return true;
   if (grade === 3 && (module.slug === 'matematicas-fedor-3' || module.slug === 'libro-3ro')) return true;
+  if (grade === 4 && (module.slug === 'matematicas-fedor-4' || module.slug === 'libro-4to')) return true;
 
   // Comprobación directa por ID de MongoDB
   if (grade === 1 && module._id === '6830d368fecd7406dc6f9525') return true;
   if (grade === 2 && module._id === '6830d619fecd7406dc6f96ad') return true;
   if (grade === 3 && module._id === '6832543f6fee7c84b2f077c0') return true;
+  if (grade === 4 && module._id === '6832543f6fee7c84b2f077c1') return true;
 
   const haystack = normalizeText([
     module.group,
@@ -168,7 +173,15 @@ const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2
     return /\b(grado|grade|ano|annee|klasse)\s*2\b|\bgrado2\b|\bgrade2\b|\b2do\b|\bsegundo\b|\b2\s*°|\b2nd\b/i.test(haystack);
   }
 
-  return /\b(grado|grade|ano|annee|klasse)\s*3\b|\bgrado3\b|\bgrade3\b|\b3ro\b|\btercero\b|\b3\s*°|\b3rd\b/i.test(haystack);
+  if (grade === 3) {
+    return /\b(grado|grade|ano|annee|klasse)\s*3\b|\bgrado3\b|\bgrade3\b|\b3ro\b|\btercero\b|\b3\s*°|\b3rd\b/i.test(haystack);
+  }
+
+  if (grade === 4) {
+    return /\b(grado|grade|ano|annee|klasse)\s*4\b|\bgrado4\b|\bgrade4\b|\b4to\b|\bcuarto\b|\b4\s*°|\b4th\b/i.test(haystack);
+  }
+
+  return false;
 };
 
 const isInformationalTopic = (topic?: Topic) => (
@@ -607,11 +620,12 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
           throw new Error('No se encontró información del usuario');
         }
 
-        // Grados 1, 2 y 3 siempre tienen acceso garantizado a ejercicios (Free Trial)
+        // Grados 1, 2, 3 y 4 siempre tienen acceso garantizado a ejercicios (Free Trial)
         const isGradeBook =
           moduleMatchesGrade(null, resolvedParams.id, 1) ||
           moduleMatchesGrade(null, resolvedParams.id, 2) ||
-          moduleMatchesGrade(null, resolvedParams.id, 3);
+          moduleMatchesGrade(null, resolvedParams.id, 3) ||
+          moduleMatchesGrade(null, resolvedParams.id, 4);
 
         if (!isGradeBook) {
           if (isLoadingAccess) {
@@ -4523,7 +4537,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     );
   }
 
-  if (isGrade4Module) {
+  if (isGrade2Module) {
     return (
       <div className="flex min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">
         <Sidebar />
@@ -4534,7 +4548,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
           message={alertMessage.message}
         />
         <div className="flex-1 overflow-y-auto">
-          <Book4Experience slug="matematicas-fedor-4" />
+          <BookExperience slug="matematicas-fedor-2" />
         </div>
       </div>
     );
@@ -4557,7 +4571,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     );
   }
 
-  if (isGrade2Module) {
+  if (isGrade4Module) {
     return (
       <div className="flex min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">
         <Sidebar />
@@ -4568,7 +4582,7 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
           message={alertMessage.message}
         />
         <div className="flex-1 overflow-y-auto">
-          <BookExperience slug="matematicas-fedor-2" />
+          <Book4Experience slug="matematicas-fedor-4" />
         </div>
       </div>
     );
