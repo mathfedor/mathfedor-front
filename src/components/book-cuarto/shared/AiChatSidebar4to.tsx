@@ -68,21 +68,18 @@ export default function AiChatSidebar4to({
     setIsLoading(true);
 
     try {
-      const history = messages.map((m) => ({
+      const serviceMessages = [...messages, userMsg].map((m) => ({
         role: m.role,
         content: m.content,
+        timestamp: m.timestamp,
       }));
 
-      const res = await chatService.sendMessage({
-        message: text,
-        grade: '4',
-        context: 'Fedor Matemáticas 4° Primaria - Malla Curricular Colombia',
-        history,
-      });
+      const res = await chatService.sendChatMessages(serviceMessages, token, 'Grado4');
 
       const assistantMsg: ChatMessage = {
         role: 'assistant',
         content:
+          res.response ||
           res.reply ||
           res.message ||
           '¡Entendido! Recuerda descomponer el problema paso a paso para hallar la respuesta.',

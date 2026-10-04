@@ -403,7 +403,7 @@ export default function LessonScreen4to() {
             </div>
 
             {/* Step-by-step procedure box */}
-            {curExample?.steps && curExample.steps.length > 0 && (
+            {((curExample?.steps && curExample.steps.length > 0) || curExample?.explain) && (
               <div
                 style={{
                   background: 'rgba(255, 255, 255, 0.95)',
@@ -416,24 +416,31 @@ export default function LessonScreen4to() {
                 <div style={{ fontSize: '12px', fontWeight: 900, color: '#6C28B4', textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: '8px' }}>
                   🧠 Proceso paso a paso:
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  {curExample.steps.map((st, sIdx) => (
-                    <div
-                      key={sIdx}
-                      style={{
-                        padding: '10px 14px',
-                        borderRadius: '12px',
-                        background: sIdx === exampleStep ? '#F3ECFF' : '#FAFAFA',
-                        borderLeft: sIdx === exampleStep ? '4px solid #8B3EDB' : '4px solid #CBD5E1',
-                        fontSize: '14px',
-                        fontWeight: 700,
-                        color: sIdx === exampleStep ? '#2A0F60' : '#475569',
-                      }}
-                    >
-                      <b>Paso {sIdx + 1}:</b> {st}
-                    </div>
-                  ))}
-                </div>
+                {curExample?.steps && curExample.steps.length > 0 ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {curExample.steps.map((st: string, sIdx: number) => (
+                      <div
+                        key={sIdx}
+                        style={{
+                          padding: '10px 14px',
+                          borderRadius: '12px',
+                          background: sIdx === exampleStep ? '#F3ECFF' : '#FAFAFA',
+                          borderLeft: sIdx === exampleStep ? '4px solid #8B3EDB' : '4px solid #CBD5E1',
+                          fontSize: '14px',
+                          fontWeight: 700,
+                          color: sIdx === exampleStep ? '#2A0F60' : '#475569',
+                        }}
+                      >
+                        <b>Paso {sIdx + 1}:</b> {st}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div
+                    style={{ fontSize: '14px', fontWeight: 600, color: '#2A0F60', lineHeight: 1.6 }}
+                    dangerouslySetInnerHTML={{ __html: curExample?.explain || '' }}
+                  />
+                )}
               </div>
             )}
 

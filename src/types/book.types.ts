@@ -172,6 +172,8 @@ export interface LevelExample {
   groups?: Record<string, unknown>;
   /** Config de recta numérica. */
   nl?: NumberLineConfig;
+  /** Pasos desglosados opcionales. */
+  steps?: string[];
 }
 
 /** Mapa de ejemplos por clave de nivel (`u{u}t{t}-n{n}`). */
