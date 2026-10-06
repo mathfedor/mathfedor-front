@@ -105,8 +105,8 @@ export const trackTikTokCompletePayment = (params: {
  * Evento 8: Clic en el botón de WhatsApp (Contact)
  * Parámetros: description
  */
-export const trackTikTokContact = (params: {
-  description: string;
+export const trackTikTokContact = (params?: {
+  description?: string;
 }): void => {
   trackTikTokEvent('Contact', params);
 };

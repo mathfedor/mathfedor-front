@@ -136,8 +136,8 @@ export const trackMetaPurchase = (params: {
  * Evento 8: Clic en el botón de WhatsApp (Contact)
  * Parámetros: content_name
  */
-export const trackMetaContact = (params: {
-  content_name: string;
+export const trackMetaContact = (params?: {
+  content_name?: string;
 }): void => {
   trackMetaEvent('Contact', params);
 };

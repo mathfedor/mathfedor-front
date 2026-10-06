@@ -6,6 +6,11 @@ import Script from 'next/script';
 import Link from 'next/link';
 import { usersService } from '@/services/users.service';
 import { authService } from '@/services/auth.service';
+import { trackWhatsAppContact } from '@/lib/analytics/whatsapp';
+import { trackOpenFreeModal, trackFreeAccountCreated } from '@/lib/analytics/leads';
+import { generateAutoPassword } from '@/lib/password';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import LandingVideoPlayer from '@/components/landing/LandingVideoPlayer';
 
 // ============================================================================
 // CONFIGURACIÓN DE PRODUCTO Y PRECIO - GRADO 1° PRIMARIA
@@ -20,6 +25,8 @@ const WHATSAPP_URL =
   'https://wa.me/573107199897?text=Hola,%20tengo%20una%20pregunta%20sobre%20el%20M%C3%B3dulo%20de%201%C2%B0%20Primaria';
 
 export default function LandingGrado1() {
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
   // Modal de checkout directo
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const [buyerName, setBuyerName] = useState('');
@@ -32,11 +39,16 @@ export default function LandingGrado1() {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [registerName, setRegisterName] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
-  const [registerPassword, setRegisterPassword] = useState('');
   const [registerTermsAccepted, setRegisterTermsAccepted] = useState(true);
   const [isRegistering, setIsRegistering] = useState(false);
   const [registerError, setRegisterError] = useState('');
   const [registerSuccess, setRegisterSuccess] = useState(false);
+
+  // Manejador para abrir el modal de registro gratuito con eventos de analítica
+  const handleOpenRegisterModal = () => {
+    trackOpenFreeModal('1° Primaria');
+    setShowRegisterModal(true);
+  };
 
   // FAQ accordion state
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -50,13 +62,8 @@ export default function LandingGrado1() {
     e.preventDefault();
     setRegisterError('');
 
-    if (!registerName.trim() || !registerEmail.trim() || !registerPassword.trim()) {
+    if (!registerName.trim() || !registerEmail.trim()) {
       setRegisterError('Por favor completa todos los campos.');
-      return;
-    }
-
-    if (registerPassword.length < 6) {
-      setRegisterError('La contraseña debe tener al menos 6 caracteres.');
       return;
     }
 
@@ -66,13 +73,24 @@ export default function LandingGrado1() {
     }
 
     setIsRegistering(true);
+    const autoPassword = generateAutoPassword();
 
     try {
+      let recaptchaToken = '';
+      if (executeRecaptcha) {
+        try {
+          recaptchaToken = await executeRecaptcha('register');
+        } catch (rcError) {
+          console.warn('No se pudo generar token de reCAPTCHA:', rcError);
+        }
+      }
+
       await usersService.createUser({
         name: registerName.trim(),
         email: registerEmail.trim(),
-        password: registerPassword,
+        password: autoPassword,
         rol: 'Student',
+        recaptchaToken,
         legalConsents: {
           termsAndPrivacyAccepted: true,
           termsVersion: '1.0',
@@ -82,31 +100,39 @@ export default function LandingGrado1() {
         },
       });
 
-      if (typeof window !== 'undefined' && window.fbq) {
-        window.fbq('track', 'CompleteRegistration', {
-          content_name: 'modulo_gratis_grado_1',
-          status: true,
-        });
-      }
-      if (typeof window !== 'undefined' && window.dataLayer) {
-        window.dataLayer.push({
-          event: 'sign_up',
-          method: 'email',
-          grade: 'Grado 1 Gratis',
-        });
-      }
+      // Tracking analítica de registro exitoso
+      trackFreeAccountCreated('1° Primaria');
 
       setRegisterSuccess(true);
 
+      // Limpiar cualquier sesión previa en localStorage para evitar heredar roles anteriores
+      authService.logout();
+
       try {
+        let loginToken = recaptchaToken;
+        if (executeRecaptcha) {
+          try {
+            loginToken = await executeRecaptcha('login');
+          } catch {
+            // fallback al token obtenido previamente
+          }
+        }
+
         await authService.login({
           email: registerEmail.trim(),
-          password: registerPassword,
+          password: autoPassword,
+          recaptchaToken: loginToken,
         });
+
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('userUpdated'));
+        }
+
         setTimeout(() => {
           window.location.href = '/dashboard/mis-modulos';
         }, 1200);
-      } catch {
+      } catch (loginErr) {
+        console.warn('Auto-login post-registro no completado, redirigiendo a login:', loginErr);
         setTimeout(() => {
           window.location.href = '/login?registered=true';
         }, 1500);
@@ -337,9 +363,9 @@ export default function LandingGrado1() {
         />
       </noscript>
 
-      {/* Top Banner de Cupón del Video */}
+      {/* Top Banner de Promoción */}
       <div className="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 text-slate-950 py-2.5 px-4 text-center font-black text-xs sm:text-sm shadow-md sticky top-0 z-50">
-        🎟️ Pon el cupón <span className="bg-slate-950 text-amber-300 px-2 py-0.5 rounded font-mono font-black select-all">1RFBWBQ7</span> que menciona el video para obtener el descuento a <strong>$149.000 COP</strong>
+        🎁 <strong>Hasta el 31 de octubre: libro digital de 1°, 2° y 3° gratis</strong>
       </div>
 
       {/* =================================================================== */}
@@ -396,22 +422,40 @@ export default function LandingGrado1() {
               El único programa digital en Colombia diseñado para que los niños de 1° aprendan a contar, sumar, restar y pensar lógicamente a su propio ritmo, sin frustración ni lágrimas en casa.
             </p>
 
-            {/* Aviso destacado del cupón */}
-            <div className="inline-flex items-center justify-center gap-2 bg-amber-400 text-slate-950 font-black px-5 py-3 rounded-2xl text-sm sm:text-base shadow-xl mb-6 border-2 border-white max-w-xl mx-auto">
-              <span className="text-xl">🎟️</span>
-              <span>Pon el cupón <strong className="bg-slate-950 text-amber-300 px-2 py-0.5 rounded font-mono font-black select-all">1RFBWBQ7</strong> que menciona el video para obtener el descuento a $149.000 COP</span>
-            </div>
-
-            {/* CTA Hero */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
+            {/* CTA Hero con 2 botones */}
+            <div className="flex flex-col items-center justify-center max-w-xl mx-auto mb-6 w-full">
+              {/* Botón Principal: Verde Dominante */}
               <button
                 type="button"
-                id="hero-cta-btn-1"
-                onClick={handleCtaClick}
-                className="w-full sm:w-auto bg-[#FF6B00] hover:bg-[#EA580C] text-white font-black text-lg sm:text-xl py-4 px-10 rounded-2xl shadow-[0_10px_30px_rgba(255,107,0,0.4)] hover:shadow-[0_15px_35px_rgba(255,107,0,0.5)] transition-all duration-200 hover:-translate-y-1 active:translate-y-0 cursor-pointer text-center"
+                id="hero-free-btn-primary"
+                onClick={handleOpenRegisterModal}
+                className="w-full sm:w-auto bg-gradient-to-r from-emerald-500 via-emerald-600 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-black text-lg sm:text-xl py-4 sm:py-4.5 px-8 sm:px-12 rounded-2xl shadow-[0_10px_30px_rgba(16,185,129,0.45)] hover:shadow-[0_15px_35px_rgba(16,185,129,0.55)] transition-all duration-200 hover:-translate-y-1 active:translate-y-0 cursor-pointer flex items-center justify-center gap-2.5 text-center"
               >
-                Quiero este módulo
+                <span>Empieza gratis — solo hasta el 31 de octubre</span>
+                <span className="text-xl">✨</span>
               </button>
+
+              {/* Frase aclaratoria del límite por adelantado */}
+              <p className="text-xs sm:text-sm text-emerald-200/95 font-medium mt-2.5 mb-3.5 text-center leading-relaxed">
+                📖 Libro digital de 1° dentro de la plataforma. Sin descargas en PDF ni simulacros.
+              </p>
+
+              {/* Botón Secundario: Módulo Completo Discreto */}
+              <button
+                type="button"
+                id="hero-paid-btn-secondary"
+                onClick={handleCtaClick}
+                className="inline-flex items-center justify-center gap-2 text-white/85 hover:text-white bg-white/10 hover:bg-white/20 border border-white/25 hover:border-white/40 text-xs sm:text-sm font-bold py-2.5 px-6 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer text-center mb-3.5"
+              >
+                <span>Quiero el módulo completo — $149.000</span>
+                <span className="text-xs">→</span>
+              </button>
+
+              {/* Aviso destacado del cupón debajo del botón de compra completa */}
+              <div className="inline-flex items-center justify-center gap-2 bg-amber-400 text-slate-950 font-black px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm shadow-xl border-2 border-white max-w-xl mx-auto text-center">
+                <span className="text-base sm:text-lg">🎟️</span>
+                <span>Pon el cupón <strong className="bg-slate-950 text-amber-300 px-2 py-0.5 rounded font-mono font-black select-all">1RFBWBQ7</strong> que menciona el video para obtener el descuento a $149.000 COP</span>
+              </div>
             </div>
 
             {/* Micro-copy de confianza */}
@@ -464,15 +508,13 @@ export default function LandingGrado1() {
                   </h3>
 
                   {/* Video 1 */}
-                  <div className="relative rounded-2xl overflow-hidden border border-white/20 bg-black aspect-video mb-4 shadow-lg">
-                    <video
-                      src="/lanzamiento-especial.mp4"
-                      controls
-                      playsInline
-                      preload="metadata"
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
+                  <LandingVideoPlayer
+                    src="/lanzamiento-especial.mp4"
+                    poster="/poster-lanzamiento-especial.jpg"
+                    title="Módulo Gratis: Grado 1°"
+                    variant="emerald"
+                    badgeText="Ver video explicativo"
+                  />
 
                   {/* Frase explicativa clara */}
                   <div className="bg-emerald-950/40 border border-emerald-500/30 rounded-xl p-3.5 mb-5 text-xs sm:text-sm text-emerald-100 leading-relaxed">
@@ -490,7 +532,7 @@ export default function LandingGrado1() {
                   <button
                     type="button"
                     id="hero-free-btn-1"
-                    onClick={() => setShowRegisterModal(true)}
+                    onClick={handleOpenRegisterModal}
                     className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black text-base sm:text-lg py-4 px-6 rounded-2xl shadow-[0_8px_25px_rgba(16,185,129,0.35)] hover:shadow-[0_12px_30px_rgba(16,185,129,0.45)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer flex items-center justify-center gap-2 text-center"
                   >
                     <span>Quiero el módulo gratis</span>
@@ -521,15 +563,13 @@ export default function LandingGrado1() {
                   </h3>
 
                   {/* Video 2 */}
-                  <div className="relative rounded-2xl overflow-hidden border border-white/20 bg-black aspect-video mb-4 shadow-lg">
-                    <video
-                      src="/metodo-fedor-entero.mp4"
-                      controls
-                      playsInline
-                      preload="metadata"
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
+                  <LandingVideoPlayer
+                    src="/metodo-fedor-entero.mp4"
+                    poster="/poster-metodo-fedor-entero.jpg"
+                    title="Método Fedor Entero: Grado 1°"
+                    variant="orange"
+                    badgeText="Ver video oficial del profesor"
+                  />
 
                   {/* Frase explicativa clara */}
                   <div className="bg-orange-950/40 border border-orange-500/30 rounded-xl p-3.5 mb-3 text-xs sm:text-sm text-orange-100 leading-relaxed">
@@ -1107,6 +1147,12 @@ export default function LandingGrado1() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() =>
+                trackWhatsAppContact({
+                  grade: '1° Primaria',
+                  placement: 'footer',
+                })
+              }
               className="inline-flex items-center gap-1.5 text-[#FF6B00] hover:text-orange-400 font-bold underline transition-colors"
             >
               <span>+57 310 719 9897</span>
@@ -1286,7 +1332,10 @@ export default function LandingGrado1() {
                 <h4 className="text-xl font-black text-gray-900 mb-1 font-['Baloo_2',sans-serif]">
                   ¡Cuenta creada con éxito!
                 </h4>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-sm mb-2">
+                  Hemos enviado tu contraseña de acceso a <strong className="text-gray-900">{registerEmail}</strong>.
+                </p>
+                <p className="text-emerald-700 text-xs font-semibold">
                   Iniciando tu sesión y abriendo la plataforma...
                 </p>
               </div>
@@ -1320,19 +1369,12 @@ export default function LandingGrado1() {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1">
-                    Crea tu contraseña (mínimo 6 caracteres):
-                  </label>
-                  <input
-                    type="password"
-                    required
-                    minLength={6}
-                    placeholder="••••••••"
-                    value={registerPassword}
-                    onChange={(e) => setRegisterPassword(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 font-semibold text-sm text-gray-800"
-                  />
+                {/* Nota informativa de contraseña automática */}
+                <div className="bg-emerald-50/80 border border-emerald-200/80 rounded-xl p-3 flex items-start gap-2.5 text-xs text-emerald-900">
+                  <span className="text-base leading-none">🔑</span>
+                  <span className="leading-snug">
+                    Generaremos tu contraseña automáticamente y te la enviaremos a tu correo para que puedas ingresar cuando quieras.
+                  </span>
                 </div>
 
                 <div className="flex items-start gap-2.5 pt-1">
@@ -1362,7 +1404,7 @@ export default function LandingGrado1() {
                   className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black text-base py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all cursor-pointer mt-2 flex items-center justify-center gap-2"
                 >
                   {isRegistering ? (
-                    <span>Creando tu cuenta gratuita...</span>
+                    <span>Creando tu cuenta y enviando acceso...</span>
                   ) : (
                     <>
                       <span>Crear mi cuenta y acceder gratis</span>

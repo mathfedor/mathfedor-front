@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import WhatsAppFloatingButton from '@/components/landing/WhatsAppFloatingButton';
 
 export const metadata: Metadata = {
   title: 'Módulo Matemáticas Grado 11 • Preparación ICFES Saber 11° | Método Fedor',
@@ -39,6 +40,7 @@ export default function LandingLayout({
   return (
     <div className="min-h-screen bg-[#F9FAFB] text-gray-900 font-sans antialiased selection:bg-orange-500 selection:text-white">
       {children}
+      <WhatsAppFloatingButton />
     </div>
   );
 }
