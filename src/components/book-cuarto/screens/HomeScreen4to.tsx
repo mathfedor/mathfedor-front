@@ -7,6 +7,7 @@ import Starfield from '@/components/book/shared/Starfield';
 import UniversoFedorModal4to from '../shared/UniversoFedorModal4to';
 import CommandPanelModals4to from '../shared/CommandPanelModals4to';
 import Swal from 'sweetalert2';
+import { DailyMissionCard4to } from '../shared/DailyMissionCard4to';
 
 interface HomeScreen4toProps {
   onOpenIntro?: () => void;
@@ -425,14 +426,25 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
         🕹️ Panel de comando <small>todas tus herramientas</small>
       </div>
       <div className="f5cmd">
-        {/* Para aprender */}
-        <h4>📚 Para aprender</h4>
+        {/* 1. PARA APRENDER */}
+        <h4>📗 PARA APRENDER</h4>
         <div className="f5grid">
           <button
             type="button"
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #5C21A6, #8B3EDB)' }}
+            onClick={() => setActiveToolModal('lab-visual')}
+            title="Laboratorio visual interactivo"
+          >
+            <span>🧠</span>
+            <span>Laboratorio</span>
+          </button>
+          <button
+            type="button"
+            className="f5btn"
+            style={{ background: 'linear-gradient(145deg, #5C21A6, #8B3EDB)' }}
             onClick={() => setActiveToolModal('conteo')}
+            title="Tablas de conteo"
           >
             <span>🔢</span>
             <span>Conteo</span>
@@ -442,6 +454,7 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #5C21A6, #8B3EDB)' }}
             onClick={() => setActiveToolModal('mult')}
+            title="Tablas de multiplicar"
           >
             <span>✖️</span>
             <span>Multiplicar</span>
@@ -450,7 +463,8 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
             type="button"
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #5C21A6, #8B3EDB)' }}
-            onClick={() => setActiveToolModal('lab')}
+            onClick={() => setActiveToolModal('lab-est')}
+            title="Laboratorio de estadística"
           >
             <span>🔬</span>
             <span>Lab. Est.</span>
@@ -460,6 +474,7 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #5C21A6, #8B3EDB)' }}
             onClick={() => setActiveToolModal('explicar')}
+            title="Explicaciones paso a paso"
           >
             <span>💡</span>
             <span>Explicar</span>
@@ -469,6 +484,7 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #5C21A6, #8B3EDB)' }}
             onClick={() => setActiveToolModal('videos')}
+            title="Videos animados"
           >
             <span>🎬</span>
             <span>Videos</span>
@@ -478,6 +494,7 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #5C21A6, #8B3EDB)' }}
             onClick={() => setActiveToolModal('concepto')}
+            title="Concepto del día"
           >
             <span>📘</span>
             <span>Concepto</span>
@@ -486,115 +503,146 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
             type="button"
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #5C21A6, #8B3EDB)' }}
-            onClick={() => setActiveToolModal('abaco')}
-          >
-            <span>🧮</span>
-            <span>Ábaco</span>
-          </button>
-          <button
-            type="button"
-            className="f5btn"
-            style={{ background: 'linear-gradient(145deg, #5C21A6, #8B3EDB)' }}
             onClick={() => setActiveToolModal('historia')}
+            title="Historia del método Fedor"
           >
             <span>📜</span>
             <span>Historia</span>
           </button>
         </div>
 
-        {/* Para jugar y ganar */}
-        <h4>🎮 Para jugar y ganar</h4>
+        {/* 2. PARA JUGAR Y GANAR */}
+        <h4>🎮 PARA JUGAR Y GANAR</h4>
         <div className="f5grid">
           <button
             type="button"
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #E8650A, #F5A524)' }}
-            onClick={() => setShowUniverseModal(true)}
+            onClick={() => setActiveToolModal('desafio')}
+            title="Desafío matemático del día"
           >
-            <span>🌌</span>
-            <span>Universo 3D</span>
+            <span>🎯</span>
+            <span>Desafío</span>
           </button>
           <button
             type="button"
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #E8650A, #F5A524)' }}
             onClick={() => setActiveToolModal('logros')}
+            title="Vitrina de trofeos y medallas"
           >
             <span>🏆</span>
-            <span>Trofeos</span>
+            <span>Logros</span>
           </button>
           <button
             type="button"
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #E8650A, #F5A524)' }}
-            onClick={() => setActiveToolModal('tienda')}
+            onClick={() => setActiveToolModal('minijuegos')}
+            title="Minijuegos de agilidad mental"
           >
-            <span>🏪</span>
-            <span>Tienda</span>
+            <span>🎮</span>
+            <span>Minijuegos</span>
           </button>
           <button
             type="button"
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #E8650A, #F5A524)' }}
-            onClick={() => setActiveToolModal('misiones')}
+            onClick={() => setShowUniverseModal(true)}
+            title="Universo Fedor"
           >
-            <span>🎯</span>
-            <span>Misiones</span>
+            <span>🌌</span>
+            <span>Universo</span>
           </button>
         </div>
 
-        {/* Para ponerme a prueba */}
-        <h4>📝 Para ponerme a prueba</h4>
+        {/* 3. PARA PONERME A PRUEBA */}
+        <h4>📝 PARA PONERME A PRUEBA</h4>
         <div className="f5grid">
+          <button
+            type="button"
+            className="f5btn"
+            style={{ background: 'linear-gradient(145deg, #0E6BA8, #38BDF8)' }}
+            onClick={() => setActiveToolModal('saber')}
+            title="Problemas tipo Prueba SABER"
+          >
+            <span>🏆</span>
+            <span>SABER</span>
+          </button>
+          <button
+            type="button"
+            className="f5btn"
+            style={{ background: 'linear-gradient(145deg, #0E6BA8, #38BDF8)' }}
+            onClick={() => setActiveToolModal('examen-final')}
+            title="Examen final integrador de 4°"
+          >
+            <span>🎓</span>
+            <span>Examen final</span>
+          </button>
+          <button
+            type="button"
+            className="f5btn"
+            style={{ background: 'linear-gradient(145deg, #0E6BA8, #38BDF8)' }}
+            onClick={() => setActiveToolModal('repaso')}
+            title="Mi Repaso personalizado"
+          >
+            <span>🔄</span>
+            <span>Mi Repaso</span>
+          </button>
           <button
             type="button"
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #0E6BA8, #38BDF8)' }}
             onClick={() => goScreen('problemas')}
+            title="Problemas cotidianos SABER"
           >
             <span>🛒</span>
-            <span>SABER 4°</span>
-          </button>
-          <button
-            type="button"
-            className="f5btn"
-            style={{ background: 'linear-gradient(145deg, #0E6BA8, #38BDF8)' }}
-            onClick={() => goScreen('estandares')}
-          >
-            <span>📐</span>
-            <span>Estándares</span>
-          </button>
-          <button
-            type="button"
-            className="f5btn"
-            style={{ background: 'linear-gradient(145deg, #0E6BA8, #38BDF8)' }}
-            onClick={() => goScreen('definiciones')}
-          >
-            <span>📖</span>
-            <span>Definiciones</span>
+            <span>SABER cotidianos</span>
           </button>
         </div>
 
-        {/* Profes y familia */}
-        <h4>👩‍🏫 Profes y familia</h4>
+        {/* 4. PROFES Y FAMILIA */}
+        <h4>👩‍🏫 PROFES Y FAMILIA</h4>
         <div className="f5grid">
           <button
             type="button"
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #16876A, #24C496)' }}
-            onClick={() => goScreen('report')}
+            onClick={() => setActiveToolModal('guia-docente')}
+            title="Guía docente y estándares MEN"
           >
-            <span>📊</span>
-            <span>Informe</span>
+            <span>👩‍🏫</span>
+            <span>Guía Doc.</span>
           </button>
           <button
             type="button"
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #16876A, #24C496)' }}
-            onClick={() => goScreen('estandares')}
+            onClick={() => setActiveToolModal('color')}
+            title="Color de fondo del libro"
           >
-            <span>📚</span>
-            <span>Currículo 4°</span>
+            <span>🎨</span>
+            <span>Color</span>
+          </button>
+          <button
+            type="button"
+            className="f5btn"
+            style={{ background: 'linear-gradient(145deg, #16876A, #24C496)' }}
+            onClick={() => setActiveToolModal('curriculo')}
+            title="Currículo MEN 4°"
+          >
+            <span>📑</span>
+            <span>Currículo</span>
+          </button>
+          <button
+            type="button"
+            className="f5btn"
+            style={{ background: 'linear-gradient(145deg, #16876A, #24C496)' }}
+            onClick={() => goScreen('report')}
+            title="Informe de progreso"
+          >
+            <span>📊</span>
+            <span>Informe</span>
           </button>
         </div>
       </div>
@@ -744,6 +792,11 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
       </div>
 
       {/* ═════════════════════════════════════════════════════════════
+          MISIÓN DEL DÍA
+      ═════════════════════════════════════════════════════════════ */}
+      <DailyMissionCard4to />
+
+      {/* ═════════════════════════════════════════════════════════════
           7. 👨‍👩‍👧 ZONA DE PROFES Y FAMILIAS
       ═════════════════════════════════════════════════════════════ */}
       <details className="f5adult">
@@ -803,6 +856,7 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
         <CommandPanelModals4to
           activeTool={activeToolModal}
           onClose={() => setActiveToolModal(null)}
+          onOpenIntro={onOpenIntro}
         />
       )}
 
@@ -1374,16 +1428,17 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
         .f5cmd {
           background: linear-gradient(160deg, #2a0f60, #3d1468 60%, #5c21a6);
           border-radius: 22px;
-          padding: 14px;
-          box-shadow: 0 12px 30px rgba(40, 10, 90, 0.3);
+          padding: 16px 18px 20px;
+          box-shadow: 0 14px 34px rgba(40, 10, 90, 0.35);
         }
 
         .f5cmd h4 {
           color: #ffe066;
           font-family: 'Baloo 2', sans-serif;
           font-size: 13px;
+          font-weight: 900;
           letter-spacing: 0.08em;
-          margin: 10px 4px 8px;
+          margin: 14px 4px 8px;
           text-transform: uppercase;
         }
 
@@ -1392,9 +1447,9 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
         }
 
         .f5grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-          gap: 8px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
         }
 
         .f5btn {
@@ -1403,28 +1458,31 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
           align-items: center;
           justify-content: center;
           gap: 4px;
+          width: 94px;
           min-height: 84px;
-          padding: 8px 6px;
+          padding: 8px 4px;
           border-radius: 16px;
-          border: 2px solid rgba(255, 255, 255, 0.18);
+          border: 2px solid rgba(255, 255, 255, 0.2);
           cursor: pointer;
           color: #fff;
           font-family: 'Nunito', sans-serif;
           font-weight: 900;
-          font-size: 12px;
+          font-size: 11.5px;
           line-height: 1.15;
           text-align: center;
-          transition: transform 0.15s ease, box-shadow 0.15s ease;
+          transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
         }
 
         .f5btn:hover {
           transform: translateY(-3px) scale(1.03);
-          box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+          filter: brightness(1.1);
         }
 
         .f5btn span:first-child {
           font-size: 28px;
           line-height: 1;
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
 
         /* Barra de Problemas Cotidianos SABER */

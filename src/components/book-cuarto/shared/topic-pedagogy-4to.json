@@ -1,0 +1,178 @@
+{
+  "Números Naturales y Posición": {
+    "teach": "Los <em>números naturales</em> sirven para contar: N = {0, 1, 2, 3, 4, ...}. El valor de cada cifra depende de la <em>posición</em>: unidades (U), decenas (D), centenas (C), unidades de mil (UM), decenas de mil (DM), centenas de mil (CM).",
+    "formula": "CM · DM · UM · C · D · U"
+  },
+  "Adición sin Llevar": {
+    "teach": "En la <em>adición</em>, los números que se suman se llaman <em>sumandos</em> y el resultado <em>suma</em> o <em>total</em>. Para sumar, organiza los números por columnas: <em>unidades con unidades</em>, decenas con decenas, etc.",
+    "formula": "<em>sumando</em> + <em>sumando</em> = <em>suma</em>"
+  },
+  "Concepto y Partes de la Resta": {
+    "teach": "La <em>sustracción</em> o resta es hallar la <em>diferencia</em> entre dos cantidades. <em>Minuendo</em> (lo que tengo) − <em>Sustraendo</em> (lo que quito) = <em>Diferencia</em>.",
+    "formula": "<em>Minuendo</em> − <em>Sustraendo</em> = <em>Diferencia</em>"
+  },
+  "Restas con Préstamo Múltiple": {
+    "teach": "Cuando el número de arriba es menor, pide prestado 10 a la columna izquierda.",
+    "formula": "a - b, pidiendo prestado"
+  },
+  "Problemas de Sustracción": {
+    "teach": "Identifica qué debes restar y traduce a operación.",
+    "formula": "total − parte = resto"
+  },
+  "Concepto y Tablas": {
+    "teach": "<em>Multiplicar</em> es sumar un mismo número varias veces. <em>5 × 3 = 5 + 5 + 5 = 15</em>. Las partes: <em>multiplicando × multiplicador = producto</em>. Signos usados: ·, ×, *.",
+    "formula": "<em>multiplicando</em> × <em>multiplicador</em> = <em>producto</em>"
+  },
+  "Tablas de Multiplicar": {
+    "teach": "Memoriza las tablas. Truco: la tabla del 9 suma cifras = 9.",
+    "formula": "tabla × k"
+  },
+  "Multiplicación": {
+    "teach": "Multiplica cada dígito por separado, luego suma con desplazamientos.",
+    "formula": "ab × cd"
+  },
+  "Concepto y Partes de la División": {
+    "teach": "<em>Dividir</em> es repartir en partes iguales. <em>Dividendo</em> ÷ <em>Divisor</em> = <em>Cociente</em>. Si sobra, eso es el <em>Residuo</em>. Si el residuo es 0, la división es <em>exacta</em>.",
+    "formula": "<em>Dividendo</em> ÷ <em>Divisor</em> = <em>Cociente</em>  (residuo: r)"
+  },
+  "División Exacta": {
+    "teach": "Es cuando el resto es 0. El dividendo es múltiplo del divisor.",
+    "formula": "a ÷ b = c, r=0"
+  },
+  "División con Residuo": {
+    "teach": "Verifica: dividendo = cociente × divisor + residuo.",
+    "formula": "a = c×b + r"
+  },
+  "Problemas Cotidianos": {
+    "teach": "Para resolver un <em>problema</em>: 1) Lee atentamente. 2) Identifica qué te preguntan. 3) Reconoce los datos. 4) Elige la operación: <em>suma</em>, <em>resta</em>, <em>multiplicación</em> o <em>división</em>. 5) Verifica.",
+    "formula": "Lee → Piensa → Calcula → Verifica"
+  },
+  "Problemas Numéricos SABER": {
+    "teach": "Aplica operaciones básicas para calcular.",
+    "formula": "Varias fórmulas"
+  },
+  "Problemas Contextuales SABER": {
+    "teach": "Traduce la situación real a operaciones matemáticas.",
+    "formula": "Lee → identifica → calcula"
+  },
+  "Divisores de un Número": {
+    "teach": "Un <em>divisor</em> divide a otro número de forma exacta. Los divisores de 12 son: 1, 2, 3, 4, 6 y 12.",
+    "formula": "Divisor: divide exactamente"
+  },
+  "Números Primos y Compuestos": {
+    "teach": "Un <em>primo</em> tiene 2 divisores. Un <em>compuesto</em> tiene 3 o más.",
+    "formula": "Primo: 2 divisores · Compuesto: 3+"
+  },
+  "Múltiplos de un Número": {
+    "teach": "Los <em>múltiplos</em> son el resultado de multiplicar por 1, 2, 3...",
+    "formula": "Múltiplo(n,k) = n × k"
+  },
+  "Máximo Común Divisor (MCD)": {
+    "teach": "El <em>MCD</em> es el mayor número que divide a otros. MCD(12,18)=6.",
+    "formula": "MCD(a,b)=mayor divisor común"
+  },
+  "Mínimo Común Múltiplo (MCM)": {
+    "teach": "El <em>MCM</em> es el menor múltiplo común. MCM(4,6)=12.",
+    "formula": "MCM(a,b)=menor múltiplo común"
+  },
+  "Problemas MCD y MCM (Lucas, Sora)": {
+    "teach": "Problemas contextualizados del método Fedor · Excel Parte 2. Personajes: Leo, Apolo, Sora, Lucas, Jack, Roxy.",
+    "formula": "Problemas del Excel · P2"
+  },
+  "Simplificación": {
+    "teach": "Para <em>simplificar</em> divide numerador y denominador entre su MCD.",
+    "formula": "a/b → (a÷MCD)/(b÷MCD)"
+  },
+  "Fracciones Homogéneas": {
+    "teach": "Mismo denominador: suma o resta solo numeradores.",
+    "formula": "a/n ± b/n = (a±b)/n"
+  },
+  "Fracciones Heterogéneas": {
+    "teach": "Distinto denominador: usa MCM como común denominador.",
+    "formula": "Usa MCM"
+  },
+  "Multiplicación y División": {
+    "teach": "× : num×num, den×den. ÷ : multiplica por el inverso.",
+    "formula": "a/b × c/d = ac/bd"
+  },
+  "Problemas con Fracciones": {
+    "teach": "Fracciones representan partes de un todo.",
+    "formula": "Todo − parte usada = parte restante"
+  },
+  "Problemas con MCD y MCM": {
+    "teach": "MCM: coincidencias. MCD: grupos iguales.",
+    "formula": "MCM → coincidencias · MCD → grupos"
+  },
+  "Aplicaciones Fracciones (Leo, Apolo, Sora)": {
+    "teach": "Problemas contextualizados del método Fedor · Excel Parte 2. Personajes: Leo, Apolo, Sora, Lucas, Jack, Roxy.",
+    "formula": "Problemas del Excel · P2"
+  },
+  "Longitud": {
+    "teach": "Bajar de mayor a menor: multiplica por 10. Subir: divide por 10.",
+    "formula": "× 10 al bajar · ÷ 10 al subir"
+  },
+  "Área": {
+    "teach": "Área rectángulo = base × altura.",
+    "formula": "A = b × h"
+  },
+  "Volumen": {
+    "teach": "Cubo V = L³. Prisma V = L×A×H.",
+    "formula": "Cubo: L³"
+  },
+  "Perímetro": {
+    "teach": "El perímetro es la suma de todos los lados.",
+    "formula": "Cuadrado: 4L"
+  },
+  "Concepto de Potencia": {
+    "teach": "Potencia a^n = a × a × ... × a (n veces).",
+    "formula": "a^n = producto de a n veces"
+  },
+  "Raíz y Propiedades": {
+    "teach": "a^m × a^n = a^(m+n) · √(n²) = n.",
+    "formula": "√(n²) = n"
+  },
+  "Perímetro y Área": {
+    "teach": "Perímetro=suma de lados. Área=superficie.",
+    "formula": "A cuadrado = L² · A rectángulo = w×h"
+  },
+  "Estadística": {
+    "teach": "Moda: valor más repetido. Media: suma÷cantidad.",
+    "formula": "Media = Suma/Cantidad"
+  },
+  "Geometría con Jack (Excel)": {
+    "teach": "Problemas contextualizados del método Fedor · Excel Parte 2. Personajes: Leo, Apolo, Sora, Lucas, Jack, Roxy.",
+    "formula": "Problemas del Excel · P2"
+  },
+  "Experimentos Aleatorios": {
+    "teach": "Probabilidad = casos favorables ÷ casos posibles.",
+    "formula": "P(A) = favorables/posibles"
+  },
+  "Probabilidad con Roxy y Jack (Excel)": {
+    "teach": "Problemas contextualizados del método Fedor · Excel Parte 2. Personajes: Leo, Apolo, Sora, Lucas, Jack, Roxy.",
+    "formula": "Problemas del Excel · P2"
+  },
+  "Suma Rápida": {
+    "teach": "Practica suma rápida. Aprende trucos.",
+    "formula": "a + b"
+  },
+  "Resta Rápida": {
+    "teach": "Descompón mentalmente para restar.",
+    "formula": "a - b"
+  },
+  "Series y Sucesiones": {
+    "teach": "Identifica el patrón para hallar el siguiente.",
+    "formula": "n, n+k, n+2k, ..."
+  },
+  "Multiplicación Ágil": {
+    "teach": "Usa propiedades para multiplicar.",
+    "formula": "a × b"
+  },
+  "División Ágil": {
+    "teach": "Estima antes de calcular.",
+    "formula": "a ÷ b"
+  },
+  "Combinado": {
+    "teach": "Combina operaciones.",
+    "formula": "variadas"
+  }
+}

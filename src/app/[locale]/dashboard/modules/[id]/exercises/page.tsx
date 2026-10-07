@@ -141,7 +141,7 @@ const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2
   if (grade === 3 && (normalizedId === '3' || normalizedId === 'libro-3ro' || normalizedId === 'matematicas-fedor-3' || normalizedId === '6832543f6fee7c84b2f077c0')) {
     return true;
   }
-  if (grade === 4 && (normalizedId === '4' || normalizedId === 'libro-4to' || normalizedId === 'matematicas-fedor-4' || normalizedId === '6832543f6fee7c84b2f077c1')) {
+  if (grade === 4 && (normalizedId === '4' || normalizedId === 'libro-4to' || normalizedId === 'matematicas-fedor-4' || normalizedId === '6832543f6fee7c84b2f077c1' || normalizedId === '694c7c4322a78467aa1783b6')) {
     return true;
   }
   if (!module) return false;
@@ -156,7 +156,7 @@ const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2
   if (grade === 1 && module._id === '6830d368fecd7406dc6f9525') return true;
   if (grade === 2 && module._id === '6830d619fecd7406dc6f96ad') return true;
   if (grade === 3 && module._id === '6832543f6fee7c84b2f077c0') return true;
-  if (grade === 4 && module._id === '6832543f6fee7c84b2f077c1') return true;
+  if (grade === 4 && (module._id === '6832543f6fee7c84b2f077c1' || module._id === '694c7c4322a78467aa1783b6')) return true;
 
   const haystack = normalizeText([
     module.group,
@@ -4506,7 +4506,8 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
       /grado\s*4|grade\s*4|grado4|grade4|4º\s*ano|4e\s*annee|4\.\s*klasse/i.test(currentModule?.group || '') ||
       currentModule?.slug === 'matematicas-fedor-4' ||
       currentModule?.slug === 'libro-4to' ||
-      currentModule?._id === '6832543f6fee7c84b2f077c1'
+      currentModule?._id === '6832543f6fee7c84b2f077c1' ||
+      currentModule?._id === '694c7c4322a78467aa1783b6'
     );
   }, [currentModule, resolvedParams.id]);
 

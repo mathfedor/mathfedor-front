@@ -282,7 +282,7 @@ export default function StatsLabModal3ro({ isOpen, onClose }: StatsLabModal3roPr
               playSound('click');
               onClose();
             }}
-            className="text-gray-400 hover:text-gray-700 font-black text-2xl transition-colors cursor-pointer bg-transparent border-none p-1"
+            className="w-9 h-9 rounded-full bg-[#EFE9FA] hover:bg-[#E3D6F7] text-[#5C21A6] font-bold text-lg flex items-center justify-center cursor-pointer transition-colors shadow-2xs border-none"
             title="Cerrar laboratorio"
           >
             ✕

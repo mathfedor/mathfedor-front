@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { useBook4 } from '../context/Book4Context';
-import UnitWelcomeModal4to from '../shared/UnitWelcomeModal4to';
+import UnitWelcomeModal4to, { UnitOperationIcon3D4to } from '../shared/UnitWelcomeModal4to';
 
 const LEVEL_CONFIG_4TO = [
   { label: 'Nivel 1 — Básico', orb: '🟢', color: '#16876A', bg: '#DCF5EE' },
   { label: 'Nivel 2 — Medio', orb: '🟡', color: '#BA7517', bg: '#FEF3D6' },
   { label: 'Nivel 3 — Avanzado', orb: '🔴', color: '#C94B22', bg: '#FEE8E1' },
-  { label: 'Nivel 4 — Reto', orb: '🟠', color: '#C25400', bg: '#FFEBD6' },
-  { label: 'Nivel 5 — Experto SABER', orb: '🟣', color: '#6A1B9A', bg: '#F3E8FA' },
+  { label: 'Nivel 4 — Experto', orb: '🟣', color: '#C25400', bg: '#FFEBD6' },
+  { label: 'Nivel 5 — Pruebas SABER', orb: '🏆', color: '#6A1B9A', bg: '#F3E8FA' },
 ];
 
 const UNIT_HERO_GRADIENTS_4TO = [
@@ -30,6 +30,21 @@ const UNIT_HERO_GRADIENTS_4TO = [
   'from-[#991B1B] via-[#DC2626] to-[#EF4444]', // U15 Retos Multiplicativos
 ];
 
+const HERO_STARS = [
+  { top: '15%', left: '10%', size: 2, delay: '0.2s' },
+  { top: '22%', left: '82%', size: 3, delay: '0.9s' },
+  { top: '70%', left: '18%', size: 1.5, delay: '1.4s' },
+  { top: '65%', left: '76%', size: 2.5, delay: '0.5s' },
+  { top: '35%', left: '45%', size: 1.5, delay: '1.1s' },
+  { top: '18%', left: '60%', size: 2, delay: '1.7s' },
+  { top: '80%', left: '55%', size: 2, delay: '0.3s' },
+  { top: '48%', left: '90%', size: 1.5, delay: '0.8s' },
+  { top: '85%', left: '32%', size: 2.5, delay: '1.5s' },
+  { top: '12%', left: '32%', size: 1.5, delay: '0.6s' },
+  { top: '55%', left: '8%', size: 2, delay: '1.2s' },
+  { top: '40%', left: '68%', size: 2, delay: '0.4s' },
+];
+
 export default function UnitScreen4to() {
   const { book, currentUnit, scores, goScreen, startLevel } = useBook4();
   const [showWelcomeModal, setShowWelcomeModal] = useState(true);
@@ -43,9 +58,24 @@ export default function UnitScreen4to() {
 
   const heroGrad = UNIT_HERO_GRADIENTS_4TO[currentUnit] || UNIT_HERO_GRADIENTS_4TO[0];
 
+  const handleSpeakUnitHero = () => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const text = `Unidad ${currentUnit + 1}. ${unit.name}. ${unit.std || 'Pensamiento Numérico · Grado 4°'}.`;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'es-CO';
+      utterance.rate = 0.95;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  const unitDisplayName = unit.name?.startsWith('Unidad')
+    ? unit.name
+    : `Unidad ${currentUnit + 1} — ${unit.name}`;
+
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 font-sans p-2 sm:p-4 md:p-6 pb-28 select-none">
-      <div className="w-full max-w-full mx-auto">
+    <div className="min-h-screen bg-[#F0EDFF] text-slate-800 font-sans p-2 sm:p-4 md:p-6 pb-28 select-none">
+      <div className="w-full max-w-[1008px] mx-auto">
         {/* Top bar: Volver al inicio & Tutorial */}
         <div className="flex items-center justify-between mb-4">
           <button
@@ -60,134 +90,174 @@ export default function UnitScreen4to() {
           <button
             type="button"
             onClick={() => setShowWelcomeModal(true)}
-            className="inline-flex items-center gap-1.5 text-xs font-black text-purple-700 bg-purple-50 hover:bg-purple-100 px-3.5 py-1.5 rounded-full border border-purple-200 cursor-pointer transition-colors shadow-2xs"
+            className="inline-flex items-center gap-1.5 text-xs font-black text-purple-700 bg-white hover:bg-purple-50 px-3.5 py-1.5 rounded-full border border-purple-200 cursor-pointer transition-colors shadow-2xs"
           >
             <span>💡</span>
             <span>Tutorial de Unidad</span>
           </button>
         </div>
 
-        {/* Unit Hero Banner */}
+        {/* ══ Unit Hero Banner ══ */}
         <div
           className={`relative overflow-hidden rounded-3xl bg-gradient-to-r ${heroGrad} p-6 md:p-8 text-white shadow-xl mb-6`}
+          style={{ boxShadow: '0 10px 30px rgba(61, 20, 104, 0.35)' }}
         >
+          {/* Twinkling stars */}
+          {HERO_STARS.map((star, idx) => (
+            <div
+              key={idx}
+              className="absolute rounded-full bg-white animate-pulse pointer-events-none"
+              style={{
+                top: star.top,
+                left: star.left,
+                width: star.size,
+                height: star.size,
+                animationDelay: star.delay,
+                opacity: 0.75,
+              }}
+            />
+          ))}
+
           <div className="relative z-10">
-            <div className="text-4xl mb-2">{unit.icon || '📘'}</div>
+            {/* Unit Icon */}
+            <div className="mb-2 inline-flex items-center justify-center">
+              <UnitOperationIcon3D4to unitIndex={currentUnit} fallbackIcon={unit.icon} />
+            </div>
+
             <h1
-              className="text-xl md:text-3xl font-black text-white tracking-tight"
+              className="text-2xl md:text-3xl font-black text-white tracking-tight"
               style={{ fontFamily: "'Baloo 2', sans-serif" }}
             >
-              Unidad {currentUnit + 1} — {unit.name}
+              {unitDisplayName}
             </h1>
+
             <p className="text-xs md:text-sm font-semibold text-white/80 mt-1">
-              {unit.name}
+              {unit.short || unit.name}
             </p>
-            <div className="mt-3">
-              <span className="inline-block px-3.5 py-1 rounded-full bg-black/20 backdrop-blur-xs border border-white/20 text-[11px] font-bold text-white tracking-wide">
+
+            <div className="mt-3 flex items-center gap-2.5 flex-wrap">
+              <span className="inline-block px-3.5 py-1 rounded-full bg-white/15 backdrop-blur-xs border border-white/25 text-[11px] font-bold text-white tracking-wide">
                 {unit.std || 'Pensamiento Numérico · Grado 4° · MEN Colombia'}
               </span>
+
+              <button
+                type="button"
+                onClick={handleSpeakUnitHero}
+                title="Escuchar unidad"
+                className="w-7 h-7 rounded-lg bg-white/90 hover:bg-white text-purple-800 flex items-center justify-center text-xs shadow-xs transition-transform hover:scale-105 cursor-pointer"
+              >
+                🔊
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Topics & Levels */}
+        {/* ══ Topics & Vertical Level Cards List ══ */}
         <div className="space-y-6">
           {(unit.topics || []).map((topic, tIdx) => {
             const topicLevels = topic.levels || [];
-            const doneCount = topicLevels.reduce((acc, _, lIdx) => {
-              const key1 = `${topic.id}-n${lIdx + 1}`;
-              const key2 = `${tIdx}-${lIdx}`;
-              const sc = scores[key1] ?? scores[key2] ?? 0;
-              return acc + (sc >= 50 ? 1 : 0);
-            }, 0);
 
             return (
-              <div key={tIdx} className="space-y-3">
-                {/* Topic Header Card */}
-                <div className="bg-gradient-to-r from-[#F8F5FF] to-white border border-[#E9D5FF] rounded-2xl p-3.5 sm:p-4 shadow-xs">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2 text-sm sm:text-base font-black text-[#2A0F60]">
-                      <span className="text-lg">{topic.icon || '📝'}</span>
-                      <span style={{ fontFamily: "'Baloo 2', sans-serif" }}>{topic.title}</span>
-                    </div>
-                    <div className="text-[11px] sm:text-xs font-black text-[#6C28B4] bg-[#EEEDFE] px-3 py-0.5 rounded-full border border-purple-200 shrink-0">
-                      {doneCount}/{topicLevels.length} niveles
-                    </div>
-                  </div>
-
-                  {/* 5-segment level progress bar */}
-                  <div className="flex gap-1.5 items-center mt-2.5">
-                    {topicLevels.map((lv, segIdx) => {
-                      const segCfg = LEVEL_CONFIG_4TO[segIdx] || LEVEL_CONFIG_4TO[0];
-                      const segColor = lv.color || segCfg.color;
-                      const segBg = lv.bg || segCfg.bg;
-                      const segKey = `${topic.id}-n${segIdx + 1}`;
-                      const segScore = scores[segKey] || 0;
-                      const segDone = segScore >= 50;
-
-                      return (
-                        <div
-                          key={segIdx}
-                          title={lv.label || segCfg.label}
-                          className="flex-1 h-2.5 sm:h-3 rounded-xs relative transition-all border flex items-center justify-center overflow-hidden"
-                          style={{
-                            borderColor: segColor,
-                            backgroundColor: segDone ? segColor : (segBg || '#F1F5F9'),
-                            opacity: segDone ? 1 : 0.45,
-                            borderWidth: '1.5px',
-                          }}
-                        />
-                      );
-                    })}
-                  </div>
+              <div key={tIdx} className="topics-section">
+                {/* Topic Header: small uppercase title */}
+                <div
+                  className="flex items-center gap-2 mb-2 px-1 text-xs font-black uppercase tracking-wider text-[#6C28B4]"
+                  style={{ letterSpacing: '0.08em' }}
+                >
+                  <span className="text-sm">{topic.icon || '📝'}</span>
+                  <span style={{ fontFamily: "'Nunito', sans-serif" }}>{topic.title}</span>
                 </div>
 
-                {/* Level Cards Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                {/* Vertical list of levels (.tc cards from HTML) */}
+                <div className="grid gap-2.5">
                   {topicLevels.map((lv, lIdx) => {
                     const cfg = LEVEL_CONFIG_4TO[lIdx] || LEVEL_CONFIG_4TO[0];
-                    const levelKey = `${topic.id}-n${lIdx + 1}`;
-                    const score = scores[levelKey] || 0;
+                    const levelKey1 = `${topic.id}-n${lIdx + 1}`;
+                    const levelKey2 = `${tIdx}-${lIdx}`;
+                    const score = scores[levelKey1] ?? scores[levelKey2] ?? 0;
                     const isCompleted = score >= 50;
 
                     return (
                       <div
                         key={lIdx}
                         onClick={() => startLevel(currentUnit, tIdx, lIdx)}
-                        className="p-4 rounded-2xl bg-white border-2 border-slate-200 hover:border-purple-400 hover:shadow-lg transition-all cursor-pointer flex flex-col justify-between"
-                        style={{ minHeight: '140px' }}
+                        className={`tc-card flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl bg-white border cursor-pointer transition-all ${
+                          isCompleted
+                            ? 'border-emerald-300 bg-gradient-to-r from-emerald-50/50 to-white'
+                            : 'border-slate-200 hover:border-purple-300'
+                        }`}
+                        style={{
+                          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.04)',
+                          transition: 'transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateX(5px)';
+                          e.currentTarget.style.boxShadow = '0 6px 18px rgba(123, 47, 190, 0.12)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateX(0)';
+                          e.currentTarget.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.04)';
+                        }}
                       >
-                        <div>
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="text-xl">{cfg.orb}</span>
-                            <span
-                              className="text-[10px] font-black px-2 py-0.5 rounded-full"
-                              style={{ background: cfg.bg, color: cfg.color }}
-                            >
-                              N{lIdx + 1}
-                            </span>
+                        {/* Left Icon (44×44px pastel badge) */}
+                        <div
+                          className="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0"
+                          style={{ background: cfg.bg }}
+                        >
+                          {isCompleted ? '✅' : cfg.orb}
+                        </div>
+
+                        {/* Middle Body */}
+                        <div className="flex-1 min-w-0">
+                          <div
+                            className="text-sm sm:text-base font-black text-[#180D38] leading-tight"
+                            style={{ fontFamily: "'Nunito', sans-serif" }}
+                          >
+                            {cfg.label}
                           </div>
 
-                          <div
-                            className="font-black text-sm text-slate-800 leading-tight mb-1"
-                            style={{ fontFamily: "'Baloo 2', sans-serif" }}
-                          >
-                            {lv.label || cfg.label}
+                          <div className="text-xs text-slate-500 font-semibold mt-0.5 truncate">
+                            {topic.desc || 'Hasta centenas de mil'}
                           </div>
-                          <div className="text-[11px] text-slate-500 font-semibold">
-                            {lv.exercises?.length || 10} retos matemáticos
+
+                          {/* 5 Indicator Dots */}
+                          <div className="flex items-center gap-1 mt-1.5">
+                            {[0, 1, 2, 3, 4].map((k) => {
+                              const isFilled = k <= lIdx;
+                              const dotColor = isFilled
+                                ? LEVEL_CONFIG_4TO[k]?.color || '#16876A'
+                                : '#E2E8F0';
+                              return (
+                                <div
+                                  key={k}
+                                  className="w-2 h-2 rounded-full transition-colors"
+                                  style={{ background: dotColor }}
+                                />
+                              );
+                            })}
                           </div>
                         </div>
 
-                        <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
-                          <span className="text-xs font-black text-amber-600">
-                            {score > 0 ? `${score}% pts` : 'Por iniciar'}
-                          </span>
+                        {/* Right Arrow / Action */}
+                        <div className="flex items-center gap-2.5 shrink-0 pl-2">
+                          {isCompleted && (
+                            <div className="text-right hidden sm:block">
+                              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                                {score >= 80 ? 'Excelente' : 'Completado'}
+                              </span>
+                              <div className="text-[10px] font-bold text-emerald-700 mt-0.5">
+                                {score}% logrado
+                              </div>
+                            </div>
+                          )}
+
                           <span
-                            className="text-xs font-black px-2.5 py-1 rounded-xl text-white"
-                            style={{ background: cfg.color }}
+                            className="text-xl leading-none flex items-center justify-center"
+                            style={{
+                              fontFamily: "'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif",
+                            }}
                           >
-                            {isCompleted ? 'Repasar' : 'Entrar 🚀'}
+                            {isCompleted ? '✅' : '▶️'}
                           </span>
                         </div>
                       </div>
@@ -205,9 +275,11 @@ export default function UnitScreen4to() {
         <UnitWelcomeModal4to
           isOpen={showWelcomeModal}
           unitIndex={currentUnit}
+          unit={unit}
           onClose={() => setShowWelcomeModal(false)}
         />
       )}
     </div>
   );
 }
+
