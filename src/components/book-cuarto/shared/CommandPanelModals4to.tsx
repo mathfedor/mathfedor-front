@@ -11,6 +11,9 @@ import ExamenFinalModal4to from './ExamenFinalModal4to';
 import StickerAlbumModal4to from './StickerAlbumModal4to';
 import MinijuegosModal4to from './MinijuegosModal4to';
 import LaboratorioVisualModal4to from './LaboratorioVisualModal4to';
+import ConteoModal4to from './ConteoModal4to';
+import MultiplicarModal4to from './MultiplicarModal4to';
+import LaboratorioEstadisticaModal4to from './LaboratorioEstadisticaModal4to';
 
 interface CommandPanelModals4toProps {
   activeTool: string | null;
@@ -431,6 +434,18 @@ export default function CommandPanelModals4to({
 
   if (activeTool === 'lab-visual' || activeTool === 'lab' || activeTool === 'laboratorio') {
     return <LaboratorioVisualModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'conteo' || activeTool === 'tablas-conteo') {
+    return <ConteoModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'mult' || activeTool === 'multiplicar' || activeTool === 'tablas-mult') {
+    return <MultiplicarModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'lab-est' || activeTool === 'laboratorio-datos' || activeTool === 'estadistica') {
+    return <LaboratorioEstadisticaModal4to isOpen={true} onClose={onClose} />;
   }
 
   if (activeTool === 'tienda') {
