@@ -10,6 +10,7 @@ import DiarioModal4to from './DiarioModal4to';
 import ExamenFinalModal4to from './ExamenFinalModal4to';
 import StickerAlbumModal4to from './StickerAlbumModal4to';
 import MinijuegosModal4to from './MinijuegosModal4to';
+import LaboratorioVisualModal4to from './LaboratorioVisualModal4to';
 
 interface CommandPanelModals4toProps {
   activeTool: string | null;
@@ -427,6 +428,10 @@ export default function CommandPanelModals4to({
   };
 
   if (!activeTool) return null;
+
+  if (activeTool === 'lab-visual' || activeTool === 'lab' || activeTool === 'laboratorio') {
+    return <LaboratorioVisualModal4to isOpen={true} onClose={onClose} />;
+  }
 
   if (activeTool === 'tienda') {
     return <ShopModal4to isOpen={true} onClose={onClose} />;
