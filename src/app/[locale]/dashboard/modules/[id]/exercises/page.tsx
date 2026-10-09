@@ -21,6 +21,7 @@ import BookExperience from '@/components/book/BookExperience';
 import Book1Experience from '@/components/book-primero/Book1Experience';
 import Book3Experience from '@/components/book-tercero/Book3Experience';
 import Book4Experience from '@/components/book-cuarto/Book4Experience';
+import Book5Experience from '@/components/book-quinto/Book5Experience';
 import '@/app/[locale]/dashboard/libro-2do/book.css';
 
 type FireworkStyle = CSSProperties & Record<`--${string}`, string>;
@@ -130,7 +131,7 @@ const normalizeText = (value: string) => value
   .trim()
   .toLowerCase();
 
-const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2 | 3 | 4) => {
+const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2 | 3 | 4 | 5) => {
   const normalizedId = normalizeText(routeId);
   if (grade === 1 && (normalizedId === '1' || normalizedId === 'libro-1ro' || normalizedId === 'matematicas-fedor-1' || normalizedId === '6830d368fecd7406dc6f9525')) {
     return true;
@@ -144,6 +145,9 @@ const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2
   if (grade === 4 && (normalizedId === '4' || normalizedId === 'libro-4to' || normalizedId === 'matematicas-fedor-4' || normalizedId === '6832543f6fee7c84b2f077c1' || normalizedId === '694c7c4322a78467aa1783b6')) {
     return true;
   }
+  if (grade === 5 && (normalizedId === '5' || normalizedId === 'libro-5to' || normalizedId === 'matematicas-fedor-5' || normalizedId === '6832543f6fee7c84b2f077c2' || normalizedId === '694c7c4322a78467aa1783b7')) {
+    return true;
+  }
   if (!module) return false;
 
   // Comprobación directa por slug
@@ -151,12 +155,14 @@ const moduleMatchesGrade = (module: Module | null, routeId: string, grade: 1 | 2
   if (grade === 2 && (module.slug === 'matematicas-fedor-2' || module.slug === 'libro-2do')) return true;
   if (grade === 3 && (module.slug === 'matematicas-fedor-3' || module.slug === 'libro-3ro')) return true;
   if (grade === 4 && (module.slug === 'matematicas-fedor-4' || module.slug === 'libro-4to')) return true;
+  if (grade === 5 && (module.slug === 'matematicas-fedor-5' || module.slug === 'libro-5to')) return true;
 
   // Comprobación directa por ID de MongoDB
   if (grade === 1 && module._id === '6830d368fecd7406dc6f9525') return true;
   if (grade === 2 && module._id === '6830d619fecd7406dc6f96ad') return true;
   if (grade === 3 && module._id === '6832543f6fee7c84b2f077c0') return true;
   if (grade === 4 && (module._id === '6832543f6fee7c84b2f077c1' || module._id === '694c7c4322a78467aa1783b6')) return true;
+  if (grade === 5 && (module._id === '6832543f6fee7c84b2f077c2' || module._id === '694c7c4322a78467aa1783b7')) return true;
 
   const haystack = normalizeText([
     module.group,
@@ -4511,6 +4517,17 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
     );
   }, [currentModule, resolvedParams.id]);
 
+  const isGrade5Module = useMemo(() => {
+    return (
+      moduleMatchesGrade(currentModule, resolvedParams.id, 5) ||
+      /grado\s*5|grade\s*5|grado5|grade5|5º\s*ano|5e\s*annee|5\.\s*klasse/i.test(currentModule?.group || '') ||
+      currentModule?.slug === 'matematicas-fedor-5' ||
+      currentModule?.slug === 'libro-5to' ||
+      currentModule?._id === '6832543f6fee7c84b2f077c2' ||
+      currentModule?._id === '694c7c4322a78467aa1783b7'
+    );
+  }, [currentModule, resolvedParams.id]);
+
   const isBookModule = useMemo(() => {
     return isGrade1Module || isGrade2Module;
   }, [isGrade1Module, isGrade2Module]);
@@ -4584,6 +4601,23 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
         />
         <div className="flex-1 overflow-y-auto">
           <Book4Experience slug="matematicas-fedor-4" />
+        </div>
+      </div>
+    );
+  }
+
+  if (isGrade5Module) {
+    return (
+      <div className="flex min-h-screen bg-white dark:bg-[#1C1D1F] text-black dark:text-white transition-colors">
+        <Sidebar />
+        <AlertDialog
+          isOpen={isAlertOpen}
+          onClose={() => setIsAlertOpen(false)}
+          title={alertMessage.title}
+          message={alertMessage.message}
+        />
+        <div className="flex-1 overflow-y-auto">
+          <Book5Experience slug="matematicas-fedor-5" />
         </div>
       </div>
     );

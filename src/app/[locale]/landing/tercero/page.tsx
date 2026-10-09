@@ -365,7 +365,7 @@ export default function LandingGrado3() {
 
       {/* Top Banner de Promoción */}
       <div className="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 text-slate-950 py-2.5 px-4 text-center font-black text-xs sm:text-sm shadow-md sticky top-0 z-50">
-        🎁 <strong>Hasta el 31 de octubre: libro digital de 1°, 2° y 3° gratis</strong>
+        🎁 <strong>Hasta el 31 de octubre: libro digital de 1°, 2°, 3°, 4° y 5° gratis</strong>
       </div>
 
       {/* =================================================================== */}

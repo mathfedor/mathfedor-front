@@ -1,7 +1,7 @@
 /**
  * Constantes y helpers para el acceso a módulos.
  *
- * - Trial gratuito: módulos de Grado 1, 2 y 3 accesibles (solo ejercicios)
+ * - Trial gratuito: módulos de Grado 1, 2, 3, 4 y 5 accesibles (solo ejercicios)
  *   hasta el 31 de octubre de 2026.
  * - Compra válida: 1 año desde la fecha de compra.
  */
@@ -11,12 +11,12 @@ export const FREE_TRIAL_END_DATE = new Date('2026-10-31T23:59:59.999-05:00');
 
 /** Grupos de módulos que aplican al trial gratuito en todos los idiomas. */
 export const FREE_TRIAL_GRADES: string[] = [
-  'Grado1', 'Grado2', 'Grado3',
-  'Grade1', 'Grade2', 'Grade3',
-  'Grade 1', 'Grade 2', 'Grade 3',
-  '1º Ano', '2º Ano', '3º Ano',
-  '1re Année', '2e Année', '3e Année',
-  '1. Klasse', '2. Klasse', '3. Klasse',
+  'Grado1', 'Grado2', 'Grado3', 'Grado4', 'Grado5',
+  'Grade1', 'Grade2', 'Grade3', 'Grade4', 'Grade5',
+  'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5',
+  '1º Ano', '2º Ano', '3º Ano', '4º Ano', '5º Ano',
+  '1re Année', '2e Année', '3e Année', '4e Année', '5e Année',
+  '1. Klasse', '2. Klasse', '3. Klasse', '4. Klasse', '5. Klasse',
 ];
 
 /** Duración de validez de una compra en milisegundos (365 días). */
@@ -24,7 +24,7 @@ export const PURCHASE_VALIDITY_MS = 365 * 24 * 60 * 60 * 1000;
 
 /**
  * Verifica si un módulo está dentro del periodo de trial gratuito.
- * Aplica a módulos de Grado 1, Grado 2 y Grado 3, hasta el 31/Oct/2026.
+ * Aplica a módulos de Grado 1, 2, 3, 4 y 5, hasta el 31/Oct/2026.
  */
 export function isModuleInFreeTrial(group: string | undefined | null): boolean {
   if (!group) return false;
@@ -33,7 +33,7 @@ export function isModuleInFreeTrial(group: string | undefined | null): boolean {
 
   const normalized = group.trim().toLowerCase();
   if (FREE_TRIAL_GRADES.some(g => g.toLowerCase() === normalized)) return true;
-  return /\b(grado|grade|ano|annee|klasse)\s*[123]\b|\b[123]º|\b[123]re|\b[123]\./i.test(normalized);
+  return /\b(grado|grade|ano|annee|klasse)\s*[12345]\b|\b[12345]º|\b[12345]re|\b[12345]e|\b[12345]\./i.test(normalized);
 }
 
 /**

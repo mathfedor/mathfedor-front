@@ -74,9 +74,15 @@ export function ModuleAccessProvider({ children }: { children: ReactNode }) {
           expiresAt = getPurchaseExpirationDate(purchase.purchase_date);
         } else if (
           isModuleInFreeTrial(group) ||
-          (module.slug && ['libro-1ro', 'matematicas-fedor-2', 'matematicas-fedor-3', 'libro-2do', 'libro-3ro'].includes(module.slug))
+          (module.slug && [
+            'libro-1ro', 'matematicas-fedor-1',
+            'libro-2do', 'matematicas-fedor-2',
+            'libro-3ro', 'matematicas-fedor-3',
+            'libro-4to', 'matematicas-fedor-4',
+            'libro-5to', 'matematicas-fedor-5'
+          ].includes(module.slug))
         ) {
-          // Sin compra, pero módulo de Grado 1, 2 o 3 en periodo de trial hasta el 31/Oct/2026
+          // Sin compra, pero módulo de Grado 1, 2, 3, 4 o 5 en periodo de trial hasta el 31/Oct/2026
           accessType = 'free_trial';
           canAccessExercises = true;
           canAccessDownloads = false; // Descargas requieren compra

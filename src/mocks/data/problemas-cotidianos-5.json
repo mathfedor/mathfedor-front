@@ -1,0 +1,3405 @@
+{
+  "PC_NIVELES": [
+    {
+      "nombre": "Nivel 1 · Adición",
+      "ejemplos": [
+        {
+          "q": "Sora compra un marcador de $200 y una tijera de $100. ¿Cuánto paga en total?",
+          "ans": "$300",
+          "opts": [
+            "$310",
+            "$200",
+            "$1.300",
+            "$300"
+          ],
+          "proc": [
+            "Datos: $200 ; $100",
+            "Operación: $200 + $100 = $300",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $300"
+          ],
+          "datos": [
+            200,
+            100
+          ],
+          "pts": 10,
+          "t": 60
+        },
+        {
+          "q": "Roxy compra un lápiz de $200 y una regla de $100. ¿Cuánto paga en total?",
+          "ans": "$300",
+          "opts": [
+            "$300",
+            "$200",
+            "$1.300",
+            "$310"
+          ],
+          "proc": [
+            "Datos: $200 ; $100",
+            "Operación: $200 + $100 = $300",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $300"
+          ],
+          "datos": [
+            200,
+            100
+          ],
+          "pts": 10,
+          "t": 60
+        },
+        {
+          "q": "Sumy compra un borrador de $600 y una tijera de $300. ¿Cuánto paga en total?",
+          "ans": "$900",
+          "opts": [
+            "$910",
+            "$900",
+            "$800",
+            "$1.900"
+          ],
+          "proc": [
+            "Datos: $600 ; $300",
+            "Operación: $600 + $300 = $900",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $900"
+          ],
+          "datos": [
+            600,
+            300
+          ],
+          "pts": 10,
+          "t": 60
+        },
+        {
+          "q": "En la tienda, Gloria compra un paquete de galletas de $1.600 y una libra de arroz de $3.000. ¿Cuánto debe pagar?",
+          "ans": "$4.600",
+          "opts": [
+            "$4.600",
+            "$4.610",
+            "$4.500",
+            "$5.600"
+          ],
+          "proc": [
+            "Datos: $1.600 ; $3.000",
+            "Operación: $1.600 + $3.000 = $4.600",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $4.600"
+          ],
+          "datos": [
+            1600,
+            3000
+          ],
+          "pts": 15,
+          "t": 80
+        },
+        {
+          "q": "En la tienda, Jack compra una libra de queso de $1.550 y un pan de $1.400. ¿Cuánto debe pagar?",
+          "ans": "$2.950",
+          "opts": [
+            "$3.950",
+            "$2.850",
+            "$2.950",
+            "$2.960"
+          ],
+          "proc": [
+            "Datos: $1.550 ; $1.400",
+            "Operación: $1.550 + $1.400 = $2.950",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $2.950"
+          ],
+          "datos": [
+            1550,
+            1400
+          ],
+          "pts": 15,
+          "t": 80
+        },
+        {
+          "q": "Para el colegio, Leo compra una tijera de $7.800, un cuaderno de $3.250 y un lápiz de $9.000. ¿Cuánto gasta en total?",
+          "ans": "$20.050",
+          "opts": [
+            "$9.050",
+            "$19.950",
+            "$20.050",
+            "$21.050"
+          ],
+          "proc": [
+            "Datos: $7.800 ; $3.250 ; $9.000",
+            "Operación: $7.800 + $3.250 + $9.000 = $20.050",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $20.050"
+          ],
+          "datos": [
+            7800,
+            3250,
+            9000
+          ],
+          "pts": 20,
+          "t": 100
+        },
+        {
+          "q": "Para el colegio, Sora compra un cuaderno de $9.300, un marcador de $8.200 y un lápiz de $2.350. ¿Cuánto gasta en total?",
+          "ans": "$19.850",
+          "opts": [
+            "$9.850",
+            "$20.850",
+            "$19.750",
+            "$19.850"
+          ],
+          "proc": [
+            "Datos: $9.300 ; $8.200 ; $2.350",
+            "Operación: $9.300 + $8.200 + $2.350 = $19.850",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $19.850"
+          ],
+          "datos": [
+            9300,
+            8200,
+            2350
+          ],
+          "pts": 20,
+          "t": 100
+        },
+        {
+          "q": "Para el colegio, Jack compra un marcador de $5.400, una tijera de $2.400 y un cuaderno de $3.950. ¿Cuánto gasta en total?",
+          "ans": "$11.750",
+          "opts": [
+            "$12.750",
+            "$11.750",
+            "$11.650",
+            "$750"
+          ],
+          "proc": [
+            "Datos: $5.400 ; $2.400 ; $3.950",
+            "Operación: $5.400 + $2.400 + $3.950 = $11.750",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $11.750"
+          ],
+          "datos": [
+            5400,
+            2400,
+            3950
+          ],
+          "pts": 20,
+          "t": 100
+        },
+        {
+          "q": "El almacén de Sumy vendió $126.150 el lunes, $133.400 el martes y $183.400 el miércoles. ¿Cuánto vendió en los tres días?",
+          "ans": "$442.950",
+          "opts": [
+            "$442.850",
+            "$442.950",
+            "$443.950",
+            "$332.950"
+          ],
+          "proc": [
+            "Datos: $126.150 ; $133.400 ; $183.400",
+            "Operación: $126.150 + $133.400 + $183.400 = $442.950",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $442.950"
+          ],
+          "datos": [
+            126150,
+            133400,
+            183400
+          ],
+          "pts": 30,
+          "t": 120
+        },
+        {
+          "q": "El almacén de Ana vendió $122.150 el lunes, $156.600 el martes y $115.900 el miércoles. ¿Cuánto vendió en los tres días?",
+          "ans": "$394.650",
+          "opts": [
+            "$394.550",
+            "$395.650",
+            "$383.650",
+            "$394.650"
+          ],
+          "proc": [
+            "Datos: $122.150 ; $156.600 ; $115.900",
+            "Operación: $122.150 + $156.600 + $115.900 = $394.650",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $394.650"
+          ],
+          "datos": [
+            122150,
+            156600,
+            115900
+          ],
+          "pts": 30,
+          "t": 120
+        }
+      ],
+      "ejercicios": [
+        {
+          "q": "Falco compra una carpeta de $600 y una tijera de $200. ¿Cuánto paga en total?",
+          "ans": "$800",
+          "opts": [
+            "$700",
+            "$810",
+            "$1.800",
+            "$800"
+          ],
+          "proc": [
+            "Datos: $600 ; $200",
+            "Operación: $600 + $200 = $800",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $800"
+          ],
+          "datos": [
+            600,
+            200
+          ],
+          "pts": 10,
+          "t": 60
+        },
+        {
+          "q": "Jack compra una carpeta de $500 y un marcador de $200. ¿Cuánto paga en total?",
+          "ans": "$700",
+          "opts": [
+            "$600",
+            "$700",
+            "$1.700",
+            "$710"
+          ],
+          "proc": [
+            "Datos: $500 ; $200",
+            "Operación: $500 + $200 = $700",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $700"
+          ],
+          "datos": [
+            500,
+            200
+          ],
+          "pts": 10,
+          "t": 60
+        },
+        {
+          "q": "Apolo compra un borrador de $500 y un lápiz de $300. ¿Cuánto paga en total?",
+          "ans": "$800",
+          "opts": [
+            "$810",
+            "$800",
+            "$1.800",
+            "$700"
+          ],
+          "proc": [
+            "Datos: $500 ; $300",
+            "Operación: $500 + $300 = $800",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $800"
+          ],
+          "datos": [
+            500,
+            300
+          ],
+          "pts": 10,
+          "t": 60
+        },
+        {
+          "q": "Jack compra una tijera de $400 y un cuaderno de $200. ¿Cuánto paga en total?",
+          "ans": "$600",
+          "opts": [
+            "$610",
+            "$500",
+            "$1.600",
+            "$600"
+          ],
+          "proc": [
+            "Datos: $400 ; $200",
+            "Operación: $400 + $200 = $600",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $600"
+          ],
+          "datos": [
+            400,
+            200
+          ],
+          "pts": 10,
+          "t": 60
+        },
+        {
+          "q": "Juan compra un marcador de $400 y una tijera de $200. ¿Cuánto paga en total?",
+          "ans": "$600",
+          "opts": [
+            "$500",
+            "$600",
+            "$610",
+            "$1.600"
+          ],
+          "proc": [
+            "Datos: $400 ; $200",
+            "Operación: $400 + $200 = $600",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $600"
+          ],
+          "datos": [
+            400,
+            200
+          ],
+          "pts": 10,
+          "t": 60
+        },
+        {
+          "q": "En la tienda, Juan compra una bolsa de frutas de $3.850 y un pan de $2.800. ¿Cuánto debe pagar?",
+          "ans": "$6.650",
+          "opts": [
+            "$6.650",
+            "$5.650",
+            "$6.550",
+            "$7.650"
+          ],
+          "proc": [
+            "Datos: $3.850 ; $2.800",
+            "Operación: $3.850 + $2.800 = $6.650",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $6.650"
+          ],
+          "datos": [
+            3850,
+            2800
+          ],
+          "pts": 15,
+          "t": 80
+        },
+        {
+          "q": "En la tienda, Leo compra un pan de $2.750 y un litro de leche de $4.400. ¿Cuánto debe pagar?",
+          "ans": "$7.150",
+          "opts": [
+            "$7.150",
+            "$6.150",
+            "$7.050",
+            "$8.150"
+          ],
+          "proc": [
+            "Datos: $2.750 ; $4.400",
+            "Operación: $2.750 + $4.400 = $7.150",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $7.150"
+          ],
+          "datos": [
+            2750,
+            4400
+          ],
+          "pts": 15,
+          "t": 80
+        },
+        {
+          "q": "En la tienda, Roxy compra un paquete de galletas de $4.450 y un jugo de $3.500. ¿Cuánto debe pagar?",
+          "ans": "$7.950",
+          "opts": [
+            "$8.950",
+            "$7.850",
+            "$7.960",
+            "$7.950"
+          ],
+          "proc": [
+            "Datos: $4.450 ; $3.500",
+            "Operación: $4.450 + $3.500 = $7.950",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $7.950"
+          ],
+          "datos": [
+            4450,
+            3500
+          ],
+          "pts": 15,
+          "t": 80
+        },
+        {
+          "q": "En la tienda, Math compra un pan de $2.550 y una bolsa de frutas de $2.250. ¿Cuánto debe pagar?",
+          "ans": "$4.800",
+          "opts": [
+            "$4.800",
+            "$4.810",
+            "$4.700",
+            "$5.800"
+          ],
+          "proc": [
+            "Datos: $2.550 ; $2.250",
+            "Operación: $2.550 + $2.250 = $4.800",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $4.800"
+          ],
+          "datos": [
+            2550,
+            2250
+          ],
+          "pts": 15,
+          "t": 80
+        },
+        {
+          "q": "En la tienda, Gloria compra una libra de queso de $2.200 y un litro de leche de $4.400. ¿Cuánto debe pagar?",
+          "ans": "$6.600",
+          "opts": [
+            "$6.610",
+            "$6.500",
+            "$7.600",
+            "$6.600"
+          ],
+          "proc": [
+            "Datos: $2.200 ; $4.400",
+            "Operación: $2.200 + $4.400 = $6.600",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $6.600"
+          ],
+          "datos": [
+            2200,
+            4400
+          ],
+          "pts": 15,
+          "t": 80
+        },
+        {
+          "q": "Para el colegio, Juan compra un borrador de $4.600, una tijera de $9.250 y una regla de $4.650. ¿Cuánto gasta en total?",
+          "ans": "$18.500",
+          "opts": [
+            "$18.400",
+            "$18.500",
+            "$19.500",
+            "$7.400"
+          ],
+          "proc": [
+            "Datos: $4.600 ; $9.250 ; $4.650",
+            "Operación: $4.600 + $9.250 + $4.650 = $18.500",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $18.500"
+          ],
+          "datos": [
+            4600,
+            9250,
+            4650
+          ],
+          "pts": 20,
+          "t": 100
+        },
+        {
+          "q": "Para el colegio, Jack compra un lápiz de $8.750, una caja de colores de $6.900 y una tijera de $4.500. ¿Cuánto gasta en total?",
+          "ans": "$20.150",
+          "opts": [
+            "$8.150",
+            "$21.150",
+            "$20.150",
+            "$20.050"
+          ],
+          "proc": [
+            "Datos: $8.750 ; $6.900 ; $4.500",
+            "Operación: $8.750 + $6.900 + $4.500 = $20.150",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $20.150"
+          ],
+          "datos": [
+            8750,
+            6900,
+            4500
+          ],
+          "pts": 20,
+          "t": 100
+        },
+        {
+          "q": "Para el colegio, Jack compra una carpeta de $8.500, una caja de colores de $8.150 y un borrador de $7.600. ¿Cuánto gasta en total?",
+          "ans": "$24.250",
+          "opts": [
+            "$25.250",
+            "$24.150",
+            "$3.250",
+            "$24.250"
+          ],
+          "proc": [
+            "Datos: $8.500 ; $8.150 ; $7.600",
+            "Operación: $8.500 + $8.150 + $7.600 = $24.250",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $24.250"
+          ],
+          "datos": [
+            8500,
+            8150,
+            7600
+          ],
+          "pts": 20,
+          "t": 100
+        },
+        {
+          "q": "Para el colegio, Falco compra un lápiz de $1.500, una tijera de $1.550 y una carpeta de $3.150. ¿Cuánto gasta en total?",
+          "ans": "$6.200",
+          "opts": [
+            "$6.200",
+            "$5.100",
+            "$6.100",
+            "$7.200"
+          ],
+          "proc": [
+            "Datos: $1.500 ; $1.550 ; $3.150",
+            "Operación: $1.500 + $1.550 + $3.150 = $6.200",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $6.200"
+          ],
+          "datos": [
+            1500,
+            1550,
+            3150
+          ],
+          "pts": 20,
+          "t": 100
+        },
+        {
+          "q": "Para el colegio, Jack compra una regla de $6.050, un borrador de $8.800 y un lápiz de $7.250. ¿Cuánto gasta en total?",
+          "ans": "$22.100",
+          "opts": [
+            "$22.100",
+            "$23.100",
+            "$22.000",
+            "$1.000"
+          ],
+          "proc": [
+            "Datos: $6.050 ; $8.800 ; $7.250",
+            "Operación: $6.050 + $8.800 + $7.250 = $22.100",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $22.100"
+          ],
+          "datos": [
+            6050,
+            8800,
+            7250
+          ],
+          "pts": 20,
+          "t": 100
+        },
+        {
+          "q": "El almacén de Math vendió $159.250 el lunes, $148.050 el martes y $107.300 el miércoles. ¿Cuánto vendió en los tres días?",
+          "ans": "$414.600",
+          "opts": [
+            "$414.600",
+            "$414.500",
+            "$415.600",
+            "$394.500"
+          ],
+          "proc": [
+            "Datos: $159.250 ; $148.050 ; $107.300",
+            "Operación: $159.250 + $148.050 + $107.300 = $414.600",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $414.600"
+          ],
+          "datos": [
+            159250,
+            148050,
+            107300
+          ],
+          "pts": 30,
+          "t": 120
+        },
+        {
+          "q": "El almacén de Ana vendió $150.850 el lunes, $85.200 el martes y $90.900 el miércoles. ¿Cuánto vendió en los tres días?",
+          "ans": "$326.950",
+          "opts": [
+            "$326.850",
+            "$326.950",
+            "$125.950",
+            "$327.950"
+          ],
+          "proc": [
+            "Datos: $150.850 ; $85.200 ; $90.900",
+            "Operación: $150.850 + $85.200 + $90.900 = $326.950",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $326.950"
+          ],
+          "datos": [
+            150850,
+            85200,
+            90900
+          ],
+          "pts": 30,
+          "t": 120
+        },
+        {
+          "q": "El almacén de Leo vendió $131.900 el lunes, $189.450 el martes y $95.850 el miércoles. ¿Cuánto vendió en los tres días?",
+          "ans": "$417.200",
+          "opts": [
+            "$418.200",
+            "$417.100",
+            "$205.100",
+            "$417.200"
+          ],
+          "proc": [
+            "Datos: $131.900 ; $189.450 ; $95.850",
+            "Operación: $131.900 + $189.450 + $95.850 = $417.200",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $417.200"
+          ],
+          "datos": [
+            131900,
+            189450,
+            95850
+          ],
+          "pts": 30,
+          "t": 120
+        },
+        {
+          "q": "El almacén de Falco vendió $119.400 el lunes, $98.850 el martes y $186.400 el miércoles. ¿Cuánto vendió en los tres días?",
+          "ans": "$404.650",
+          "opts": [
+            "$404.550",
+            "$405.650",
+            "$404.650",
+            "$283.650"
+          ],
+          "proc": [
+            "Datos: $119.400 ; $98.850 ; $186.400",
+            "Operación: $119.400 + $98.850 + $186.400 = $404.650",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $404.650"
+          ],
+          "datos": [
+            119400,
+            98850,
+            186400
+          ],
+          "pts": 30,
+          "t": 120
+        },
+        {
+          "q": "El almacén de Leo vendió $154.250 el lunes, $144.550 el martes y $88.500 el miércoles. ¿Cuánto vendió en los tres días?",
+          "ans": "$387.300",
+          "opts": [
+            "$387.300",
+            "$388.300",
+            "$276.200",
+            "$387.200"
+          ],
+          "proc": [
+            "Datos: $154.250 ; $144.550 ; $88.500",
+            "Operación: $154.250 + $144.550 + $88.500 = $387.300",
+            "Se suma columna por columna, empezando por las unidades, y se lleva cuando una columna pasa de 9.",
+            "Respuesta: $387.300"
+          ],
+          "datos": [
+            154250,
+            144550,
+            88500
+          ],
+          "pts": 30,
+          "t": 120
+        }
+      ]
+    },
+    {
+      "nombre": "Nivel 2 · Sustracción",
+      "ejemplos": [
+        {
+          "q": "Sumy paga un paquete de galletas de $1.000 con un billete de $2.000. ¿Cuánto le devuelven?",
+          "ans": "$1.000",
+          "opts": [
+            "$2.000",
+            "$900",
+            "$1.000",
+            "$1.010"
+          ],
+          "proc": [
+            "Datos: $2.000 y $1.000",
+            "Operación: $2.000 − $1.000 = $1.000",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $1.000"
+          ],
+          "datos": [
+            2000,
+            1000
+          ],
+          "pts": 15,
+          "t": 70
+        },
+        {
+          "q": "Ana paga una libra de arroz de $2.000 con un billete de $5.000. ¿Cuánto le devuelven?",
+          "ans": "$3.000",
+          "opts": [
+            "$3.000",
+            "$4.000",
+            "$3.010",
+            "$2.900"
+          ],
+          "proc": [
+            "Datos: $5.000 y $2.000",
+            "Operación: $5.000 − $2.000 = $3.000",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $3.000"
+          ],
+          "datos": [
+            5000,
+            2000
+          ],
+          "pts": 15,
+          "t": 70
+        },
+        {
+          "q": "Jack paga un litro de leche de $1.000 con un billete de $2.000. ¿Cuánto le devuelven?",
+          "ans": "$1.000",
+          "opts": [
+            "$1.010",
+            "$1.000",
+            "$2.000",
+            "$900"
+          ],
+          "proc": [
+            "Datos: $2.000 y $1.000",
+            "Operación: $2.000 − $1.000 = $1.000",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $1.000"
+          ],
+          "datos": [
+            2000,
+            1000
+          ],
+          "pts": 15,
+          "t": 70
+        },
+        {
+          "q": "Sora tiene $7.600 y compra un borrador de $6.400. ¿Cuánto dinero le queda?",
+          "ans": "$1.200",
+          "opts": [
+            "$2.200",
+            "$1.200",
+            "$1.210",
+            "$1.100"
+          ],
+          "proc": [
+            "Datos: $7.600 y $6.400",
+            "Operación: $7.600 − $6.400 = $1.200",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $1.200"
+          ],
+          "datos": [
+            7600,
+            6400
+          ],
+          "pts": 20,
+          "t": 90
+        },
+        {
+          "q": "Lucas tiene $4.000 y compra una regla de $1.850. ¿Cuánto dinero le queda?",
+          "ans": "$2.150",
+          "opts": [
+            "$2.050",
+            "$3.850",
+            "$2.150",
+            "$3.150"
+          ],
+          "proc": [
+            "Datos: $4.000 y $1.850",
+            "Operación: $4.000 − $1.850 = $2.150",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $2.150"
+          ],
+          "datos": [
+            4000,
+            1850
+          ],
+          "pts": 20,
+          "t": 90
+        },
+        {
+          "q": "En el mercado, Sumy paga $10.900 con un billete de $20.000. ¿Cuánto le deben devolver?",
+          "ans": "$9.100",
+          "opts": [
+            "$10.900",
+            "$9.100",
+            "$9.000",
+            "$10.100"
+          ],
+          "proc": [
+            "Datos: $20.000 y $10.900",
+            "Operación: $20.000 − $10.900 = $9.100",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $9.100"
+          ],
+          "datos": [
+            20000,
+            10900
+          ],
+          "pts": 25,
+          "t": 110
+        },
+        {
+          "q": "En el mercado, Gloria paga $12.850 con un billete de $20.000. ¿Cuánto le deben devolver?",
+          "ans": "$7.150",
+          "opts": [
+            "$12.850",
+            "$7.050",
+            "$7.150",
+            "$8.150"
+          ],
+          "proc": [
+            "Datos: $20.000 y $12.850",
+            "Operación: $20.000 − $12.850 = $7.150",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $7.150"
+          ],
+          "datos": [
+            20000,
+            12850
+          ],
+          "pts": 25,
+          "t": 110
+        },
+        {
+          "q": "En el mercado, Roxy paga $40.850 con un billete de $50.000. ¿Cuánto le deben devolver?",
+          "ans": "$9.150",
+          "opts": [
+            "$10.150",
+            "$9.150",
+            "$10.850",
+            "$9.050"
+          ],
+          "proc": [
+            "Datos: $50.000 y $40.850",
+            "Operación: $50.000 − $40.850 = $9.150",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $9.150"
+          ],
+          "datos": [
+            50000,
+            40850
+          ],
+          "pts": 25,
+          "t": 110
+        },
+        {
+          "q": "Juan tenía $120.000. Gastó $20.000 en panes y $29.250 en litros de leche. ¿Cuánto dinero le queda?",
+          "ans": "$70.750",
+          "opts": [
+            "$70.650",
+            "$100.000",
+            "$71.750",
+            "$70.750"
+          ],
+          "proc": [
+            "Datos: tenía $120.000, gastó $20.000 y $29.250",
+            "Primera resta: $120.000 − $20.000 = $100.000",
+            "Segunda resta: $100.000 − $29.250 = $70.750",
+            "Respuesta: le quedan $70.750"
+          ],
+          "datos": [
+            120000,
+            20000,
+            29250
+          ],
+          "pts": 35,
+          "t": 130
+        },
+        {
+          "q": "Juan tenía $100.000. Gastó $15.250 en paquetes de galletas y $27.250 en marcadores. ¿Cuánto dinero le queda?",
+          "ans": "$57.500",
+          "opts": [
+            "$58.500",
+            "$57.400",
+            "$57.500",
+            "$84.750"
+          ],
+          "proc": [
+            "Datos: tenía $100.000, gastó $15.250 y $27.250",
+            "Primera resta: $100.000 − $15.250 = $84.750",
+            "Segunda resta: $84.750 − $27.250 = $57.500",
+            "Respuesta: le quedan $57.500"
+          ],
+          "datos": [
+            100000,
+            15250,
+            27250
+          ],
+          "pts": 35,
+          "t": 130
+        }
+      ],
+      "ejercicios": [
+        {
+          "q": "Jack paga una bolsa de frutas de $600 con un billete de $1.000. ¿Cuánto le devuelven?",
+          "ans": "$400",
+          "opts": [
+            "$1.400",
+            "$1.600",
+            "$400",
+            "$300"
+          ],
+          "proc": [
+            "Datos: $1.000 y $600",
+            "Operación: $1.000 − $600 = $400",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $400"
+          ],
+          "datos": [
+            1000,
+            600
+          ],
+          "pts": 15,
+          "t": 70
+        },
+        {
+          "q": "Roxy paga una docena de huevos de $700 con un billete de $1.000. ¿Cuánto le devuelven?",
+          "ans": "$300",
+          "opts": [
+            "$200",
+            "$1.300",
+            "$300",
+            "$1.700"
+          ],
+          "proc": [
+            "Datos: $1.000 y $700",
+            "Operación: $1.000 − $700 = $300",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $300"
+          ],
+          "datos": [
+            1000,
+            700
+          ],
+          "pts": 15,
+          "t": 70
+        },
+        {
+          "q": "Juan paga un litro de leche de $1.000 con un billete de $2.000. ¿Cuánto le devuelven?",
+          "ans": "$1.000",
+          "opts": [
+            "$2.000",
+            "$900",
+            "$1.010",
+            "$1.000"
+          ],
+          "proc": [
+            "Datos: $2.000 y $1.000",
+            "Operación: $2.000 − $1.000 = $1.000",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $1.000"
+          ],
+          "datos": [
+            2000,
+            1000
+          ],
+          "pts": 15,
+          "t": 70
+        },
+        {
+          "q": "Ana paga una bolsa de frutas de $500 con un billete de $1.000. ¿Cuánto le devuelven?",
+          "ans": "$500",
+          "opts": [
+            "$1.500",
+            "$400",
+            "$510",
+            "$500"
+          ],
+          "proc": [
+            "Datos: $1.000 y $500",
+            "Operación: $1.000 − $500 = $500",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $500"
+          ],
+          "datos": [
+            1000,
+            500
+          ],
+          "pts": 15,
+          "t": 70
+        },
+        {
+          "q": "Sumy paga una bolsa de frutas de $600 con un billete de $1.000. ¿Cuánto le devuelven?",
+          "ans": "$400",
+          "opts": [
+            "$400",
+            "$1.600",
+            "$300",
+            "$1.400"
+          ],
+          "proc": [
+            "Datos: $1.000 y $600",
+            "Operación: $1.000 − $600 = $400",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $400"
+          ],
+          "datos": [
+            1000,
+            600
+          ],
+          "pts": 15,
+          "t": 70
+        },
+        {
+          "q": "Leo tiene $8.700 y compra un cuaderno de $4.350. ¿Cuánto dinero le queda?",
+          "ans": "$4.350",
+          "opts": [
+            "$4.250",
+            "$4.350",
+            "$5.350",
+            "$4.450"
+          ],
+          "proc": [
+            "Datos: $8.700 y $4.350",
+            "Operación: $8.700 − $4.350 = $4.350",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $4.350"
+          ],
+          "datos": [
+            8700,
+            4350
+          ],
+          "pts": 20,
+          "t": 90
+        },
+        {
+          "q": "Juan tiene $8.600 y compra un borrador de $4.250. ¿Cuánto dinero le queda?",
+          "ans": "$4.350",
+          "opts": [
+            "$5.350",
+            "$4.450",
+            "$4.350",
+            "$4.250"
+          ],
+          "proc": [
+            "Datos: $8.600 y $4.250",
+            "Operación: $8.600 − $4.250 = $4.350",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $4.350"
+          ],
+          "datos": [
+            8600,
+            4250
+          ],
+          "pts": 20,
+          "t": 90
+        },
+        {
+          "q": "Gloria tiene $8.550 y compra un cuaderno de $5.100. ¿Cuánto dinero le queda?",
+          "ans": "$3.450",
+          "opts": [
+            "$3.460",
+            "$4.450",
+            "$3.450",
+            "$3.350"
+          ],
+          "proc": [
+            "Datos: $8.550 y $5.100",
+            "Operación: $8.550 − $5.100 = $3.450",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $3.450"
+          ],
+          "datos": [
+            8550,
+            5100
+          ],
+          "pts": 20,
+          "t": 90
+        },
+        {
+          "q": "Ana tiene $5.450 y compra un marcador de $1.850. ¿Cuánto dinero le queda?",
+          "ans": "$3.600",
+          "opts": [
+            "$3.600",
+            "$3.500",
+            "$4.400",
+            "$4.600"
+          ],
+          "proc": [
+            "Datos: $5.450 y $1.850",
+            "Operación: $5.450 − $1.850 = $3.600",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $3.600"
+          ],
+          "datos": [
+            5450,
+            1850
+          ],
+          "pts": 20,
+          "t": 90
+        },
+        {
+          "q": "Leo tiene $6.050 y compra un marcador de $2.650. ¿Cuánto dinero le queda?",
+          "ans": "$3.400",
+          "opts": [
+            "$3.300",
+            "$4.400",
+            "$3.400",
+            "$4.600"
+          ],
+          "proc": [
+            "Datos: $6.050 y $2.650",
+            "Operación: $6.050 − $2.650 = $3.400",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $3.400"
+          ],
+          "datos": [
+            6050,
+            2650
+          ],
+          "pts": 20,
+          "t": 90
+        },
+        {
+          "q": "En el mercado, Falco paga $16.500 con un billete de $50.000. ¿Cuánto le deben devolver?",
+          "ans": "$33.500",
+          "opts": [
+            "$33.400",
+            "$33.500",
+            "$46.500",
+            "$34.500"
+          ],
+          "proc": [
+            "Datos: $50.000 y $16.500",
+            "Operación: $50.000 − $16.500 = $33.500",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $33.500"
+          ],
+          "datos": [
+            50000,
+            16500
+          ],
+          "pts": 25,
+          "t": 110
+        },
+        {
+          "q": "En el mercado, Ana paga $29.150 con un billete de $50.000. ¿Cuánto le deben devolver?",
+          "ans": "$20.850",
+          "opts": [
+            "$20.750",
+            "$20.850",
+            "$21.850",
+            "$39.150"
+          ],
+          "proc": [
+            "Datos: $50.000 y $29.150",
+            "Operación: $50.000 − $29.150 = $20.850",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $20.850"
+          ],
+          "datos": [
+            50000,
+            29150
+          ],
+          "pts": 25,
+          "t": 110
+        },
+        {
+          "q": "En el mercado, Falco paga $3.700 con un billete de $10.000. ¿Cuánto le deben devolver?",
+          "ans": "$6.300",
+          "opts": [
+            "$7.300",
+            "$6.200",
+            "$13.700",
+            "$6.300"
+          ],
+          "proc": [
+            "Datos: $10.000 y $3.700",
+            "Operación: $10.000 − $3.700 = $6.300",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $6.300"
+          ],
+          "datos": [
+            10000,
+            3700
+          ],
+          "pts": 25,
+          "t": 110
+        },
+        {
+          "q": "En el mercado, Ana paga $16.650 con un billete de $20.000. ¿Cuánto le deben devolver?",
+          "ans": "$3.350",
+          "opts": [
+            "$3.350",
+            "$3.250",
+            "$16.650",
+            "$4.350"
+          ],
+          "proc": [
+            "Datos: $20.000 y $16.650",
+            "Operación: $20.000 − $16.650 = $3.350",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $3.350"
+          ],
+          "datos": [
+            20000,
+            16650
+          ],
+          "pts": 25,
+          "t": 110
+        },
+        {
+          "q": "En el mercado, Falco paga $34.700 con un billete de $50.000. ¿Cuánto le deben devolver?",
+          "ans": "$15.300",
+          "opts": [
+            "$16.300",
+            "$15.200",
+            "$24.700",
+            "$15.300"
+          ],
+          "proc": [
+            "Datos: $50.000 y $34.700",
+            "Operación: $50.000 − $34.700 = $15.300",
+            "Se resta columna por columna; si arriba hay menos, se pide prestado a la columna de la izquierda.",
+            "Respuesta: $15.300"
+          ],
+          "datos": [
+            50000,
+            34700
+          ],
+          "pts": 25,
+          "t": 110
+        },
+        {
+          "q": "Roxy tenía $100.000. Gastó $24.650 en cuadernos y $19.900 en reglas. ¿Cuánto dinero le queda?",
+          "ans": "$55.450",
+          "opts": [
+            "$75.350",
+            "$56.450",
+            "$55.450",
+            "$55.350"
+          ],
+          "proc": [
+            "Datos: tenía $100.000, gastó $24.650 y $19.900",
+            "Primera resta: $100.000 − $24.650 = $75.350",
+            "Segunda resta: $75.350 − $19.900 = $55.450",
+            "Respuesta: le quedan $55.450"
+          ],
+          "datos": [
+            100000,
+            24650,
+            19900
+          ],
+          "pts": 35,
+          "t": 130
+        },
+        {
+          "q": "Ana tenía $120.000. Gastó $8.650 en tijeras y $23.850 en libras de queso. ¿Cuánto dinero le queda?",
+          "ans": "$87.500",
+          "opts": [
+            "$87.500",
+            "$111.350",
+            "$88.500",
+            "$87.400"
+          ],
+          "proc": [
+            "Datos: tenía $120.000, gastó $8.650 y $23.850",
+            "Primera resta: $120.000 − $8.650 = $111.350",
+            "Segunda resta: $111.350 − $23.850 = $87.500",
+            "Respuesta: le quedan $87.500"
+          ],
+          "datos": [
+            120000,
+            8650,
+            23850
+          ],
+          "pts": 35,
+          "t": 130
+        },
+        {
+          "q": "Sora tenía $100.000. Gastó $26.200 en lápices y $11.250 en libras de arroz. ¿Cuánto dinero le queda?",
+          "ans": "$62.550",
+          "opts": [
+            "$62.550",
+            "$62.450",
+            "$63.550",
+            "$73.800"
+          ],
+          "proc": [
+            "Datos: tenía $100.000, gastó $26.200 y $11.250",
+            "Primera resta: $100.000 − $26.200 = $73.800",
+            "Segunda resta: $73.800 − $11.250 = $62.550",
+            "Respuesta: le quedan $62.550"
+          ],
+          "datos": [
+            100000,
+            26200,
+            11250
+          ],
+          "pts": 35,
+          "t": 130
+        },
+        {
+          "q": "Apolo tenía $50.000. Gastó $16.100 en tijeras y $11.600 en reglas. ¿Cuánto dinero le queda?",
+          "ans": "$22.300",
+          "opts": [
+            "$22.200",
+            "$23.300",
+            "$22.300",
+            "$33.900"
+          ],
+          "proc": [
+            "Datos: tenía $50.000, gastó $16.100 y $11.600",
+            "Primera resta: $50.000 − $16.100 = $33.900",
+            "Segunda resta: $33.900 − $11.600 = $22.300",
+            "Respuesta: le quedan $22.300"
+          ],
+          "datos": [
+            50000,
+            16100,
+            11600
+          ],
+          "pts": 35,
+          "t": 130
+        },
+        {
+          "q": "Jack tenía $50.000. Gastó $14.500 en borradores y $12.600 en libras de queso. ¿Cuánto dinero le queda?",
+          "ans": "$22.900",
+          "opts": [
+            "$22.900",
+            "$35.500",
+            "$23.900",
+            "$22.800"
+          ],
+          "proc": [
+            "Datos: tenía $50.000, gastó $14.500 y $12.600",
+            "Primera resta: $50.000 − $14.500 = $35.500",
+            "Segunda resta: $35.500 − $12.600 = $22.900",
+            "Respuesta: le quedan $22.900"
+          ],
+          "datos": [
+            50000,
+            14500,
+            12600
+          ],
+          "pts": 35,
+          "t": 130
+        }
+      ]
+    },
+    {
+      "nombre": "Nivel 3 · Multiplicación",
+      "ejemplos": [
+        {
+          "q": "Falco compra 4 cuadernos a $500 cada uno. ¿Cuánto paga?",
+          "ans": "$2.000",
+          "opts": [
+            "$2.500",
+            "$2.000",
+            "$504",
+            "$1.500"
+          ],
+          "proc": [
+            "Datos: 4 unidades a $500 cada una",
+            "Operación: 4 × $500 = $2.000",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $2.000"
+          ],
+          "datos": [
+            4,
+            500
+          ],
+          "pts": 20,
+          "t": 80
+        },
+        {
+          "q": "Ana compra 4 cajas de colores a $1.000 cada una. ¿Cuánto paga?",
+          "ans": "$4.000",
+          "opts": [
+            "$3.000",
+            "$5.000",
+            "$4.000",
+            "$1.004"
+          ],
+          "proc": [
+            "Datos: 4 unidades a $1.000 cada una",
+            "Operación: 4 × $1.000 = $4.000",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $4.000"
+          ],
+          "datos": [
+            4,
+            1000
+          ],
+          "pts": 20,
+          "t": 80
+        },
+        {
+          "q": "Ana compra 3 borradores a $300 cada uno. ¿Cuánto paga?",
+          "ans": "$900",
+          "opts": [
+            "$1.200",
+            "$900",
+            "$303",
+            "$600"
+          ],
+          "proc": [
+            "Datos: 3 unidades a $300 cada una",
+            "Operación: 3 × $300 = $900",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $900"
+          ],
+          "datos": [
+            3,
+            300
+          ],
+          "pts": 20,
+          "t": 80
+        },
+        {
+          "q": "En la tienda, Leo compra 6 panes a $1.150 cada uno. ¿Cuánto debe pagar?",
+          "ans": "$6.900",
+          "opts": [
+            "$6.900",
+            "$5.750",
+            "$8.050",
+            "$1.156"
+          ],
+          "proc": [
+            "Datos: 6 unidades a $1.150 cada una",
+            "Operación: 6 × $1.150 = $6.900",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $6.900"
+          ],
+          "datos": [
+            6,
+            1150
+          ],
+          "pts": 25,
+          "t": 100
+        },
+        {
+          "q": "En la tienda, Juan compra 5 paquetes de galletas a $2.850 cada uno. ¿Cuánto debe pagar?",
+          "ans": "$14.250",
+          "opts": [
+            "$11.400",
+            "$17.100",
+            "$2.855",
+            "$14.250"
+          ],
+          "proc": [
+            "Datos: 5 unidades a $2.850 cada una",
+            "Operación: 5 × $2.850 = $14.250",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $14.250"
+          ],
+          "datos": [
+            5,
+            2850
+          ],
+          "pts": 25,
+          "t": 100
+        },
+        {
+          "q": "Para el salón, la profesora compra 15 reglas a $400 cada una. ¿Cuánto paga en total?",
+          "ans": "$6.000",
+          "opts": [
+            "$5.600",
+            "$415",
+            "$6.400",
+            "$6.000"
+          ],
+          "proc": [
+            "Datos: 15 unidades a $400 cada una",
+            "Operación: 15 × $400 = $6.000",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $6.000"
+          ],
+          "datos": [
+            15,
+            400
+          ],
+          "pts": 30,
+          "t": 120
+        },
+        {
+          "q": "Para el salón, la profesora compra 35 lápices a $450 cada uno. ¿Cuánto paga en total?",
+          "ans": "$15.750",
+          "opts": [
+            "$16.200",
+            "$485",
+            "$15.750",
+            "$15.300"
+          ],
+          "proc": [
+            "Datos: 35 unidades a $450 cada una",
+            "Operación: 35 × $450 = $15.750",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $15.750"
+          ],
+          "datos": [
+            35,
+            450
+          ],
+          "pts": 30,
+          "t": 120
+        },
+        {
+          "q": "Para el salón, la profesora compra 39 cajas de colores a $550 cada una. ¿Cuánto paga en total?",
+          "ans": "$21.450",
+          "opts": [
+            "$589",
+            "$22.000",
+            "$21.450",
+            "$20.900"
+          ],
+          "proc": [
+            "Datos: 39 unidades a $550 cada una",
+            "Operación: 39 × $550 = $21.450",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $21.450"
+          ],
+          "datos": [
+            39,
+            550
+          ],
+          "pts": 30,
+          "t": 120
+        },
+        {
+          "q": "Un almacén recibe 59 cajas y cada caja cuesta $1.900. ¿Cuánto cuestan todas las cajas?",
+          "ans": "$112.100",
+          "opts": [
+            "$114.000",
+            "$112.100",
+            "$1.959",
+            "$110.200"
+          ],
+          "proc": [
+            "Datos: 59 unidades a $1.900 cada una",
+            "Operación: 59 × $1.900 = $112.100",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $112.100"
+          ],
+          "datos": [
+            59,
+            1900
+          ],
+          "pts": 40,
+          "t": 140
+        },
+        {
+          "q": "Un almacén recibe 110 cajas y cada caja cuesta $3.450. ¿Cuánto cuestan todas las cajas?",
+          "ans": "$379.500",
+          "opts": [
+            "$382.950",
+            "$376.050",
+            "$3.560",
+            "$379.500"
+          ],
+          "proc": [
+            "Datos: 110 unidades a $3.450 cada una",
+            "Operación: 110 × $3.450 = $379.500",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $379.500"
+          ],
+          "datos": [
+            110,
+            3450
+          ],
+          "pts": 40,
+          "t": 140
+        }
+      ],
+      "ejercicios": [
+        {
+          "q": "Ana compra 4 reglas a $1.000 cada una. ¿Cuánto paga?",
+          "ans": "$4.000",
+          "opts": [
+            "$1.004",
+            "$4.000",
+            "$5.000",
+            "$3.000"
+          ],
+          "proc": [
+            "Datos: 4 unidades a $1.000 cada una",
+            "Operación: 4 × $1.000 = $4.000",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $4.000"
+          ],
+          "datos": [
+            4,
+            1000
+          ],
+          "pts": 20,
+          "t": 80
+        },
+        {
+          "q": "Math compra 3 lápices a $100 cada uno. ¿Cuánto paga?",
+          "ans": "$300",
+          "opts": [
+            "$103",
+            "$400",
+            "$300",
+            "$200"
+          ],
+          "proc": [
+            "Datos: 3 unidades a $100 cada una",
+            "Operación: 3 × $100 = $300",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $300"
+          ],
+          "datos": [
+            3,
+            100
+          ],
+          "pts": 20,
+          "t": 80
+        },
+        {
+          "q": "Roxy compra 5 cuadernos a $500 cada uno. ¿Cuánto paga?",
+          "ans": "$2.500",
+          "opts": [
+            "$2.500",
+            "$3.000",
+            "$2.000",
+            "$505"
+          ],
+          "proc": [
+            "Datos: 5 unidades a $500 cada una",
+            "Operación: 5 × $500 = $2.500",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $2.500"
+          ],
+          "datos": [
+            5,
+            500
+          ],
+          "pts": 20,
+          "t": 80
+        },
+        {
+          "q": "Ana compra 3 marcadores a $1.000 cada uno. ¿Cuánto paga?",
+          "ans": "$3.000",
+          "opts": [
+            "$2.000",
+            "$1.003",
+            "$4.000",
+            "$3.000"
+          ],
+          "proc": [
+            "Datos: 3 unidades a $1.000 cada una",
+            "Operación: 3 × $1.000 = $3.000",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $3.000"
+          ],
+          "datos": [
+            3,
+            1000
+          ],
+          "pts": 20,
+          "t": 80
+        },
+        {
+          "q": "Gloria compra 5 cajas de colores a $300 cada una. ¿Cuánto paga?",
+          "ans": "$1.500",
+          "opts": [
+            "$1.500",
+            "$1.200",
+            "$1.800",
+            "$305"
+          ],
+          "proc": [
+            "Datos: 5 unidades a $300 cada una",
+            "Operación: 5 × $300 = $1.500",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $1.500"
+          ],
+          "datos": [
+            5,
+            300
+          ],
+          "pts": 20,
+          "t": 80
+        },
+        {
+          "q": "En la tienda, Roxy compra 8 libras de queso a $3.500 cada una. ¿Cuánto debe pagar?",
+          "ans": "$28.000",
+          "opts": [
+            "$3.508",
+            "$24.500",
+            "$31.500",
+            "$28.000"
+          ],
+          "proc": [
+            "Datos: 8 unidades a $3.500 cada una",
+            "Operación: 8 × $3.500 = $28.000",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $28.000"
+          ],
+          "datos": [
+            8,
+            3500
+          ],
+          "pts": 25,
+          "t": 100
+        },
+        {
+          "q": "En la tienda, Jack compra 4 paquetes de galletas a $3.650 cada uno. ¿Cuánto debe pagar?",
+          "ans": "$14.600",
+          "opts": [
+            "$14.600",
+            "$18.250",
+            "$10.950",
+            "$3.654"
+          ],
+          "proc": [
+            "Datos: 4 unidades a $3.650 cada una",
+            "Operación: 4 × $3.650 = $14.600",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $14.600"
+          ],
+          "datos": [
+            4,
+            3650
+          ],
+          "pts": 25,
+          "t": 100
+        },
+        {
+          "q": "En la tienda, Leo compra 8 paquetes de galletas a $1.650 cada uno. ¿Cuánto debe pagar?",
+          "ans": "$13.200",
+          "opts": [
+            "$13.200",
+            "$14.850",
+            "$1.658",
+            "$11.550"
+          ],
+          "proc": [
+            "Datos: 8 unidades a $1.650 cada una",
+            "Operación: 8 × $1.650 = $13.200",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $13.200"
+          ],
+          "datos": [
+            8,
+            1650
+          ],
+          "pts": 25,
+          "t": 100
+        },
+        {
+          "q": "En la tienda, Lucas compra 5 litros de leche a $1.650 cada uno. ¿Cuánto debe pagar?",
+          "ans": "$8.250",
+          "opts": [
+            "$9.900",
+            "$8.250",
+            "$6.600",
+            "$1.655"
+          ],
+          "proc": [
+            "Datos: 5 unidades a $1.650 cada una",
+            "Operación: 5 × $1.650 = $8.250",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $8.250"
+          ],
+          "datos": [
+            5,
+            1650
+          ],
+          "pts": 25,
+          "t": 100
+        },
+        {
+          "q": "En la tienda, Jack compra 8 libras de arroz a $1.800 cada una. ¿Cuánto debe pagar?",
+          "ans": "$14.400",
+          "opts": [
+            "$14.400",
+            "$16.200",
+            "$1.808",
+            "$12.600"
+          ],
+          "proc": [
+            "Datos: 8 unidades a $1.800 cada una",
+            "Operación: 8 × $1.800 = $14.400",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $14.400"
+          ],
+          "datos": [
+            8,
+            1800
+          ],
+          "pts": 25,
+          "t": 100
+        },
+        {
+          "q": "Para el salón, la profesora compra 48 cuadernos a $450 cada uno. ¿Cuánto paga en total?",
+          "ans": "$21.600",
+          "opts": [
+            "$21.600",
+            "$22.050",
+            "$498",
+            "$21.150"
+          ],
+          "proc": [
+            "Datos: 48 unidades a $450 cada una",
+            "Operación: 48 × $450 = $21.600",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $21.600"
+          ],
+          "datos": [
+            48,
+            450
+          ],
+          "pts": 30,
+          "t": 120
+        },
+        {
+          "q": "Para el salón, la profesora compra 23 reglas a $950 cada una. ¿Cuánto paga en total?",
+          "ans": "$21.850",
+          "opts": [
+            "$20.900",
+            "$22.800",
+            "$21.850",
+            "$973"
+          ],
+          "proc": [
+            "Datos: 23 unidades a $950 cada una",
+            "Operación: 23 × $950 = $21.850",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $21.850"
+          ],
+          "datos": [
+            23,
+            950
+          ],
+          "pts": 30,
+          "t": 120
+        },
+        {
+          "q": "Para el salón, la profesora compra 26 marcadores a $300 cada uno. ¿Cuánto paga en total?",
+          "ans": "$7.800",
+          "opts": [
+            "$7.800",
+            "$7.500",
+            "$326",
+            "$8.100"
+          ],
+          "proc": [
+            "Datos: 26 unidades a $300 cada una",
+            "Operación: 26 × $300 = $7.800",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $7.800"
+          ],
+          "datos": [
+            26,
+            300
+          ],
+          "pts": 30,
+          "t": 120
+        },
+        {
+          "q": "Para el salón, la profesora compra 16 cajas de colores a $700 cada una. ¿Cuánto paga en total?",
+          "ans": "$11.200",
+          "opts": [
+            "$11.200",
+            "$11.900",
+            "$716",
+            "$10.500"
+          ],
+          "proc": [
+            "Datos: 16 unidades a $700 cada una",
+            "Operación: 16 × $700 = $11.200",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $11.200"
+          ],
+          "datos": [
+            16,
+            700
+          ],
+          "pts": 30,
+          "t": 120
+        },
+        {
+          "q": "Para el salón, la profesora compra 35 borradores a $400 cada uno. ¿Cuánto paga en total?",
+          "ans": "$14.000",
+          "opts": [
+            "$14.400",
+            "$435",
+            "$14.000",
+            "$13.600"
+          ],
+          "proc": [
+            "Datos: 35 unidades a $400 cada una",
+            "Operación: 35 × $400 = $14.000",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $14.000"
+          ],
+          "datos": [
+            35,
+            400
+          ],
+          "pts": 30,
+          "t": 120
+        },
+        {
+          "q": "Un almacén recibe 85 cajas y cada caja cuesta $2.550. ¿Cuánto cuestan todas las cajas?",
+          "ans": "$216.750",
+          "opts": [
+            "$214.200",
+            "$219.300",
+            "$216.750",
+            "$2.635"
+          ],
+          "proc": [
+            "Datos: 85 unidades a $2.550 cada una",
+            "Operación: 85 × $2.550 = $216.750",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $216.750"
+          ],
+          "datos": [
+            85,
+            2550
+          ],
+          "pts": 40,
+          "t": 140
+        },
+        {
+          "q": "Un almacén recibe 74 cajas y cada caja cuesta $2.850. ¿Cuánto cuestan todas las cajas?",
+          "ans": "$210.900",
+          "opts": [
+            "$2.924",
+            "$208.050",
+            "$213.750",
+            "$210.900"
+          ],
+          "proc": [
+            "Datos: 74 unidades a $2.850 cada una",
+            "Operación: 74 × $2.850 = $210.900",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $210.900"
+          ],
+          "datos": [
+            74,
+            2850
+          ],
+          "pts": 40,
+          "t": 140
+        },
+        {
+          "q": "Un almacén recibe 119 cajas y cada caja cuesta $4.100. ¿Cuánto cuestan todas las cajas?",
+          "ans": "$487.900",
+          "opts": [
+            "$492.000",
+            "$487.900",
+            "$4.219",
+            "$483.800"
+          ],
+          "proc": [
+            "Datos: 119 unidades a $4.100 cada una",
+            "Operación: 119 × $4.100 = $487.900",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $487.900"
+          ],
+          "datos": [
+            119,
+            4100
+          ],
+          "pts": 40,
+          "t": 140
+        },
+        {
+          "q": "Un almacén recibe 97 cajas y cada caja cuesta $1.500. ¿Cuánto cuestan todas las cajas?",
+          "ans": "$145.500",
+          "opts": [
+            "$1.597",
+            "$147.000",
+            "$145.500",
+            "$144.000"
+          ],
+          "proc": [
+            "Datos: 97 unidades a $1.500 cada una",
+            "Operación: 97 × $1.500 = $145.500",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $145.500"
+          ],
+          "datos": [
+            97,
+            1500
+          ],
+          "pts": 40,
+          "t": 140
+        },
+        {
+          "q": "Un almacén recibe 58 cajas y cada caja cuesta $1.350. ¿Cuánto cuestan todas las cajas?",
+          "ans": "$78.300",
+          "opts": [
+            "$1.408",
+            "$79.650",
+            "$76.950",
+            "$78.300"
+          ],
+          "proc": [
+            "Datos: 58 unidades a $1.350 cada una",
+            "Operación: 58 × $1.350 = $78.300",
+            "Multiplicar es sumar varias veces el mismo precio.",
+            "Respuesta: $78.300"
+          ],
+          "datos": [
+            58,
+            1350
+          ],
+          "pts": 40,
+          "t": 140
+        }
+      ]
+    },
+    {
+      "nombre": "Nivel 4 · División",
+      "ejemplos": [
+        {
+          "q": "Leo reparte $4.000 en partes iguales entre 2 amigos. ¿Cuánto recibe cada uno?",
+          "ans": "$2.000",
+          "opts": [
+            "$2.000",
+            "$2.100",
+            "$1.950",
+            "$2.002"
+          ],
+          "proc": [
+            "Datos: total $4.000 repartido en 2 partes iguales",
+            "Operación: $4.000 ÷ 2 = $2.000",
+            "Comprobación: 2 × $2.000 = $4.000",
+            "Respuesta: $2.000"
+          ],
+          "datos": [
+            4000,
+            2
+          ],
+          "pts": 25,
+          "t": 90
+        },
+        {
+          "q": "Roxy reparte $6.000 en partes iguales entre 3 amigos. ¿Cuánto recibe cada uno?",
+          "ans": "$2.000",
+          "opts": [
+            "$1.950",
+            "$2.000",
+            "$2.003",
+            "$2.100"
+          ],
+          "proc": [
+            "Datos: total $6.000 repartido en 3 partes iguales",
+            "Operación: $6.000 ÷ 3 = $2.000",
+            "Comprobación: 3 × $2.000 = $6.000",
+            "Respuesta: $2.000"
+          ],
+          "datos": [
+            6000,
+            3
+          ],
+          "pts": 25,
+          "t": 90
+        },
+        {
+          "q": "Sora reparte $6.000 en partes iguales entre 2 amigos. ¿Cuánto recibe cada uno?",
+          "ans": "$3.000",
+          "opts": [
+            "$3.002",
+            "$2.950",
+            "$3.000",
+            "$3.100"
+          ],
+          "proc": [
+            "Datos: total $6.000 repartido en 2 partes iguales",
+            "Operación: $6.000 ÷ 2 = $3.000",
+            "Comprobación: 2 × $3.000 = $6.000",
+            "Respuesta: $3.000"
+          ],
+          "datos": [
+            6000,
+            2
+          ],
+          "pts": 25,
+          "t": 90
+        },
+        {
+          "q": "Se pagaron $6.750 por 5 jugos iguales. ¿Cuánto cuesta cada jugo?",
+          "ans": "$1.350",
+          "opts": [
+            "$1.300",
+            "$1.355",
+            "$1.350",
+            "$1.450"
+          ],
+          "proc": [
+            "Datos: total $6.750 repartido en 5 partes iguales",
+            "Operación: $6.750 ÷ 5 = $1.350",
+            "Comprobación: 5 × $1.350 = $6.750",
+            "Respuesta: $1.350"
+          ],
+          "datos": [
+            6750,
+            5
+          ],
+          "pts": 30,
+          "t": 110
+        },
+        {
+          "q": "Se pagaron $4.800 por 4 jugos iguales. ¿Cuánto cuesta cada jugo?",
+          "ans": "$1.200",
+          "opts": [
+            "$1.204",
+            "$1.200",
+            "$1.150",
+            "$1.300"
+          ],
+          "proc": [
+            "Datos: total $4.800 repartido en 4 partes iguales",
+            "Operación: $4.800 ÷ 4 = $1.200",
+            "Comprobación: 4 × $1.200 = $4.800",
+            "Respuesta: $1.200"
+          ],
+          "datos": [
+            4800,
+            4
+          ],
+          "pts": 30,
+          "t": 110
+        },
+        {
+          "q": "La profesora pagó $18.000 por 15 cuadernos iguales. ¿Cuánto costó cada cuaderno?",
+          "ans": "$1.200",
+          "opts": [
+            "$12.000",
+            "$1.150",
+            "$1.215",
+            "$1.200"
+          ],
+          "proc": [
+            "Datos: total $18.000 repartido en 15 partes iguales",
+            "Operación: $18.000 ÷ 15 = $1.200",
+            "Comprobación: 15 × $1.200 = $18.000",
+            "Respuesta: $1.200"
+          ],
+          "datos": [
+            18000,
+            15
+          ],
+          "pts": 35,
+          "t": 130
+        },
+        {
+          "q": "La profesora pagó $59.200 por 16 cuadernos iguales. ¿Cuánto costó cada cuaderno?",
+          "ans": "$3.700",
+          "opts": [
+            "$3.716",
+            "$37.000",
+            "$3.700",
+            "$3.650"
+          ],
+          "proc": [
+            "Datos: total $59.200 repartido en 16 partes iguales",
+            "Operación: $59.200 ÷ 16 = $3.700",
+            "Comprobación: 16 × $3.700 = $59.200",
+            "Respuesta: $3.700"
+          ],
+          "datos": [
+            59200,
+            16
+          ],
+          "pts": 35,
+          "t": 130
+        },
+        {
+          "q": "La profesora pagó $59.400 por 18 cuadernos iguales. ¿Cuánto costó cada cuaderno?",
+          "ans": "$3.300",
+          "opts": [
+            "$3.250",
+            "$33.000",
+            "$3.318",
+            "$3.300"
+          ],
+          "proc": [
+            "Datos: total $59.400 repartido en 18 partes iguales",
+            "Operación: $59.400 ÷ 18 = $3.300",
+            "Comprobación: 18 × $3.300 = $59.400",
+            "Respuesta: $3.300"
+          ],
+          "datos": [
+            59400,
+            18
+          ],
+          "pts": 35,
+          "t": 130
+        },
+        {
+          "q": "Un almacén recibió $151.200 por la venta de 28 cajas iguales. ¿Cuánto cuesta cada caja?",
+          "ans": "$5.400",
+          "opts": [
+            "$5.350",
+            "$5.400",
+            "$54.000",
+            "$5.428"
+          ],
+          "proc": [
+            "Datos: total $151.200 repartido en 28 partes iguales",
+            "Operación: $151.200 ÷ 28 = $5.400",
+            "Comprobación: 28 × $5.400 = $151.200",
+            "Respuesta: $5.400"
+          ],
+          "datos": [
+            151200,
+            28
+          ],
+          "pts": 45,
+          "t": 150
+        },
+        {
+          "q": "Un almacén recibió $276.000 por la venta de 30 cajas iguales. ¿Cuánto cuesta cada caja?",
+          "ans": "$9.200",
+          "opts": [
+            "$9.150",
+            "$9.200",
+            "$9.230",
+            "$92.000"
+          ],
+          "proc": [
+            "Datos: total $276.000 repartido en 30 partes iguales",
+            "Operación: $276.000 ÷ 30 = $9.200",
+            "Comprobación: 30 × $9.200 = $276.000",
+            "Respuesta: $9.200"
+          ],
+          "datos": [
+            276000,
+            30
+          ],
+          "pts": 45,
+          "t": 150
+        }
+      ],
+      "ejercicios": [
+        {
+          "q": "Gloria reparte $6.000 en partes iguales entre 4 amigos. ¿Cuánto recibe cada uno?",
+          "ans": "$1.500",
+          "opts": [
+            "$1.500",
+            "$1.450",
+            "$1.600",
+            "$1.504"
+          ],
+          "proc": [
+            "Datos: total $6.000 repartido en 4 partes iguales",
+            "Operación: $6.000 ÷ 4 = $1.500",
+            "Comprobación: 4 × $1.500 = $6.000",
+            "Respuesta: $1.500"
+          ],
+          "datos": [
+            6000,
+            4
+          ],
+          "pts": 25,
+          "t": 90
+        },
+        {
+          "q": "Ana reparte $3.000 en partes iguales entre 2 amigos. ¿Cuánto recibe cada uno?",
+          "ans": "$1.500",
+          "opts": [
+            "$1.450",
+            "$1.600",
+            "$1.502",
+            "$1.500"
+          ],
+          "proc": [
+            "Datos: total $3.000 repartido en 2 partes iguales",
+            "Operación: $3.000 ÷ 2 = $1.500",
+            "Comprobación: 2 × $1.500 = $3.000",
+            "Respuesta: $1.500"
+          ],
+          "datos": [
+            3000,
+            2
+          ],
+          "pts": 25,
+          "t": 90
+        },
+        {
+          "q": "Lucas reparte $15.000 en partes iguales entre 5 amigos. ¿Cuánto recibe cada uno?",
+          "ans": "$3.000",
+          "opts": [
+            "$3.000",
+            "$3.005",
+            "$2.950",
+            "$3.100"
+          ],
+          "proc": [
+            "Datos: total $15.000 repartido en 5 partes iguales",
+            "Operación: $15.000 ÷ 5 = $3.000",
+            "Comprobación: 5 × $3.000 = $15.000",
+            "Respuesta: $3.000"
+          ],
+          "datos": [
+            15000,
+            5
+          ],
+          "pts": 25,
+          "t": 90
+        },
+        {
+          "q": "Math reparte $6.000 en partes iguales entre 2 amigos. ¿Cuánto recibe cada uno?",
+          "ans": "$3.000",
+          "opts": [
+            "$3.100",
+            "$2.950",
+            "$3.002",
+            "$3.000"
+          ],
+          "proc": [
+            "Datos: total $6.000 repartido en 2 partes iguales",
+            "Operación: $6.000 ÷ 2 = $3.000",
+            "Comprobación: 2 × $3.000 = $6.000",
+            "Respuesta: $3.000"
+          ],
+          "datos": [
+            6000,
+            2
+          ],
+          "pts": 25,
+          "t": 90
+        },
+        {
+          "q": "Roxy reparte $8.000 en partes iguales entre 4 amigos. ¿Cuánto recibe cada uno?",
+          "ans": "$2.000",
+          "opts": [
+            "$2.000",
+            "$1.950",
+            "$2.100",
+            "$2.004"
+          ],
+          "proc": [
+            "Datos: total $8.000 repartido en 4 partes iguales",
+            "Operación: $8.000 ÷ 4 = $2.000",
+            "Comprobación: 4 × $2.000 = $8.000",
+            "Respuesta: $2.000"
+          ],
+          "datos": [
+            8000,
+            4
+          ],
+          "pts": 25,
+          "t": 90
+        },
+        {
+          "q": "Se pagaron $12.900 por 6 jugos iguales. ¿Cuánto cuesta cada jugo?",
+          "ans": "$2.150",
+          "opts": [
+            "$2.250",
+            "$2.100",
+            "$2.150",
+            "$2.156"
+          ],
+          "proc": [
+            "Datos: total $12.900 repartido en 6 partes iguales",
+            "Operación: $12.900 ÷ 6 = $2.150",
+            "Comprobación: 6 × $2.150 = $12.900",
+            "Respuesta: $2.150"
+          ],
+          "datos": [
+            12900,
+            6
+          ],
+          "pts": 30,
+          "t": 110
+        },
+        {
+          "q": "Se pagaron $15.200 por 4 jugos iguales. ¿Cuánto cuesta cada jugo?",
+          "ans": "$3.800",
+          "opts": [
+            "$3.804",
+            "$3.900",
+            "$3.800",
+            "$3.750"
+          ],
+          "proc": [
+            "Datos: total $15.200 repartido en 4 partes iguales",
+            "Operación: $15.200 ÷ 4 = $3.800",
+            "Comprobación: 4 × $3.800 = $15.200",
+            "Respuesta: $3.800"
+          ],
+          "datos": [
+            15200,
+            4
+          ],
+          "pts": 30,
+          "t": 110
+        },
+        {
+          "q": "Se pagaron $4.200 por 3 jugos iguales. ¿Cuánto cuesta cada jugo?",
+          "ans": "$1.400",
+          "opts": [
+            "$1.350",
+            "$1.403",
+            "$1.400",
+            "$1.500"
+          ],
+          "proc": [
+            "Datos: total $4.200 repartido en 3 partes iguales",
+            "Operación: $4.200 ÷ 3 = $1.400",
+            "Comprobación: 3 × $1.400 = $4.200",
+            "Respuesta: $1.400"
+          ],
+          "datos": [
+            4200,
+            3
+          ],
+          "pts": 30,
+          "t": 110
+        },
+        {
+          "q": "Se pagaron $8.400 por 7 jugos iguales. ¿Cuánto cuesta cada jugo?",
+          "ans": "$1.200",
+          "opts": [
+            "$1.150",
+            "$1.300",
+            "$1.200",
+            "$1.207"
+          ],
+          "proc": [
+            "Datos: total $8.400 repartido en 7 partes iguales",
+            "Operación: $8.400 ÷ 7 = $1.200",
+            "Comprobación: 7 × $1.200 = $8.400",
+            "Respuesta: $1.200"
+          ],
+          "datos": [
+            8400,
+            7
+          ],
+          "pts": 30,
+          "t": 110
+        },
+        {
+          "q": "Se pagaron $24.000 por 6 jugos iguales. ¿Cuánto cuesta cada jugo?",
+          "ans": "$4.000",
+          "opts": [
+            "$4.100",
+            "$4.006",
+            "$4.000",
+            "$3.950"
+          ],
+          "proc": [
+            "Datos: total $24.000 repartido en 6 partes iguales",
+            "Operación: $24.000 ÷ 6 = $4.000",
+            "Comprobación: 6 × $4.000 = $24.000",
+            "Respuesta: $4.000"
+          ],
+          "datos": [
+            24000,
+            6
+          ],
+          "pts": 30,
+          "t": 110
+        },
+        {
+          "q": "La profesora pagó $55.200 por 23 cuadernos iguales. ¿Cuánto costó cada cuaderno?",
+          "ans": "$2.400",
+          "opts": [
+            "$2.423",
+            "$2.350",
+            "$24.000",
+            "$2.400"
+          ],
+          "proc": [
+            "Datos: total $55.200 repartido en 23 partes iguales",
+            "Operación: $55.200 ÷ 23 = $2.400",
+            "Comprobación: 23 × $2.400 = $55.200",
+            "Respuesta: $2.400"
+          ],
+          "datos": [
+            55200,
+            23
+          ],
+          "pts": 35,
+          "t": 130
+        },
+        {
+          "q": "La profesora pagó $18.200 por 14 cuadernos iguales. ¿Cuánto costó cada cuaderno?",
+          "ans": "$1.300",
+          "opts": [
+            "$1.250",
+            "$1.300",
+            "$1.314",
+            "$13.000"
+          ],
+          "proc": [
+            "Datos: total $18.200 repartido en 14 partes iguales",
+            "Operación: $18.200 ÷ 14 = $1.300",
+            "Comprobación: 14 × $1.300 = $18.200",
+            "Respuesta: $1.300"
+          ],
+          "datos": [
+            18200,
+            14
+          ],
+          "pts": 35,
+          "t": 130
+        },
+        {
+          "q": "La profesora pagó $39.600 por 12 cuadernos iguales. ¿Cuánto costó cada cuaderno?",
+          "ans": "$3.300",
+          "opts": [
+            "$3.300",
+            "$3.312",
+            "$33.000",
+            "$3.250"
+          ],
+          "proc": [
+            "Datos: total $39.600 repartido en 12 partes iguales",
+            "Operación: $39.600 ÷ 12 = $3.300",
+            "Comprobación: 12 × $3.300 = $39.600",
+            "Respuesta: $3.300"
+          ],
+          "datos": [
+            39600,
+            12
+          ],
+          "pts": 35,
+          "t": 130
+        },
+        {
+          "q": "La profesora pagó $14.400 por 12 cuadernos iguales. ¿Cuánto costó cada cuaderno?",
+          "ans": "$1.200",
+          "opts": [
+            "$12.000",
+            "$1.200",
+            "$1.150",
+            "$1.212"
+          ],
+          "proc": [
+            "Datos: total $14.400 repartido en 12 partes iguales",
+            "Operación: $14.400 ÷ 12 = $1.200",
+            "Comprobación: 12 × $1.200 = $14.400",
+            "Respuesta: $1.200"
+          ],
+          "datos": [
+            14400,
+            12
+          ],
+          "pts": 35,
+          "t": 130
+        },
+        {
+          "q": "La profesora pagó $36.000 por 20 cuadernos iguales. ¿Cuánto costó cada cuaderno?",
+          "ans": "$1.800",
+          "opts": [
+            "$1.800",
+            "$1.750",
+            "$1.820",
+            "$18.000"
+          ],
+          "proc": [
+            "Datos: total $36.000 repartido en 20 partes iguales",
+            "Operación: $36.000 ÷ 20 = $1.800",
+            "Comprobación: 20 × $1.800 = $36.000",
+            "Respuesta: $1.800"
+          ],
+          "datos": [
+            36000,
+            20
+          ],
+          "pts": 35,
+          "t": 130
+        },
+        {
+          "q": "Un almacén recibió $102.600 por la venta de 38 cajas iguales. ¿Cuánto cuesta cada caja?",
+          "ans": "$2.700",
+          "opts": [
+            "$2.700",
+            "$2.738",
+            "$2.650",
+            "$27.000"
+          ],
+          "proc": [
+            "Datos: total $102.600 repartido en 38 partes iguales",
+            "Operación: $102.600 ÷ 38 = $2.700",
+            "Comprobación: 38 × $2.700 = $102.600",
+            "Respuesta: $2.700"
+          ],
+          "datos": [
+            102600,
+            38
+          ],
+          "pts": 45,
+          "t": 150
+        },
+        {
+          "q": "Un almacén recibió $112.750 por la venta de 41 cajas iguales. ¿Cuánto cuesta cada caja?",
+          "ans": "$2.750",
+          "opts": [
+            "$2.791",
+            "$2.750",
+            "$27.500",
+            "$2.700"
+          ],
+          "proc": [
+            "Datos: total $112.750 repartido en 41 partes iguales",
+            "Operación: $112.750 ÷ 41 = $2.750",
+            "Comprobación: 41 × $2.750 = $112.750",
+            "Respuesta: $2.750"
+          ],
+          "datos": [
+            112750,
+            41
+          ],
+          "pts": 45,
+          "t": 150
+        },
+        {
+          "q": "Un almacén recibió $338.000 por la venta de 52 cajas iguales. ¿Cuánto cuesta cada caja?",
+          "ans": "$6.500",
+          "opts": [
+            "$6.450",
+            "$65.000",
+            "$6.552",
+            "$6.500"
+          ],
+          "proc": [
+            "Datos: total $338.000 repartido en 52 partes iguales",
+            "Operación: $338.000 ÷ 52 = $6.500",
+            "Comprobación: 52 × $6.500 = $338.000",
+            "Respuesta: $6.500"
+          ],
+          "datos": [
+            338000,
+            52
+          ],
+          "pts": 45,
+          "t": 150
+        },
+        {
+          "q": "Un almacén recibió $183.750 por la venta de 25 cajas iguales. ¿Cuánto cuesta cada caja?",
+          "ans": "$7.350",
+          "opts": [
+            "$7.350",
+            "$73.500",
+            "$7.375",
+            "$7.300"
+          ],
+          "proc": [
+            "Datos: total $183.750 repartido en 25 partes iguales",
+            "Operación: $183.750 ÷ 25 = $7.350",
+            "Comprobación: 25 × $7.350 = $183.750",
+            "Respuesta: $7.350"
+          ],
+          "datos": [
+            183750,
+            25
+          ],
+          "pts": 45,
+          "t": 150
+        },
+        {
+          "q": "Un almacén recibió $287.100 por la venta de 58 cajas iguales. ¿Cuánto cuesta cada caja?",
+          "ans": "$4.950",
+          "opts": [
+            "$5.008",
+            "$4.950",
+            "$49.500",
+            "$4.900"
+          ],
+          "proc": [
+            "Datos: total $287.100 repartido en 58 partes iguales",
+            "Operación: $287.100 ÷ 58 = $4.950",
+            "Comprobación: 58 × $4.950 = $287.100",
+            "Respuesta: $4.950"
+          ],
+          "datos": [
+            287100,
+            58
+          ],
+          "pts": 45,
+          "t": 150
+        }
+      ]
+    },
+    {
+      "nombre": "Nivel 5 · Operaciones combinadas",
+      "ejemplos": [
+        {
+          "q": "Jack compra 2 cajas de colores de $800 cada una y paga con $10.000. ¿Cuánto le devuelven?",
+          "ans": "$8.400",
+          "opts": [
+            "$1.600",
+            "$9.400",
+            "$8.400",
+            "$9.200"
+          ],
+          "proc": [
+            "Primero: 2 × $800 = $1.600",
+            "Luego: $10.000 − $1.600 = $8.400",
+            "Respuesta: le devuelven $8.400"
+          ],
+          "datos": [
+            2,
+            800,
+            10000
+          ],
+          "pts": 30,
+          "t": 100
+        },
+        {
+          "q": "Falco compra 4 borradores de $800 cada uno y paga con $10.000. ¿Cuánto le devuelven?",
+          "ans": "$6.800",
+          "opts": [
+            "$7.600",
+            "$3.200",
+            "$9.200",
+            "$6.800"
+          ],
+          "proc": [
+            "Primero: 4 × $800 = $3.200",
+            "Luego: $10.000 − $3.200 = $6.800",
+            "Respuesta: le devuelven $6.800"
+          ],
+          "datos": [
+            4,
+            800,
+            10000
+          ],
+          "pts": 30,
+          "t": 100
+        },
+        {
+          "q": "Leo compra 3 borradores de $300 cada uno y paga con $5.000. ¿Cuánto le devuelven?",
+          "ans": "$4.100",
+          "opts": [
+            "$900",
+            "$4.100",
+            "$4.700",
+            "$4.400"
+          ],
+          "proc": [
+            "Primero: 3 × $300 = $900",
+            "Luego: $5.000 − $900 = $4.100",
+            "Respuesta: le devuelven $4.100"
+          ],
+          "datos": [
+            3,
+            300,
+            5000
+          ],
+          "pts": 30,
+          "t": 100
+        },
+        {
+          "q": "Sumy compra 3 libras de queso a $2.500 cada una y un cuaderno de $1.900. Paga con $50.000. ¿Cuánto le devuelven?",
+          "ans": "$40.600",
+          "opts": [
+            "$42.500",
+            "$9.400",
+            "$40.500",
+            "$40.600"
+          ],
+          "proc": [
+            "Primero: 3 × $2.500 = $7.500",
+            "Luego suma: $7.500 + $1.900 = $9.400",
+            "Por último: $50.000 − $9.400 = $40.600",
+            "Respuesta: $40.600"
+          ],
+          "datos": [
+            3,
+            2500,
+            1900,
+            50000
+          ],
+          "pts": 35,
+          "t": 120
+        },
+        {
+          "q": "Lucas compra 3 jugos a $2.650 cada uno y una carpeta de $1.450. Paga con $20.000. ¿Cuánto le devuelven?",
+          "ans": "$10.600",
+          "opts": [
+            "$10.500",
+            "$10.600",
+            "$12.050",
+            "$9.400"
+          ],
+          "proc": [
+            "Primero: 3 × $2.650 = $7.950",
+            "Luego suma: $7.950 + $1.450 = $9.400",
+            "Por último: $20.000 − $9.400 = $10.600",
+            "Respuesta: $10.600"
+          ],
+          "datos": [
+            3,
+            2650,
+            1450,
+            20000
+          ],
+          "pts": 35,
+          "t": 120
+        },
+        {
+          "q": "4 amigos pagan $7.600 por una pizza en partes iguales. Además, cada uno compra 2 dulces de $1.700. ¿Cuánto gasta cada amigo?",
+          "ans": "$5.300",
+          "opts": [
+            "$5.300",
+            "$11.000",
+            "$1.900",
+            "$7.000"
+          ],
+          "proc": [
+            "Pizza por amigo: $7.600 ÷ 4 = $1.900",
+            "Dulces: 2 × $1.700 = $3.400",
+            "Total por amigo: $1.900 + $3.400 = $5.300",
+            "Respuesta: $5.300"
+          ],
+          "datos": [
+            7600,
+            4,
+            2,
+            1700
+          ],
+          "pts": 40,
+          "t": 140
+        },
+        {
+          "q": "4 amigos pagan $14.000 por una pizza en partes iguales. Además, cada uno compra 4 dulces de $900. ¿Cuánto gasta cada amigo?",
+          "ans": "$7.100",
+          "opts": [
+            "$7.100",
+            "$8.000",
+            "$17.600",
+            "$3.500"
+          ],
+          "proc": [
+            "Pizza por amigo: $14.000 ÷ 4 = $3.500",
+            "Dulces: 4 × $900 = $3.600",
+            "Total por amigo: $3.500 + $3.600 = $7.100",
+            "Respuesta: $7.100"
+          ],
+          "datos": [
+            14000,
+            4,
+            4,
+            900
+          ],
+          "pts": 40,
+          "t": 140
+        },
+        {
+          "q": "5 amigos pagan $11.500 por una pizza en partes iguales. Además, cada uno compra 4 dulces de $1.400. ¿Cuánto gasta cada amigo?",
+          "ans": "$7.900",
+          "opts": [
+            "$2.300",
+            "$7.900",
+            "$9.300",
+            "$17.100"
+          ],
+          "proc": [
+            "Pizza por amigo: $11.500 ÷ 5 = $2.300",
+            "Dulces: 4 × $1.400 = $5.600",
+            "Total por amigo: $2.300 + $5.600 = $7.900",
+            "Respuesta: $7.900"
+          ],
+          "datos": [
+            11500,
+            5,
+            4,
+            1400
+          ],
+          "pts": 40,
+          "t": 140
+        },
+        {
+          "q": "La tienda escolar compra 21 paquetes de galletas a $1.500 cada uno y vende 20 paquetes a $2.300 cada uno. ¿Cuánto dinero gana la tienda?",
+          "ans": "$14.500",
+          "opts": [
+            "$31.500",
+            "$46.000",
+            "$14.500",
+            "$16.000"
+          ],
+          "proc": [
+            "Compras: 21 × $1.500 = $31.500",
+            "Ventas: 20 × $2.300 = $46.000",
+            "Diferencia: $46.000 − $31.500 = $14.500",
+            "Respuesta: gana $14.500"
+          ],
+          "datos": [
+            21,
+            1500,
+            20,
+            2300
+          ],
+          "pts": 50,
+          "t": 160
+        },
+        {
+          "q": "La tienda escolar compra 17 paquetes de galletas a $1.200 cada uno y vende 10 paquetes a $2.400 cada uno. ¿Cuánto dinero gana la tienda?",
+          "ans": "$3.600",
+          "opts": [
+            "$24.000",
+            "$20.400",
+            "$12.000",
+            "$3.600"
+          ],
+          "proc": [
+            "Compras: 17 × $1.200 = $20.400",
+            "Ventas: 10 × $2.400 = $24.000",
+            "Diferencia: $24.000 − $20.400 = $3.600",
+            "Respuesta: gana $3.600"
+          ],
+          "datos": [
+            17,
+            1200,
+            10,
+            2400
+          ],
+          "pts": 50,
+          "t": 160
+        }
+      ],
+      "ejercicios": [
+        {
+          "q": "Lucas compra 2 lápices de $1.000 cada uno y paga con $5.000. ¿Cuánto le devuelven?",
+          "ans": "$3.000",
+          "opts": [
+            "$2.000",
+            "$3.100",
+            "$4.000",
+            "$3.000"
+          ],
+          "proc": [
+            "Primero: 2 × $1.000 = $2.000",
+            "Luego: $5.000 − $2.000 = $3.000",
+            "Respuesta: le devuelven $3.000"
+          ],
+          "datos": [
+            2,
+            1000,
+            5000
+          ],
+          "pts": 30,
+          "t": 100
+        },
+        {
+          "q": "Falco compra 2 borradores de $800 cada uno y paga con $10.000. ¿Cuánto le devuelven?",
+          "ans": "$8.400",
+          "opts": [
+            "$8.400",
+            "$9.400",
+            "$1.600",
+            "$9.200"
+          ],
+          "proc": [
+            "Primero: 2 × $800 = $1.600",
+            "Luego: $10.000 − $1.600 = $8.400",
+            "Respuesta: le devuelven $8.400"
+          ],
+          "datos": [
+            2,
+            800,
+            10000
+          ],
+          "pts": 30,
+          "t": 100
+        },
+        {
+          "q": "Juan compra 3 cajas de colores de $800 cada una y paga con $10.000. ¿Cuánto le devuelven?",
+          "ans": "$7.600",
+          "opts": [
+            "$8.400",
+            "$7.600",
+            "$9.200",
+            "$2.400"
+          ],
+          "proc": [
+            "Primero: 3 × $800 = $2.400",
+            "Luego: $10.000 − $2.400 = $7.600",
+            "Respuesta: le devuelven $7.600"
+          ],
+          "datos": [
+            3,
+            800,
+            10000
+          ],
+          "pts": 30,
+          "t": 100
+        },
+        {
+          "q": "Ana compra 3 tijeras de $1.000 cada una y paga con $10.000. ¿Cuánto le devuelven?",
+          "ans": "$7.000",
+          "opts": [
+            "$7.000",
+            "$9.000",
+            "$3.000",
+            "$8.000"
+          ],
+          "proc": [
+            "Primero: 3 × $1.000 = $3.000",
+            "Luego: $10.000 − $3.000 = $7.000",
+            "Respuesta: le devuelven $7.000"
+          ],
+          "datos": [
+            3,
+            1000,
+            10000
+          ],
+          "pts": 30,
+          "t": 100
+        },
+        {
+          "q": "Sora compra 3 cajas de colores de $500 cada una y paga con $10.000. ¿Cuánto le devuelven?",
+          "ans": "$8.500",
+          "opts": [
+            "$8.500",
+            "$9.500",
+            "$1.500",
+            "$9.000"
+          ],
+          "proc": [
+            "Primero: 3 × $500 = $1.500",
+            "Luego: $10.000 − $1.500 = $8.500",
+            "Respuesta: le devuelven $8.500"
+          ],
+          "datos": [
+            3,
+            500,
+            10000
+          ],
+          "pts": 30,
+          "t": 100
+        },
+        {
+          "q": "Jack compra 4 docenas de huevos a $3.250 cada una y un cuaderno de $1.550. Paga con $50.000. ¿Cuánto le devuelven?",
+          "ans": "$35.450",
+          "opts": [
+            "$14.550",
+            "$35.450",
+            "$37.000",
+            "$35.350"
+          ],
+          "proc": [
+            "Primero: 4 × $3.250 = $13.000",
+            "Luego suma: $13.000 + $1.550 = $14.550",
+            "Por último: $50.000 − $14.550 = $35.450",
+            "Respuesta: $35.450"
+          ],
+          "datos": [
+            4,
+            3250,
+            1550,
+            50000
+          ],
+          "pts": 35,
+          "t": 120
+        },
+        {
+          "q": "Sora compra 3 jugos a $2.850 cada uno y una regla de $1.600. Paga con $50.000. ¿Cuánto le devuelven?",
+          "ans": "$39.850",
+          "opts": [
+            "$41.450",
+            "$10.150",
+            "$39.750",
+            "$39.850"
+          ],
+          "proc": [
+            "Primero: 3 × $2.850 = $8.550",
+            "Luego suma: $8.550 + $1.600 = $10.150",
+            "Por último: $50.000 − $10.150 = $39.850",
+            "Respuesta: $39.850"
+          ],
+          "datos": [
+            3,
+            2850,
+            1600,
+            50000
+          ],
+          "pts": 35,
+          "t": 120
+        },
+        {
+          "q": "Math compra 6 bolsas de frutas a $1.650 cada una y un borrador de $2.100. Paga con $50.000. ¿Cuánto le devuelven?",
+          "ans": "$38.000",
+          "opts": [
+            "$37.900",
+            "$38.000",
+            "$40.100",
+            "$12.000"
+          ],
+          "proc": [
+            "Primero: 6 × $1.650 = $9.900",
+            "Luego suma: $9.900 + $2.100 = $12.000",
+            "Por último: $50.000 − $12.000 = $38.000",
+            "Respuesta: $38.000"
+          ],
+          "datos": [
+            6,
+            1650,
+            2100,
+            50000
+          ],
+          "pts": 35,
+          "t": 120
+        },
+        {
+          "q": "Gloria compra 3 litros de leche a $3.200 cada uno y un marcador de $1.250. Paga con $50.000. ¿Cuánto le devuelven?",
+          "ans": "$39.150",
+          "opts": [
+            "$10.850",
+            "$39.050",
+            "$39.150",
+            "$40.400"
+          ],
+          "proc": [
+            "Primero: 3 × $3.200 = $9.600",
+            "Luego suma: $9.600 + $1.250 = $10.850",
+            "Por último: $50.000 − $10.850 = $39.150",
+            "Respuesta: $39.150"
+          ],
+          "datos": [
+            3,
+            3200,
+            1250,
+            50000
+          ],
+          "pts": 35,
+          "t": 120
+        },
+        {
+          "q": "Sora compra 5 bolsas de frutas a $1.500 cada una y un borrador de $1.250. Paga con $20.000. ¿Cuánto le devuelven?",
+          "ans": "$11.250",
+          "opts": [
+            "$11.250",
+            "$11.150",
+            "$8.750",
+            "$12.500"
+          ],
+          "proc": [
+            "Primero: 5 × $1.500 = $7.500",
+            "Luego suma: $7.500 + $1.250 = $8.750",
+            "Por último: $20.000 − $8.750 = $11.250",
+            "Respuesta: $11.250"
+          ],
+          "datos": [
+            5,
+            1500,
+            1250,
+            20000
+          ],
+          "pts": 35,
+          "t": 120
+        },
+        {
+          "q": "4 amigos pagan $14.800 por una pizza en partes iguales. Además, cada uno compra 3 dulces de $1.700. ¿Cuánto gasta cada amigo?",
+          "ans": "$8.800",
+          "opts": [
+            "$10.500",
+            "$19.900",
+            "$3.700",
+            "$8.800"
+          ],
+          "proc": [
+            "Pizza por amigo: $14.800 ÷ 4 = $3.700",
+            "Dulces: 3 × $1.700 = $5.100",
+            "Total por amigo: $3.700 + $5.100 = $8.800",
+            "Respuesta: $8.800"
+          ],
+          "datos": [
+            14800,
+            4,
+            3,
+            1700
+          ],
+          "pts": 40,
+          "t": 140
+        },
+        {
+          "q": "5 amigos pagan $21.000 por una pizza en partes iguales. Además, cada uno compra 5 dulces de $800. ¿Cuánto gasta cada amigo?",
+          "ans": "$8.200",
+          "opts": [
+            "$25.000",
+            "$8.200",
+            "$4.200",
+            "$9.000"
+          ],
+          "proc": [
+            "Pizza por amigo: $21.000 ÷ 5 = $4.200",
+            "Dulces: 5 × $800 = $4.000",
+            "Total por amigo: $4.200 + $4.000 = $8.200",
+            "Respuesta: $8.200"
+          ],
+          "datos": [
+            21000,
+            5,
+            5,
+            800
+          ],
+          "pts": 40,
+          "t": 140
+        },
+        {
+          "q": "5 amigos pagan $13.000 por una pizza en partes iguales. Además, cada uno compra 2 dulces de $600. ¿Cuánto gasta cada amigo?",
+          "ans": "$3.800",
+          "opts": [
+            "$14.200",
+            "$4.400",
+            "$2.600",
+            "$3.800"
+          ],
+          "proc": [
+            "Pizza por amigo: $13.000 ÷ 5 = $2.600",
+            "Dulces: 2 × $600 = $1.200",
+            "Total por amigo: $2.600 + $1.200 = $3.800",
+            "Respuesta: $3.800"
+          ],
+          "datos": [
+            13000,
+            5,
+            2,
+            600
+          ],
+          "pts": 40,
+          "t": 140
+        },
+        {
+          "q": "3 amigos pagan $5.100 por una pizza en partes iguales. Además, cada uno compra 4 dulces de $1.100. ¿Cuánto gasta cada amigo?",
+          "ans": "$6.100",
+          "opts": [
+            "$9.500",
+            "$7.200",
+            "$1.700",
+            "$6.100"
+          ],
+          "proc": [
+            "Pizza por amigo: $5.100 ÷ 3 = $1.700",
+            "Dulces: 4 × $1.100 = $4.400",
+            "Total por amigo: $1.700 + $4.400 = $6.100",
+            "Respuesta: $6.100"
+          ],
+          "datos": [
+            5100,
+            3,
+            4,
+            1100
+          ],
+          "pts": 40,
+          "t": 140
+        },
+        {
+          "q": "6 amigos pagan $22.200 por una pizza en partes iguales. Además, cada uno compra 2 dulces de $1.800. ¿Cuánto gasta cada amigo?",
+          "ans": "$7.300",
+          "opts": [
+            "$9.100",
+            "$7.300",
+            "$25.800",
+            "$3.700"
+          ],
+          "proc": [
+            "Pizza por amigo: $22.200 ÷ 6 = $3.700",
+            "Dulces: 2 × $1.800 = $3.600",
+            "Total por amigo: $3.700 + $3.600 = $7.300",
+            "Respuesta: $7.300"
+          ],
+          "datos": [
+            22200,
+            6,
+            2,
+            1800
+          ],
+          "pts": 40,
+          "t": 140
+        },
+        {
+          "q": "La tienda escolar compra 14 paquetes de galletas a $1.400 cada uno y vende 14 paquetes a $2.200 cada uno. ¿Cuánto dinero gana la tienda?",
+          "ans": "$11.200",
+          "opts": [
+            "$30.800",
+            "$11.200",
+            "$13.400",
+            "$19.600"
+          ],
+          "proc": [
+            "Compras: 14 × $1.400 = $19.600",
+            "Ventas: 14 × $2.200 = $30.800",
+            "Diferencia: $30.800 − $19.600 = $11.200",
+            "Respuesta: gana $11.200"
+          ],
+          "datos": [
+            14,
+            1400,
+            14,
+            2200
+          ],
+          "pts": 50,
+          "t": 160
+        },
+        {
+          "q": "La tienda escolar compra 28 paquetes de galletas a $2.800 cada uno y vende 26 paquetes a $3.300 cada uno. ¿Cuánto dinero gana la tienda?",
+          "ans": "$7.400",
+          "opts": [
+            "$7.400",
+            "$78.400",
+            "$85.800",
+            "$13.000"
+          ],
+          "proc": [
+            "Compras: 28 × $2.800 = $78.400",
+            "Ventas: 26 × $3.300 = $85.800",
+            "Diferencia: $85.800 − $78.400 = $7.400",
+            "Respuesta: gana $7.400"
+          ],
+          "datos": [
+            28,
+            2800,
+            26,
+            3300
+          ],
+          "pts": 50,
+          "t": 160
+        },
+        {
+          "q": "La tienda escolar compra 15 paquetes de galletas a $1.600 cada uno y vende 15 paquetes a $2.300 cada uno. ¿Cuánto dinero gana la tienda?",
+          "ans": "$10.500",
+          "opts": [
+            "$12.800",
+            "$24.000",
+            "$34.500",
+            "$10.500"
+          ],
+          "proc": [
+            "Compras: 15 × $1.600 = $24.000",
+            "Ventas: 15 × $2.300 = $34.500",
+            "Diferencia: $34.500 − $24.000 = $10.500",
+            "Respuesta: gana $10.500"
+          ],
+          "datos": [
+            15,
+            1600,
+            15,
+            2300
+          ],
+          "pts": 50,
+          "t": 160
+        },
+        {
+          "q": "La tienda escolar compra 23 paquetes de galletas a $1.600 cada uno y vende 20 paquetes a $2.600 cada uno. ¿Cuánto dinero gana la tienda?",
+          "ans": "$15.200",
+          "opts": [
+            "$20.000",
+            "$36.800",
+            "$15.200",
+            "$52.000"
+          ],
+          "proc": [
+            "Compras: 23 × $1.600 = $36.800",
+            "Ventas: 20 × $2.600 = $52.000",
+            "Diferencia: $52.000 − $36.800 = $15.200",
+            "Respuesta: gana $15.200"
+          ],
+          "datos": [
+            23,
+            1600,
+            20,
+            2600
+          ],
+          "pts": 50,
+          "t": 160
+        },
+        {
+          "q": "La tienda escolar compra 19 paquetes de galletas a $1.800 cada uno y vende 13 paquetes a $2.800 cada uno. ¿Cuánto dinero gana la tienda?",
+          "ans": "$2.200",
+          "opts": [
+            "$13.000",
+            "$2.200",
+            "$36.400",
+            "$34.200"
+          ],
+          "proc": [
+            "Compras: 19 × $1.800 = $34.200",
+            "Ventas: 13 × $2.800 = $36.400",
+            "Diferencia: $36.400 − $34.200 = $2.200",
+            "Respuesta: gana $2.200"
+          ],
+          "datos": [
+            19,
+            1800,
+            13,
+            2800
+          ],
+          "pts": 50,
+          "t": 160
+        }
+      ]
+    }
+  ]
+}

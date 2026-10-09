@@ -174,6 +174,11 @@ export interface LevelExample {
   nl?: NumberLineConfig;
   /** Pasos desglosados opcionales. */
   steps?: string[];
+  titulo?: string;
+  pregunta?: string;
+  respuesta?: string;
+  pasos?: string[];
+  explicacion?: string;
 }
 
 /** Mapa de ejemplos por clave de nivel (`u{u}t{t}-n{n}`). */
