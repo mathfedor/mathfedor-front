@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useBook4 } from '../context/Book4Context';
 import Swal from 'sweetalert2';
+import TopHeaderModals4to, { TopHeaderModalType } from './TopHeaderModals4to';
 
 interface BookHeader4toProps {
   onOpenIntro?: () => void;
@@ -10,7 +11,8 @@ interface BookHeader4toProps {
 }
 
 export default function BookHeader4to({ onOpenIntro, onOpenGalaxy }: BookHeader4toProps) {
-  const { student, coins, streak, screen, goScreen, resetStudent } = useBook4();
+  const { student, coins, streak, screen, goScreen, resetStudent, updateStats } = useBook4();
+  const [activeHeaderModal, setActiveHeaderModal] = useState<TopHeaderModalType>(null);
 
   const handleLogoClick = () => {
     if (student?.name && screen !== 'home') {
@@ -178,6 +180,30 @@ export default function BookHeader4to({ onOpenIntro, onOpenGalaxy }: BookHeader4
 
       <div className="hdr-mid">
         <span className="grade-pill-4to">4° Grado</span>
+        <button
+          type="button"
+          className="hdr-btn-extra btn-concepto"
+          onClick={() => setActiveHeaderModal('concepto')}
+          title="Ver Concepto del Día"
+        >
+          💡 Concepto
+        </button>
+        <button
+          type="button"
+          className="hdr-btn-extra btn-desafio"
+          onClick={() => setActiveHeaderModal('desafio')}
+          title="Ver Desafío del Día"
+        >
+          🎯 Desafío
+        </button>
+        <button
+          type="button"
+          className="hdr-btn-extra btn-historia"
+          onClick={() => setActiveHeaderModal('historia')}
+          title="Ver Historia del Método Fedor"
+        >
+          📜 Historia
+        </button>
       </div>
 
       <div className="hdr-btns">
@@ -271,6 +297,12 @@ export default function BookHeader4to({ onOpenIntro, onOpenGalaxy }: BookHeader4
         )}
       </div>
 
+      <TopHeaderModals4to
+        modal={activeHeaderModal}
+        onClose={() => setActiveHeaderModal(null)}
+        onUpdateStats={updateStats}
+      />
+
       <style>{`
         .hdr-4to {
           background: #ffffff;
@@ -297,6 +329,8 @@ export default function BookHeader4to({ onOpenIntro, onOpenGalaxy }: BookHeader4
         .hdr-mid {
           display: flex;
           align-items: center;
+          gap: 8px;
+          flex-wrap: wrap;
         }
 
         .grade-pill-4to {
@@ -304,10 +338,63 @@ export default function BookHeader4to({ onOpenIntro, onOpenGalaxy }: BookHeader4
           color: #9a3412;
           border: 1.5px solid #f97316;
           border-radius: 14px;
-          padding: 3px 12px;
+          padding: 4px 12px;
           font-size: 12px;
           font-weight: 900;
           letter-spacing: 0.03em;
+        }
+
+        .hdr-btn-extra {
+          border-radius: 12px;
+          border: 1.5px solid #d9ccff;
+          background: #ffffff;
+          color: #5c21a6;
+          font-family: 'Nunito', sans-serif;
+          font-size: 12px;
+          font-weight: 900;
+          padding: 5px 11px;
+          cursor: pointer;
+          transition: all 0.15s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          box-shadow: 0 2px 6px rgba(92, 33, 166, 0.08);
+          white-space: nowrap;
+        }
+
+        .hdr-btn-extra:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 10px rgba(92, 33, 166, 0.16);
+        }
+
+        .hdr-btn-extra.btn-concepto {
+          border-color: #93c5fd;
+          color: #1d4ed8;
+          background: #eff6ff;
+        }
+        .hdr-btn-extra.btn-concepto:hover {
+          background: #dbeafe;
+          border-color: #3b82f6;
+        }
+
+        .hdr-btn-extra.btn-desafio {
+          border-color: #fdba74;
+          color: #c2410c;
+          background: #fff7ed;
+        }
+        .hdr-btn-extra.btn-desafio:hover {
+          background: #ffedd5;
+          border-color: #ea580c;
+        }
+
+        .hdr-btn-extra.btn-historia {
+          border-color: #d8b4fe;
+          color: #6b21a8;
+          background: #faf5ff;
+        }
+        .hdr-btn-extra.btn-historia:hover {
+          background: #f3e8ff;
+          border-color: #9333ea;
         }
 
         .hdr-btns {
@@ -361,6 +448,13 @@ export default function BookHeader4to({ onOpenIntro, onOpenGalaxy }: BookHeader4
           background: #e0f2fe;
           border-color: #38bdf8;
           color: #0369a1;
+        }
+
+        @media (max-width: 900px) {
+          .hdr-btn-extra {
+            padding: 4px 8px;
+            font-size: 11px;
+          }
         }
 
         @media (max-width: 768px) {
