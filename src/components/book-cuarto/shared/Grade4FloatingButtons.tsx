@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useBook4 } from '../context/Book4Context';
 import Swal from 'sweetalert2';
+import CommandPanelModals4to from './CommandPanelModals4to';
 
 interface Grade4FloatingButtonsProps {
   onOpenAiChat: () => void;
@@ -18,6 +19,45 @@ const MASCOT_MESSAGES_4TO = [
   '¿Sabías que la multiplicación y la división son operaciones inversas? ¡Practícalas a diario!',
   '¡Rumbo a las estrellas! En cada misión descubres un nuevo planeta de nuestro sistema solar.',
   '¡No te rindas! Los problemas de la vida cotidiana son la clave de la prueba SABER 4°.',
+];
+
+interface FloatingToolItem {
+  id: string;
+  icon: string;
+  name: string;
+}
+
+const FLOATING_TOOLS_4TO: FloatingToolItem[] = [
+  // Fila 1
+  { id: 'lab-visual', icon: '🧠', name: 'Laboratorio' },
+  { id: 'conteo', icon: '🔢', name: 'Conteo' },
+  // Fila 2
+  { id: 'mult', icon: '✖️', name: 'Multiplicar' },
+  { id: 'lab-est', icon: '🔬', name: 'Lab. Est.' },
+  // Fila 3
+  { id: 'explicar', icon: '💡', name: 'Explicar' },
+  { id: 'videos', icon: '🎬', name: 'Videos' },
+  // Fila 4
+  { id: 'concepto', icon: '📘', name: 'Concepto' },
+  { id: 'desafio', icon: '🎯', name: 'Desafio' },
+  // Fila 5
+  { id: 'historia', icon: '📜', name: 'Historia' },
+  { id: 'guia-docente', icon: '👩‍🏫', name: 'Guia Doc.' },
+  // Fila 6
+  { id: 'color', icon: '🎨', name: 'Color' },
+  { id: 'voz-fem', icon: '🎙️', name: 'Voz Fem.' },
+  // Fila 7
+  { id: 'curriculo', icon: '📚', name: 'Currículo' },
+  { id: 'saber', icon: '🏆', name: 'SABER' },
+  // Fila 8
+  { id: 'examen', icon: '🎓', name: 'Examen final' },
+  { id: 'repaso', icon: '🔄', name: 'Mi Repaso' },
+  // Fila 9
+  { id: 'logros', icon: '🏆', name: 'Logros' },
+  { id: 'juegos', icon: '🎮', name: 'Minijuegos' },
+  // Fila 10
+  { id: 'universo', icon: '🌌', name: 'Universo' },
+  { id: 'saber-cotidianos', icon: '🛒', name: 'SABER cotidianos' },
 ];
 
 export default function Grade4FloatingButtons({
@@ -37,6 +77,33 @@ export default function Grade4FloatingButtons({
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [musicEnabled, setMusicEnabled] = useState(false);
   const [voiceType, setVoiceType] = useState<'fem' | 'def'>('fem');
+  const [activeToolModal, setActiveToolModal] = useState<string | null>(null);
+
+  const handleToolClick = (toolId: string) => {
+    setShowTools(false);
+    if (toolId === 'universo') {
+      onOpenGalaxy();
+      return;
+    }
+    if (toolId === 'saber-cotidianos') {
+      onOpenProblemas();
+      return;
+    }
+    if (toolId === 'voz-fem') {
+      const nextVoice = voiceType === 'fem' ? 'def' : 'fem';
+      setVoiceType(nextVoice);
+      Swal.fire({
+        icon: 'info',
+        title: nextVoice === 'fem' ? '🎙️ Voz Femenina: ACTIVADA' : '🎙️ Voz Femenina: desactivada',
+        text: 'Módulo de sonido y lectura del sistema FEDOR configurado.',
+        timer: 1600,
+        showConfirmButton: false,
+        confirmButtonColor: '#7C3AED',
+      });
+      return;
+    }
+    setActiveToolModal(toolId);
+  };
 
   const toolsRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
@@ -185,113 +252,34 @@ export default function Grade4FloatingButtons({
         <span>Menu</span>
       </button>
 
-      {/* Menú Flotante #p3Popup */}
+      {/* Menú Flotante #p3Popup fiel a la imagen (20 herramientas en 2 columnas) */}
       {showTools && (
         <div id="p3Popup" ref={toolsRef} className="open">
-          <button
-            type="button"
-            className="btn3d"
-            title="Tablas de conteo"
-            onClick={() => {
-              setShowTools(false);
-              selectUnit(0);
-            }}
-          >
-            <span>🔢</span>
-            <span>Conteo</span>
-          </button>
-
-          <button
-            type="button"
-            className="btn3d"
-            title="Tablas de multiplicar"
-            onClick={() => {
-              setShowTools(false);
-              selectUnit(2);
-            }}
-          >
-            <span>✖️</span>
-            <span>Multiplicar</span>
-          </button>
-
-          <button
-            type="button"
-            className="btn3d"
-            title="Problemas Cotidianos SABER 4°"
-            onClick={() => {
-              setShowTools(false);
-              onOpenProblemas();
-            }}
-          >
-            <span>🛒</span>
-            <span>SABER 4°</span>
-          </button>
-
-          <button
-            type="button"
-            className="btn3d"
-            title="Universo Fedor"
-            onClick={() => {
-              setShowTools(false);
-              onOpenGalaxy();
-            }}
-          >
-            <span>🌌</span>
-            <span>Universo</span>
-          </button>
-
-          <button
-            type="button"
-            className="btn3d"
-            title="Explicaciones paso a paso"
-            onClick={() => {
-              setShowTools(false);
-              goScreen('definiciones');
-            }}
-          >
-            <span>💡</span>
-            <span>Explicar</span>
-          </button>
-
-          <button
-            type="button"
-            className="btn3d"
-            title="Currículo MEN 4°"
-            onClick={() => {
-              setShowTools(false);
-              goScreen('estandares');
-            }}
-          >
-            <span>👩‍🏫</span>
-            <span>Guía Doc.</span>
-          </button>
-
-          <button
-            type="button"
-            className="btn3d"
-            title="Informe de progreso"
-            onClick={() => {
-              setShowTools(false);
-              goScreen('report');
-            }}
-          >
-            <span>📊</span>
-            <span>Informe</span>
-          </button>
-
-          <button
-            type="button"
-            className="btn3d"
-            title="Asistente IA Fedor"
-            onClick={() => {
-              setShowTools(false);
-              onOpenAiChat();
-            }}
-          >
-            <span>🤖</span>
-            <span>IA Tutor</span>
-          </button>
+          <div className="p3-popup-title">HERRAMIENTAS</div>
+          <div className="p3-popup-grid">
+            {FLOATING_TOOLS_4TO.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                className="btn3d"
+                onClick={() => handleToolClick(t.id)}
+                title={t.name}
+              >
+                <span>{t.icon}</span>
+                <span>{t.name}</span>
+              </button>
+            ))}
+          </div>
         </div>
+      )}
+
+      {/* ══ Modal de Herramientas de 4° Grado ══ */}
+      {activeToolModal && (
+        <CommandPanelModals4to
+          activeTool={activeToolModal}
+          onClose={() => setActiveToolModal(null)}
+          onOpenIntro={onOpenIntro}
+        />
       )}
 
       {/* ═════════════════════════════════════════════════════════════
@@ -467,33 +455,55 @@ export default function Grade4FloatingButtons({
           text-transform: uppercase;
         }
 
-        /* Popup #p3Popup fiel al HTML 4° */
+        /* Popup #p3Popup fiel a la imagen (Herramientas 4°) */
         #p3Popup.open {
           position: fixed;
-          right: 106px;
-          top: 88px;
+          right: 84px;
+          top: 60px;
           z-index: 9991;
-          display: grid;
-          grid-template-columns: repeat(2, 90px);
-          gap: 8px;
-          background: #ffffff;
-          border: 2px solid #c5bfee;
-          border-radius: 20px;
-          padding: 12px;
-          box-shadow: 0 12px 32px rgba(40, 10, 90, 0.25);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          background: #251347;
+          border: 2px solid #5C2B92;
+          border-radius: 24px;
+          padding: 14px 10px 14px 10px;
+          box-shadow: 0 16px 48px rgba(10, 4, 30, 0.65);
           animation: fadeIn 0.2s ease;
+          max-height: calc(100vh - 80px);
+          overflow-y: auto;
+          box-sizing: border-box;
         }
 
-        #p3Popup::before {
-          content: 'HERRAMIENTAS';
-          grid-column: span 2;
-          display: block;
-          text-align: center;
-          font-size: 9px;
+        #p3Popup::-webkit-scrollbar {
+          width: 5px;
+        }
+
+        #p3Popup::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 4px;
+        }
+
+        #p3Popup::-webkit-scrollbar-thumb {
+          background: rgba(245, 197, 24, 0.5);
+          border-radius: 4px;
+        }
+
+        .p3-popup-title {
+          font-family: 'Baloo 2', 'Nunito', sans-serif;
+          font-size: 13px;
           font-weight: 900;
-          color: #7a7299;
+          color: #F5C518;
           letter-spacing: 0.1em;
-          margin-bottom: 2px;
+          text-align: center;
+          margin-bottom: 12px;
+          text-transform: uppercase;
+        }
+
+        .p3-popup-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 76px);
+          gap: 8px;
         }
 
         #p3Popup .btn3d {
@@ -501,33 +511,47 @@ export default function Grade4FloatingButtons({
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 4px;
-          padding: 8px 6px;
-          border-radius: 14px;
-          border: 1.5px solid #eee8fb;
-          background: #fbf9ff;
+          gap: 3px;
+          width: 76px;
+          height: 70px;
+          border-radius: 16px;
+          border: 1.5px solid #EDE8F8;
+          background: #FFFFFF;
           cursor: pointer;
           font-family: 'Nunito', sans-serif;
-          transition: transform 0.15s ease, background 0.15s ease;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+          transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+          box-sizing: border-box;
+          padding: 6px 2px;
         }
 
         #p3Popup .btn3d:hover {
           transform: translateY(-2px);
-          background: #f3ecff;
-          border-color: #8b3edb;
+          background: #FFFFFF;
+          box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+          border-color: #C5BFEE;
         }
 
         #p3Popup .btn3d span:first-child {
-          font-size: 22px;
+          font-size: 24px;
           line-height: 1;
         }
 
         #p3Popup .btn3d span:last-child {
           font-size: 9.5px;
           font-weight: 800;
-          color: #3d1468;
+          color: #3D1468;
           text-align: center;
-          line-height: 1.1;
+          line-height: 1.15;
+          font-family: 'Nunito', sans-serif;
+        }
+
+        @media (max-width: 600px) {
+          #p3Popup.open {
+            right: 12px;
+            top: 70px;
+            max-height: 75vh;
+          }
         }
 
         /* Botón #f5Ajustes y Menú fiel al HTML 4° */

@@ -4,6 +4,12 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useBook4 } from '../context/Book4Context';
 import Swal from 'sweetalert2';
 import { FZ } from './fedor-visual-lab-engine';
+import ShopModal4to from './ShopModal4to';
+import RetoEspacialModal4to from './RetoEspacialModal4to';
+import DiarioModal4to from './DiarioModal4to';
+import ExamenFinalModal4to from './ExamenFinalModal4to';
+import StickerAlbumModal4to from './StickerAlbumModal4to';
+import MinijuegosModal4to from './MinijuegosModal4to';
 
 interface CommandPanelModals4toProps {
   activeTool: string | null;
@@ -421,6 +427,30 @@ export default function CommandPanelModals4to({
   };
 
   if (!activeTool) return null;
+
+  if (activeTool === 'tienda') {
+    return <ShopModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'espacial') {
+    return <RetoEspacialModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'diario') {
+    return <DiarioModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'examen' || activeTool === 'examen-final') {
+    return <ExamenFinalModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'stickers') {
+    return <StickerAlbumModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'juegos' || activeTool === 'minijuegos') {
+    return <MinijuegosModal4to isOpen={true} onClose={onClose} />;
+  }
 
   return (
     <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">

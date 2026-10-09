@@ -241,9 +241,10 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
           2. PANEL DE COMANDO: 7 Acciones Cósmicas
       ═════════════════════════════════════════════════════════════ */}
       <div id="fedorActionBar" className="f4-action-bar">
-        {/* Floating pill badge on top border */}
+        {/* Floating pill badge superimposed on top border */}
         <div className="f4-action-badge">
-          ⚡ PANEL DE COMANDO
+          <span className="badge-bolt">⚡</span>
+          <span>PANEL DE COMANDO</span>
         </div>
 
         <button
@@ -257,7 +258,7 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
 
         <button
           type="button"
-          onClick={() => setShowUniverseModal(true)}
+          onClick={() => setActiveToolModal('espacial')}
           className="ab-btn espacial"
         >
           <span className="ab-ico">🚀</span>
@@ -275,7 +276,7 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
 
         <button
           type="button"
-          onClick={() => goScreen('problemas')}
+          onClick={() => setActiveToolModal('examen')}
           className="ab-btn examen"
         >
           <span className="ab-ico">📝</span>
@@ -1060,33 +1061,45 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
         .f4-action-bar {
           position: relative;
           display: flex;
-          gap: 8px;
+          gap: 10px;
           align-items: center;
           justify-content: space-between;
           background: linear-gradient(135deg, #1A0A3C, #2A0F60, #0A1B40);
-          padding: 1.25rem 0.95rem 0.95rem;
-          border-radius: 18px;
-          margin: 1.2rem 0;
+          padding: 1.45rem 1rem 1.05rem;
+          border-radius: 22px;
+          margin: 1.8rem 0 1.3rem;
           box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55), inset 0 0 30px rgba(91, 191, 255, 0.15);
-          border: 2px solid rgba(91, 191, 255, 0.35);
-          z-index: 5;
-          overflow-x: auto;
+          border: 2.5px solid rgba(91, 191, 255, 0.35);
+          z-index: 10;
+          overflow: visible;
         }
 
         .f4-action-badge {
           position: absolute;
-          top: -11px;
+          top: -14px;
           left: 50%;
           transform: translateX(-50%);
-          background: linear-gradient(135deg, #FF1D4E, #F5C518);
-          color: #fff;
-          font-size: 10px;
+          background: linear-gradient(90deg, #FF1E56 0%, #FF5A00 45%, #FFA700 85%, #FBBF24 100%);
+          color: #ffffff;
+          font-family: 'Baloo 2', 'Nunito', sans-serif;
+          font-size: 13px;
           font-weight: 900;
-          padding: 3px 14px;
-          border-radius: 14px;
-          letter-spacing: 0.12em;
-          box-shadow: 0 4px 12px rgba(255, 29, 78, 0.5);
+          padding: 5px 24px;
+          border-radius: 9999px;
+          letter-spacing: 0.08em;
+          box-shadow: 0 4px 16px rgba(255, 30, 86, 0.55), 0 2px 6px rgba(0, 0, 0, 0.35);
           white-space: nowrap;
+          z-index: 30;
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+          pointer-events: none;
+        }
+
+        .badge-bolt {
+          font-size: 14px;
+          filter: drop-shadow(0 0 4px rgba(255, 235, 59, 0.9));
         }
 
         .ab-btn {
