@@ -594,7 +594,7 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
             type="button"
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #0E6BA8, #38BDF8)' }}
-            onClick={() => goScreen('problemas')}
+            onClick={() => setActiveToolModal('saber-cotidianos')}
             title="Problemas cotidianos SABER"
           >
             <span>🛒</span>
@@ -639,7 +639,7 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
             type="button"
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #16876A, #24C496)' }}
-            onClick={() => goScreen('report')}
+            onClick={() => setActiveToolModal('informe')}
             title="Informe de progreso"
           >
             <span>📊</span>
@@ -653,7 +653,7 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
       ═════════════════════════════════════════════════════════════ */}
       <div
         className="sb5-bar"
-        onClick={() => goScreen('problemas')}
+        onClick={() => setActiveToolModal('saber-cotidianos')}
       >
         <span className="i">🛒</span>
         <span style={{ flex: 1 }}>
@@ -665,7 +665,7 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
           className="sb5-go"
           onClick={(e) => {
             e.stopPropagation();
-            goScreen('problemas');
+            setActiveToolModal('saber-cotidianos');
           }}
         >
           ▶ Abrir problemas
@@ -800,45 +800,277 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
       {/* ═════════════════════════════════════════════════════════════
           7. 👨‍👩‍👧 ZONA DE PROFES Y FAMILIAS
       ═════════════════════════════════════════════════════════════ */}
-      <details className="f5adult">
+      <details className="f5adult" id="f5Adult">
         <summary>
-          👨‍👩‍👧 Zona de profes y familias <small style={{ fontFamily: 'Nunito', fontSize: 12, color: '#7A7299', fontWeight: 800 }}>informes, progreso detallado y guía</small>
+          👨‍👩‍👧 Zona de profes y familias{' '}
+          <small style={{ fontFamily: 'Nunito, sans-serif', fontSize: 12, color: '#7A7299', fontWeight: 800 }}>
+            informes, progreso detallado y guía
+          </small>
         </summary>
-        <div className="p-3 bg-white rounded-xl border border-purple-100 mt-2 space-y-3">
-          <div className="flex items-center justify-between text-xs font-bold text-gray-700">
-            <span>Progreso global del libro: <strong>{totalBookPct}%</strong></span>
-            <span>Total XP acumulado: <strong>{totalXP} XP</strong></span>
+
+        <div className="space-y-3 mt-3">
+          {/* ══ 1. CENTRO DE INFORMES (Panel Oscuro) ══ */}
+          <div
+            className="relative overflow-hidden rounded-[18px] p-4 sm:p-5 text-white"
+            style={{
+              background: 'linear-gradient(135deg, #140830, #1E0848)',
+              boxShadow: '0 8px 24px rgba(20, 8, 48, 0.35)',
+            }}
+          >
+            {/* Trama decorativa de fondo del HTML */}
+            <div
+              className="absolute inset-0 opacity-[0.06] pointer-events-none"
+              style={{
+                background: 'repeating-linear-gradient(45deg, #7B2FBE 0, #7B2FBE 1px, transparent 1px, transparent 8px)',
+              }}
+            />
+
+            <div className="relative z-1 space-y-3">
+              {/* Encabezado del Centro de Informes */}
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <div className="flex items-center gap-2.5">
+                  <div
+                    className="w-[34px] h-[34px] rounded-[10px] flex items-center justify-center text-lg shrink-0 shadow-sm"
+                    style={{ background: 'linear-gradient(135deg, #F5C518, #FF8C2A)' }}
+                  >
+                    📊
+                  </div>
+                  <div>
+                    <div
+                      className="text-[15px] font-black text-white leading-tight"
+                      style={{ fontFamily: "'Baloo 2', sans-serif" }}
+                    >
+                      Centro de Informes
+                    </div>
+                    <div className="text-[10px] text-white/50 font-bold">
+                      Seguimiento docente y familia
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveToolModal('informe')}
+                  className="px-4 py-1.5 rounded-[10px] text-xs font-black cursor-pointer shadow-md transition-transform hover:scale-105 active:scale-95"
+                  style={{
+                    background: 'linear-gradient(135deg, #F5C518, #FF8C2A)',
+                    color: '#2A0F60',
+                    fontFamily: "'Nunito', sans-serif",
+                  }}
+                >
+                  Ver informe →
+                </button>
+              </div>
+
+              {/* 3 Cajas de Métricas Clave */}
+              <div className="grid grid-cols-3 gap-2 my-2">
+                <div className="bg-white/8 rounded-[10px] py-2 px-1 text-center border border-white/5">
+                  <div
+                    className="text-base sm:text-lg font-black text-[#FF8C2A] leading-tight"
+                    style={{ fontFamily: "'Baloo 2', sans-serif" }}
+                  >
+                    {totalXP}
+                  </div>
+                  <div className="text-[8px] sm:text-[9px] text-white/50 font-bold uppercase tracking-wide mt-0.5">
+                    XP TOTAL
+                  </div>
+                </div>
+
+                <div className="bg-white/8 rounded-[10px] py-2 px-1 text-center border border-white/5">
+                  <div
+                    className="text-base sm:text-lg font-black text-[#24C496] leading-tight"
+                    style={{ fontFamily: "'Baloo 2', sans-serif" }}
+                  >
+                    {completedBlocksCount} ✅
+                  </div>
+                  <div className="text-[8px] sm:text-[9px] text-white/50 font-bold uppercase tracking-wide mt-0.5">
+                    NIVELES ✅
+                  </div>
+                </div>
+
+                <div className="bg-white/8 rounded-[10px] py-2 px-1 text-center border border-white/5">
+                  <div
+                    className="text-base sm:text-lg font-black text-[#FF8C2A] leading-tight"
+                    style={{ fontFamily: "'Baloo 2', sans-serif" }}
+                  >
+                    {streak} 🔥
+                  </div>
+                  <div className="text-[8px] sm:text-[9px] text-white/50 font-bold uppercase tracking-wide mt-0.5">
+                    RACHA
+                  </div>
+                </div>
+              </div>
+
+              {/* Matriz de 15 barras horizontales de progreso por unidad */}
+              <div className="space-y-1.5 pt-0.5">
+                {units.map((u: any, ui: number) => {
+                  const pct = getUnitPct(ui);
+                  const col = pct >= 70 ? '#24C496' : pct >= 50 ? '#F5C518' : '#7B2FBE';
+                  const textCol = pct > 0 ? col : '#9872D4';
+
+                  return (
+                    <div key={ui} className="flex items-center gap-2">
+                      <span className="w-5 text-center text-xs text-white shrink-0">
+                        {u.icon || '📘'}
+                      </span>
+                      <div className="flex-1 h-[5px] bg-white/10 rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-700"
+                          style={{
+                            width: `${pct}%`,
+                            background: col,
+                          }}
+                        />
+                      </div>
+                      <span
+                        className="text-[10px] font-black w-8 text-right shrink-0"
+                        style={{ color: textCol }}
+                      >
+                        {pct}%
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Botón Análisis IA Fedor */}
+              <button
+                type="button"
+                onClick={() => setActiveToolModal('informe')}
+                className="w-full py-2.5 px-3 rounded-[10px] text-xs font-black cursor-pointer transition-all hover:bg-yellow-400/20 active:scale-98 flex items-center justify-center gap-2 mt-1"
+                style={{
+                  background: 'rgba(245, 197, 24, 0.12)',
+                  color: '#F5C518',
+                  border: '1.5px solid rgba(245, 197, 24, 0.25)',
+                  fontFamily: "'Nunito', sans-serif",
+                }}
+              >
+                <span>🤖</span>
+                <span>Análisis IA Fedor</span>
+              </button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            <button
-              type="button"
-              onClick={() => goScreen('report')}
-              className="p-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 font-black text-xs text-center border border-purple-200 cursor-pointer"
+          {/* ══ 2. FEDOR BRAND (Tarjeta Melocotón / Naranja Suave) ══ */}
+          <div
+            className="flex items-center justify-between gap-3 p-3.5 sm:p-4 rounded-[18px]"
+            style={{
+              background: 'linear-gradient(135deg, #FEF2E4, #FFF7ED)',
+              border: '1.5px solid #FCD399',
+            }}
+          >
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#7B2FBE] to-[#9333EA] flex items-center justify-center text-xl text-white shadow-xs shrink-0">
+                🚀
+              </div>
+              <div>
+                <div
+                  className="text-[15px] font-black leading-tight text-[#993B00]"
+                  style={{ fontFamily: "'Baloo 2', sans-serif" }}
+                >
+                  Matemáticas de Fedor
+                </div>
+                <div className="text-[11px] font-bold text-[#8C7A6B]">
+                  Libro Interactivo · Grado 4° · Colombia
+                </div>
+              </div>
+            </div>
+
+            <div className="text-right shrink-0">
+              <div className="text-[11px] font-bold text-[#8C7A6B]">
+                ¿Tienes el libro Excel?
+              </div>
+              <div className="text-[12px] font-black text-[#C94B22]">
+                Úsalos juntos 📊
+              </div>
+            </div>
+          </div>
+
+          {/* ══ 3. PROGRESO TOTAL (Tarjeta Blanca con Píldora) ══ */}
+          <div
+            className="flex items-center justify-between gap-4 p-3.5 sm:p-4 rounded-[16px] bg-white"
+            style={{ border: '1.5px solid #E4DFF5' }}
+          >
+            <div className="text-xs sm:text-sm font-black text-[#1A1033] flex items-center gap-1.5 shrink-0">
+              <span>🎏</span>
+              <span>Progreso total</span>
+            </div>
+
+            <div className="flex-1 h-3 bg-[#EEF0F5] rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full transition-all duration-700"
+                style={{
+                  width: `${totalBookPct}%`,
+                  background: 'linear-gradient(90deg, #10B981, #24C496)',
+                }}
+              />
+            </div>
+
+            <div className="text-xs sm:text-sm font-black text-[#1A1033] w-9 text-right shrink-0">
+              {totalBookPct}%
+            </div>
+          </div>
+
+          {/* ══ 4. MAPA DE PROGRESO (Tarjeta Blanca con Nodos Conectados) ══ */}
+          <div
+            className="p-4 sm:p-5 rounded-[18px] bg-white"
+            style={{ border: '1.5px solid #E4DFF5' }}
+          >
+            <div
+              className="text-xs sm:text-[13px] font-black text-[#0E7490] uppercase tracking-wide mb-3 flex items-center gap-1.5"
+              style={{ fontFamily: "'Baloo 2', sans-serif" }}
             >
-              📊 Ver Informe Detallado
-            </button>
-            <button
-              type="button"
-              onClick={() => goScreen('estandares')}
-              className="p-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 font-black text-xs text-center border border-amber-200 cursor-pointer"
-            >
-              📚 Estándares MEN 4°
-            </button>
-            <button
-              type="button"
-              onClick={() => goScreen('definiciones')}
-              className="p-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-900 font-black text-xs text-center border border-blue-200 cursor-pointer"
-            >
-              📖 Glosario Matemático
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveToolModal('historia')}
-              className="p-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-black text-xs text-center border border-emerald-200 cursor-pointer"
-            >
-              🚀 Método Fedor
-            </button>
+              <span>📖</span>
+              <span>MAPA DE PROGRESO</span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-3 justify-center sm:justify-start">
+              {units.map((u: any, idx: number) => {
+                const mapLabels = [
+                  'Adición y S...',
+                  'Sustracción',
+                  'Multiplicac...',
+                  'División',
+                  'Problemas M...',
+                  'Divisores y...',
+                  'MCD y MCM',
+                  'Fracciones',
+                  'Aplicacione...',
+                  'Sistema Mét...',
+                  'Potenciación',
+                  'Geometría',
+                  'Estadística...',
+                  'Bonus: Cálc...',
+                  'Bonus: Reto...',
+                ];
+                const lbl = mapLabels[idx] || (u.short ? `${u.short.slice(0, 10)}...` : `U${idx + 1}`);
+                const isLast = idx === units.length - 1;
+
+                return (
+                  <React.Fragment key={idx}>
+                    <button
+                      type="button"
+                      onClick={() => selectUnit(idx)}
+                      className="flex flex-col items-center group cursor-pointer focus:outline-none"
+                      title={`Ir a ${u.name}`}
+                    >
+                      <div className="w-11 h-11 rounded-full bg-[#F5F3FF] border border-[#DDD6FE] flex items-center justify-center text-lg text-purple-900 shadow-2xs group-hover:scale-110 group-active:scale-95 transition-transform">
+                        {u.icon || '📘'}
+                      </div>
+                      <div className="text-[10px] font-bold text-[#4B4668] text-center leading-tight truncate max-w-[62px] mt-1">
+                        {lbl}
+                      </div>
+                    </button>
+
+                    {!isLast && (
+                      <span className="text-gray-400 font-bold text-xs select-none mb-4">
+                        →
+                      </span>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </div>
           </div>
         </div>
       </details>
@@ -859,6 +1091,7 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
           onClose={() => setActiveToolModal(null)}
           onOpenIntro={onOpenIntro}
           onOpenProblemas={() => goScreen('problemas')}
+          onOpenReport={() => goScreen('report')}
         />
       )}
 
@@ -1792,10 +2025,15 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
           display: flex;
           align-items: center;
           gap: 8px;
+          user-select: none;
         }
 
         .f5adult > summary::-webkit-details-marker {
           display: none;
+        }
+
+        .f5adult[open] > summary {
+          margin-bottom: 12px;
         }
 
         @keyframes f5pulse {

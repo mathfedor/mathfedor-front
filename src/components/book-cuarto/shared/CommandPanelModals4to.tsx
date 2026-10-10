@@ -28,12 +28,14 @@ import SaberModal4to from './SaberModal4to';
 import RepasoModal4to from './RepasoModal4to';
 import LogrosModal4to from './LogrosModal4to';
 import ProblemasCotidianosModal4to from './ProblemasCotidianosModal4to';
+import InformeModal4to from './InformeModal4to';
 
 interface CommandPanelModals4toProps {
   activeTool: string | null;
   onClose: () => void;
   onOpenIntro?: () => void;
   onOpenProblemas?: () => void;
+  onOpenReport?: () => void;
 }
 
 // ── 1. LABORATORIO VISUAL (18 manipulativos del HTML) ──
@@ -194,6 +196,7 @@ export default function CommandPanelModals4to({
   onClose,
   onOpenIntro,
   onOpenProblemas,
+  onOpenReport,
 }: CommandPanelModals4toProps) {
   const { totalXP, coins, scores, updateStats } = useBook4();
 
@@ -548,6 +551,19 @@ export default function CommandPanelModals4to({
         onOpenFullScreen={() => {
           onClose();
           onOpenProblemas?.();
+        }}
+      />
+    );
+  }
+
+  if (activeTool === 'informe' || activeTool === 'report' || activeTool === 'informe-progreso') {
+    return (
+      <InformeModal4to
+        isOpen={true}
+        onClose={onClose}
+        onOpenFullScreen={() => {
+          onClose();
+          onOpenReport?.();
         }}
       />
     );
