@@ -1,0 +1,896 @@
+[
+  {
+    "id": 1,
+    "unit": "Unidad 1 — Operaciones Básicas · Adición y Sistema Decimal",
+    "cat": "Números Naturales Conteo y Posición",
+    "ctx": "Sora reparte útiles escolares. En el tema \"Números Naturales Conteo y Posición\" resuelve:",
+    "q": "Cuenta los cuadernos de 2 en 2 y halla el número que sigue: 2, 4, 6, ?",
+    "opts": [
+      "8",
+      "10",
+      "6",
+      "9"
+    ],
+    "ans": "8",
+    "hasModel": false
+  },
+  {
+    "id": 2,
+    "unit": "Unidad 1 — Operaciones Básicas · Adición y Sistema Decimal",
+    "cat": "Números Naturales Conteo y Posición",
+    "ctx": "Lucas juega en el parque con sus amigos. En el tema \"Números Naturales Conteo y Posición\" resuelve:",
+    "q": "Cuenta las pelotas de 2 en 2 y halla el número que sigue: 6, 8, 10, ?",
+    "opts": [
+      "14",
+      "10",
+      "12",
+      "13"
+    ],
+    "ans": "12",
+    "hasModel": false
+  },
+  {
+    "id": 3,
+    "unit": "Unidad 1 — Operaciones Básicas · Adición y Sistema Decimal",
+    "cat": "Números Naturales Conteo y Posición",
+    "ctx": "Juan prepara el kiosco de la feria. En el tema \"Números Naturales Conteo y Posición\" resuelve:",
+    "q": "Cuenta los jugos de 5 en 5 y halla el número que sigue: 5, 10, 15, ?",
+    "opts": [
+      "20",
+      "25",
+      "15",
+      "21"
+    ],
+    "ans": "20",
+    "hasModel": false
+  },
+  {
+    "id": 289,
+    "unit": "Unidad 1 — Operaciones Básicas · Sustracción",
+    "cat": "Concepto y Partes de la Resta",
+    "ctx": "Sumy apoya las actividades de los retos de cálculo mental del salón.",
+    "q": "Al comenzar la jornada tenía 8 fichas sobre la mesa de trabajo. Durante el día se usaron 7 fichas. ¿Cuántas fichas le quedan a Sumy?",
+    "opts": [
+      "5",
+      "41",
+      "1",
+      "7"
+    ],
+    "ans": "1",
+    "hasModel": false
+  },
+  {
+    "id": 290,
+    "unit": "Unidad 1 — Operaciones Básicas · Sustracción",
+    "cat": "Concepto y Partes de la Resta",
+    "ctx": "Negoran ahorró $17 y gastó $16.",
+    "q": "En la resta 17 - 16 = 1, ¿cuál es el SUSTRAENDO?",
+    "opts": [
+      "17",
+      "10",
+      "31",
+      "16"
+    ],
+    "ans": "16",
+    "hasModel": false
+  },
+  {
+    "id": 291,
+    "unit": "Unidad 1 — Operaciones Básicas · Sustracción",
+    "cat": "Concepto y Partes de la Resta",
+    "ctx": "Falco apoya las actividades de los retos de cálculo mental del salón.",
+    "q": "Al comenzar la jornada tenía 12 fichas sobre la mesa de trabajo. Durante el día se usaron 10 fichas. ¿Cuántas fichas le quedan a Falco?",
+    "opts": [
+      "17",
+      "8",
+      "4",
+      "2"
+    ],
+    "ans": "2",
+    "hasModel": false
+  },
+  {
+    "id": 514,
+    "unit": "Unidad 1 — Operaciones Básicas · Multiplicación",
+    "cat": "Concepto y Tablas",
+    "ctx": "Lucas colecciona figuras de la naturaleza. En el tema \"Concepto y Tablas\" resuelve:",
+    "q": "En la multiplicación 2 × 2, ¿cuál es el PRODUCTO?",
+    "opts": [
+      "2",
+      "7",
+      "24",
+      "4"
+    ],
+    "ans": "4",
+    "hasModel": false
+  },
+  {
+    "id": 515,
+    "unit": "Unidad 1 — Operaciones Básicas · Multiplicación",
+    "cat": "Concepto y Tablas",
+    "ctx": "Sora planea la fiesta de fin de año. En el tema \"Concepto y Tablas\" resuelve:",
+    "q": "En la multiplicación 3 × 3, ¿cuál es el PRODUCTO?",
+    "opts": [
+      "9",
+      "19",
+      "4",
+      "7"
+    ],
+    "ans": "9",
+    "hasModel": false
+  },
+  {
+    "id": 516,
+    "unit": "Unidad 1 — Operaciones Básicas · Multiplicación",
+    "cat": "Concepto y Tablas",
+    "ctx": "Lucas ayuda en la biblioteca. En el tema \"Concepto y Tablas\" resuelve:",
+    "q": "En la multiplicación 3 × 4, ¿cuál es el PRODUCTO?",
+    "opts": [
+      "6",
+      "3",
+      "12",
+      "10"
+    ],
+    "ans": "12",
+    "hasModel": false
+  },
+  {
+    "id": 739,
+    "unit": "Unidad 1 — Operaciones Básicas · División",
+    "cat": "Concepto y Partes de la División",
+    "ctx": "Sora anota las cuentas del kiosco. En el tema \"Concepto y Partes de la División\" resuelve:",
+    "q": "En la división 4 ÷ 2 = ?, ¿cuál es el DIVISOR?",
+    "opts": [
+      "2",
+      "4",
+      "6",
+      "11"
+    ],
+    "ans": "2",
+    "hasModel": false
+  },
+  {
+    "id": 740,
+    "unit": "Unidad 1 — Operaciones Básicas · División",
+    "cat": "Concepto y Partes de la División",
+    "ctx": "Gloria reparte volantes en el colegio. En el tema \"Concepto y Partes de la División\" resuelve:",
+    "q": "En la división 8 ÷ 2 = 4, ¿cuál es el DIVISOR?",
+    "opts": [
+      "3",
+      "2",
+      "8",
+      "4"
+    ],
+    "ans": "2",
+    "hasModel": false
+  },
+  {
+    "id": 741,
+    "unit": "Unidad 1 — Operaciones Básicas · División",
+    "cat": "Concepto y Partes de la División",
+    "ctx": "Sora apoya las actividades de los retos de cálculo mental del salón.",
+    "q": "Tiene 10 fichas sobre la mesa de trabajo y debe repartirlas en partes iguales entre 2 grupos. ¿Cuántas fichas recibe cada grupo?",
+    "opts": [
+      "6",
+      "5",
+      "4",
+      "7"
+    ],
+    "ans": "5",
+    "hasModel": false
+  },
+  {
+    "id": 963,
+    "unit": "Unidad 1 — Operaciones Básicas · Problemas",
+    "cat": "Problemas Cotidianos",
+    "ctx": "Sora juega en el parque con sus amigos. En el tema \"Problemas Cotidianos\" resuelve:",
+    "q": "De 41 manzanas se vendieron 39. ¿Cuántas quedan?",
+    "opts": [
+      "3",
+      "8",
+      "2",
+      "17"
+    ],
+    "ans": "2",
+    "hasModel": false
+  },
+  {
+    "id": 964,
+    "unit": "Unidad 1 — Operaciones Básicas · Problemas",
+    "cat": "Problemas Cotidianos",
+    "ctx": "Leo reparte útiles escolares. En el tema \"Problemas Cotidianos\" resuelve:",
+    "q": "De 30 manzanas se vendieron 25. ¿Cuántas quedan?",
+    "opts": [
+      "3",
+      "2",
+      "9",
+      "5"
+    ],
+    "ans": "5",
+    "hasModel": false
+  },
+  {
+    "id": 965,
+    "unit": "Unidad 1 — Operaciones Básicas · Problemas",
+    "cat": "Problemas Cotidianos",
+    "ctx": "Apolo planea la fiesta de fin de año. En el tema \"Problemas Cotidianos\" resuelve:",
+    "q": "De 55 manzanas se vendieron 47. ¿Cuántas quedan?",
+    "opts": [
+      "7",
+      "8",
+      "9",
+      "28"
+    ],
+    "ans": "8",
+    "hasModel": false
+  },
+  {
+    "id": 1188,
+    "unit": "Unidad 2 — Divisores y Factores",
+    "cat": "Divisores de un Número",
+    "ctx": "Sora colecciona figuras de la naturaleza. En el tema \"Divisores de un Número\" resuelve:",
+    "q": "¿Es 16 divisible por 2?",
+    "opts": [
+      "Sí",
+      "No"
+    ],
+    "ans": "Sí",
+    "hasModel": false
+  },
+  {
+    "id": 1189,
+    "unit": "Unidad 2 — Divisores y Factores",
+    "cat": "Divisores de un Número",
+    "ctx": "Leo ayuda en la biblioteca. En el tema \"Divisores de un Número\" resuelve:",
+    "q": "¿Es 19 divisible por 2?",
+    "opts": [
+      "Sí",
+      "No"
+    ],
+    "ans": "No",
+    "hasModel": false
+  },
+  {
+    "id": 1190,
+    "unit": "Unidad 2 — Divisores y Factores",
+    "cat": "Divisores de un Número",
+    "ctx": "Lucas juega en el parque con sus amigos. En el tema \"Divisores de un Número\" resuelve:",
+    "q": "¿Es 20 divisible por 5?",
+    "opts": [
+      "Sí",
+      "No"
+    ],
+    "ans": "Sí",
+    "hasModel": false
+  },
+  {
+    "id": 1424,
+    "unit": "Unidad 3 — MCD y MCM",
+    "cat": "Máximo Común Divisor (MCD)",
+    "ctx": "Sora colecciona figuras de la naturaleza. En el tema \"Máximo Común Divisor (MCD)\" resuelve:",
+    "q": "¿Cuál es el MCD de 6 y 9?",
+    "opts": [
+      "3",
+      "6",
+      "4",
+      "2"
+    ],
+    "ans": "3",
+    "hasModel": false
+  },
+  {
+    "id": 1425,
+    "unit": "Unidad 3 — MCD y MCM",
+    "cat": "Máximo Común Divisor (MCD)",
+    "ctx": "Lucas juega en el parque con sus amigos. En el tema \"Máximo Común Divisor (MCD)\" resuelve:",
+    "q": "¿Cuál es el MCD de 9 y 10?",
+    "opts": [
+      "2",
+      "10",
+      "1",
+      "9"
+    ],
+    "ans": "1",
+    "hasModel": false
+  },
+  {
+    "id": 1426,
+    "unit": "Unidad 3 — MCD y MCM",
+    "cat": "Máximo Común Divisor (MCD)",
+    "ctx": "Sora ayuda a organizar los libros del salón. En el tema \"Máximo Común Divisor (MCD)\" resuelve:",
+    "q": "¿Cuál es el MCD de 10 y 4?",
+    "opts": [
+      "2",
+      "12",
+      "32",
+      "3"
+    ],
+    "ans": "2",
+    "hasModel": false
+  },
+  {
+    "id": 1657,
+    "unit": "Unidad 4 — Fracciones",
+    "cat": "Simplificación",
+    "ctx": "Sora lleva las cuentas de la tienda. En el tema \"Simplificación\" resuelve:",
+    "q": "Simplifica la fracción 6/12 a su mínima expresión.",
+    "opts": [
+      "1/2",
+      "5/5",
+      "2/2",
+      "3/2"
+    ],
+    "ans": "1/2",
+    "hasModel": false
+  },
+  {
+    "id": 1658,
+    "unit": "Unidad 4 — Fracciones",
+    "cat": "Simplificación",
+    "ctx": "Sora colecciona figuras de la naturaleza. En el tema \"Simplificación\" resuelve:",
+    "q": "Simplifica la fracción 6/12 a su mínima expresión.",
+    "opts": [
+      "1/2",
+      "2/6",
+      "3/2",
+      "2/2"
+    ],
+    "ans": "1/2",
+    "hasModel": false
+  },
+  {
+    "id": 1659,
+    "unit": "Unidad 4 — Fracciones",
+    "cat": "Simplificación",
+    "ctx": "Sora trabaja en la panadería del barrio. En el tema \"Simplificación\" resuelve:",
+    "q": "Simplifica la fracción 8/16 a su mínima expresión.",
+    "opts": [
+      "2/2",
+      "3/2",
+      "1/3",
+      "1/2"
+    ],
+    "ans": "1/2",
+    "hasModel": false
+  },
+  {
+    "id": 2042,
+    "unit": "Unidad 5 — Aplicaciones con Fracciones",
+    "cat": "Problemas con Fracciones",
+    "ctx": "Sora ayuda en la biblioteca. En el tema \"Problemas con Fracciones\" resuelve:",
+    "q": "Una cinta se divide en 3 partes iguales. Si se usó 2/3, ¿qué fracción queda?",
+    "opts": [
+      "3/3",
+      "1/3",
+      "2/3",
+      "8/10"
+    ],
+    "ans": "1/3",
+    "hasModel": false
+  },
+  {
+    "id": 2043,
+    "unit": "Unidad 5 — Aplicaciones con Fracciones",
+    "cat": "Problemas con Fracciones",
+    "ctx": "Leo reparte útiles escolares. En el tema \"Problemas con Fracciones\" resuelve:",
+    "q": "Una cinta se divide en 3 partes iguales. Si se usó 2/3, ¿qué fracción queda?",
+    "opts": [
+      "1/3",
+      "1/4",
+      "2/3",
+      "3/1"
+    ],
+    "ans": "1/3",
+    "hasModel": false
+  },
+  {
+    "id": 2044,
+    "unit": "Unidad 5 — Aplicaciones con Fracciones",
+    "cat": "Problemas con Fracciones",
+    "ctx": "Apolo anota las cuentas del kiosco. En el tema \"Problemas con Fracciones\" resuelve:",
+    "q": "Una pastel se divide en 4 partes iguales. Si se repartió 2/4, ¿qué fracción queda?",
+    "opts": [
+      "1/2",
+      "3/2",
+      "2/10",
+      "2/2"
+    ],
+    "ans": "1/2",
+    "hasModel": false
+  },
+  {
+    "id": 2302,
+    "unit": "Unidad 6 — Potenciación",
+    "cat": "Concepto de Potencia",
+    "ctx": "Roxy anota las cuentas del kiosco. En el tema \"Concepto de Potencia\" resuelve:",
+    "q": "Calcula: 2^2 = ?",
+    "opts": [
+      "44",
+      "3",
+      "4",
+      "34"
+    ],
+    "ans": "4",
+    "hasModel": false
+  },
+  {
+    "id": 2303,
+    "unit": "Unidad 6 — Potenciación",
+    "cat": "Concepto de Potencia",
+    "ctx": "Sora reparte volantes en el colegio. En el tema \"Concepto de Potencia\" resuelve:",
+    "q": "Calcula: 2^2 = ?",
+    "opts": [
+      "64",
+      "14",
+      "4",
+      "6"
+    ],
+    "ans": "4",
+    "hasModel": false
+  },
+  {
+    "id": 2304,
+    "unit": "Unidad 6 — Potenciación",
+    "cat": "Concepto de Potencia",
+    "ctx": "Roxy colecciona figuras de la naturaleza. En el tema \"Concepto de Potencia\" resuelve:",
+    "q": "Calcula: 2^2 = ?",
+    "opts": [
+      "4",
+      "6",
+      "7",
+      "64"
+    ],
+    "ans": "4",
+    "hasModel": false
+  },
+  {
+    "id": 2460,
+    "unit": "Unidad 6 — Radicación",
+    "cat": "¿Qué es la radicación?",
+    "ctx": "Partes de la raíz",
+    "q": "En √9 = 3, ¿cuál es el radicando?",
+    "opts": [
+      "9",
+      "3",
+      "2",
+      "12"
+    ],
+    "ans": "9",
+    "hasModel": false
+  },
+  {
+    "id": 2461,
+    "unit": "Unidad 6 — Radicación",
+    "cat": "¿Qué es la radicación?",
+    "ctx": "Partes de la raíz",
+    "q": "En √4 = 2, ¿cuál es el índice de la raíz?",
+    "opts": [
+      "1",
+      "4",
+      "2",
+      "3"
+    ],
+    "ans": "2",
+    "hasModel": false
+  },
+  {
+    "id": 2462,
+    "unit": "Unidad 6 — Radicación",
+    "cat": "¿Qué es la radicación?",
+    "ctx": "Partes de la raíz",
+    "q": "En √25 = 5, ¿cuál es la raíz cuadrada?",
+    "opts": [
+      "5",
+      "2",
+      "25",
+      "30"
+    ],
+    "ans": "5",
+    "hasModel": false
+  },
+  {
+    "id": 2589,
+    "unit": "Unidad 7 — Sistema Métrico Decimal",
+    "cat": "Longitud",
+    "ctx": "Falco ayuda a organizar los libros del salón. En el tema \"Longitud\" resuelve:",
+    "q": "¿A cuántos hm equivalen 10 dam?",
+    "opts": [
+      "1",
+      "7",
+      "61",
+      "3"
+    ],
+    "ans": "1",
+    "hasModel": false
+  },
+  {
+    "id": 2590,
+    "unit": "Unidad 7 — Sistema Métrico Decimal",
+    "cat": "Longitud",
+    "ctx": "Juan lleva las cuentas de la tienda. En el tema \"Longitud\" resuelve:",
+    "q": "¿A cuántos hm equivalen 40 dam?",
+    "opts": [
+      "4",
+      "6",
+      "1",
+      "64"
+    ],
+    "ans": "4",
+    "hasModel": false
+  },
+  {
+    "id": 2591,
+    "unit": "Unidad 7 — Sistema Métrico Decimal",
+    "cat": "Longitud",
+    "ctx": "Falco reparte volantes en el colegio. En el tema \"Longitud\" resuelve:",
+    "q": "¿A cuántos hm equivalen 50 dam?",
+    "opts": [
+      "5",
+      "3",
+      "0",
+      "25"
+    ],
+    "ans": "5",
+    "hasModel": false
+  },
+  {
+    "id": 2909,
+    "unit": "Unidad 8 — Números Decimales",
+    "cat": "¿Qué son los números decimales?",
+    "ctx": "Parte entera",
+    "q": "¿Cuál es la parte entera de 182,95?",
+    "opts": [
+      "182",
+      "183",
+      "181",
+      "95"
+    ],
+    "ans": "182",
+    "hasModel": false
+  },
+  {
+    "id": 2910,
+    "unit": "Unidad 8 — Números Decimales",
+    "cat": "¿Qué son los números decimales?",
+    "ctx": "Parte entera",
+    "q": "¿Cuál es la parte entera de 19,1?",
+    "opts": [
+      "18",
+      "20",
+      "1",
+      "19"
+    ],
+    "ans": "19",
+    "hasModel": false
+  },
+  {
+    "id": 2911,
+    "unit": "Unidad 8 — Números Decimales",
+    "cat": "¿Qué son los números decimales?",
+    "ctx": "Parte entera",
+    "q": "¿Cuál es la parte entera de 2,6725?",
+    "opts": [
+      "2",
+      "3",
+      "4",
+      "1"
+    ],
+    "ans": "2",
+    "hasModel": false
+  },
+  {
+    "id": 3084,
+    "unit": "Unidad 9 — Proporciones",
+    "cat": "Razón y proporción",
+    "ctx": "Razón",
+    "q": "En un salón hay 22 niñas y 18 niños. ¿Cuál es la razón de niñas a niños?",
+    "opts": [
+      "22/40",
+      "22/18",
+      "18/22",
+      "40/18"
+    ],
+    "ans": "22/18",
+    "hasModel": false
+  },
+  {
+    "id": 3085,
+    "unit": "Unidad 9 — Proporciones",
+    "cat": "Razón y proporción",
+    "ctx": "Razón",
+    "q": "En un partido hay 5 goles de A y 3 goles de B. ¿Cuál es la razón de goles de A a goles de B?",
+    "opts": [
+      "5/3",
+      "3/5",
+      "5/8",
+      "8/3"
+    ],
+    "ans": "5/3",
+    "hasModel": false
+  },
+  {
+    "id": 3086,
+    "unit": "Unidad 9 — Proporciones",
+    "cat": "Razón y proporción",
+    "ctx": "Razón",
+    "q": "En una veterinaria hay 7 perros y 2 gatos. ¿Cuál es la razón de perros a gatos?",
+    "opts": [
+      "9/2",
+      "2/7",
+      "7/2",
+      "7/9"
+    ],
+    "ans": "7/2",
+    "hasModel": false
+  },
+  {
+    "id": 3186,
+    "unit": "Unidad 10 — Ecuaciones",
+    "cat": "Igualdades y balanzas",
+    "ctx": "Igualdad",
+    "q": "¿Qué número falta para que la igualdad sea verdadera? 5 = 4 + □",
+    "opts": [
+      "1",
+      "2",
+      "3",
+      "0"
+    ],
+    "ans": "1",
+    "hasModel": false
+  },
+  {
+    "id": 3187,
+    "unit": "Unidad 10 — Ecuaciones",
+    "cat": "Igualdades y balanzas",
+    "ctx": "Igualdad",
+    "q": "¿Qué número falta para que la igualdad sea verdadera? 10 = 2 + 3 + □",
+    "opts": [
+      "7",
+      "6",
+      "5",
+      "4"
+    ],
+    "ans": "5",
+    "hasModel": false
+  },
+  {
+    "id": 3188,
+    "unit": "Unidad 10 — Ecuaciones",
+    "cat": "Igualdades y balanzas",
+    "ctx": "Igualdad",
+    "q": "¿Qué número falta para que la igualdad sea verdadera? □ + 4 = 9",
+    "opts": [
+      "6",
+      "7",
+      "4",
+      "5"
+    ],
+    "ans": "5",
+    "hasModel": false
+  },
+  {
+    "id": 3356,
+    "unit": "Unidad 11 — Porcentaje",
+    "cat": "Qué es el porcentaje",
+    "ctx": "Cuadrícula de 100",
+    "q": "¿Qué porcentaje de la cuadrícula está pintado?",
+    "opts": [
+      "90 %",
+      "20 %",
+      "10 %",
+      "5 %"
+    ],
+    "ans": "10 %",
+    "hasModel": false
+  },
+  {
+    "id": 3357,
+    "unit": "Unidad 11 — Porcentaje",
+    "cat": "Qué es el porcentaje",
+    "ctx": "Cuadrícula de 100",
+    "q": "¿Qué porcentaje de la cuadrícula está pintado?",
+    "opts": [
+      "40 %",
+      "70 %",
+      "30 %",
+      "60 %"
+    ],
+    "ans": "30 %",
+    "hasModel": false
+  },
+  {
+    "id": 3358,
+    "unit": "Unidad 11 — Porcentaje",
+    "cat": "Qué es el porcentaje",
+    "ctx": "Cuadrícula de 100",
+    "q": "¿Qué porcentaje de la cuadrícula está pintado?",
+    "opts": [
+      "50 %",
+      "40 %",
+      "100 %",
+      "60 %"
+    ],
+    "ans": "50 %",
+    "hasModel": false
+  },
+  {
+    "id": 3454,
+    "unit": "Unidad 12 — Geometría y Estadística",
+    "cat": "Ángulos y Figuras Geométricas",
+    "ctx": "Apolo mide con el transportador. En el tema \"Ángulos\" resuelve:",
+    "q": "Un ángulo mide 72°. ¿Cómo se clasifica?",
+    "opts": [
+      "5",
+      "1",
+      "agudo",
+      "10"
+    ],
+    "ans": "agudo",
+    "hasModel": false
+  },
+  {
+    "id": 3455,
+    "unit": "Unidad 12 — Geometría y Estadística",
+    "cat": "Ángulos y Figuras Geométricas",
+    "ctx": "Sora dibuja ángulos en su cuaderno. En el tema \"Ángulos\" resuelve:",
+    "q": "Un ángulo mide 90°. ¿Cómo se clasifica?",
+    "opts": [
+      "5",
+      "10",
+      "recto",
+      "1"
+    ],
+    "ans": "recto",
+    "hasModel": false
+  },
+  {
+    "id": 3456,
+    "unit": "Unidad 12 — Geometría y Estadística",
+    "cat": "Ángulos y Figuras Geométricas",
+    "ctx": "Leo revisa las esquinas del salón. En el tema \"Ángulos\" resuelve:",
+    "q": "Un ángulo mide 120°. ¿Cómo se clasifica?",
+    "opts": [
+      "10",
+      "1",
+      "obtuso",
+      "5"
+    ],
+    "ans": "obtuso",
+    "hasModel": false
+  },
+  {
+    "id": 3998,
+    "unit": "Unidad 13 — Magnitudes",
+    "cat": "Magnitudes directamente proporcionales",
+    "ctx": "Completar la tabla",
+    "q": "Se van a vender bananas a $100 cada una. Completa la tabla: ¿cuánto cuestan 5?",
+    "opts": [
+      "105 pesos",
+      "600 pesos",
+      "500 pesos",
+      "400 pesos"
+    ],
+    "ans": "500 pesos",
+    "hasModel": false
+  },
+  {
+    "id": 3999,
+    "unit": "Unidad 13 — Magnitudes",
+    "cat": "Magnitudes directamente proporcionales",
+    "ctx": "Completar la tabla",
+    "q": "Se van a vender bombones a $300 cada uno. Completa la tabla: ¿cuánto cuestan 7?",
+    "opts": [
+      "307 pesos",
+      "2.100 pesos",
+      "2.400 pesos",
+      "1.800 pesos"
+    ],
+    "ans": "2.100 pesos",
+    "hasModel": false
+  },
+  {
+    "id": 4000,
+    "unit": "Unidad 13 — Magnitudes",
+    "cat": "Magnitudes directamente proporcionales",
+    "ctx": "Completar la tabla",
+    "q": "Se van a vender papas aborrajadas a $1.200 cada una. Completa la tabla: ¿cuánto cuestan 8?",
+    "opts": [
+      "1.208 pesos",
+      "8.400 pesos",
+      "9.600 pesos",
+      "10.800 pesos"
+    ],
+    "ans": "9.600 pesos",
+    "hasModel": false
+  },
+  {
+    "id": 4176,
+    "unit": "Unidad 14 — Probabilidad",
+    "cat": "Experimentos Aleatorios",
+    "ctx": "Jack ayuda en la biblioteca. En el tema \"Experimentos Aleatorios\" resuelve:",
+    "q": "En una bolsa hay 8 bolas y 1 son rojas. ¿Cuántos casos son FAVORABLES para sacar una roja?",
+    "opts": [
+      "61",
+      "4",
+      "7",
+      "1"
+    ],
+    "ans": "1",
+    "hasModel": false
+  },
+  {
+    "id": 4177,
+    "unit": "Unidad 14 — Probabilidad",
+    "cat": "Experimentos Aleatorios",
+    "ctx": "Sora prepara el kiosco de la feria. En el tema \"Experimentos Aleatorios\" resuelve:",
+    "q": "En un experimento hay 8 casos posibles y 4 de ellos son favorables. ¿Cuál es la probabilidad, como fracción simplificada?",
+    "opts": [
+      "3/2",
+      "7/10",
+      "1/2",
+      "2/2"
+    ],
+    "ans": "1/2",
+    "hasModel": false
+  },
+  {
+    "id": 4178,
+    "unit": "Unidad 14 — Probabilidad",
+    "cat": "Experimentos Aleatorios",
+    "ctx": "Jack organiza una campaña de reciclaje. En el tema \"Experimentos Aleatorios\" resuelve:",
+    "q": "En un experimento hay 4 casos posibles y 1 de ellos es favorable. ¿Cuál es la probabilidad, como fracción simplificada?",
+    "opts": [
+      "3/4",
+      "2/4",
+      "5/9",
+      "1/4"
+    ],
+    "ans": "1/4",
+    "hasModel": false
+  },
+  {
+    "id": 4373,
+    "unit": "Unidad 15 — Sistema Decimal",
+    "cat": "Fracciones decimales y valor de posición",
+    "ctx": "Décimas",
+    "q": "¿Qué fracción decimal representa la parte pintada de la tira?",
+    "opts": [
+      "1/10",
+      "9/10",
+      "1/100",
+      "1/1000"
+    ],
+    "ans": "1/10",
+    "hasModel": false
+  },
+  {
+    "id": 4374,
+    "unit": "Unidad 15 — Sistema Decimal",
+    "cat": "Fracciones decimales y valor de posición",
+    "ctx": "Centésimas",
+    "q": "¿Qué fracción decimal representa la parte pintada de la cuadrícula?",
+    "opts": [
+      "1/100",
+      "1/1000",
+      "99/100",
+      "1/10"
+    ],
+    "ans": "1/100",
+    "hasModel": false
+  },
+  {
+    "id": 4375,
+    "unit": "Unidad 15 — Sistema Decimal",
+    "cat": "Fracciones decimales y valor de posición",
+    "ctx": "Décimas",
+    "q": "¿Qué fracción decimal representa la parte pintada de la tira?",
+    "opts": [
+      "3/100",
+      "3/10",
+      "7/10",
+      "3/1000"
+    ],
+    "ans": "3/10",
+    "hasModel": false
+  }
+]
