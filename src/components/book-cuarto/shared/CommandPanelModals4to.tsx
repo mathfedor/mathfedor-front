@@ -16,6 +16,7 @@ import MultiplicarModal4to from './MultiplicarModal4to';
 import LaboratorioEstadisticaModal4to from './LaboratorioEstadisticaModal4to';
 import ExplicarModal4to from './ExplicarModal4to';
 import VideosModal4to from './VideosModal4to';
+import ConceptoModal4to from './ConceptoModal4to';
 
 interface CommandPanelModals4toProps {
   activeTool: string | null;
@@ -456,6 +457,10 @@ export default function CommandPanelModals4to({
 
   if (activeTool === 'videos' || activeTool === 'video' || activeTool === 'videos-animados') {
     return <VideosModal4to isOpen={true} onClose={onClose} onOpenIntro={onOpenIntro} />;
+  }
+
+  if (activeTool === 'concepto' || activeTool === 'concepto-dia' || activeTool === 'concepto-matematico') {
+    return <ConceptoModal4to isOpen={true} onClose={onClose} />;
   }
 
   if (activeTool === 'tienda') {

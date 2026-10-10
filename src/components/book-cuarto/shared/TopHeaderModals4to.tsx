@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import ConceptoModal4to from './ConceptoModal4to';
 
 export type TopHeaderModalType = 'concepto' | 'desafio' | 'historia' | null;
 
@@ -50,17 +51,6 @@ export default function TopHeaderModals4to({
   onClose,
   onUpdateStats,
 }: TopHeaderModals4toProps) {
-  // ── State for Concepto Modal ──
-  const [conceptMinimized, setConceptMinimized] = useState(false);
-  const [conceptRows, setConceptRows] = useState<number>(1);
-  const [conceptCols, setConceptCols] = useState<number>(7);
-  const [foundDivisors, setFoundDivisors] = useState<number[]>([1]);
-  const [conceptMsg, setConceptMsg] = useState<string>(
-    '7 puntos. ¿En filas de cuántos quedan exactos?'
-  );
-  const [conceptRemainder, setConceptRemainder] = useState<number>(0);
-  const [isAnimatingConcept, setIsAnimatingConcept] = useState(false);
-
   // ── State for Desafío Modal ──
   const [desafioMinimized, setDesafioMinimized] = useState(false);
   const [showBlocks, setShowBlocks] = useState(false);
@@ -78,15 +68,7 @@ export default function TopHeaderModals4to({
 
   // Reset or initialize when modal changes
   useEffect(() => {
-    if (modal === 'concepto') {
-      setConceptRows(1);
-      setConceptCols(7);
-      setFoundDivisors([1]);
-      setConceptMsg('7 puntos. ¿En filas de cuántos quedan exactos?');
-      setConceptRemainder(0);
-      setIsAnimatingConcept(false);
-      setConceptMinimized(false);
-    } else if (modal === 'desafio') {
+    if (modal === 'desafio') {
       setDigitC('');
       setDigitD('');
       setDigitU('');
@@ -99,51 +81,6 @@ export default function TopHeaderModals4to({
       setDesafioMinimized(false);
     }
   }, [modal]);
-
-  // Concept interaction: test row count k for 7 dots
-  const handleTestFilas = (k: number) => {
-    playTono(480 + k * 30);
-    const n = 7;
-    const q = Math.floor(n / k);
-    const r = n % k;
-    setConceptRemainder(r);
-
-    // arrange grid columns
-    const cols = q > 0 && q <= 26 ? q : k;
-    setConceptCols(cols);
-    setConceptRows(k);
-
-    const desc = q > 0 && q <= 26 ? `${k} filas de ${q}` : `${q} filas de ${k}`;
-    if (r === 0) {
-      setConceptMsg(`✅ ${n} = ${desc} → ${k} es divisor de ${n}`);
-      setFoundDivisors((prev) => (prev.includes(k) ? prev : [...prev, k].sort((a, b) => a - b)));
-    } else {
-      setConceptMsg(`❌ ${desc} y sobran ${r} → ${k} no es divisor`);
-    }
-  };
-
-  // Concept: animated resolver
-  const handleResolverAnimado = () => {
-    if (isAnimatingConcept) return;
-    setIsAnimatingConcept(true);
-    let k = 2;
-    const interval = setInterval(() => {
-      handleTestFilas(k);
-      k++;
-      if (k > 7) {
-        clearInterval(interval);
-        setIsAnimatingConcept(false);
-        hablarTexto('Los divisores encontrados de 7 son el 1 y el 7. Es un número primo.');
-      }
-    }, 850);
-  };
-
-  // Concept: speak concept
-  const handleSpeakConcepto = () => {
-    hablarTexto(
-      'Número Primo. Tiene solo 2 divisores: 1 y él mismo. Ejemplo: 7 tiene como divisores el 1 y el 7, por lo tanto es primo.'
-    );
-  };
 
   // Desafío check
   const handleCheckDesafio = () => {
@@ -186,6 +123,10 @@ export default function TopHeaderModals4to({
 
   if (!modal) return null;
 
+  if (modal === 'concepto') {
+    return <ConceptoModal4to isOpen={true} onClose={onClose} />;
+  }
+
   return (
     <div
       className="modal-overlay-4to"
@@ -194,145 +135,7 @@ export default function TopHeaderModals4to({
       }}
     >
       <div className="modal-card-4to">
-        {/* ══════════════════════════════════════════════════
-            1. MODAL: CONCEPTO DEL DÍA (IMAGEN 1)
-        ══════════════════════════════════════════════════ */}
-        {modal === 'concepto' && (
-          <div className="modal-content-wrap">
-            {/* Modal Header */}
-            <div className="modal-hdr-row">
-              <div className="modal-title-main">
-                <span className="modal-icon">📘</span>
-                <span>Concepto del Día</span>
-              </div>
-              <button
-                type="button"
-                className="modal-close-circle"
-                onClick={onClose}
-                aria-label="Cerrar modal"
-              >
-                ✕
-              </button>
-            </div>
 
-            {/* Blue Hero Card: Número Primo */}
-            <div className="concepto-hero-card">
-              <h3 className="hero-card-title">
-                <span>📘</span> Número Primo
-              </h3>
-              <p className="hero-card-desc">Tiene solo 2 divisores: 1 y él mismo.</p>
-              <div className="hero-card-pill">
-                <span>✏️</span> 7 → divisores: {'{1, 7}'} ✓ primo
-              </div>
-            </div>
-
-            {/* Green Widget Card: Buscador de divisores rectángulos de 7 */}
-            <div className={`widget-card-green ${conceptMinimized ? 'minimized' : ''}`}>
-              <div className="widget-header-green">
-                <div className="widget-title-area">
-                  <span className="widget-brain-icon">🧠</span>
-                  <span className="widget-title-text">Buscador de divisores</span>
-                  <span className="widget-subtitle-text">rectángulos de 7</span>
-                </div>
-                <button
-                  type="button"
-                  className="widget-toggle-btn"
-                  onClick={() => setConceptMinimized(!conceptMinimized)}
-                  title="Mostrar u ocultar"
-                >
-                  ▾
-                </button>
-              </div>
-
-              {!conceptMinimized && (
-                <>
-                  <div className="widget-body-green">
-                    <div className="buscador-grid-row">
-                      {/* Left: Dots Container */}
-                      <div className="dots-outer-box">
-                        <div
-                          className="dots-grid-container"
-                          style={{
-                            gridTemplateColumns: `repeat(${conceptCols}, 20px)`,
-                          }}
-                        >
-                          {Array.from({ length: 7 }).map((_, i) => {
-                            const isRest = conceptRemainder > 0 && i >= 7 - conceptRemainder;
-                            return (
-                              <span
-                                key={i}
-                                className={`fz-dot-circle ${isRest ? 'is-remainder' : ''}`}
-                                title={`Punto ${i + 1}`}
-                              />
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      {/* Right: Message Box and Discovered Divisors */}
-                      <div className="buscador-info-col">
-                        <div className="dashed-msg-box">{conceptMsg}</div>
-
-                        <div className="divisores-label">Divisores encontrados:</div>
-
-                        <div className="chips-list-row">
-                          {foundDivisors.map((d) => (
-                            <span key={d} className="divisor-chip-green">
-                              {d}
-                            </span>
-                          ))}
-                        </div>
-
-                        <div className="info-tip-note">
-                          <span>☝️</span> El 1 es divisor de todos los números.
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="rule-tip-note">
-                      <span>☝️</span> Si los puntos forman un rectángulo sin que sobre ninguno, ese
-                      número es divisor.
-                    </div>
-                  </div>
-
-                  {/* Bottom Footer inside green widget */}
-                  <div className="widget-footer-green">
-                    <span className="footer-label-filas">Filas de:</span>
-                    {[2, 3, 4, 5, 6, 7].map((num) => (
-                      <button
-                        key={num}
-                        type="button"
-                        className="btn-filas-num"
-                        onClick={() => handleTestFilas(num)}
-                      >
-                        {num}
-                      </button>
-                    ))}
-                    <button
-                      type="button"
-                      className="btn-resolver-anim"
-                      onClick={handleResolverAnimado}
-                      disabled={isAnimatingConcept}
-                    >
-                      ▶ Resolver animado
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Bottom Button outside cards */}
-            <div className="concepto-bottom-actions">
-              <button
-                type="button"
-                className="btn-escuchar-concepto"
-                onClick={handleSpeakConcepto}
-              >
-                📢 Escuchar el concepto
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* ══════════════════════════════════════════════════
             2. MODAL: DESAFÍO DEL DÍA (IMAGEN 2)
