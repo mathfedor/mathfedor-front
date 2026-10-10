@@ -17,6 +17,12 @@ import LaboratorioEstadisticaModal4to from './LaboratorioEstadisticaModal4to';
 import ExplicarModal4to from './ExplicarModal4to';
 import VideosModal4to from './VideosModal4to';
 import ConceptoModal4to from './ConceptoModal4to';
+import DesafioModal4to from './DesafioModal4to';
+import HistoriaModal4to from './HistoriaModal4to';
+import GuiaDocenteModal4to from './GuiaDocenteModal4to';
+import ColorFedorModal4to from './ColorFedorModal4to';
+import VozFemeninaModal4to from './VozFemeninaModal4to';
+import CurriculoModal4to from './CurriculoModal4to';
 
 interface CommandPanelModals4toProps {
   activeTool: string | null;
@@ -461,6 +467,30 @@ export default function CommandPanelModals4to({
 
   if (activeTool === 'concepto' || activeTool === 'concepto-dia' || activeTool === 'concepto-matematico') {
     return <ConceptoModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'desafio' || activeTool === 'desafio-dia' || activeTool === 'desafio-matematico') {
+    return <DesafioModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'historia' || activeTool === 'historia-fedor') {
+    return <HistoriaModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'guia-docente' || activeTool === 'docente' || activeTool === 'guia' || activeTool === 'guia-pedagogica') {
+    return <GuiaDocenteModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'color' || activeTool === 'color-fondo' || activeTool === 'fondo') {
+    return <ColorFedorModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'voz-fem' || activeTool === 'voz' || activeTool === 'voz-femenina') {
+    return <VozFemeninaModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'curriculo' || activeTool === 'curriculo-men' || activeTool === 'men') {
+    return <CurriculoModal4to isOpen={true} onClose={onClose} />;
   }
 
   if (activeTool === 'tienda') {
@@ -1267,80 +1297,6 @@ export default function CommandPanelModals4to({
           </div>
         )}
 
-        {/* ══ 16. COLOR DEL LIBRO ══ */}
-        {activeTool === 'color' && (
-          <div className="space-y-4">
-            <p className="text-xs sm:text-sm font-bold text-gray-700">
-              Elige el color de fondo para la experiencia de lectura e interacción:
-            </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-              {[
-                { name: 'Galaxia Cósmica (Default)', bg: 'linear-gradient(135deg, #12082A 0%, #1E0F4A 40%, #0A1B40 100%)', text: '#fff' },
-                { name: 'Blanco Puro', bg: '#FFFFFF', text: '#000', border: true },
-                { name: 'Azul Espacial Claro', bg: '#E8F4FD', text: '#0369A1' },
-                { name: 'Verde Menta Suave', bg: '#E8F5E9', text: '#15803D' },
-                { name: 'Noche Oscura', bg: '#0A051B', text: '#fff' },
-              ].map((c, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => {
-                    if (typeof document !== 'undefined') {
-                      document.body.style.background = c.bg;
-                    }
-                    Swal.fire('Tema aplicado', `Fondo configurado a ${c.name}`, 'success');
-                  }}
-                  className="p-3.5 rounded-xl text-center font-black text-xs shadow-xs cursor-pointer border transition-transform hover:scale-102"
-                  style={{
-                    background: c.bg,
-                    color: c.text,
-                    borderColor: c.border ? '#ccc' : 'transparent'
-                  }}
-                >
-                  {c.name}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ══ 17. CURRÍCULO ══ */}
-        {activeTool === 'curriculo' && (
-          <div className="space-y-3">
-            <p className="text-xs sm:text-sm font-bold text-gray-700 mb-2">
-              Referentes de calidad del Ministerio de Educación Nacional (Colombia) para el ciclo de 4° Grado:
-            </p>
-            <div className="space-y-2.5">
-              {CURRICULO_BLOQUES.map((b) => (
-                <div
-                  key={b.id}
-                  className="p-4 rounded-2xl border-2 transition-all"
-                  style={{ background: b.claro, borderColor: b.color }}
-                >
-                  <div
-                    className="flex justify-between items-center cursor-pointer"
-                    onClick={() => setCurriculoBloq(curriculoBloq === b.id ? null : b.id)}
-                  >
-                    <div className="font-black text-sm" style={{ color: b.color }}>
-                      {b.icono} {b.nombre}
-                    </div>
-                    <span className="text-xs font-black" style={{ color: b.color }}>
-                      {curriculoBloq === b.id ? '▲ Ocultar' : '▼ Ver estándares'}
-                    </span>
-                  </div>
-
-                  {curriculoBloq === b.id && (
-                    <ul className="mt-3 pl-4 list-disc space-y-1.5 text-xs text-gray-800 font-semibold border-t border-purple-200/60 pt-2.5">
-                      {b.items.map((it, idx) => (
-                        <li key={idx}>{it}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

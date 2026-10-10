@@ -37,6 +37,25 @@ function Book4Shell() {
   const [showGalaxyModal, setShowGalaxyModal] = useState(false);
   const [showDrawer, setShowDrawer] = useState(false);
   const [customToolModal, setCustomToolModal] = useState<{ title: string; content: React.ReactNode } | null>(null);
+  const [customBg, setCustomBg] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const savedBg = localStorage.getItem('fedor4_bg');
+      if (savedBg) {
+        setCustomBg(savedBg);
+        document.body.style.background = savedBg;
+      }
+    } catch {}
+
+    const handleColorChange = (e: any) => {
+      if (e.detail?.bg) {
+        setCustomBg(e.detail.bg);
+      }
+    };
+    window.addEventListener('fedor4:color-changed', handleColorChange);
+    return () => window.removeEventListener('fedor4:color-changed', handleColorChange);
+  }, []);
 
   // Al iniciar la sesión por primera vez, si el estudiante ya tiene perfil y va directo a home, mostrar popup de bienvenida
   useEffect(() => {
@@ -76,10 +95,13 @@ function Book4Shell() {
   return (
     <div
       className={`fedor-book fedor-book-4 ${dark ? 'dark' : ''} ${
-        screen === 'setup' || screen === 'home' || screen === 'lesson' || screen === 'unit'
+        customBg
+          ? ''
+          : screen === 'setup' || screen === 'home' || screen === 'lesson' || screen === 'unit'
           ? 'bg-[#F0EDFF] text-[#180D38]'
           : 'bg-[#07091B] text-white'
       } min-h-screen relative font-sans`}
+      style={customBg ? { background: customBg } : undefined}
     >
       <div style={{ maxWidth: '1320px', margin: '0 auto', width: '100%', boxSizing: 'border-box', position: 'relative' }}>
         {/* ══ Header Superior de Fedor 4° con Escudo y Casco Dorado ══ */}

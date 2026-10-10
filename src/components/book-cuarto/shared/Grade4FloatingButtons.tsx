@@ -89,19 +89,6 @@ export default function Grade4FloatingButtons({
       onOpenProblemas();
       return;
     }
-    if (toolId === 'voz-fem') {
-      const nextVoice = voiceType === 'fem' ? 'def' : 'fem';
-      setVoiceType(nextVoice);
-      Swal.fire({
-        icon: 'info',
-        title: nextVoice === 'fem' ? '🎙️ Voz Femenina: ACTIVADA' : '🎙️ Voz Femenina: desactivada',
-        text: 'Módulo de sonido y lectura del sistema FEDOR configurado.',
-        timer: 1600,
-        showConfirmButton: false,
-        confirmButtonColor: '#7C3AED',
-      });
-      return;
-    }
     setActiveToolModal(toolId);
   };
 
