@@ -10,6 +10,7 @@ import DiarioModal4to from './DiarioModal4to';
 import ExamenFinalModal4to from './ExamenFinalModal4to';
 import StickerAlbumModal4to from './StickerAlbumModal4to';
 import MinijuegosModal4to from './MinijuegosModal4to';
+import Minijuegos4toModal from './Minijuegos4toModal';
 import LaboratorioVisualModal4to from './LaboratorioVisualModal4to';
 import ConteoModal4to from './ConteoModal4to';
 import MultiplicarModal4to from './MultiplicarModal4to';
@@ -25,11 +26,14 @@ import VozFemeninaModal4to from './VozFemeninaModal4to';
 import CurriculoModal4to from './CurriculoModal4to';
 import SaberModal4to from './SaberModal4to';
 import RepasoModal4to from './RepasoModal4to';
+import LogrosModal4to from './LogrosModal4to';
+import ProblemasCotidianosModal4to from './ProblemasCotidianosModal4to';
 
 interface CommandPanelModals4toProps {
   activeTool: string | null;
   onClose: () => void;
   onOpenIntro?: () => void;
+  onOpenProblemas?: () => void;
 }
 
 // ── 1. LABORATORIO VISUAL (18 manipulativos del HTML) ──
@@ -189,6 +193,7 @@ export default function CommandPanelModals4to({
   activeTool,
   onClose,
   onOpenIntro,
+  onOpenProblemas,
 }: CommandPanelModals4toProps) {
   const { totalXP, coins, scores, updateStats } = useBook4();
 
@@ -503,6 +508,10 @@ export default function CommandPanelModals4to({
     return <RepasoModal4to isOpen={true} onClose={onClose} />;
   }
 
+  if (activeTool === 'logros' || activeTool === 'mis-logros') {
+    return <LogrosModal4to isOpen={true} onClose={onClose} />;
+  }
+
   if (activeTool === 'tienda') {
     return <ShopModal4to isOpen={true} onClose={onClose} />;
   }
@@ -523,8 +532,25 @@ export default function CommandPanelModals4to({
     return <StickerAlbumModal4to isOpen={true} onClose={onClose} />;
   }
 
-  if (activeTool === 'juegos' || activeTool === 'minijuegos') {
+  if (activeTool === 'juegos') {
     return <MinijuegosModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'minijuegos') {
+    return <Minijuegos4toModal isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'saber-cotidianos' || activeTool === 'problemas' || activeTool === 'problemas-cotidianos') {
+    return (
+      <ProblemasCotidianosModal4to
+        isOpen={true}
+        onClose={onClose}
+        onOpenFullScreen={() => {
+          onClose();
+          onOpenProblemas?.();
+        }}
+      />
+    );
   }
 
   return (
@@ -979,40 +1005,6 @@ export default function CommandPanelModals4to({
           </div>
         )}
 
-        {/* ══ 10. LOGROS ══ */}
-        {activeTool === 'logros' && (
-          <div className="space-y-4">
-            <div className="text-xs font-bold text-gray-700">
-              Total XP acumulado: <strong>{totalXP} XP</strong> · <strong>{coins} 🪙</strong> monedas.
-            </div>
-            <div className="grid grid-cols-2 gap-2.5">
-              {[
-                { icon: '🚀', name: 'Primer Despegue', desc: 'Comienza tu viaje en 4°', ok: true },
-                { icon: '🔟', name: 'Sistema Decimal', desc: 'Domina los números hasta 100.000', ok: totalXP >= 100 },
-                { icon: '✖️', name: 'Gran Multiplicador', desc: 'Supera 50 multiplicaciones', ok: totalXP >= 250 },
-                { icon: '🛒', name: 'Experto SABER', desc: 'Resuelve compras y vueltos', ok: totalXP >= 500 },
-                { icon: '🪐', name: 'Conquistador Solar', desc: 'Explora los 15 mundos de 4°', ok: totalXP >= 1000 },
-                { icon: '👑', name: 'Almirante Cósmico', desc: 'Alcanza el rango de honor Fedor', ok: totalXP >= 2000 },
-              ].map((t, i) => (
-                <div
-                  key={i}
-                  className={`p-3 rounded-xl border flex items-center gap-3 ${
-                    t.ok ? 'bg-amber-50 border-amber-300' : 'bg-gray-50 border-gray-200 opacity-60'
-                  }`}
-                >
-                  <span className="text-2xl">{t.icon}</span>
-                  <div>
-                    <div className="text-xs font-black text-gray-900">{t.name}</div>
-                    <div className="text-[10px] text-gray-600 font-semibold">{t.desc}</div>
-                    <div className="text-[9px] font-black text-amber-600 mt-0.5">
-                      {t.ok ? '✅ Desbloqueado' : '🔒 Bloqueado'}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* ══ 11. MINIJUEGOS ══ */}
         {activeTool === 'minijuegos' && (

@@ -858,6 +858,7 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
           activeTool={activeToolModal}
           onClose={() => setActiveToolModal(null)}
           onOpenIntro={onOpenIntro}
+          onOpenProblemas={() => goScreen('problemas')}
         />
       )}
 

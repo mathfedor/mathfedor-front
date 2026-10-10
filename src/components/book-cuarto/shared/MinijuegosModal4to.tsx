@@ -308,7 +308,7 @@ export default function MinijuegosModal4to({
                 textAlign: 'center',
               }}
             >
-              Mini-juegos 4°
+              Juegos 4°
             </h2>
 
             {/* Subtítulo */}

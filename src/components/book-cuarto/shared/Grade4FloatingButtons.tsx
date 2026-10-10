@@ -54,7 +54,7 @@ const FLOATING_TOOLS_4TO: FloatingToolItem[] = [
   { id: 'repaso', icon: '🔄', name: 'Mi Repaso' },
   // Fila 9
   { id: 'logros', icon: '🏆', name: 'Logros' },
-  { id: 'juegos', icon: '🎮', name: 'Minijuegos' },
+  { id: 'minijuegos', icon: '🎮', name: 'Minijuegos' },
   // Fila 10
   { id: 'universo', icon: '🌌', name: 'Universo' },
   { id: 'saber-cotidianos', icon: '🛒', name: 'SABER cotidianos' },
@@ -83,10 +83,6 @@ export default function Grade4FloatingButtons({
     setShowTools(false);
     if (toolId === 'universo') {
       onOpenGalaxy();
-      return;
-    }
-    if (toolId === 'saber-cotidianos') {
-      onOpenProblemas();
       return;
     }
     setActiveToolModal(toolId);
@@ -266,6 +262,7 @@ export default function Grade4FloatingButtons({
           activeTool={activeToolModal}
           onClose={() => setActiveToolModal(null)}
           onOpenIntro={onOpenIntro}
+          onOpenProblemas={onOpenProblemas}
         />
       )}
 
