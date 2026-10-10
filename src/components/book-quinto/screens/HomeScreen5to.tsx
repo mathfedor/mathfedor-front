@@ -752,6 +752,8 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
         activeTool={activeToolModal}
         onClose={() => setActiveToolModal(null)}
         onOpenIntro={onOpenIntro}
+        onOpenProblemas={() => goScreen('problemas')}
+        onOpenReport={() => goScreen('report')}
       />
 
       {/* ═════════════════════════════════════════════════════════════

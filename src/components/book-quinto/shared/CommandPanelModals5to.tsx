@@ -4,11 +4,18 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useBook5 } from '../context/Book5Context';
 import Swal from 'sweetalert2';
 import { FZ } from './fedor-visual-lab-engine-5to';
+import ProblemasCotidianosModal5to from './ProblemasCotidianosModal5to';
+import Minijuegos5toModal from './Minijuegos5toModal';
+import LogrosModal5to from './LogrosModal5to';
+import InformeModal5to from './InformeModal5to';
+import VozFemeninaModal5to from './VozFemeninaModal5to';
 
 interface CommandPanelModals5toProps {
   activeTool: string | null;
   onClose: () => void;
   onOpenIntro?: () => void;
+  onOpenProblemas?: () => void;
+  onOpenReport?: () => void;
 }
 
 // ── 1. LABORATORIO VISUAL (18 manipulativos del HTML) ──
@@ -168,6 +175,8 @@ export default function CommandPanelModals5to({
   activeTool,
   onClose,
   onOpenIntro,
+  onOpenProblemas,
+  onOpenReport,
 }: CommandPanelModals5toProps) {
   const { totalXP, coins, scores, updateStats } = useBook5();
 
@@ -422,6 +431,44 @@ export default function CommandPanelModals5to({
 
   if (!activeTool) return null;
 
+  if (activeTool === 'saber-cotidianos' || activeTool === 'problemas' || activeTool === 'problemas-cotidianos') {
+    return (
+      <ProblemasCotidianosModal5to
+        isOpen={true}
+        onClose={onClose}
+        onOpenFullScreen={() => {
+          onClose();
+          onOpenProblemas?.();
+        }}
+      />
+    );
+  }
+
+  if (activeTool === 'minijuegos' || activeTool === 'juegos') {
+    return <Minijuegos5toModal isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'logros' || activeTool === 'mis-logros') {
+    return <LogrosModal5to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'informe' || activeTool === 'report' || activeTool === 'informe-progreso') {
+    return (
+      <InformeModal5to
+        isOpen={true}
+        onClose={onClose}
+        onOpenFullScreen={() => {
+          onClose();
+          onOpenReport?.();
+        }}
+      />
+    );
+  }
+
+  if (activeTool === 'voz-fem' || activeTool === 'voz' || activeTool === 'voz-femenina') {
+    return <VozFemeninaModal5to isOpen={true} onClose={onClose} />;
+  }
+
   return (
     <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
       <div
@@ -444,9 +491,9 @@ export default function CommandPanelModals5to({
               {activeTool === 'logros' && '🏆'}
               {activeTool === 'minijuegos' && '🎮'}
               {activeTool === 'saber' && '🏆'}
-              {activeTool === 'examen-final' && '🎓'}
+              {(activeTool === 'examen-final' || activeTool === 'examen') && '🎓'}
               {activeTool === 'repaso' && '🔄'}
-              {activeTool === 'guia-docente' && '👩‍🏫'}
+              {activeTool === 'guia-docente' && '👩🏫'}
               {activeTool === 'color' && '🎨'}
               {activeTool === 'curriculo' && '📑'}
             </span>
@@ -463,7 +510,7 @@ export default function CommandPanelModals5to({
               {activeTool === 'logros' && 'Vitrina de Trofeos y Medallas'}
               {activeTool === 'minijuegos' && 'Minijuegos de Agilidad Mental'}
               {activeTool === 'saber' && 'Problemas Tipo Prueba SABER 5°'}
-              {activeTool === 'examen-final' && 'Examen Final Integrador del Libro'}
+              {(activeTool === 'examen-final' || activeTool === 'examen') && 'Examen Final Integrador del Libro'}
               {activeTool === 'repaso' && 'Mi Repaso Personalizado'}
               {activeTool === 'guia-docente' && 'Guía Pedagógica del Docente (MEN 5°)'}
               {activeTool === 'color' && 'Selector de Color del Libro'}
@@ -1066,7 +1113,7 @@ export default function CommandPanelModals5to({
         )}
 
         {/* ══ 13. EXAMEN FINAL ══ */}
-        {activeTool === 'examen-final' && (
+        {(activeTool === 'examen-final' || activeTool === 'examen') && (
           <div className="space-y-4">
             <div className="p-5 rounded-2xl bg-gradient-to-r from-rose-700 to-pink-600 text-white text-center">
               <h3 className="text-lg font-black" style={{ fontFamily: "'Baloo 2', sans-serif" }}>
