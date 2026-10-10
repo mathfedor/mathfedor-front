@@ -1,0 +1,2272 @@
+[
+  {
+    "level": 1,
+    "count": 32,
+    "pool": [
+      {
+        "id": "t1-l0-q0",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Sora prepara el kiosco de la feria. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el triple de 77?",
+        "opts": [
+          "231",
+          "226",
+          "234",
+          "232"
+        ],
+        "ans": "231",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q1",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Mateo reparte volantes en el colegio. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 24?",
+        "opts": [
+          "58",
+          "39",
+          "48",
+          "46"
+        ],
+        "ans": "48",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q2",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Camila anota las cuentas del kiosco. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 10 m × 9 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "85",
+          "87",
+          "90",
+          "89"
+        ],
+        "ans": "90",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q3",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Roxy organiza los materiales de clase. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 8 m × 5 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "40",
+          "34",
+          "46",
+          "50"
+        ],
+        "ans": "40",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q4",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Valentina prepara el kiosco de la feria. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 5 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "40",
+          "11",
+          "20",
+          "21"
+        ],
+        "ans": "20",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q5",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Andrés reparte volantes en el colegio. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 6 m × 10 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "57",
+          "61",
+          "60",
+          "70"
+        ],
+        "ans": "60",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q6",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Leo anota las cuentas del kiosco. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 5 m × 5 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "25",
+          "85",
+          "23",
+          "34"
+        ],
+        "ans": "25",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q7",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Fedor organiza los materiales de clase. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 13 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "58",
+          "55",
+          "52",
+          "43"
+        ],
+        "ans": "52",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q8",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Sora prepara el kiosco de la feria. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es la mitad de 178?",
+        "opts": [
+          "95",
+          "86",
+          "89",
+          "92"
+        ],
+        "ans": "89",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q9",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Mateo reparte volantes en el colegio. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el triple de 19?",
+        "opts": [
+          "87",
+          "57",
+          "59",
+          "66"
+        ],
+        "ans": "57",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q10",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Camila anota las cuentas del kiosco. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 11 m × 5 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "55",
+          "52",
+          "65",
+          "57"
+        ],
+        "ans": "55",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q11",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Roxy organiza los materiales de clase. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 19?",
+        "opts": [
+          "18",
+          "39",
+          "38",
+          "34"
+        ],
+        "ans": "38",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q12",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Valentina prepara el kiosco de la feria. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es la mitad de 70?",
+        "opts": [
+          "34",
+          "35",
+          "32",
+          "5"
+        ],
+        "ans": "35",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q13",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Andrés reparte volantes en el colegio. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 22?",
+        "opts": [
+          "44",
+          "45",
+          "54",
+          "38"
+        ],
+        "ans": "44",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q14",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Leo anota las cuentas del kiosco. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es la mitad de 166?",
+        "opts": [
+          "89",
+          "85",
+          "74",
+          "83"
+        ],
+        "ans": "83",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l0-q15",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Fedor organiza los materiales de clase. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 9 m × 9 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "79",
+          "81",
+          "72",
+          "66"
+        ],
+        "ans": "81",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q0",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Sora prepara el kiosco de la feria. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 85 lápices. Hay 5 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "440",
+          "365",
+          "465",
+          "425"
+        ],
+        "ans": "425",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q1",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Fedor planea la fiesta de fin de año. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 11 pesos por día durante 8 días. ¿Cuánto vende en total?",
+        "opts": [
+          "85",
+          "28",
+          "90",
+          "88"
+        ],
+        "ans": "88",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q2",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Leo organiza los materiales de clase. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 16 caramelos entre 2 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "5",
+          "17",
+          "8",
+          "18"
+        ],
+        "ans": "8",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q3",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Andrés ayuda en la biblioteca. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 62 personas y baja 14 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "51",
+          "50",
+          "54",
+          "48"
+        ],
+        "ans": "48",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q4",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Valentina anota las cuentas del kiosco. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "En un colegio hay 57 estudiantes en 4° y 9 en 5°. ¿Cuántos en total?",
+        "opts": [
+          "65",
+          "66",
+          "56",
+          "86"
+        ],
+        "ans": "66",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q5",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Roxy cuenta las plantas del jardín escolar. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 49 caramelos entre 7 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "2",
+          "6",
+          "7",
+          "3"
+        ],
+        "ans": "7",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q6",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Camila reparte volantes en el colegio. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 21 caramelos entre 7 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "33",
+          "8",
+          "0",
+          "3"
+        ],
+        "ans": "3",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q7",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Mateo juega en el parque con sus amigos. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 55 pesos por día durante 8 días. ¿Cuánto vende en total?",
+        "opts": [
+          "480",
+          "440",
+          "400",
+          "420"
+        ],
+        "ans": "440",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q8",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Sora prepara el kiosco de la feria. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 31 pesos por día durante 17 días. ¿Cuánto vende en total?",
+        "opts": [
+          "524",
+          "533",
+          "527",
+          "512"
+        ],
+        "ans": "527",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q9",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Fedor planea la fiesta de fin de año. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 36 caramelos entre 9 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "24",
+          "4",
+          "19",
+          "7"
+        ],
+        "ans": "4",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q10",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Leo organiza los materiales de clase. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 32 caramelos entre 4 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "8",
+          "10",
+          "23",
+          "6"
+        ],
+        "ans": "8",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q11",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Andrés ayuda en la biblioteca. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 79 pesos por día durante 4 días. ¿Cuánto vende en total?",
+        "opts": [
+          "317",
+          "316",
+          "319",
+          "306"
+        ],
+        "ans": "316",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q12",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Valentina anota las cuentas del kiosco. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 44 personas y baja 14 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "50",
+          "30",
+          "26",
+          "28"
+        ],
+        "ans": "30",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q13",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Roxy cuenta las plantas del jardín escolar. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 22 lápices. Hay 10 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "224",
+          "250",
+          "218",
+          "220"
+        ],
+        "ans": "220",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q14",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Camila reparte volantes en el colegio. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 18 caramelos entre 3 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "3",
+          "0",
+          "6",
+          "4"
+        ],
+        "ans": "6",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l0-q15",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Mateo juega en el parque con sus amigos. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 16 caramelos entre 4 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "1",
+          "34",
+          "24",
+          "4"
+        ],
+        "ans": "4",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      }
+    ]
+  },
+  {
+    "level": 2,
+    "count": 32,
+    "pool": [
+      {
+        "id": "t1-l1-q0",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Andrés juega en el parque con sus amigos. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 297?",
+        "opts": [
+          "594",
+          "595",
+          "590",
+          "584"
+        ],
+        "ans": "594",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q1",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Leo cuenta las plantas del jardín escolar. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el triple de 181?",
+        "opts": [
+          "546",
+          "503",
+          "533",
+          "543"
+        ],
+        "ans": "543",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q2",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Fedor ayuda en la biblioteca. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el triple de 174?",
+        "opts": [
+          "532",
+          "522",
+          "462",
+          "507"
+        ],
+        "ans": "522",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q3",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Sora planea la fiesta de fin de año. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 13 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "43",
+          "62",
+          "52",
+          "42"
+        ],
+        "ans": "52",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q4",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Mateo juega en el parque con sus amigos. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es la mitad de 778?",
+        "opts": [
+          "389",
+          "394",
+          "383",
+          "386"
+        ],
+        "ans": "389",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q5",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Camila cuenta las plantas del jardín escolar. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 19 m × 5 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "98",
+          "115",
+          "92",
+          "95"
+        ],
+        "ans": "95",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q6",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Roxy ayuda en la biblioteca. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es la mitad de 390?",
+        "opts": [
+          "195",
+          "196",
+          "193",
+          "204"
+        ],
+        "ans": "195",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q7",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Valentina planea la fiesta de fin de año. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 9 m × 18 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "153",
+          "152",
+          "162",
+          "166"
+        ],
+        "ans": "162",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q8",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Andrés juega en el parque con sus amigos. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el triple de 92?",
+        "opts": [
+          "278",
+          "286",
+          "316",
+          "276"
+        ],
+        "ans": "276",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q9",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Leo cuenta las plantas del jardín escolar. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 11 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "44",
+          "41",
+          "39",
+          "38"
+        ],
+        "ans": "44",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q10",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Fedor ayuda en la biblioteca. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 4 m × 17 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "48",
+          "66",
+          "62",
+          "68"
+        ],
+        "ans": "68",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q11",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Sora planea la fiesta de fin de año. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 146?",
+        "opts": [
+          "262",
+          "297",
+          "332",
+          "292"
+        ],
+        "ans": "292",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q12",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Mateo juega en el parque con sus amigos. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 9 m × 20 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "178",
+          "160",
+          "240",
+          "180"
+        ],
+        "ans": "180",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q13",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Camila cuenta las plantas del jardín escolar. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 21 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "88",
+          "104",
+          "54",
+          "84"
+        ],
+        "ans": "84",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q14",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Roxy ayuda en la biblioteca. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es la mitad de 616?",
+        "opts": [
+          "310",
+          "306",
+          "308",
+          "328"
+        ],
+        "ans": "308",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l1-q15",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Valentina planea la fiesta de fin de año. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 12 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "38",
+          "44",
+          "48",
+          "42"
+        ],
+        "ans": "48",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q0",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Mateo reparte volantes en el colegio. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "En un colegio hay 220 estudiantes en 4° y 25 en 5°. ¿Cuántos en total?",
+        "opts": [
+          "245",
+          "240",
+          "260",
+          "255"
+        ],
+        "ans": "245",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q1",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Sora juega en el parque con sus amigos. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 217 pesos por día durante 11 días. ¿Cuánto vende en total?",
+        "opts": [
+          "2387",
+          "2417",
+          "2347",
+          "2389"
+        ],
+        "ans": "2387",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q2",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Fedor prepara el kiosco de la feria. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 200 caramelos entre 10 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "23",
+          "0",
+          "20",
+          "19"
+        ],
+        "ans": "20",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q3",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Leo planea la fiesta de fin de año. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 405 personas y baja 35 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "360",
+          "400",
+          "370",
+          "366"
+        ],
+        "ans": "370",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q4",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Andrés organiza los materiales de clase. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 252 lápices. Hay 47 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "11842",
+          "11824",
+          "11844",
+          "11784"
+        ],
+        "ans": "11844",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q5",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Valentina ayuda en la biblioteca. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 78 personas y baja 22 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "96",
+          "62",
+          "71",
+          "56"
+        ],
+        "ans": "56",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q6",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Roxy anota las cuentas del kiosco. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 223 lápices. Hay 39 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "8699",
+          "8667",
+          "8697",
+          "8698"
+        ],
+        "ans": "8697",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q7",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Camila cuenta las plantas del jardín escolar. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "En un colegio hay 137 estudiantes en 4° y 49 en 5°. ¿Cuántos en total?",
+        "opts": [
+          "206",
+          "186",
+          "189",
+          "196"
+        ],
+        "ans": "186",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q8",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Mateo reparte volantes en el colegio. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "En un colegio hay 218 estudiantes en 4° y 19 en 5°. ¿Cuántos en total?",
+        "opts": [
+          "297",
+          "241",
+          "228",
+          "237"
+        ],
+        "ans": "237",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q9",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Sora juega en el parque con sus amigos. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "En un colegio hay 465 estudiantes en 4° y 13 en 5°. ¿Cuántos en total?",
+        "opts": [
+          "518",
+          "469",
+          "478",
+          "479"
+        ],
+        "ans": "478",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q10",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Fedor prepara el kiosco de la feria. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 353 pesos por día durante 28 días. ¿Cuánto vende en total?",
+        "opts": [
+          "9884",
+          "9887",
+          "9944",
+          "9881"
+        ],
+        "ans": "9884",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q11",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Leo planea la fiesta de fin de año. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 446 lápices. Hay 32 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "14267",
+          "14272",
+          "14302",
+          "14278"
+        ],
+        "ans": "14272",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q12",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Andrés organiza los materiales de clase. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "En un colegio hay 428 estudiantes en 4° y 46 en 5°. ¿Cuántos en total?",
+        "opts": [
+          "489",
+          "483",
+          "472",
+          "474"
+        ],
+        "ans": "474",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q13",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Valentina ayuda en la biblioteca. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 52 pesos por día durante 23 días. ¿Cuánto vende en total?",
+        "opts": [
+          "1196",
+          "1198",
+          "1211",
+          "1197"
+        ],
+        "ans": "1196",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q14",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Roxy anota las cuentas del kiosco. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 66 personas y baja 35 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "35",
+          "28",
+          "31",
+          "33"
+        ],
+        "ans": "31",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l1-q15",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Camila cuenta las plantas del jardín escolar. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 51 caramelos entre 3 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "11",
+          "21",
+          "17",
+          "14"
+        ],
+        "ans": "17",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      }
+    ]
+  },
+  {
+    "level": 3,
+    "count": 32,
+    "pool": [
+      {
+        "id": "t1-l2-q0",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Camila reparte volantes en el colegio. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 32 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "122",
+          "128",
+          "127",
+          "129"
+        ],
+        "ans": "128",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q1",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Roxy anota las cuentas del kiosco. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 1324?",
+        "opts": [
+          "2648",
+          "2647",
+          "2618",
+          "2608"
+        ],
+        "ans": "2648",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q2",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Valentina organiza los materiales de clase. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 1789?",
+        "opts": [
+          "3578",
+          "3572",
+          "3575",
+          "3576"
+        ],
+        "ans": "3578",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q3",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Andrés prepara el kiosco de la feria. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 56 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "228",
+          "229",
+          "233",
+          "224"
+        ],
+        "ans": "224",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q4",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Leo reparte volantes en el colegio. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 39 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "156",
+          "159",
+          "165",
+          "166"
+        ],
+        "ans": "156",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q5",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Fedor anota las cuentas del kiosco. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el triple de 625?",
+        "opts": [
+          "1875",
+          "1865",
+          "1871",
+          "1869"
+        ],
+        "ans": "1875",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q6",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Sora organiza los materiales de clase. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 21 m × 31 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "646",
+          "691",
+          "651",
+          "636"
+        ],
+        "ans": "651",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q7",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Mateo prepara el kiosco de la feria. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 18 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "82",
+          "72",
+          "87",
+          "76"
+        ],
+        "ans": "72",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q8",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Camila reparte volantes en el colegio. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el triple de 1150?",
+        "opts": [
+          "3452",
+          "3450",
+          "3410",
+          "3440"
+        ],
+        "ans": "3450",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q9",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Roxy anota las cuentas del kiosco. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 15 m × 11 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "163",
+          "180",
+          "135",
+          "165"
+        ],
+        "ans": "165",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q10",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Valentina organiza los materiales de clase. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 829?",
+        "opts": [
+          "1657",
+          "1698",
+          "1668",
+          "1658"
+        ],
+        "ans": "1658",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q11",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Andrés prepara el kiosco de la feria. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el triple de 97?",
+        "opts": [
+          "294",
+          "292",
+          "291",
+          "321"
+        ],
+        "ans": "291",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q12",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Leo reparte volantes en el colegio. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es la mitad de 3650?",
+        "opts": [
+          "1825",
+          "1816",
+          "1835",
+          "1826"
+        ],
+        "ans": "1825",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q13",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Fedor anota las cuentas del kiosco. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 32 m × 32 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "1054",
+          "1018",
+          "1027",
+          "1024"
+        ],
+        "ans": "1024",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q14",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Sora organiza los materiales de clase. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 1222?",
+        "opts": [
+          "2447",
+          "2444",
+          "2474",
+          "2448"
+        ],
+        "ans": "2444",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l2-q15",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Mateo prepara el kiosco de la feria. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 426?",
+        "opts": [
+          "849",
+          "855",
+          "853",
+          "852"
+        ],
+        "ans": "852",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q0",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Camila anota las cuentas del kiosco. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 1123 personas y baja 58 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "1068",
+          "1085",
+          "1065",
+          "1074"
+        ],
+        "ans": "1065",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q1",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Mateo cuenta las plantas del jardín escolar. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 294 caramelos entre 7 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "42",
+          "37",
+          "36",
+          "57"
+        ],
+        "ans": "42",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q2",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Sora reparte volantes en el colegio. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 1770 lápices. Hay 90 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "159310",
+          "159300",
+          "159298",
+          "159295"
+        ],
+        "ans": "159300",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q3",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Fedor juega en el parque con sus amigos. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 1154 pesos por día durante 12 días. ¿Cuánto vende en total?",
+        "opts": [
+          "13850",
+          "13852",
+          "13788",
+          "13848"
+        ],
+        "ans": "13848",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q4",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Leo prepara el kiosco de la feria. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 352 lápices. Hay 86 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "30252",
+          "30269",
+          "30272",
+          "30275"
+        ],
+        "ans": "30272",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q5",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Andrés planea la fiesta de fin de año. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "En un colegio hay 1128 estudiantes en 4° y 21 en 5°. ¿Cuántos en total?",
+        "opts": [
+          "1129",
+          "1209",
+          "1149",
+          "1134"
+        ],
+        "ans": "1149",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q6",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Valentina organiza los materiales de clase. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 1147 lápices. Hay 73 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "83731",
+          "83721",
+          "83733",
+          "83736"
+        ],
+        "ans": "83731",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q7",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Roxy ayuda en la biblioteca. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 1710 lápices. Hay 94 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "160740",
+          "160737",
+          "160746",
+          "160743"
+        ],
+        "ans": "160740",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q8",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Camila anota las cuentas del kiosco. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 147 lápices. Hay 20 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "2955",
+          "2942",
+          "2938",
+          "2940"
+        ],
+        "ans": "2940",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q9",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Mateo cuenta las plantas del jardín escolar. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 1872 pesos por día durante 40 días. ¿Cuánto vende en total?",
+        "opts": [
+          "74880",
+          "74910",
+          "74879",
+          "74820"
+        ],
+        "ans": "74880",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q10",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Sora reparte volantes en el colegio. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 280 caramelos entre 10 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "28",
+          "27",
+          "24",
+          "8"
+        ],
+        "ans": "28",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q11",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Fedor juega en el parque con sus amigos. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "En un colegio hay 1693 estudiantes en 4° y 40 en 5°. ¿Cuántos en total?",
+        "opts": [
+          "1733",
+          "1728",
+          "1763",
+          "1737"
+        ],
+        "ans": "1733",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q12",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Leo prepara el kiosco de la feria. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 1140 lápices. Hay 95 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "108280",
+          "108320",
+          "108300",
+          "108296"
+        ],
+        "ans": "108300",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q13",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Andrés planea la fiesta de fin de año. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 350 caramelos entre 7 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "55",
+          "80",
+          "60",
+          "50"
+        ],
+        "ans": "50",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q14",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Valentina organiza los materiales de clase. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 245 caramelos entre 7 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "32",
+          "35",
+          "15",
+          "36"
+        ],
+        "ans": "35",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l2-q15",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Roxy ayuda en la biblioteca. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 541 pesos por día durante 23 días. ¿Cuánto vende en total?",
+        "opts": [
+          "12433",
+          "12443",
+          "12403",
+          "12423"
+        ],
+        "ans": "12443",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      }
+    ]
+  },
+  {
+    "level": 4,
+    "count": 32,
+    "pool": [
+      {
+        "id": "t1-l3-q0",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Fedor cuenta las plantas del jardín escolar. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 44 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "181",
+          "191",
+          "175",
+          "176"
+        ],
+        "ans": "176",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q1",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Sora ayuda en la biblioteca. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 5917?",
+        "opts": [
+          "11832",
+          "11831",
+          "11844",
+          "11834"
+        ],
+        "ans": "11834",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q2",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Mateo planea la fiesta de fin de año. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 19 m × 80 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "1526",
+          "1530",
+          "1518",
+          "1520"
+        ],
+        "ans": "1520",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q3",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Camila juega en el parque con sus amigos. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 9259?",
+        "opts": [
+          "18538",
+          "18512",
+          "18520",
+          "18518"
+        ],
+        "ans": "18518",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q4",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Roxy cuenta las plantas del jardín escolar. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 5674?",
+        "opts": [
+          "11328",
+          "11348",
+          "11368",
+          "11358"
+        ],
+        "ans": "11348",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q5",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Valentina ayuda en la biblioteca. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es la mitad de 8456?",
+        "opts": [
+          "4230",
+          "4223",
+          "4233",
+          "4228"
+        ],
+        "ans": "4228",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q6",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Andrés planea la fiesta de fin de año. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 41 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "149",
+          "164",
+          "161",
+          "204"
+        ],
+        "ans": "164",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q7",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Leo juega en el parque con sus amigos. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 28 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "122",
+          "112",
+          "109",
+          "52"
+        ],
+        "ans": "112",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q8",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Fedor cuenta las plantas del jardín escolar. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es la mitad de 12432?",
+        "opts": [
+          "6217",
+          "6226",
+          "6212",
+          "6216"
+        ],
+        "ans": "6216",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q9",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Sora ayuda en la biblioteca. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es la mitad de 7790?",
+        "opts": [
+          "3875",
+          "3895",
+          "3910",
+          "3898"
+        ],
+        "ans": "3895",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q10",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Mateo planea la fiesta de fin de año. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 36 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "144",
+          "164",
+          "145",
+          "154"
+        ],
+        "ans": "144",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q11",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Camila juega en el parque con sus amigos. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 39 m × 65 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "2531",
+          "2532",
+          "2535",
+          "2545"
+        ],
+        "ans": "2535",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q12",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Roxy cuenta las plantas del jardín escolar. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el triple de 1194?",
+        "opts": [
+          "3582",
+          "3579",
+          "3572",
+          "3580"
+        ],
+        "ans": "3582",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q13",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Valentina ayuda en la biblioteca. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 68 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "278",
+          "272",
+          "274",
+          "257"
+        ],
+        "ans": "272",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q14",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Andrés planea la fiesta de fin de año. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es la mitad de 8646?",
+        "opts": [
+          "4333",
+          "4325",
+          "4329",
+          "4323"
+        ],
+        "ans": "4323",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l3-q15",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Leo juega en el parque con sus amigos. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 945?",
+        "opts": [
+          "1892",
+          "1870",
+          "1890",
+          "1920"
+        ],
+        "ans": "1890",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q0",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Roxy organiza los materiales de clase. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 3306 personas y baja 417 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "2883",
+          "2899",
+          "2889",
+          "2929"
+        ],
+        "ans": "2889",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q1",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Camila ayuda en la biblioteca. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 1659 personas y baja 118 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "1481",
+          "1561",
+          "1541",
+          "1539"
+        ],
+        "ans": "1541",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q2",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Mateo anota las cuentas del kiosco. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 1558 lápices. Hay 328 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "511054",
+          "511064",
+          "511024",
+          "511009"
+        ],
+        "ans": "511024",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q3",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Sora cuenta las plantas del jardín escolar. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 4626 lápices. Hay 113 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "522738",
+          "522778",
+          "522734",
+          "522747"
+        ],
+        "ans": "522738",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q4",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Fedor reparte volantes en el colegio. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "En un colegio hay 1984 estudiantes en 4° y 397 en 5°. ¿Cuántos en total?",
+        "opts": [
+          "2381",
+          "2382",
+          "2378",
+          "2361"
+        ],
+        "ans": "2381",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q5",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Leo juega en el parque con sus amigos. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 870 caramelos entre 10 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "67",
+          "90",
+          "87",
+          "81"
+        ],
+        "ans": "87",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q6",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Andrés prepara el kiosco de la feria. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 267 caramelos entre 3 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "95",
+          "89",
+          "85",
+          "92"
+        ],
+        "ans": "89",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q7",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Valentina planea la fiesta de fin de año. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 8941 lápices. Hay 404 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "3612166",
+          "3612164",
+          "3612167",
+          "3612159"
+        ],
+        "ans": "3612164",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q8",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Roxy organiza los materiales de clase. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 1115 pesos por día durante 248 días. ¿Cuánto vende en total?",
+        "opts": [
+          "276540",
+          "276519",
+          "276520",
+          "276510"
+        ],
+        "ans": "276520",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q9",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Camila ayuda en la biblioteca. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "En un colegio hay 5090 estudiantes en 4° y 121 en 5°. ¿Cuántos en total?",
+        "opts": [
+          "5211",
+          "5205",
+          "5191",
+          "5221"
+        ],
+        "ans": "5211",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q10",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Mateo anota las cuentas del kiosco. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 6768 pesos por día durante 9 días. ¿Cuánto vende en total?",
+        "opts": [
+          "60914",
+          "60912",
+          "60932",
+          "60902"
+        ],
+        "ans": "60912",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q11",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Sora cuenta las plantas del jardín escolar. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 5990 personas y baja 220 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "5760",
+          "5773",
+          "5750",
+          "5770"
+        ],
+        "ans": "5770",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q12",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Fedor reparte volantes en el colegio. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 9501 personas y baja 247 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "9214",
+          "9194",
+          "9254",
+          "9274"
+        ],
+        "ans": "9254",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q13",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Leo juega en el parque con sus amigos. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 230 caramelos entre 10 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "25",
+          "23",
+          "29",
+          "21"
+        ],
+        "ans": "23",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q14",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Andrés prepara el kiosco de la feria. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 20 caramelos entre 10 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "2",
+          "5",
+          "22",
+          "11"
+        ],
+        "ans": "2",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l3-q15",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Valentina planea la fiesta de fin de año. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 200 caramelos entre 5 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "41",
+          "43",
+          "40",
+          "10"
+        ],
+        "ans": "40",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      }
+    ]
+  },
+  {
+    "level": 5,
+    "count": 32,
+    "pool": [
+      {
+        "id": "t1-l4-q0",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Valentina anota las cuentas del kiosco. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el triple de 2447?",
+        "opts": [
+          "7342",
+          "7341",
+          "7339",
+          "7347"
+        ],
+        "ans": "7341",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q1",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Andrés organiza los materiales de clase. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 131 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "519",
+          "524",
+          "584",
+          "544"
+        ],
+        "ans": "524",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q2",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Leo prepara el kiosco de la feria. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el triple de 7372?",
+        "opts": [
+          "22112",
+          "22116",
+          "22136",
+          "22122"
+        ],
+        "ans": "22116",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q3",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Fedor reparte volantes en el colegio. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 77 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "306",
+          "302",
+          "328",
+          "308"
+        ],
+        "ans": "308",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q4",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Sora anota las cuentas del kiosco. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 14741?",
+        "opts": [
+          "29492",
+          "29477",
+          "29462",
+          "29482"
+        ],
+        "ans": "29482",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q5",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Mateo organiza los materiales de clase. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 23 m × 120 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "2760",
+          "2770",
+          "2758",
+          "2757"
+        ],
+        "ans": "2760",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q6",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Camila prepara el kiosco de la feria. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el triple de 20773?",
+        "opts": [
+          "62329",
+          "62320",
+          "62322",
+          "62319"
+        ],
+        "ans": "62319",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q7",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Roxy reparte volantes en el colegio. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es la mitad de 77496?",
+        "opts": [
+          "38748",
+          "38733",
+          "38751",
+          "38763"
+        ],
+        "ans": "38748",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q8",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Valentina anota las cuentas del kiosco. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 183 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "732",
+          "737",
+          "726",
+          "738"
+        ],
+        "ans": "732",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q9",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Andrés organiza los materiales de clase. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 59 m × 28 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "1661",
+          "1653",
+          "1652",
+          "1682"
+        ],
+        "ans": "1652",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q10",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Leo prepara el kiosco de la feria. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es la mitad de 6882?",
+        "opts": [
+          "3401",
+          "3443",
+          "3446",
+          "3441"
+        ],
+        "ans": "3441",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q11",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Fedor reparte volantes en el colegio. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un cuadrado tiene lado 140 m. ¿Cuál es su perímetro?",
+        "opts": [
+          "560",
+          "557",
+          "556",
+          "575"
+        ],
+        "ans": "560",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q12",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Sora anota las cuentas del kiosco. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es la mitad de 39772?",
+        "opts": [
+          "19895",
+          "19877",
+          "19886",
+          "19946"
+        ],
+        "ans": "19886",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q13",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Mateo organiza los materiales de clase. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 24248?",
+        "opts": [
+          "48490",
+          "48556",
+          "48487",
+          "48496"
+        ],
+        "ans": "48496",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q14",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Camila prepara el kiosco de la feria. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "Un rectángulo mide 42 m × 25 m. ¿Cuál es su área en m²?",
+        "opts": [
+          "1050",
+          "1053",
+          "1090",
+          "1030"
+        ],
+        "ans": "1050",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t1-l4-q15",
+        "tema": "Problemas Numéricos SABER",
+        "ctx": "Roxy reparte volantes en el colegio. En el tema \"Problemas Numéricos SABER\" resuelve:",
+        "q": "¿Cuál es el doble de 10969?",
+        "opts": [
+          "21878",
+          "21934",
+          "21938",
+          "21898"
+        ],
+        "ans": "21938",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q0",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Valentina prepara el kiosco de la feria. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "En un colegio hay 38687 estudiantes en 4° y 994 en 5°. ¿Cuántos en total?",
+        "opts": [
+          "39671",
+          "39681",
+          "39685",
+          "39678"
+        ],
+        "ans": "39681",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q1",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Roxy planea la fiesta de fin de año. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 39491 pesos por día durante 762 días. ¿Cuánto vende en total?",
+        "opts": [
+          "30092162",
+          "30092182",
+          "30092142",
+          "30092157"
+        ],
+        "ans": "30092142",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q2",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Camila organiza los materiales de clase. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 648 caramelos entre 9 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "42",
+          "72",
+          "71",
+          "69"
+        ],
+        "ans": "72",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q3",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Mateo ayuda en la biblioteca. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 336 caramelos entre 8 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "42",
+          "62",
+          "32",
+          "102"
+        ],
+        "ans": "42",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q4",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Sora anota las cuentas del kiosco. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Cada caja tiene 38303 lápices. Hay 923 cajas. ¿Cuántos lápices en total?",
+        "opts": [
+          "35353671",
+          "35353669",
+          "35353689",
+          "35353666"
+        ],
+        "ans": "35353669",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q5",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Fedor cuenta las plantas del jardín escolar. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 21775 personas y baja 670 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "21125",
+          "21109",
+          "21105",
+          "21115"
+        ],
+        "ans": "21105",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q6",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Leo reparte volantes en el colegio. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 45943 personas y baja 617 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "45326",
+          "45266",
+          "45386",
+          "45316"
+        ],
+        "ans": "45326",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q7",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Andrés juega en el parque con sus amigos. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 35 caramelos entre 7 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "8",
+          "7",
+          "0",
+          "5"
+        ],
+        "ans": "5",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q8",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Valentina prepara el kiosco de la feria. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 49914 pesos por día durante 451 días. ¿Cuánto vende en total?",
+        "opts": [
+          "22511214",
+          "22511212",
+          "22511204",
+          "22511174"
+        ],
+        "ans": "22511214",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q9",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Roxy planea la fiesta de fin de año. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 1200 caramelos entre 10 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "114",
+          "140",
+          "125",
+          "120"
+        ],
+        "ans": "120",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q10",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Camila organiza los materiales de clase. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Se reparten 1360 caramelos entre 8 niños en partes iguales. ¿Cuántos por niño?",
+        "opts": [
+          "170",
+          "174",
+          "164",
+          "190"
+        ],
+        "ans": "170",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q11",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Mateo ayuda en la biblioteca. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 41985 personas y baja 434 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "41546",
+          "41521",
+          "41551",
+          "41531"
+        ],
+        "ans": "41551",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q12",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Sora anota las cuentas del kiosco. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Una tienda vende 46527 pesos por día durante 347 días. ¿Cuánto vende en total?",
+        "opts": [
+          "16144875",
+          "16144865",
+          "16144899",
+          "16144869"
+        ],
+        "ans": "16144869",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q13",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Fedor cuenta las plantas del jardín escolar. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 37572 personas y baja 640 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "36972",
+          "36934",
+          "36932",
+          "36902"
+        ],
+        "ans": "36932",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q14",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Leo reparte volantes en el colegio. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "En un colegio hay 49223 estudiantes en 4° y 418 en 5°. ¿Cuántos en total?",
+        "opts": [
+          "49636",
+          "49641",
+          "49638",
+          "49661"
+        ],
+        "ans": "49641",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      },
+      {
+        "id": "t2-l4-q15",
+        "tema": "Problemas Contextuales SABER",
+        "ctx": "Andrés juega en el parque con sus amigos. En el tema \"Problemas Contextuales SABER\" resuelve:",
+        "q": "Un bus lleva 47184 personas y baja 242 en la parada. ¿Cuántos quedan?",
+        "opts": [
+          "46936",
+          "46902",
+          "46942",
+          "46944"
+        ],
+        "ans": "46942",
+        "formula": "🧠 CM · DM · UM · C · D · U"
+      }
+    ]
+  }
+]

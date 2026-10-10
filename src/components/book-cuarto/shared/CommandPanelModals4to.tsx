@@ -23,6 +23,8 @@ import GuiaDocenteModal4to from './GuiaDocenteModal4to';
 import ColorFedorModal4to from './ColorFedorModal4to';
 import VozFemeninaModal4to from './VozFemeninaModal4to';
 import CurriculoModal4to from './CurriculoModal4to';
+import SaberModal4to from './SaberModal4to';
+import RepasoModal4to from './RepasoModal4to';
 
 interface CommandPanelModals4toProps {
   activeTool: string | null;
@@ -491,6 +493,14 @@ export default function CommandPanelModals4to({
 
   if (activeTool === 'curriculo' || activeTool === 'curriculo-men' || activeTool === 'men') {
     return <CurriculoModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'saber' || activeTool === 'pruebas-saber' || activeTool === 'saber-4') {
+    return <SaberModal4to isOpen={true} onClose={onClose} />;
+  }
+
+  if (activeTool === 'repaso' || activeTool === 'mi-repaso') {
+    return <RepasoModal4to isOpen={true} onClose={onClose} />;
   }
 
   if (activeTool === 'tienda') {
@@ -1099,66 +1109,6 @@ export default function CommandPanelModals4to({
           </div>
         )}
 
-        {/* ══ 12. SABER ══ */}
-        {activeTool === 'saber' && (
-          <div className="space-y-4">
-            <p className="text-xs sm:text-sm font-bold text-gray-700">
-              Elige un nivel de progresión matemática tipo Prueba SABER:
-            </p>
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-              {SABER_NIVELES.map((nv, i) => (
-                <button
-                  key={nv.n}
-                  type="button"
-                  onClick={() => {
-                    setSaberNivelIdx(i);
-                    setSaberSelectedOpt(null);
-                  }}
-                  className={`p-2.5 rounded-xl text-white font-black text-xs cursor-pointer transition-transform ${
-                    saberNivelIdx === i ? 'scale-105 ring-2 ring-yellow-400' : 'opacity-85'
-                  }`}
-                  style={{ background: nv.color }}
-                >
-                  {nv.t}
-                </button>
-              ))}
-            </div>
-
-            <div className="p-4 bg-white border-2 border-gray-200 rounded-2xl space-y-3">
-              <div className="text-xs font-black uppercase text-purple-700">
-                Situación Problema (Nivel {SABER_NIVELES[saberNivelIdx].n}):
-              </div>
-              <p className="text-sm font-bold text-gray-800 leading-relaxed">
-                {SABER_NIVELES[saberNivelIdx].q}
-              </p>
-
-              <div className="grid grid-cols-2 gap-2">
-                {SABER_NIVELES[saberNivelIdx].opts.map((opt) => (
-                  <button
-                    key={opt}
-                    type="button"
-                    onClick={() => setSaberSelectedOpt(opt)}
-                    className={`p-3 rounded-xl border-2 font-black text-xs cursor-pointer transition-colors ${
-                      saberSelectedOpt === opt
-                        ? opt === SABER_NIVELES[saberNivelIdx].ans
-                          ? 'bg-emerald-100 border-emerald-500 text-emerald-900'
-                          : 'bg-rose-100 border-rose-500 text-rose-900'
-                        : 'bg-gray-50 border-gray-200 hover:bg-gray-100 text-gray-800'
-                    }`}
-                  >
-                    {opt}
-                  </button>
-                ))}
-              </div>
-
-              {saberSelectedOpt && (
-                <div className="p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs font-semibold text-purple-950">
-                  <b>Proceso matemático:</b> {SABER_NIVELES[saberNivelIdx].proc}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
 
         {/* ══ 13. EXAMEN FINAL ══ */}
         {activeTool === 'examen-final' && (
@@ -1241,39 +1191,6 @@ export default function CommandPanelModals4to({
           </div>
         )}
 
-        {/* ══ 14. MI REPASO ══ */}
-        {activeTool === 'repaso' && (
-          <div className="space-y-4">
-            <div className="p-4 bg-blue-50 border-2 border-blue-200 rounded-2xl space-y-2">
-              <h3 className="text-sm font-black text-blue-950">
-                🔄 Repaso Inteligente y Adaptativo
-              </h3>
-              <p className="text-xs text-blue-800 leading-relaxed font-semibold">
-                Este módulo reúne preguntas de repaso de las 15 unidades para reforzar conceptos antes de las evaluaciones de periodo.
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              {[
-                { u: 'Unidad 1', tema: 'Multiplicación de dos y tres cifras', ok: true },
-                { u: 'Unidad 2', tema: 'División exacta e inexacta', ok: true },
-                { u: 'Unidad 3', tema: 'Múltiplos, Divisores, MCD y MCM', ok: false },
-                { u: 'Unidad 4', tema: 'Fracciones equivalentes y operaciones', ok: false },
-                { u: 'Unidad 5', tema: 'Perímetros y Áreas de cuadriláteros', ok: true },
-              ].map((item, idx) => (
-                <div key={idx} className="p-3 bg-white border border-gray-200 rounded-xl flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] font-black uppercase text-purple-700">{item.u}</span>
-                    <div className="text-xs font-bold text-gray-900">{item.tema}</div>
-                  </div>
-                  <span className={`text-[11px] font-black px-2.5 py-1 rounded-full ${item.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
-                    {item.ok ? 'Dominado' : 'Por repasar'}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* ══ 15. GUÍA DOCENTE ══ */}
         {activeTool === 'guia-docente' && (
