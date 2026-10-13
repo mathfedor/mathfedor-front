@@ -702,22 +702,6 @@ export default function ConteoModal4to({ isOpen, onClose }: ConteoModal4toProps)
             </div>
           )}
 
-          {/* Botones de acción y mensaje al final del tablero (Imagen 1) */}
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center', marginTop: 12, alignItems: 'center' }}>
-            <button className="fz-btn g" onClick={() => handleSalto()}>
-              🐸 Saltar +{fmt(step)}
-            </button>
-            <button className="fz-btn o" onClick={handleAutoCount}>
-              ▶ {isAutoCounting ? 'Detener' : 'Contar solo'}
-            </button>
-            <button className="fz-btn b" onClick={handleStartJuego}>
-              🎯 ¿Qué número sigue?
-            </button>
-            <span className="fz-msg" id="t5cM">
-              {statusMsg}
-            </span>
-          </div>
-
           {/* Contenedor del juego ¿Qué número sigue? */}
           {juegoActive && (
             <div id="t5cJuego" style={{ marginTop: 10 }}>
@@ -744,6 +728,34 @@ export default function ConteoModal4to({ isOpen, onClose }: ConteoModal4toProps)
               </div>
             </div>
           )}
+        </div>
+
+        {/* Botones de acción y mensaje al final del popup */}
+        <div
+          style={{
+            display: 'flex',
+            gap: 8,
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            paddingTop: 12,
+            marginTop: 8,
+            alignItems: 'center',
+            borderTop: '1px solid #F1EDFC',
+          }}
+          className="flex-shrink-0"
+        >
+          <button className="fz-btn g" onClick={() => handleSalto()}>
+            🐸 Saltar +{fmt(step)}
+          </button>
+          <button className="fz-btn o" onClick={handleAutoCount}>
+            ▶ {isAutoCounting ? 'Detener' : 'Contar solo'}
+          </button>
+          <button className="fz-btn b" onClick={handleStartJuego}>
+            🎯 ¿Qué número sigue?
+          </button>
+          <span className="fz-msg" id="t5cM">
+            {statusMsg}
+          </span>
         </div>
       </div>
     </div>

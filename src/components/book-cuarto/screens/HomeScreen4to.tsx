@@ -46,7 +46,7 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
   const [showUniverseModal, setShowUniverseModal] = useState(false);
   const [activeToolModal, setActiveToolModal] = useState<string | null>(null);
 
-  const units = bookCurriculum4.UNITS || [];
+  const units = (bookCurriculum4 as any).UNITS || [];
 
   // Count total completed blocks (250 blocks in 4° grado)
   const completedBlocksCount = Object.keys(scores).filter((k) => (scores[k] || 0) > 0).length;
@@ -500,16 +500,6 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
             <span>📘</span>
             <span>Concepto</span>
           </button>
-          <button
-            type="button"
-            className="f5btn"
-            style={{ background: 'linear-gradient(145deg, #5C21A6, #8B3EDB)' }}
-            onClick={() => setActiveToolModal('historia')}
-            title="Historia del método Fedor"
-          >
-            <span>📜</span>
-            <span>Historia</span>
-          </button>
         </div>
 
         {/* 2. PARA JUGAR Y GANAR */}
@@ -614,6 +604,16 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
           >
             <span>👩‍🏫</span>
             <span>Guía Doc.</span>
+          </button>
+          <button
+            type="button"
+            className="f5btn"
+            style={{ background: 'linear-gradient(145deg, #16876A, #24C496)' }}
+            onClick={() => setActiveToolModal('historia')}
+            title="Historia del método Fedor"
+          >
+            <span>📜</span>
+            <span>Historia</span>
           </button>
           <button
             type="button"

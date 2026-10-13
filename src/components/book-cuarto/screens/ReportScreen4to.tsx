@@ -20,7 +20,7 @@ function getRank4to(xp: number) {
 export default function ReportScreen4to() {
   const { student, coins, streak, totalXP, scores, goScreen } = useBook4();
 
-  const units = bookCurriculum4.UNITS || [];
+  const units = (bookCurriculum4 as any).UNITS || [];
 
   const { unitStats, totalLevels, totalDone, globalPct } = useMemo(() => {
     let tt = 0;

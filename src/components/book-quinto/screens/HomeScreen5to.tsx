@@ -510,15 +510,6 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
           <button
             className="f5btn"
             style={{ background: 'linear-gradient(145deg,#E8650A,#F5A524)' }}
-            onClick={() => handleOpenTool('minijuegos')}
-            title="Minijuegos matemáticos de 5°"
-          >
-            <span>🎮</span>
-            <span>Minijuegos</span>
-          </button>
-          <button
-            className="f5btn"
-            style={{ background: 'linear-gradient(145deg,#E8650A,#F5A524)' }}
             onClick={() => handleOpenTool('desafio')}
             title="Desafío del día contrarreloj"
           >
@@ -537,6 +528,15 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
           <button
             className="f5btn"
             style={{ background: 'linear-gradient(145deg,#E8650A,#F5A524)' }}
+            onClick={() => handleOpenTool('minijuegos')}
+            title="Minijuegos matemáticos de 5°"
+          >
+            <span>🎮</span>
+            <span>Minijuegos</span>
+          </button>
+          <button
+            className="f5btn"
+            style={{ background: 'linear-gradient(145deg,#E8650A,#F5A524)' }}
             onClick={() => handleOpenTool('universo')}
             title="Explorador cósmico del Universo Fedor"
           >
@@ -551,11 +551,20 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
           <button
             className="f5btn"
             style={{ background: 'linear-gradient(145deg,#0E6BA8,#38BDF8)' }}
-            onClick={() => handleOpenTool('saber-cotidianos')}
-            title="Problemas cotidianos SABER 5°"
+            onClick={() => handleOpenTool('saber')}
+            title="Problemas tipo Prueba SABER 5°"
           >
-            <span>🛒</span>
-            <span>SABER cot</span>
+            <span>🏆</span>
+            <span>SABER</span>
+          </button>
+          <button
+            className="f5btn"
+            style={{ background: 'linear-gradient(145deg,#0E6BA8,#38BDF8)' }}
+            onClick={() => handleOpenTool('examen-final')}
+            title="Examen final de 5° grado"
+          >
+            <span>🎓</span>
+            <span>Examen final</span>
           </button>
           <button
             className="f5btn"
@@ -569,11 +578,11 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
           <button
             className="f5btn"
             style={{ background: 'linear-gradient(145deg,#0E6BA8,#38BDF8)' }}
-            onClick={() => handleOpenTool('examen-final')}
-            title="Examen final de 5° grado"
+            onClick={() => handleOpenTool('saber-cotidianos')}
+            title="Problemas cotidianos SABER 5°"
           >
-            <span>🎓</span>
-            <span>Examen final</span>
+            <span>🛒</span>
+            <span>SABER cotidianos</span>
           </button>
         </div>
 
@@ -583,11 +592,11 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
           <button
             className="f5btn"
             style={{ background: 'linear-gradient(145deg,#16876A,#24C496)' }}
-            onClick={() => handleOpenTool('curriculo')}
-            title="Estándares MEN Colombia y DBA de 5°"
+            onClick={() => handleOpenTool('guia-docente')}
+            title="Guía docente y orientaciones pedagógicas"
           >
-            <span>📑</span>
-            <span>Currículo</span>
+            <span>👩‍🏫</span>
+            <span>Guía Doc.</span>
           </button>
           <button
             className="f5btn"
@@ -601,11 +610,20 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
           <button
             className="f5btn"
             style={{ background: 'linear-gradient(145deg,#16876A,#24C496)' }}
-            onClick={() => handleOpenTool('guia-docente')}
-            title="Guía docente y orientaciones pedagógicas"
+            onClick={() => handleOpenTool('color')}
+            title="Color de fondo del libro"
           >
-            <span>👩‍🏫</span>
-            <span>Guía Doc.</span>
+            <span>🎨</span>
+            <span>Color</span>
+          </button>
+          <button
+            className="f5btn"
+            style={{ background: 'linear-gradient(145deg,#16876A,#24C496)' }}
+            onClick={() => handleOpenTool('curriculo')}
+            title="Estándares MEN Colombia y DBA de 5°"
+          >
+            <span>📑</span>
+            <span>Currículo</span>
           </button>
           <button
             className="f5btn"

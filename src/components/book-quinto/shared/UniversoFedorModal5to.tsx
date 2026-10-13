@@ -515,7 +515,7 @@ export default function UniversoFedorModal5to({
   const [selectedBody, setSelectedBody] = useState<CelestialBody | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const units = bookCurriculum5.UNITS || [];
+  const units = (bookCurriculum5 as any).UNITS || [];
 
   // Calculate unit percentage
   const getUnitPct = (uIdx: number) => {

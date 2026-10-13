@@ -355,6 +355,42 @@ export default function ConteoModal5to({ isOpen, onClose }: ConteoModal5toProps)
           color: #5C21A6;
           box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
+        .fz-btn {
+          border: none;
+          border-radius: 12px;
+          padding: 9px 15px;
+          font-weight: 900;
+          font-size: 13.5px;
+          cursor: pointer;
+          font-family: 'Nunito', sans-serif;
+          color: #fff;
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+          transition: transform .12s;
+        }
+        .fz-btn:hover {
+          transform: translateY(-2px);
+        }
+        .fz-btn.g {
+          background: linear-gradient(135deg, #16876A, #24C496);
+        }
+        .fz-btn.o {
+          background: linear-gradient(135deg, #FF8C2A, #E8650A);
+        }
+        .fz-btn.b {
+          background: linear-gradient(135deg, #0E6BA8, #38BDF8);
+        }
+        .fz-msg {
+          font-weight: 900;
+          font-size: 13px;
+          color: #3D1468;
+          padding: 7px 14px;
+          background: #FFFFFF;
+          border-radius: 12px;
+          border: 2px dashed #C5BFEE;
+          min-height: 20px;
+          display: inline-flex;
+          align-items: center;
+        }
       `}</style>
 
       {/* Main Modal Box */}
@@ -550,63 +586,11 @@ export default function ConteoModal5to({ isOpen, onClose }: ConteoModal5toProps)
             </div>
           ) : null}
 
-          {/* Tarjeta 3: Controles interactivos y tabla del 1 al 100 */}
+          {/* Tarjeta 3: Tablero de 100 números o múltiplos */}
           <div className="t5-card" style={{ marginBottom: 10, background: '#FFFFFF' }}>
-            <div className="flex flex-wrap items-center gap-2 mb-2.5">
-              <button
-                type="button"
-                id="t5cJump"
-                onClick={() => handleSalto()}
-                className="px-4 py-2 bg-[#5C21A6] hover:bg-[#4C198A] text-white font-black text-sm rounded-xl shadow cursor-pointer transition-transform active:scale-95"
-              >
-                🐸 ¡Saltar!
-              </button>
-              <button
-                type="button"
-                id="t5cAuto"
-                onClick={handleAutoCount}
-                className={`px-4 py-2 font-black text-sm rounded-xl shadow cursor-pointer transition-transform active:scale-95 text-white ${
-                  isAutoCounting ? 'bg-[#DC2626]' : 'bg-[#16876A] hover:bg-[#126B54]'
-                }`}
-              >
-                {isAutoCounting ? '⏹ Parar' : '▶ Contar solo'}
-              </button>
-              <button
-                type="button"
-                id="t5cReset"
-                onClick={() => {
-                  if (autoTimerRef.current) clearInterval(autoTimerRef.current);
-                  setIsAutoCounting(false);
-                  setJumpCount(0);
-                  setClickedNumbers(new Set());
-                  setStatusMsg('Reiniciado');
-                  playTono(380);
-                }}
-                className="px-4 py-2 bg-white border-2 border-[#C5BFEE] hover:bg-[#F8F5FF] text-[#5C21A6] font-black text-sm rounded-xl cursor-pointer"
-              >
-                🔄 Reiniciar
-              </button>
-              <button
-                type="button"
-                id="t5cPlay"
-                onClick={handleStartJuego}
-                className="px-4 py-2 bg-[#FF8C2A] hover:bg-[#E8650A] text-white font-black text-sm rounded-xl shadow cursor-pointer ml-auto"
-              >
-                🎮 ¿Qué número sigue?
-              </button>
-            </div>
-
-            {/* Barra de estado con mensaje */}
-            <div
-              id="t5cStatus"
-              className="p-3 bg-[#F8F5FF] border border-[#D9CCFF] rounded-xl text-center font-black text-sm text-[#3D1468]"
-            >
-              {statusMsg}
-            </div>
-
             {/* Tablero del 1 al 100 si no es número grande */}
             {!isGrande && (
-              <div className="mt-3">
+              <div className="mt-1">
                 <div className="text-center font-extrabold text-xs text-[#6B5E8A] mb-1">
                   Toca cualquier número para ver si pertenece a la tabla del {step}:
                 </div>
@@ -632,7 +616,7 @@ export default function ConteoModal5to({ isOpen, onClose }: ConteoModal5toProps)
 
             {/* Chips con múltiplos en números grandes */}
             {isGrande && (
-              <div className="mt-3 text-center">
+              <div className="mt-1 text-center">
                 <div className="font-extrabold text-xs text-[#6B5E8A] mb-1">
                   Múltiplos de {fmt(step)} alcanzados:
                 </div>
@@ -688,6 +672,34 @@ export default function ConteoModal5to({ isOpen, onClose }: ConteoModal5toProps)
               </div>
             </div>
           )}
+        </div>
+
+        {/* Botones de acción y mensaje al final del popup */}
+        <div
+          style={{
+            display: 'flex',
+            gap: 8,
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            paddingTop: 12,
+            marginTop: 8,
+            alignItems: 'center',
+            borderTop: '1px solid #F1EDFC',
+          }}
+          className="flex-shrink-0"
+        >
+          <button className="fz-btn g" onClick={() => handleSalto()}>
+            🐸 Saltar +{fmt(step)}
+          </button>
+          <button className="fz-btn o" onClick={handleAutoCount}>
+            ▶ {isAutoCounting ? 'Detener' : 'Contar solo'}
+          </button>
+          <button className="fz-btn b" onClick={handleStartJuego}>
+            🎯 ¿Qué número sigue?
+          </button>
+          <span className="fz-msg" id="t5cM">
+            {statusMsg}
+          </span>
         </div>
       </div>
     </div>

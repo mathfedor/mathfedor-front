@@ -330,15 +330,219 @@ const RAW_VIDEO_TOPICS: RawVideoTopic[] = [
   },
 ];
 
+// Contextos narrativos espaciales del HTML original (Sumy, Jack, Leo, Sora)
+const FV_CTX: Record<
+  string,
+  (a: number, b: number, r: number) => { hist: string; datos: string; preg: string; conc: string; moral: string }
+> = {
+  '+': (a, b) => ({
+    hist: `🧑‍🚀 Sumy recogió ${a} cristales espaciales y Jack le regaló ${b} más.`,
+    datos: `Datos: tenía ${a} · recibe ${b}`,
+    preg: '🤔 ¿Cuántos cristales tiene ahora en total?',
+    conc: '💡 SUMAR es juntar cantidades en un solo grupo.',
+    moral: '🎉 ¡Sumando, Sumy llenó su nave! Tú también puedes.',
+  }),
+  '-': (a, b) => ({
+    hist: `🧑‍🚀 Jack tenía ${a} monedas estelares y usó ${b} para reparar su nave.`,
+    datos: `Datos: tenía ${a} · gastó ${b}`,
+    preg: '🤔 ¿Cuántas monedas le quedan?',
+    conc: '💡 RESTAR es quitar una cantidad de otra.',
+    moral: '🎉 ¡Jack administró bien sus monedas! Sigue así.',
+  }),
+  '×': (a, b) => ({
+    hist: `🧑‍🚀 Leo organiza ${b} cajas con ${a} balones espaciales cada una.`,
+    datos: `Datos: ${b} cajas · ${a} balones por caja`,
+    preg: '🤔 ¿Cuántos balones hay en total?',
+    conc: '💡 MULTIPLICAR es sumar el mismo número varias veces.',
+    moral: '🎉 ¡Leo contó todo en segundos gracias a la multiplicación!',
+  }),
+  '÷': (a, b) => ({
+    hist: `🧑‍🚀 Sora reparte ${a} caramelos cósmicos entre ${b} amigos por igual.`,
+    datos: `Datos: ${a} caramelos · ${b} amigos`,
+    preg: '🤔 ¿Cuántos caramelos recibe cada amigo?',
+    conc: '💡 DIVIDIR es repartir en partes iguales.',
+    moral: '🎉 ¡Todos recibieron lo mismo! Así se comparte.',
+  }),
+};
+
+function fvParseOp(v: RawVideoTopic): VideoOperation | null {
+  const f0 = (v.frames && v.frames[0] && v.frames[0][0]) || '';
+  const m = f0.match(/(\d+)\s*([+\-×x÷])\s*(\d+)/);
+  if (/\d\s*\/\s*\d/.test(f0)) return null;
+  if (!m) return null;
+  const a = parseInt(m[1], 10);
+  const b = parseInt(m[3], 10);
+  let op = m[2];
+  if (op === 'x') op = '×';
+  if (op === '/') op = '÷';
+  let r = 0;
+  if (op === '+') r = a + b;
+  else if (op === '-') r = a - b;
+  else if (op === '×') r = a * b;
+  else {
+    if (b === 0) return null;
+    r = Math.floor(a / b);
+  }
+  return { a, b, op, r };
+}
+
+// Expansión a 12 fotogramas (historia, dibujo matemático, pasos y moraleja)
+function expandFrames(v: RawVideoTopic): { frames: VideoFrame[]; op: VideoOperation | null } {
+  const op = fvParseOp(v);
+  if (op && FV_CTX[op.op]) {
+    const c = FV_CTX[op.op](op.a, op.b, op.r);
+    const proceso = v.frames.slice(1, Math.max(1, v.frames.length - 1));
+    const list: VideoFrame[] = [
+      { text: c.hist, subt: 'Historia' },
+      { text: c.datos, subt: 'Los datos del problema' },
+      { text: c.preg, subt: 'Piensa antes de operar' },
+      { text: c.conc, subt: 'El concepto clave' },
+      { text: `${op.a} ${op.op} ${op.b} = ?`, subt: 'Planteamos la operación' },
+      { text: `DRAW:${op.a}${op.op}${op.b}`, subt: 'Míralo con dibujos', isDraw: true },
+    ];
+    proceso.forEach(([t, s]) => list.push({ text: t, subt: s }));
+    list.push({ text: `✅ ${op.a} ${op.op} ${op.b} = ${op.r}`, subt: '¡Resultado!' });
+    list.push({ text: c.moral, subt: 'Lo lograste' });
+    return { frames: list, op };
+  } else {
+    const list: VideoFrame[] = [
+      { text: `🧑‍🚀 Fedor te explica: ${v.t.replace(/ · 5°$/, '')}`, subt: 'Atento a cada paso' },
+    ];
+    v.frames.forEach(([t, s]) => list.push({ text: t, subt: s }));
+    list.push({ text: '🎉 ¡Ahora practícalo en los ejercicios!', subt: 'Tú puedes' });
+    return { frames: list, op: null };
+  }
+}
+
+// Paleta cromática idéntica a la referencia
+function fvPalette(k: string) {
+  const s = String(k || '');
+  if (/adicion/.test(s)) return { bg1: '#3D1468', bg2: '#581C87', acc: '#38D8A5', icon: '➕' };
+  if (/sustraccion/.test(s)) return { bg1: '#7C2D12', bg2: '#9A3412', acc: '#FCD34D', icon: '➖' };
+  if (/multi/.test(s)) return { bg1: '#9A3412', bg2: '#C2410C', acc: '#FEF3C7', icon: '✖' };
+  if (/division/.test(s)) return { bg1: '#0C4A6E', bg2: '#1E40AF', acc: '#38D8A5', icon: '➗' };
+  if (/divisores|primos|mcd|mcm/.test(s)) return { bg1: '#1D4ED8', bg2: '#2563EB', acc: '#DBEAFE', icon: '🔢' };
+  if (/frac/.test(s)) return { bg1: '#C2410C', bg2: '#EA580C', acc: '#FDE68A', icon: '🧊' };
+  if (/metrico|perimetro|area|volumen/.test(s)) return { bg1: '#0F766E', bg2: '#0D9488', acc: '#99F6E4', icon: '📏' };
+  if (/potencia|raiz/.test(s)) return { bg1: '#4C1D95', bg2: '#7C3AED', acc: '#FFE066', icon: '⚡' };
+  if (/estadistica|probabilidad/.test(s)) return { bg1: '#9D174D', bg2: '#BE185D', acc: '#FBCFE8', icon: '🎲' };
+  return { bg1: '#0F172A', bg2: '#1E293B', acc: '#F5C518', icon: '🌟' };
+}
+
+// Dibujo matemático interactivo del frame DRAW
+function fvDrawMath(ctx: CanvasRenderingContext2D, op: VideoOperation, pal: any, W: number, H: number) {
+  const { a, b, op: tipo, r } = op;
+  ctx.fillStyle = 'rgba(255,255,255,.95)';
+  ctx.fillRect(20, 40, W - 40, H - 80);
+
+  function circles(n: number, x0: number, y0: number, color: string) {
+    const per = Math.min(10, n);
+    const gap = 20;
+    for (let i = 0; i < n; i++) {
+      const cx = x0 + (i % per) * gap;
+      const cy = y0 + Math.floor(i / per) * gap;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.strokeStyle = '#333';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+  }
+
+  function bars() {
+    const maxV = Math.max(a, b, 1);
+    const bw = W - 120;
+    ctx.fillStyle = pal.bg2;
+    ctx.fillRect(60, 70, bw * (a / maxV), 34);
+    ctx.fillStyle = pal.bg1;
+    ctx.fillRect(60, 130, bw * (b / maxV), 34);
+    ctx.fillStyle = '#111';
+    ctx.font = 'bold 16px Nunito, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(String(a), 66 + bw * (a / maxV), 93);
+    ctx.fillText(String(b), 66 + bw * (b / maxV), 153);
+    ctx.textAlign = 'center';
+    ctx.fillText(`${tipo} resultado: ${r}`, W / 2, 200);
+  }
+
+  ctx.textAlign = 'center';
+  if (tipo === '+' && a <= 30 && b <= 30) {
+    circles(a, 60, 75, '#7C3AED');
+    ctx.fillStyle = '#111';
+    ctx.font = 'bold 22px Nunito';
+    ctx.fillText('+', W / 2, 120);
+    circles(b, 60, 150, '#38D8A5');
+    ctx.fillStyle = '#111';
+    ctx.font = 'bold 15px Nunito';
+    ctx.fillText(`${a} + ${b} = ${r}`, W / 2, H - 52);
+  } else if (tipo === '-' && a <= 30) {
+    circles(a, 60, 90, '#7C3AED');
+    const per = Math.min(10, a);
+    const gap = 20;
+    ctx.strokeStyle = '#DC2626';
+    ctx.lineWidth = 3;
+    for (let i = 0; i < Math.min(b, a); i++) {
+      const cx = 60 + (i % per) * gap;
+      const cy = 90 + Math.floor(i / per) * gap;
+      ctx.beginPath();
+      ctx.moveTo(cx - 10, cy - 10);
+      ctx.lineTo(cx + 10, cy + 10);
+      ctx.stroke();
+    }
+    ctx.fillStyle = '#111';
+    ctx.font = 'bold 15px Nunito';
+    ctx.fillText(`${a} elementos · tachamos ${b} · quedan ${r}`, W / 2, H - 52);
+  } else if (tipo === '×' && a <= 12 && b <= 12) {
+    const gap2 = 18;
+    const x0 = W / 2 - (a * gap2) / 2 + 9;
+    const y0 = 80;
+    for (let rr = 0; rr < b; rr++) {
+      for (let cc = 0; cc < a; cc++) {
+        ctx.beginPath();
+        ctx.arc(x0 + cc * gap2, y0 + rr * gap2, 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#F97316';
+        ctx.fill();
+        ctx.strokeStyle = '#7A3200';
+        ctx.stroke();
+      }
+    }
+    ctx.fillStyle = '#111';
+    ctx.font = 'bold 15px Nunito';
+    ctx.fillText(`${b} filas × ${a} columnas = ${r}`, W / 2, H - 52);
+  } else if (tipo === '÷' && b <= 8 && r <= 12) {
+    const gw = (W - 100) / b;
+    for (let g = 0; g < b; g++) {
+      const gx = 50 + g * gw + gw / 2;
+      ctx.strokeStyle = pal.bg2;
+      ctx.lineWidth = 2;
+      ctx.strokeRect(50 + g * gw + 4, 70, gw - 8, 110);
+      for (let e2 = 0; e2 < r; e2++) {
+        ctx.beginPath();
+        ctx.arc(gx, 90 + e2 * 14, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#38D8A5';
+        ctx.fill();
+      }
+    }
+    ctx.fillStyle = '#111';
+    ctx.font = 'bold 15px Nunito';
+    ctx.fillText(`${a} ÷ ${b} = ${r} en cada grupo`, W / 2, H - 52);
+  } else {
+    bars();
+  }
+}
+
 export default function VideosModal5to({ isOpen, onClose, onOpenIntro }: VideosModal5toProps) {
-  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
-  const [currentFrame, setCurrentFrame] = useState<number>(0);
+  const [selectedVideoIdx, setSelectedVideoIdx] = useState<number | null>(null);
+  const [frameIdx, setFrameIdx] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [autoVoice, setAutoVoice] = useState<boolean>(true);
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const playTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const selectedTopic = selectedIdx !== null ? RAW_VIDEO_TOPICS[selectedIdx] : null;
-
-  // Narration helper
+  // Audio helper
   const hablar = (text: string) => {
     try {
       if ('speechSynthesis' in window) {
@@ -351,117 +555,146 @@ export default function VideosModal5to({ isOpen, onClose, onOpenIntro }: VideosM
     } catch {}
   };
 
-  // Canvas drawing
+  const currentRawVideo = selectedVideoIdx !== null ? RAW_VIDEO_TOPICS[selectedVideoIdx] : null;
+  const expandedData = currentRawVideo ? expandFrames(currentRawVideo) : null;
+  const currentFrames = expandedData?.frames || [];
+  const currentOp = expandedData?.op || null;
+  const currentFrame = currentFrames[frameIdx] || null;
+
+  // Renderizar fotograma en Canvas 2D
   useEffect(() => {
-    if (!selectedTopic || !canvasRef.current) return;
+    if (selectedVideoIdx === null || !currentRawVideo || !currentFrame) return;
+
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const pal = fvPalette(currentRawVideo.k);
+    const W = 480;
+    const H = 270;
 
-    // Fondo pizarra oscura de clase
-    ctx.fillStyle = '#1A1033';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Fondo degradado estelar
+    const grad = ctx.createLinearGradient(0, 0, W, H);
+    grad.addColorStop(0, pal.bg1);
+    grad.addColorStop(1, pal.bg2);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
 
-    // Borde brillante
-    ctx.strokeStyle = '#7C3AED';
-    ctx.lineWidth = 4;
-    ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
-
-    const frame = selectedTopic.frames[currentFrame];
-    if (!frame) return;
-
-    const [content, subtitle] = frame;
-
-    // Header badge
-    ctx.fillStyle = '#FFD27A';
-    ctx.font = 'bold 15px Nunito, sans-serif';
-    ctx.fillText(`PASO ${currentFrame + 1} DE ${selectedTopic.frames.length}`, 24, 38);
-
-    // Texto de la operación (multilínea monoespaciada para columnas)
-    ctx.fillStyle = '#FFFFFF';
-    ctx.font = 'bold 22px Courier New, monospace';
-    const lines = content.split('\n');
-    lines.forEach((l, idx) => {
-      ctx.fillText(l, 36, 85 + idx * 30);
-    });
-
-    // Subtítulo pedagógico en la base
-    ctx.fillStyle = '#6EE7B7';
-    ctx.font = 'bold 16px Nunito, sans-serif';
-    ctx.fillText(subtitle, 24, canvas.height - 24);
-  }, [selectedTopic, currentFrame]);
-
-  // Autoplay loop
-  useEffect(() => {
-    if (!isPlaying || !selectedTopic) return;
-    const timer = setInterval(() => {
-      setCurrentFrame((prev) => {
-        if (prev + 1 >= selectedTopic.frames.length) {
-          setIsPlaying(false);
-          return prev;
-        }
-        const next = prev + 1;
-        hablar(selectedTopic.frames[next][1]);
-        return next;
-      });
-    }, 2800);
-    return () => clearInterval(timer);
-  }, [isPlaying, selectedTopic]);
-
-  const handleSelectTopic = (idx: number) => {
-    setSelectedIdx(idx);
-    setCurrentFrame(0);
-    setIsPlaying(false);
-    hablar(RAW_VIDEO_TOPICS[idx].frames[0][1]);
-  };
-
-  const handlePrev = () => {
-    if (!selectedTopic) return;
-    setIsPlaying(false);
-    setCurrentFrame((prev) => {
-      const next = Math.max(0, prev - 1);
-      hablar(selectedTopic.frames[next][1]);
-      return next;
-    });
-  };
-
-  const handleNext = () => {
-    if (!selectedTopic) return;
-    setIsPlaying(false);
-    setCurrentFrame((prev) => {
-      const next = Math.min(selectedTopic.frames.length - 1, prev + 1);
-      hablar(selectedTopic.frames[next][1]);
-      return next;
-    });
-  };
-
-  const handleTogglePlay = () => {
-    if (!selectedTopic) return;
-    if (!isPlaying && currentFrame + 1 >= selectedTopic.frames.length) {
-      setCurrentFrame(0);
+    // Estrellas de fondo
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    for (let s = 0; s < 30; s++) {
+      ctx.beginPath();
+      ctx.arc((s * 47) % W, (s * 61) % H, 1.2, 0, Math.PI * 2);
+      ctx.fill();
     }
-    setIsPlaying((p) => !p);
-  };
+
+    // Título de la lección en la parte superior del Canvas
+    ctx.fillStyle = pal.acc;
+    ctx.font = 'bold 13px Nunito, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(currentRawVideo.t, W / 2, 22);
+
+    // Si es frame de dibujo matemático
+    if (currentFrame.isDraw && currentOp) {
+      fvDrawMath(ctx, currentOp, pal, W, H);
+    } else {
+      // Texto principal centrado
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 20px Nunito, sans-serif';
+      ctx.textAlign = 'center';
+
+      const lines = currentFrame.text.split('\n');
+      const lineH = 26;
+      const startY = H / 2 - ((lines.length - 1) * lineH) / 2;
+      lines.forEach((line, i) => {
+        ctx.fillText(line, W / 2, startY + i * lineH);
+      });
+    }
+
+    // Narrar con voz automática si está habilitado
+    if (autoVoice && currentFrame.subt) {
+      const narText = currentFrame.isDraw
+        ? currentFrame.subt
+        : `${currentFrame.text}. ${currentFrame.subt}`;
+      hablar(narText.replace(/DRAW:[^\s]+/g, ''));
+    }
+  }, [selectedVideoIdx, frameIdx, autoVoice]);
+
+  // Manejo de reproducción automática
+  useEffect(() => {
+    if (!isPlaying || selectedVideoIdx === null) return;
+
+    playTimerRef.current = setTimeout(() => {
+      if (frameIdx < currentFrames.length - 1) {
+        setFrameIdx((prev) => prev + 1);
+      } else {
+        setIsPlaying(false);
+      }
+    }, 2800);
+
+    return () => {
+      if (playTimerRef.current) clearTimeout(playTimerRef.current);
+    };
+  }, [isPlaying, frameIdx, selectedVideoIdx, currentFrames.length]);
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-fadeIn">
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-fadeIn"
+    >
+      <style>{`
+        .video-grid::-webkit-scrollbar {
+          width: 6px;
+        }
+        .video-grid::-webkit-scrollbar-track {
+          background: #EDE8F9;
+          border-radius: 9999px;
+        }
+        .video-grid::-webkit-scrollbar-thumb {
+          background: #C5BFEE;
+          border-radius: 9999px;
+        }
+        .video-grid::-webkit-scrollbar-thumb:hover {
+          background: #A898D8;
+        }
+      `}</style>
+
+      {/* Tarjeta Modal Principal */}
       <div
-        className="w-full max-w-4xl bg-white rounded-3xl p-5 sm:p-7 shadow-2xl relative flex flex-col max-h-[92vh] overflow-hidden"
+        className={`w-full ${
+          selectedVideoIdx === null ? 'max-w-xl' : 'max-w-xl'
+        } bg-white rounded-3xl p-5 sm:p-6 shadow-2xl relative flex flex-col max-h-[94vh] overflow-hidden`}
         style={{ fontFamily: "'Nunito', sans-serif" }}
       >
-        {/* Header Modal */}
-        <div className="flex items-center justify-between pb-3 mb-3 border-b border-purple-100 flex-shrink-0">
-          <h2
-            className="text-2xl font-black text-[#5C21A6] flex items-center gap-2"
-            style={{ fontFamily: "'Baloo 2', sans-serif" }}
-          >
-            <span>🎬</span>
-            <span>Videos Animados Fedor 5°</span>
-          </h2>
+        {/* Encabezado Modal */}
+        <div className="flex items-center justify-between mb-3 flex-shrink-0">
+          <div className="flex items-center gap-2">
+            {selectedVideoIdx !== null && (
+              <button
+                type="button"
+                onClick={() => {
+                  setIsPlaying(false);
+                  setSelectedVideoIdx(null);
+                }}
+                className="w-8 h-8 rounded-full bg-[#F3EEFF] hover:bg-[#E9DEFF] text-[#5C21A6] font-black text-sm flex items-center justify-center transition-colors cursor-pointer"
+                title="Volver al catálogo de videos"
+              >
+                ←
+              </button>
+            )}
+            <h2
+              className="text-xl sm:text-2xl font-black text-[#3D1468] flex items-center gap-2"
+              style={{ fontFamily: "'Baloo 2', sans-serif" }}
+            >
+              <span className="text-xl sm:text-2xl">🎬</span>
+              <span>{selectedVideoIdx === null ? 'Videos animados' : 'Video Fedor'}</span>
+            </h2>
+          </div>
           <button
             type="button"
             onClick={onClose}
@@ -472,123 +705,178 @@ export default function VideosModal5to({ isOpen, onClose, onOpenIntro }: VideosM
           </button>
         </div>
 
-        {/* Scrollable Content */}
-        <div className="overflow-y-auto pr-1 space-y-4 flex-1">
-          {/* Banner Hero */}
-          <div
-            className="rounded-2xl p-4 sm:p-5 text-white shadow-md relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
-            style={{ background: 'linear-gradient(135deg, #1E0F4A 0%, #5C21A6 50%, #E8650A 100%)' }}
-          >
-            <div>
-              <h3
-                className="text-xl sm:text-2xl font-black mb-1 flex items-center gap-2"
-                style={{ fontFamily: "'Baloo 2', sans-serif" }}
-              >
-                <span>🎬</span>
-                <span>Videos Explicativos Paso a Paso</span>
-              </h3>
-              <p className="text-xs sm:text-sm font-semibold text-white/95">
-                25 animaciones dinámicas con voz para dominar cada operación de 5° grado.
-              </p>
+        {/* ══ VISTA 1: Catálogo de 25 Videos ══ */}
+        {selectedVideoIdx === null ? (
+          <div className="flex flex-col flex-1 overflow-hidden">
+            {/* Botón Destacado: Ver intro de despegue */}
+            <button
+              type="button"
+              onClick={() => {
+                if (onOpenIntro) onOpenIntro();
+                else {
+                  hablar('¡Iniciando secuencia de despegue estelar de quinto grado!');
+                }
+              }}
+              className="w-full mb-3.5 py-3 px-5 rounded-2xl font-black text-sm tracking-wide text-[#38BDF8] border-2 border-[#38BDF8] bg-gradient-to-r from-[#02070F] to-[#0a1f4a] shadow-lg hover:brightness-125 transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span className="text-lg">🚀</span>
+              <span>Ver intro de despegue</span>
+            </button>
+
+            {/* Cuadrícula de 2 columnas con los 25 videos */}
+            <div className="video-grid grid grid-cols-2 gap-2.5 overflow-y-auto pr-1.5 flex-1 max-h-[460px]">
+              {RAW_VIDEO_TOPICS.map((v, i) => {
+                const pal = fvPalette(v.k);
+                return (
+                  <button
+                    key={v.k}
+                    type="button"
+                    onClick={() => {
+                      setSelectedVideoIdx(i);
+                      setFrameIdx(0);
+                      setIsPlaying(true);
+                    }}
+                    style={{
+                      background: `linear-gradient(135deg, ${pal.bg1}, ${pal.bg2})`,
+                    }}
+                    className="p-3 rounded-2xl text-white font-black text-[13px] text-left shadow-md hover:-translate-y-0.5 hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer border border-white/10"
+                  >
+                    <span className="text-base flex-shrink-0">{pal.icon}</span>
+                    <span className="truncate">{v.t}</span>
+                  </button>
+                );
+              })}
             </div>
-            {onOpenIntro && (
+          </div>
+        ) : (
+          /* ══ VISTA 2: Reproductor Animado ══ */
+          <div className="flex flex-col items-center flex-1 overflow-visible">
+            {/* Título de la lección centrado */}
+            <div
+              className="text-base sm:text-lg font-black text-[#5C21A6] text-center mb-2 flex items-center justify-center gap-1.5"
+              style={{ fontFamily: "'Baloo 2', sans-serif" }}
+            >
+              <span>{fvPalette(currentRawVideo?.k || '').icon}</span>
+              <span>{currentRawVideo?.t}</span>
+            </div>
+
+            {/* Canvas de Animación 16:9 */}
+            <div className="w-full flex justify-center">
+              <canvas
+                ref={canvasRef}
+                width={480}
+                height={270}
+                style={{
+                  width: '100%',
+                  maxWidth: '480px',
+                  aspectRatio: '16/9',
+                  height: 'auto',
+                  borderRadius: '16px',
+                  border: '3px solid #5C21A6',
+                  boxShadow: '0 8px 24px rgba(92, 33, 166, 0.20)',
+                  display: 'block',
+                }}
+              />
+            </div>
+
+            {/* Barra de Progreso */}
+            <div className="w-full max-w-[480px] mx-auto mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-[#5C21A6] to-[#8B3EDB] transition-all duration-300"
+                style={{
+                  width: `${Math.round(((frameIdx + 1) / (currentFrames.length || 1)) * 100)}%`,
+                }}
+              />
+            </div>
+
+            {/* Subtítulo de Orientación */}
+            <div
+              className="mt-2 text-sm sm:text-base font-extrabold text-[#3D1468] text-center min-h-[22px]"
+              style={{ fontFamily: "'Baloo 2', sans-serif" }}
+            >
+              {currentFrame?.subt || ''}
+            </div>
+
+            {/* Fila 1 de Controles: Reproducir | Pausa | Narrar paso | Voz auto: SÍ */}
+            <div className="flex items-center justify-center gap-2 mt-3 flex-wrap">
+              <button
+                type="button"
+                onClick={() => setIsPlaying(true)}
+                className="px-3.5 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-[#16876A] to-[#24C496] text-white font-black text-xs sm:text-sm shadow cursor-pointer hover:brightness-110 flex items-center gap-1.5 transition-transform"
+              >
+                <span>▶</span>
+                <span>Reproducir</span>
+              </button>
               <button
                 type="button"
                 onClick={() => {
-                  onClose();
-                  onOpenIntro();
+                  setIsPlaying(false);
+                  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                  }
                 }}
-                className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-amber-950 font-black text-xs shadow-md cursor-pointer transition-transform hover:scale-105 active:scale-95 flex items-center gap-1.5 flex-shrink-0"
+                className="px-3.5 sm:px-4 py-2 rounded-xl bg-[#B45309] text-white font-black text-xs sm:text-sm shadow cursor-pointer hover:brightness-110 flex items-center gap-1.5 transition-transform"
               >
-                <span>🚀</span>
-                <span>Ver Intro Despegue</span>
+                <span>⏸</span>
+                <span>Pausa</span>
               </button>
-            )}
+              <button
+                type="button"
+                onClick={() => {
+                  if (currentFrame) {
+                    const nar = currentFrame.isDraw
+                      ? currentFrame.subt
+                      : `${currentFrame.text}. ${currentFrame.subt}`;
+                    hablar(nar.replace(/DRAW:[^\s]+/g, ''));
+                  }
+                }}
+                className="px-3.5 sm:px-4 py-2 rounded-xl bg-[#0E6BA8] text-white font-black text-xs sm:text-sm shadow cursor-pointer hover:brightness-110 flex items-center gap-1.5 transition-transform"
+              >
+                <span>🔊</span>
+                <span>Narrar paso</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setAutoVoice(!autoVoice)}
+                className="px-3.5 sm:px-4 py-2 rounded-xl bg-[#3D1468] text-[#FFE066] border border-[#F5C518] font-black text-xs sm:text-sm shadow cursor-pointer hover:brightness-110 flex items-center gap-1.5 transition-transform"
+              >
+                <span>{autoVoice ? '🔊' : '🔇'}</span>
+                <span>{autoVoice ? 'Voz auto: SÍ' : 'Voz auto: NO'}</span>
+              </button>
+            </div>
+
+            {/* Fila 2 de Controles: ◀ Anterior | Siguiente ▶ */}
+            <div className="flex items-center justify-center gap-2.5 mt-2">
+              <button
+                type="button"
+                disabled={frameIdx <= 0}
+                onClick={() => {
+                  setIsPlaying(false);
+                  setFrameIdx((p) => Math.max(0, p - 1));
+                }}
+                className="px-5 py-2 rounded-xl bg-[#5C21A6] text-white font-black text-xs sm:text-sm shadow cursor-pointer hover:brightness-110 flex items-center justify-center min-w-[110px] disabled:opacity-40 transition-transform"
+              >
+                ◀ Anterior
+              </button>
+              <button
+                type="button"
+                disabled={frameIdx >= currentFrames.length - 1}
+                onClick={() => {
+                  setIsPlaying(false);
+                  setFrameIdx((p) => Math.min(currentFrames.length - 1, p + 1));
+                }}
+                className="px-5 py-2 rounded-xl bg-[#5C21A6] text-white font-black text-xs sm:text-sm shadow cursor-pointer hover:brightness-110 flex items-center justify-center min-w-[110px] disabled:opacity-40 transition-transform"
+              >
+                Siguiente ▶
+              </button>
+            </div>
+
+            {/* Indicador de Paso al pie */}
+            <div className="text-[11px] font-bold text-[#7A7299] text-center mt-2 pb-1">
+              Paso {frameIdx + 1} de {currentFrames.length}
+            </div>
           </div>
-
-          {/* Si hay tema seleccionado, mostrar reproductor Canvas */}
-          {selectedTopic ? (
-            <div className="space-y-3 bg-[#F8F5FF] p-4 rounded-2xl border-2 border-[#D9CCFF]">
-              <div className="flex items-center justify-between">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsPlaying(false);
-                    setSelectedIdx(null);
-                  }}
-                  className="px-3 py-1.5 rounded-xl bg-purple-100 hover:bg-purple-200 text-purple-900 font-black text-xs cursor-pointer transition-colors"
-                >
-                  ← Volver a los 25 temas
-                </button>
-                <div className="font-black text-[#5C21A6] text-sm truncate px-2">{selectedTopic.t}</div>
-              </div>
-
-              {/* Canvas 2D */}
-              <div className="flex justify-center">
-                <canvas
-                  ref={canvasRef}
-                  width={560}
-                  height={300}
-                  className="w-full max-w-[560px] h-auto rounded-2xl shadow-lg border-2 border-purple-400 bg-[#1A1033]"
-                />
-              </div>
-
-              {/* Controles de reproducción */}
-              <div className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap pt-1">
-                <button
-                  type="button"
-                  onClick={handlePrev}
-                  disabled={currentFrame === 0}
-                  className="px-4 py-2 rounded-xl bg-white border border-purple-200 text-purple-900 font-black text-xs shadow-xs disabled:opacity-40 cursor-pointer"
-                >
-                  ⏮ Anterior
-                </button>
-                <button
-                  type="button"
-                  onClick={handleTogglePlay}
-                  className="px-6 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-black text-xs shadow-md cursor-pointer"
-                >
-                  {isPlaying ? '⏸ Pausar' : '▶ Reproducir'}
-                </button>
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  disabled={currentFrame >= selectedTopic.frames.length - 1}
-                  className="px-4 py-2 rounded-xl bg-white border border-purple-200 text-purple-900 font-black text-xs shadow-xs disabled:opacity-40 cursor-pointer"
-                >
-                  Siguiente ⏭
-                </button>
-                <button
-                  type="button"
-                  onClick={() => hablar(selectedTopic.frames[currentFrame][1])}
-                  className="px-3.5 py-2 rounded-xl bg-amber-100 text-amber-900 hover:bg-amber-200 font-black text-xs cursor-pointer"
-                >
-                  🔊 Repetir audio
-                </button>
-              </div>
-            </div>
-          ) : (
-            /* Lista de los 25 temas de video */
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-2.5">
-              {RAW_VIDEO_TOPICS.map((vt, idx) => (
-                <button
-                  key={vt.k}
-                  type="button"
-                  onClick={() => handleSelectTopic(idx)}
-                  className="p-3 rounded-2xl bg-white hover:bg-purple-50/80 border-2 border-[#E4DCFA] hover:border-[#7C3AED] text-left transition-all hover:scale-[1.02] shadow-xs cursor-pointer flex items-center justify-between gap-2"
-                >
-                  <div className="flex items-center gap-2.5 truncate">
-                    <span className="w-7 h-7 rounded-lg bg-purple-100 text-[#5C21A6] font-black text-xs flex items-center justify-center flex-shrink-0">
-                      {idx + 1}
-                    </span>
-                    <span className="text-xs font-black text-gray-800 truncate">{vt.t}</span>
-                  </div>
-                  <span className="text-purple-600 font-black text-sm flex-shrink-0">▶</span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        )}
       </div>
     </div>
   );
