@@ -10,179 +10,237 @@ interface LaboratorioVisualModal5toProps {
 
 interface LabTool {
   id: string;
-  icon: string;
   name: string;
   color: string;
   labels: string[];
   defaults: (string | number)[];
   genText: (v: (string | number)[]) => string;
+  iconRender: React.ReactNode;
 }
 
 const LAB_TOOLS: LabTool[] = [
   // Fila 1
   {
     id: 'sumar',
-    icon: '➕',
     name: 'Sumar',
-    color: '#5C21A6',
+    color: '#581C87',
     labels: ['a', 'b'],
     defaults: [47, 35],
     genText: (v) => `${v[0]} + ${v[1]} = ?`,
+    iconRender: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+        <defs>
+          <linearGradient id="plus3d" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#DDD6FE" />
+            <stop offset="100%" stopColor="#A78BFA" />
+          </linearGradient>
+        </defs>
+        <path d="M12 4v16m-8-8h16" stroke="url(#plus3d)" strokeWidth="4.5" strokeLinecap="round" />
+      </svg>
+    ),
   },
   {
     id: 'restar',
-    icon: '➖',
     name: 'Restar',
     color: '#7C3AED',
     labels: ['a', 'b'],
     defaults: [82, 47],
     genText: (v) => `${v[0]} - ${v[1]} = ?`,
+    iconRender: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+        <defs>
+          <linearGradient id="minus3d" x1="12" y1="9" x2="12" y2="15" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#DDD6FE" />
+            <stop offset="100%" stopColor="#A78BFA" />
+          </linearGradient>
+        </defs>
+        <path d="M5 12h14" stroke="url(#minus3d)" strokeWidth="4.5" strokeLinecap="round" />
+      </svg>
+    ),
   },
   {
     id: 'multiplicar',
-    icon: '✖️',
     name: 'Multiplicar',
-    color: '#E8650A',
+    color: '#EA580C',
     labels: ['a', 'b'],
     defaults: [6, 7],
     genText: (v) => `${v[0]} × ${v[1]} = ?`,
+    iconRender: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+        <defs>
+          <linearGradient id="mult3d" x1="12" y1="4" x2="12" y2="20" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#DDD6FE" />
+            <stop offset="100%" stopColor="#A78BFA" />
+          </linearGradient>
+        </defs>
+        <path d="M6 6l12 12M18 6L6 18" stroke="url(#mult3d)" strokeWidth="4.5" strokeLinecap="round" />
+      </svg>
+    ),
   },
   {
     id: 'repartir',
-    icon: '🍬',
     name: 'Repartir',
     color: '#16876A',
     labels: ['total', 'entre'],
     defaults: [23, 4],
     genText: (v) => `Se reparten ${v[0]} dulces entre ${v[1]} niños`,
+    iconRender: <span className="text-2xl sm:text-3xl leading-none select-none">🍬</span>,
   },
   {
     id: 'fraccion',
-    icon: '🍕',
     name: 'Fracción',
     color: '#F59E0B',
     labels: ['arriba', 'abajo'],
     defaults: [6, 8],
     genText: (v) => `Simplifica la fracción ${v[0]}/${v[1]} a su mínima expresión.`,
+    iconRender: <span className="text-2xl sm:text-3xl leading-none select-none">🍕</span>,
   },
   {
     id: 'sumar-fracciones',
-    icon: '➕',
     name: 'Sumar fracciones',
     color: '#D97706',
     labels: ['a/b', 'c/d'],
     defaults: ['1/2', '1/3'],
     genText: (v) => `${v[0]} + ${v[1]} = ?`,
+    iconRender: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+        <defs>
+          <linearGradient id="plusFrac" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#DDD6FE" />
+            <stop offset="100%" stopColor="#A78BFA" />
+          </linearGradient>
+        </defs>
+        <path d="M12 4v16m-8-8h16" stroke="url(#plusFrac)" strokeWidth="4.5" strokeLinecap="round" />
+      </svg>
+    ),
   },
   // Fila 2
   {
     id: 'divisores',
-    icon: '🔍',
     name: 'Divisores',
     color: '#0F766E',
     labels: ['número'],
     defaults: [24],
     genText: (v) => `¿Cuáles son los divisores de ${v[0]}? divisor`,
+    iconRender: <span className="text-2xl sm:text-3xl leading-none select-none">🔍</span>,
   },
   {
     id: 'mcd',
-    icon: '🔗',
     name: 'MCD',
     color: '#0E7490',
     labels: ['a', 'b'],
     defaults: [12, 18],
     genText: (v) => `¿Cuál es el MCD de ${v[0]} y ${v[1]}?`,
+    iconRender: <span className="text-2xl sm:text-3xl leading-none select-none">🔗</span>,
   },
   {
     id: 'mcm',
-    icon: '🔁',
     name: 'MCM',
-    color: '#0369A1',
+    color: '#0284C7',
     labels: ['a', 'b'],
     defaults: [4, 6],
     genText: (v) => `¿Cuál es el MCM de ${v[0]} y ${v[1]}?`,
+    iconRender: (
+      <div className="w-7 h-7 rounded-lg bg-sky-300/35 flex items-center justify-center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+          <path d="M3 3v5h5" />
+          <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+          <path d="M21 21v-5h-5" />
+        </svg>
+      </div>
+    ),
   },
   {
     id: 'potencia',
-    icon: '⚡',
     name: 'Potencia',
     color: '#7C3AED',
     labels: ['base', 'exp.'],
     defaults: [3, 2],
     genText: (v) => `Calcula: ${v[0]}^${v[1]} = ?`,
+    iconRender: <span className="text-2xl sm:text-3xl leading-none select-none">⚡</span>,
   },
   {
     id: 'raiz',
-    icon: '√',
     name: 'Raíz',
     color: '#9333EA',
     labels: ['número'],
     defaults: [36],
     genText: (v) => `Calcula: √${v[0]} = ?`,
+    iconRender: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M4 14l3.5 5L13 5h7" stroke="#FFFFFF" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
   },
   {
     id: 'unidades',
-    icon: '📏',
     name: 'Unidades',
     color: '#0891B2',
     labels: ['valor', 'de', 'a'],
     defaults: [3, 'm', 'cm'],
     genText: (v) => `¿A cuántos ${v[2]} equivalen ${v[0]} ${v[1]}?`,
+    iconRender: <span className="text-2xl sm:text-3xl leading-none select-none">📏</span>,
   },
   // Fila 3
   {
     id: 'area',
-    icon: '🟩',
     name: 'Área',
     color: '#059669',
     labels: ['largo', 'ancho'],
     defaults: [6, 4],
     genText: (v) => `Calcula el área (en m²) de un rectángulo de ${v[0]} m × ${v[1]} m.`,
+    iconRender: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="3" width="18" height="18" rx="5" fill="#34D399" />
+        <rect x="5" y="5" width="14" height="14" rx="3" fill="#A7F3D0" fillOpacity="0.5" />
+      </svg>
+    ),
   },
   {
     id: 'volumen',
-    icon: '🧊',
     name: 'Volumen',
     color: '#0D9488',
     labels: ['l', 'a', 'h'],
     defaults: [3, 2, 4],
     genText: (v) => `Calcula el volumen (en m³) de un prisma de ${v[0]} m × ${v[1]} m × ${v[2]} m.`,
+    iconRender: <span className="text-2xl sm:text-3xl leading-none select-none">🧊</span>,
   },
   {
     id: 'porcentaje',
-    icon: '％',
     name: 'Porcentaje',
     color: '#BE185D',
     labels: ['%', 'de'],
     defaults: [25, 200],
     genText: (v) => `Halla el ${v[0]} % de ${v[1]}.`,
+    iconRender: <span className="text-2xl font-black text-white leading-none select-none">%</span>,
   },
   {
     id: 'balanza',
-    icon: '⚖️',
     name: 'Balanza',
-    color: '#3D1468',
+    color: '#3730A3',
     labels: ['x +', '='],
     defaults: [7, 15],
     genText: (v) => `Resuelve la ecuación: x + ${v[0]} = ${v[1]}`,
+    iconRender: <span className="text-2xl sm:text-3xl leading-none select-none">⚖️</span>,
   },
   {
     id: 'dado',
-    icon: '🎲',
     name: 'Dado',
     color: '#B45309',
     labels: [],
     defaults: [],
     genText: () => '¿Cuál es la probabilidad al lanzar un dado de 6 caras?',
+    iconRender: <span className="text-2xl sm:text-3xl leading-none select-none">🎲</span>,
   },
   {
     id: 'bolsa',
-    icon: '👜',
     name: 'Bolsa',
     color: '#92400E',
     labels: ['rojas', 'total'],
     defaults: [3, 10],
     genText: (v) => `En una bolsa hay ${v[1]} bolas y ${v[0]} son rojas.`,
+    iconRender: <span className="text-2xl sm:text-3xl leading-none select-none">👜</span>,
   },
 ];
 
@@ -243,11 +301,11 @@ export default function LaboratorioVisualModal5to({ isOpen, onClose }: Laborator
       const generatedHtml = FZ.crear ? FZ.crear({ q: queryText, ctx: '' }, 'ej') : '';
       setHtmlContent(
         generatedHtml ||
-          '<div class="p-6 text-center text-gray-500 font-bold text-sm bg-purple-50 rounded-2xl border border-purple-200">Prueba con otros números</div>'
+          '<div class="p-8 text-center text-gray-500 font-bold text-sm bg-purple-50 rounded-2xl border border-purple-200">Prueba con otros números</div>'
       );
     } catch {
       setHtmlContent(
-        '<div class="p-6 text-center text-gray-500 font-bold text-sm bg-purple-50 rounded-2xl border border-purple-200">Prueba con otros números</div>'
+        '<div class="p-8 text-center text-gray-500 font-bold text-sm bg-purple-50 rounded-2xl border border-purple-200">Prueba con otros números</div>'
       );
     }
   };
@@ -283,13 +341,27 @@ export default function LaboratorioVisualModal5to({ isOpen, onClose }: Laborator
     <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-fadeIn">
       {/* Visual lab styles injected directly */}
       <style>{`
-        /* ── Visual Lab Styles ── */
+        /* ── Visual Lab Scrollbar & Styles ── */
+        .lab-modal-scroll::-webkit-scrollbar {
+          width: 8px;
+        }
+        .lab-modal-scroll::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .lab-modal-scroll::-webkit-scrollbar-thumb {
+          background: #DDD6FE;
+          border-radius: 8px;
+        }
+        .lab-modal-scroll::-webkit-scrollbar-thumb:hover {
+          background: #A78BFA;
+        }
+
         .fz {
-          margin: 12px 0 14px;
-          border-radius: 20px;
-          background: linear-gradient(160deg, #F8F5FF, #EEF7FF);
-          border: 2.5px solid #D9CCFF;
-          box-shadow: 0 8px 22px rgba(60, 20, 120, 0.10);
+          margin: 0 0 16px;
+          border-radius: 24px;
+          background: #FFFFFF;
+          border: 2px solid #E9D5FF;
+          box-shadow: 0 6px 24px rgba(92, 33, 166, 0.08);
           overflow: hidden;
           font-family: 'Nunito', sans-serif;
           color: #1A1033;
@@ -300,114 +372,147 @@ export default function LaboratorioVisualModal5to({ isOpen, onClose }: Laborator
           align-items: center;
           justify-content: space-between;
           gap: 8px;
-          padding: 10px 16px;
-          background: linear-gradient(90deg, var(--fz1, #5C21A6), var(--fz2, #8B3EDB));
+          padding: 14px 22px;
+          background: #7C3AED !important;
           color: #FFFFFF !important;
         }
         .fz-h .t {
           flex: 1;
           font-family: 'Baloo 2', Nunito, sans-serif;
           font-weight: 900;
-          font-size: 16px;
+          font-size: 17px;
           letter-spacing: .01em;
           color: #FFFFFF !important;
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: 8px;
         }
         .fz-h .t small {
           font-family: 'Nunito', sans-serif;
-          font-weight: 700;
-          font-size: 13px;
+          font-weight: 600;
+          font-size: 13.5px;
           opacity: .9;
           color: rgba(255, 255, 255, 0.9) !important;
+          margin-left: 6px;
         }
         .fz-h button {
           background: rgba(255, 255, 255, 0.2);
-          border: 1.5px solid rgba(255, 255, 255, 0.45);
+          border: 1px solid rgba(255, 255, 255, 0.35);
           color: #FFFFFF;
-          border-radius: 10px;
-          padding: 4px 10px;
+          border-radius: 12px;
+          width: 36px;
+          height: 36px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           font-weight: 900;
           cursor: pointer;
-          font-family: 'Nunito', sans-serif;
-          font-size: 14px;
+          font-size: 16px;
+          transition: background 0.15s ease;
+        }
+        .fz-h button:hover {
+          background: rgba(255, 255, 255, 0.3);
         }
         .fz-b {
-          padding: 16px 12px;
+          padding: 26px 22px 18px;
           overflow-x: auto;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background: #FFFFFF;
         }
         .fz.min .fz-b, .fz.min .fz-f {
           display: none;
         }
+        .fz-tip {
+          display: block !important;
+          font-size: 13.5px !important;
+          font-weight: 800 !important;
+          color: #374151 !important;
+          margin: 18px 0 10px !important;
+          text-align: center !important;
+          font-family: 'Nunito', sans-serif !important;
+        }
         .fz-f {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
-          padding: 0 16px 16px;
-          align-items: center;
+          display: flex !important;
+          flex-wrap: wrap !important;
+          gap: 12px !important;
+          padding: 6px 22px 24px !important;
+          align-items: center !important;
+          justify-content: center !important;
+          background: #FFFFFF !important;
+          border-top: none !important;
         }
         .fz-btn {
-          border: none;
-          border-radius: 12px;
-          padding: 9px 15px;
-          font-weight: 900;
-          font-size: 13.5px;
-          cursor: pointer;
-          font-family: 'Nunito', sans-serif;
-          color: #FFFFFF;
-          background: linear-gradient(135deg, #5C21A6, #8B3EDB);
-          box-shadow: 0 4px 12px rgba(92, 33, 166, 0.28);
-          transition: transform 0.12s ease, filter 0.15s ease;
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
+          border: none !important;
+          border-radius: 12px !important;
+          padding: 10px 18px !important;
+          font-weight: 900 !important;
+          font-size: 14px !important;
+          cursor: pointer !important;
+          font-family: 'Nunito', sans-serif !important;
+          color: #FFFFFF !important;
+          transition: transform 0.12s ease, filter 0.15s ease !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          gap: 8px !important;
         }
         .fz-btn:hover {
-          transform: translateY(-2px);
-          filter: brightness(1.06);
+          transform: translateY(-2px) !important;
+          filter: brightness(1.06) !important;
         }
-        .fz-btn.o { background: linear-gradient(135deg, #FF8C2A, #E8650A); }
-        .fz-btn.g { background: linear-gradient(135deg, #16876A, #24C496); }
-        .fz-btn.b { background: linear-gradient(135deg, #0E6BA8, #38BDF8); }
-        .fz-btn.w { background: #FFFFFF; color: #5C21A6; border: 2px solid #C5BFEE; box-shadow: none; }
-        .fz-btn.on { outline: 3px solid #FFE066; }
+        .fz-btn.w {
+          background: #FFFFFF !important;
+          color: #5C21A6 !important;
+          border: 2px solid #C5BFEE !important;
+          box-shadow: 0 2px 8px rgba(92, 33, 166, 0.08) !important;
+        }
+        .fz-btn.b {
+          background: linear-gradient(135deg, #0284C7, #0EA5E9) !important;
+          box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25) !important;
+        }
+        .fz-btn.g {
+          background: linear-gradient(135deg, #10B981, #059669) !important;
+          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25) !important;
+        }
+        .fz-btn.o {
+          background: linear-gradient(135deg, #FF8C2A, #E8650A) !important;
+        }
         .fz-msg {
-          font-weight: 900;
-          font-size: 14px;
-          color: #3D1468;
-          padding: 8px 12px;
-          background: #FFFFFF;
-          border-radius: 12px;
-          border: 2px dashed #C5BFEE;
-          min-height: 24px;
-          display: inline-block;
-        }
-        .fz-tip {
-          font-size: 12.5px;
-          font-weight: 800;
-          color: #6B5E8A;
-          margin-top: 10px;
+          display: block !important;
+          width: 100% !important;
+          text-align: center !important;
+          font-weight: 900 !important;
+          font-size: 15px !important;
+          color: #3D1468 !important;
+          padding: 11px 18px !important;
+          background: #FFFFFF !important;
+          border-radius: 12px !important;
+          border: 2px dashed #C5BFEE !important;
+          min-height: 24px !important;
+          margin-top: 6px !important;
+          font-family: 'Baloo 2', Nunito, sans-serif !important;
         }
         /* Pizarra en columnas */
         .fz-col {
           border-collapse: separate;
-          border-spacing: 5px;
+          border-spacing: 6px;
           margin: 0 auto;
         }
         .fz-col th {
           font-size: 13px;
           font-weight: 900;
           color: #FFFFFF;
-          border-radius: 10px;
-          padding: 5px 8px;
-          width: 48px;
-          min-width: 44px;
+          border-radius: 8px;
+          padding: 5px 12px;
+          width: 50px;
+          min-width: 48px;
           text-align: center;
         }
         .fz-col td {
-          width: 48px;
-          height: 48px;
+          width: 50px;
+          height: 50px;
           text-align: center;
           font-family: 'Baloo 2', sans-serif;
           font-size: 28px;
@@ -415,9 +520,14 @@ export default function LaboratorioVisualModal5to({ isOpen, onClose }: Laborator
           color: #1A1033;
           border-radius: 12px;
           background: #FFFFFF;
-          border: 2px solid #EEE8FB;
+          border: 2px solid #E2E8F0;
         }
-        .fz-col td.op { background: transparent; border: none; color: #E8650A; }
+        .fz-col td.op {
+          background: transparent;
+          border: none;
+          color: #EA580C;
+          font-size: 30px;
+        }
         .fz-col td.nb { background: transparent; border: none; }
         .fz-col td.cm { width: 14px; background: transparent; border: none; font-size: 32px; color: #C94B22; }
         .fz-col tr.cr td { height: 28px; font-size: 16px; background: transparent; border: none; }
@@ -434,7 +544,18 @@ export default function LaboratorioVisualModal5to({ isOpen, onClose }: Laborator
           outline: none;
         }
         .fz-col tr.cr input { font-size: 16px; color: #C94B22; }
-        .fz-col tr.rs td { background: #FFFBEA; border: 2.5px dashed #F5C518; }
+        .fz-col tr.ln td {
+          height: 4px;
+          background: #1E1B4B;
+          border: none;
+          border-radius: 2px;
+          padding: 0;
+        }
+        .fz-col tr.rs td {
+          background: #FFFDF0;
+          border: 2.5px dashed #F59E0B;
+          border-radius: 12px;
+        }
         .fz-col tr.rs td.op, .fz-col tr.rs td.cm { background: transparent; border: none; }
         /* Bloques base 10 */
         .fz-blk { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; align-items: flex-end; padding: 10px; }
@@ -491,51 +612,120 @@ export default function LaboratorioVisualModal5to({ isOpen, onClose }: Laborator
 
       {/* Main Modal Card */}
       <div
-        className="w-full max-w-4xl bg-white rounded-3xl p-5 sm:p-7 shadow-2xl relative flex flex-col max-h-[92vh] overflow-hidden"
-        style={{ fontFamily: "'Nunito', sans-serif" }}
+        className="w-full max-w-[900px] bg-white rounded-[32px] shadow-2xl relative flex flex-col max-h-[92vh] overflow-hidden"
+        style={{
+          fontFamily: "'Nunito', sans-serif",
+          border: '2px solid #EDE9FE',
+          boxShadow: '0 25px 65px rgba(25, 10, 50, 0.35)',
+        }}
       >
         {/* Header Modal */}
-        <div className="flex items-center justify-between pb-3 mb-3 border-b border-purple-100">
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '24px 32px 16px',
+            flexShrink: 0,
+          }}
+        >
           <h2
-            className="text-2xl font-black text-[#5C21A6] flex items-center gap-2"
-            style={{ fontFamily: "'Baloo 2', sans-serif" }}
+            style={{
+              fontFamily: "'Baloo 2', sans-serif",
+              fontSize: '26px',
+              fontWeight: 900,
+              color: '#2E1065',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              margin: 0,
+            }}
           >
-            <span>🧠</span>
+            <span style={{ fontSize: '28px' }}>🧠</span>
             <span>Laboratorio visual</span>
           </h2>
           <button
             type="button"
             onClick={onClose}
             aria-label="Cerrar modal"
-            className="w-10 h-10 rounded-full bg-[#F3EEFF] hover:bg-[#E9DEFF] text-[#5C21A6] font-black text-xl flex items-center justify-center transition-colors cursor-pointer"
+            style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              backgroundColor: '#F5F2FF',
+              color: '#6B21A8',
+              fontWeight: 900,
+              fontSize: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'background-color 0.15s ease',
+            }}
           >
             ✕
           </button>
         </div>
 
-        {/* Scrollable Modal Content */}
-        <div className="overflow-y-auto pr-1 space-y-4 flex-1">
+        {/* Scrollable Modal Content with clean spacing and limits */}
+        <div
+          className="lab-modal-scroll"
+          style={{
+            overflowY: 'auto',
+            flex: 1,
+            padding: '0 32px 28px',
+          }}
+        >
           {/* Banner Hero */}
           <div
-            className="rounded-2xl p-4 sm:p-5 text-white shadow-md relative overflow-hidden"
             style={{
-              background: 'linear-gradient(135deg, #BE185D 0%, #7C3AED 55%, #0E6BA8 100%)',
+              background: 'linear-gradient(90deg, #A8227E 0%, #7C3AED 50%, #2563EB 100%)',
+              borderRadius: '20px',
+              padding: '22px 26px',
+              marginBottom: '24px',
+              boxShadow: '0 6px 20px rgba(124, 58, 237, 0.18)',
             }}
           >
             <h3
-              className="text-xl sm:text-2xl font-black mb-1 flex items-center gap-2"
-              style={{ fontFamily: "'Baloo 2', sans-serif" }}
+              style={{
+                fontFamily: "'Baloo 2', sans-serif",
+                fontSize: '24px',
+                fontWeight: 900,
+                color: '#FFFFFF',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                margin: '0 0 6px',
+                lineHeight: 1.2,
+              }}
             >
-              <span>🧠</span>
+              <span style={{ fontSize: '26px' }}>🧠</span>
               <span>Laboratorio visual</span>
             </h3>
-            <p className="text-xs sm:text-sm font-semibold text-white/95">
+            <p
+              style={{
+                fontFamily: "'Nunito', sans-serif",
+                fontSize: '14px',
+                fontWeight: 700,
+                color: 'rgba(255, 255, 255, 0.95)',
+                lineHeight: 1.4,
+                margin: 0,
+              }}
+            >
               Elige una herramienta, cambia los números y experimenta. ¡Aquí puedes jugar sin límite!
             </p>
           </div>
 
-          {/* 18 Tools Grid (3 rows x 6 columns) */}
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-2.5">
+          {/* 18 Tools Grid (Exactly 3 rows x 6 columns) */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(6, 1fr)',
+              gap: '12px',
+              marginBottom: '26px',
+            }}
+          >
             {LAB_TOOLS.map((tool, idx) => {
               const isSelected = selectedIdx === idx;
               return (
@@ -543,17 +733,41 @@ export default function LaboratorioVisualModal5to({ isOpen, onClose }: Laborator
                   key={tool.id}
                   type="button"
                   onClick={() => handleSelectTool(idx)}
-                  className={`h-[78px] rounded-2xl text-center text-white font-black cursor-pointer transition-all flex flex-col items-center justify-center gap-1 shadow-md hover:scale-[1.03] active:scale-95 ${
-                    isSelected
-                      ? 'ring-4 ring-yellow-400 ring-offset-2 scale-105 shadow-xl z-10'
-                      : 'opacity-95 hover:opacity-100'
-                  }`}
                   style={{
+                    height: '82px',
+                    borderRadius: '18px',
                     background: `linear-gradient(145deg, ${tool.color}, ${tool.color}E6)`,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '8px 4px',
+                    cursor: 'pointer',
+                    border: 'none',
+                    boxShadow: isSelected ? '0 8px 20px rgba(0,0,0,0.25)' : '0 3px 8px rgba(0,0,0,0.12)',
+                    outline: isSelected ? '3px solid rgba(255,255,255,0.85)' : 'none',
+                    transform: isSelected ? 'translateY(-2px)' : 'none',
+                    transition: 'all 0.15s ease',
                   }}
                 >
-                  <span className="text-2xl sm:text-3xl leading-none">{tool.icon}</span>
-                  <span className="text-xs sm:text-[13px] font-black leading-tight truncate px-1">
+                  <div style={{ height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {tool.iconRender}
+                  </div>
+                  <span
+                    style={{
+                      fontSize: '12px',
+                      fontWeight: 900,
+                      color: '#FFFFFF',
+                      lineHeight: 1.2,
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      maxWidth: '100%',
+                      padding: '0 4px',
+                      textAlign: 'center',
+                      marginTop: '4px',
+                    }}
+                  >
                     {tool.name}
                   </span>
                 </button>
@@ -562,21 +776,59 @@ export default function LaboratorioVisualModal5to({ isOpen, onClose }: Laborator
           </div>
 
           {/* Input Control Row */}
-          <div className="flex items-center justify-center gap-3.5 my-3 flex-wrap">
-            <b
-              className="font-black text-lg sm:text-xl text-[#3D1468] flex items-center gap-1.5"
-              style={{ fontFamily: "'Baloo 2', sans-serif" }}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              gap: '18px',
+              marginBottom: '26px',
+              flexWrap: 'wrap',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                height: '52px',
+                color: '#2E1065',
+                fontWeight: 900,
+                fontSize: '22px',
+                fontFamily: "'Baloo 2', sans-serif",
+              }}
             >
-              <span>{currentTool.icon}</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <defs>
+                  <linearGradient id="rowPlus" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#C4B5FD" />
+                    <stop offset="100%" stopColor="#8B5CF6" />
+                  </linearGradient>
+                </defs>
+                <path d="M12 4v16m-8-8h16" stroke="url(#rowPlus)" strokeWidth="4.5" strokeLinecap="round" />
+              </svg>
               <span>{currentTool.name}:</span>
-            </b>
+            </div>
 
             {currentTool.labels.map((lbl, k) => (
-              <label
+              <div
                 key={k}
-                className="flex flex-col items-center text-xs font-black text-[#6B5E8A] gap-1"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '6px',
+                }}
               >
-                <span>{lbl}</span>
+                <span
+                  style={{
+                    fontSize: '13px',
+                    fontWeight: 800,
+                    color: '#64748B',
+                  }}
+                >
+                  {lbl}
+                </span>
                 <input
                   type="text"
                   value={inputs[k] ?? ''}
@@ -588,17 +840,47 @@ export default function LaboratorioVisualModal5to({ isOpen, onClose }: Laborator
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') handleGo();
                   }}
-                  className="w-20 sm:w-24 h-11 text-center font-black text-xl text-[#1A1033] bg-white border-2 border-[#C5BFEE] focus:border-[#7C3AED] focus:ring-2 focus:ring-purple-200 rounded-2xl shadow-sm outline-none transition-all"
+                  style={{
+                    width: '105px',
+                    height: '52px',
+                    textAlign: 'center',
+                    fontWeight: 900,
+                    fontSize: '28px',
+                    color: '#180D38',
+                    backgroundColor: '#FFFFFF',
+                    border: '2.5px solid #A78BFA',
+                    borderRadius: '16px',
+                    outline: 'none',
+                    fontFamily: "'Baloo 2', sans-serif",
+                    boxShadow: '0 2px 6px rgba(167, 139, 250, 0.15)',
+                  }}
                 />
-              </label>
+              </div>
             ))}
 
             <button
               type="button"
               onClick={handleGo}
-              className="h-11 px-5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black text-sm flex items-center gap-1.5 shadow-md shadow-emerald-500/25 hover:scale-105 active:scale-95 transition-all cursor-pointer self-end mb-0.5"
+              style={{
+                height: '52px',
+                padding: '0 24px',
+                borderRadius: '16px',
+                backgroundColor: '#10B981',
+                color: '#FFFFFF',
+                fontWeight: 900,
+                fontSize: '15px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                border: 'none',
+                cursor: 'pointer',
+                boxShadow: '0 4px 14px rgba(16, 185, 129, 0.25)',
+                fontFamily: "'Baloo 2', sans-serif",
+                transition: 'transform 0.12s ease',
+              }}
             >
-              <span>✨</span>
+              <span style={{ fontSize: '18px' }}>✨</span>
               <span>Crear</span>
             </button>
           </div>
@@ -606,7 +888,10 @@ export default function LaboratorioVisualModal5to({ isOpen, onClose }: Laborator
           {/* Whiteboard / Canvas Container */}
           <div
             ref={boardRef}
-            className="w-full min-h-[320px] transition-all"
+            style={{
+              width: '100%',
+              minHeight: '260px',
+            }}
             dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
         </div>
@@ -614,3 +899,4 @@ export default function LaboratorioVisualModal5to({ isOpen, onClose }: Laborator
     </div>
   );
 }
+

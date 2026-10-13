@@ -44,6 +44,24 @@ const RUTA_5TO = [
   'neptuno', 'urano', 'pluton', 'nebulosa', 'sol'
 ];
 
+const CELESTIAL_ORBS_5TO = [
+  { num: 1, name: 'La Tierra', icon: '🌍', color: '#1A6CB4', glow: '#4DA6FF' },
+  { num: 2, name: 'Mercurio', icon: '🟤', color: '#9B7A4F', glow: '#E0B07A' },
+  { num: 3, name: 'Venus', icon: '🟡', color: '#D4AC2A', glow: '#FFD96A' },
+  { num: 4, name: 'Marte', icon: '🔴', color: '#C94B22', glow: '#FF6B3B' },
+  { num: 5, name: 'Sirio', icon: '⭐', color: '#FFD700', glow: '#FFF4A8' },
+  { num: 6, name: 'Ceres', icon: '🪨', color: '#A0A0A0', glow: '#D5D5D5' },
+  { num: 7, name: 'Pallas', icon: '🪨', color: '#A0A0A0', glow: '#D5D5D5' },
+  { num: 8, name: 'Júpiter', icon: '🟠', color: '#D8853A', glow: '#FFB870' },
+  { num: 9, name: 'Saturno', icon: '🪐', color: '#B8860B', glow: '#F5C518' },
+  { num: 10, name: 'Cometa Halley', icon: '☄️', color: '#A8E8FF', glow: '#E0F4FF' },
+  { num: 11, name: 'Neptuno', icon: '🔵', color: '#1A4CB4', glow: '#4D8AFF' },
+  { num: 12, name: 'Urano', icon: '🔷', color: '#5FBEC8', glow: '#A8E8F0' },
+  { num: 13, name: 'Plutón', icon: '🟣', color: '#8B5A2B', glow: '#C89060' },
+  { num: 14, name: 'Nebulosa de Orión', icon: '🌌', color: '#9B5CFF', glow: '#D4A8FF' },
+  { num: 15, name: 'El Sol', icon: '☀️', color: '#E8650A', glow: '#FFD700' },
+];
+
 function shadeColor(hex: string, amt: number) {
   if (!hex || hex[0] !== '#') return hex;
   let r = parseInt(hex.slice(1, 3), 16) || 0;
@@ -148,6 +166,11 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
   // Find active mission (first incomplete mission)
   const activeMission = useMemo(() => {
     return missions.find((m) => getMissionPct(m) < 100) || missions[0];
+  }, [missions, scores]);
+
+  const activeMissionIdx = useMemo(() => {
+    const idx = missions.findIndex((m) => getMissionPct(m) < 100);
+    return idx !== -1 ? idx : 0;
   }, [missions, scores]);
 
   // Global progress calculation
@@ -279,22 +302,83 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
       ═════════════════════════════════════════════════════════════ */}
       <div
         id="galaxyMapWrap"
-        className="galaxy-card-wrap"
+        className="f5-galaxy-wrap"
         onClick={() => setShowUniverseModal(true)}
       >
         <Starfield count={25} />
-        <div className="galaxy-card-content">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div className="galaxy-orb-icon">🌌</div>
-            <div>
-              <div className="galaxy-badge">🌌 UNIVERSO FEDOR</div>
-              <div className="galaxy-title">Galaxia del Saber</div>
-              <div className="galaxy-hint">
-                🚀 <b style={{ color: '#FFE066' }}>Abrir el Universo Fedor</b> · 15 misiones interplanetarias
-              </div>
+
+        <div className="flex items-center justify-between mb-2 relative z-10">
+          <div>
+            <div className="text-[10px] sm:text-[11px] font-black text-amber-300 uppercase tracking-widest flex items-center gap-1.5">
+              <span>🌌</span>
+              <span>UNIVERSO FEDOR</span>
+            </div>
+            <div className="text-lg md:text-xl font-black text-white" style={{ fontFamily: "'Baloo 2', sans-serif" }}>
+              Galaxia del Saber
             </div>
           </div>
-          <div className="galaxy-arrow">Explorar ➔</div>
+          <div className="text-right">
+            <div className="text-lg md:text-xl font-black text-orange-400">
+              {streak} 🔥
+            </div>
+            <div className="text-[10px] text-white/50 font-bold">
+              mejor racha
+            </div>
+          </div>
+        </div>
+
+        {/* 15 Planet Orbs Strip */}
+        <div className="f5-planet-strip relative z-10">
+          {CELESTIAL_ORBS_5TO.map((orb, idx) => {
+            const m = missions[idx];
+            const pct = m ? getMissionPct(m) : getUnitPct(idx);
+            const isNow = idx === activeMissionIdx;
+
+            return (
+              <div
+                key={orb.num}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowUniverseModal(true);
+                }}
+                className="f5-planet-node cursor-pointer"
+                title={`Misión ${orb.num} · ${orb.name} · Toca para abrir Universo Fedor`}
+              >
+                {/* Astronaut avatar hovering on active mission */}
+                {isNow && (
+                  <div
+                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-xs sm:text-sm z-20 pointer-events-none filter drop-shadow-md"
+                    style={{ lineHeight: 1 }}
+                  >
+                    👨‍🚀
+                  </div>
+                )}
+
+                <div
+                  className={`f5-planet-orb ${isNow ? 'active-now' : ''}`}
+                  style={{
+                    background: `radial-gradient(circle at 35% 30%, ${orb.glow}, ${orb.color} 65%, #000)`,
+                    boxShadow: isNow
+                      ? `0 0 16px ${orb.glow}, 0 0 0 2px #FFE066`
+                      : pct > 0
+                      ? `0 0 10px ${orb.glow}`
+                      : 'none',
+                  }}
+                >
+                  <span className="text-lg sm:text-xl select-none">{orb.icon}</span>
+                </div>
+
+                <span className="f5-planet-lbl">
+                  {pct >= 100 ? '✓' : `M${orb.num}`}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom CTA to open Universe modal */}
+        <div className="f5-open-universe-cta relative z-10">
+          🚀 <b style={{ color: '#FFE066' }}>Abrir el Universo Fedor</b> · 15 misiones, una por unidad
         </div>
       </div>
 
@@ -912,70 +996,93 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
           color: #5C2A00;
         }
 
-        /* GALAXY CARD */
-        .galaxy-card-wrap {
-          background: linear-gradient(135deg, #140830 0%, #2A0F6A 60%, #16876A 100%);
-          border: 1.5px solid rgba(245, 197, 24, 0.35);
-          border-radius: 22px;
-          padding: 16px 20px;
+        /* ══ 2. UNIVERSO FEDOR: GALAXIA DEL SABER ══ */
+        .f5-galaxy-wrap {
+          background: linear-gradient(180deg, #020B18, #050E2A, #0A1840);
+          border-radius: 24px;
+          padding: 1.15rem 1.4rem 1rem;
           margin-bottom: 1.25rem;
-          cursor: pointer;
           position: relative;
           overflow: hidden;
-          box-shadow: 0 8px 24px rgba(108, 40, 180, 0.2);
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+          border: 1.5px solid rgba(255, 255, 255, 0.1);
+          cursor: pointer;
           transition: transform 0.2s, box-shadow 0.2s;
         }
-        .galaxy-card-wrap:hover {
+        .f5-galaxy-wrap:hover {
           transform: translateY(-2px);
-          box-shadow: 0 12px 32px rgba(108, 40, 180, 0.3);
+          box-shadow: 0 14px 44px rgba(0, 0, 0, 0.7);
         }
-        .galaxy-card-content {
-          position: relative;
-          z-index: 2;
+
+        .f5-planet-strip {
           display: flex;
-          align-items: center;
+          align-items: flex-end;
           justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 12px;
+          gap: 6px;
+          padding: 0.9rem 0 0.35rem;
+          overflow-x: auto;
+          scrollbar-width: none;
         }
-        .galaxy-orb-icon {
-          width: 48px;
-          height: 48px;
+        .f5-planet-strip::-webkit-scrollbar {
+          display: none;
+        }
+
+        .f5-planet-node {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 4px;
+          cursor: pointer;
+          flex: 1;
+          min-width: 38px;
+          position: relative;
+          transition: transform 0.2s ease;
+        }
+        .f5-planet-node:hover {
+          transform: translateY(-2px);
+        }
+
+        .f5-planet-orb {
+          width: 38px;
+          height: 38px;
           border-radius: 50%;
-          background: radial-gradient(circle at 35% 35%, #3D1468, #6C28B4);
-          box-shadow: 0 0 16px rgba(155, 92, 229, 0.6);
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 24px;
+          transition: all 0.2s ease;
+          position: relative;
         }
-        .galaxy-badge {
+
+        .f5-planet-orb.active-now {
+          outline: 2.5px solid #FFE066;
+          outline-offset: 2px;
+          box-shadow: 0 0 16px rgba(255, 224, 102, 0.85);
+          animation: f5jPulse 1.8s ease-in-out infinite;
+        }
+
+        @keyframes f5jPulse {
+          0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 0 16px rgba(255, 224, 102, 0.85);
+          }
+          50% {
+            transform: scale(1.05);
+            box-shadow: 0 0 24px rgba(255, 224, 102, 1);
+          }
+        }
+
+        .f5-planet-lbl {
           font-size: 10px;
-          font-weight: 900;
-          color: rgba(245, 197, 24, 0.85);
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
+          font-weight: 800;
+          color: rgba(255, 255, 255, 0.7);
         }
-        .galaxy-title {
-          font-family: 'Baloo 2', sans-serif;
-          font-size: 18px;
-          font-weight: 900;
-          color: #fff;
-          margin-top: 1px;
-        }
-        .galaxy-hint {
-          font-size: 12px;
-          color: rgba(255, 255, 255, 0.8);
+
+        .f5-open-universe-cta {
+          text-align: center;
+          font-size: 11px;
+          color: rgba(255, 255, 255, 0.7);
           font-weight: 700;
-        }
-        .galaxy-arrow {
-          background: rgba(255, 255, 255, 0.15);
-          color: #FFE066;
-          padding: 6px 14px;
-          border-radius: 20px;
-          font-size: 12px;
-          font-weight: 900;
-          backdrop-filter: blur(4px);
+          margin-top: 0.65rem;
         }
 
         /* SECTION TITLES */

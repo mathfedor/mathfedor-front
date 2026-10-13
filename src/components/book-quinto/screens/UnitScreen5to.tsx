@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { useBook5 } from '../context/Book5Context';
-import UnitWelcomeModal5to from '../shared/UnitWelcomeModal5to';
+import UnitWelcomeModal5to, { UnitOperationIcon3D5to } from '../shared/UnitWelcomeModal5to';
 
 const LEVEL_CONFIG_5TO = [
-  { label: 'Nivel 1 — Básico', orb: '🟢', color: '#16876A', bg: '#DCF5EE' },
-  { label: 'Nivel 2 — Medio', orb: '🟡', color: '#BA7517', bg: '#FEF3D6' },
-  { label: 'Nivel 3 — Avanzado', orb: '🔴', color: '#C94B22', bg: '#FEE8E1' },
-  { label: 'Nivel 4 — Experto', orb: '🟣', color: '#C25400', bg: '#FFEBD6' },
-  { label: 'Nivel 5 — Pruebas SABER', orb: '🏆', color: '#6A1B9A', bg: '#F3E8FA' },
+  { label: 'Nivel 1 — Básico', color: '#16876A', bg: '#DCF5EE' },
+  { label: 'Nivel 2 — Medio', color: '#BA7517', bg: '#FEF3D6' },
+  { label: 'Nivel 3 — Avanzado', color: '#C94B22', bg: '#FEE8E1' },
+  { label: 'Nivel 4 — Experto', color: '#C25400', bg: '#FFEBD6' },
+  { label: 'Nivel 5 — Pruebas SABER', color: '#6A1B9A', bg: '#F3E8FA' },
 ];
 
 const UNIT_HERO_GRADIENTS_5TO = [
@@ -53,9 +53,11 @@ const HERO_STARS = [
 export default function UnitScreen5to() {
   const { book, currentUnit, scores, goScreen, startLevel } = useBook5();
   const [showWelcomeModal, setShowWelcomeModal] = useState(true);
+  const [expandedTopics, setExpandedTopics] = useState<Record<number, boolean>>({ 0: true });
 
   useEffect(() => {
     setShowWelcomeModal(true);
+    setExpandedTopics({ 0: true });
   }, [currentUnit]);
 
   const unit = book?.units?.[currentUnit] || book?.units?.[0];
@@ -63,25 +65,73 @@ export default function UnitScreen5to() {
 
   const heroGrad = UNIT_HERO_GRADIENTS_5TO[currentUnit] || UNIT_HERO_GRADIENTS_5TO[0];
 
-  const handleSpeakUnitHero = () => {
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const text = `Unidad ${currentUnit + 1}. ${unit.name}. ${unit.std || 'Pensamiento Numérico · Grado 5°'}.`;
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'es-CO';
-      utterance.rate = 0.95;
-      window.speechSynthesis.speak(utterance);
-    }
-  };
-
   const unitDisplayName = unit.name?.startsWith('Unidad')
     ? unit.name
     : `Unidad ${currentUnit + 1} — ${unit.name}`;
 
+  const toggleTopic = (tIdx: number) => {
+    setExpandedTopics((prev) => ({
+      ...prev,
+      [tIdx]: !prev[tIdx],
+    }));
+  };
+
+  const renderLevelOrb = (lIdx: number) => {
+    switch (lIdx) {
+      case 0:
+        return (
+          <div
+            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full"
+            style={{
+              background: 'radial-gradient(circle at 35% 30%, #76E4B8 0%, #10B981 40%, #057A55 85%, #044E36 100%)',
+              boxShadow: '0 2px 6px rgba(16, 185, 129, 0.35)',
+            }}
+          />
+        );
+      case 1:
+        return (
+          <div
+            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full"
+            style={{
+              background: 'radial-gradient(circle at 35% 30%, #FFE98A 0%, #F59E0B 45%, #B45309 85%, #78350F 100%)',
+              boxShadow: '0 2px 6px rgba(245, 158, 11, 0.35)',
+            }}
+          />
+        );
+      case 2:
+        return (
+          <div
+            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full"
+            style={{
+              background: 'radial-gradient(circle at 35% 30%, #FFA896 0%, #EF4444 45%, #B91C1C 85%, #7F1D1D 100%)',
+              boxShadow: '0 2px 6px rgba(239, 68, 68, 0.35)',
+            }}
+          />
+        );
+      case 3:
+        return (
+          <div
+            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full"
+            style={{
+              background: 'radial-gradient(circle at 35% 30%, #C49BFF 0%, #8B5CF6 45%, #6D28D9 85%, #4C1D95 100%)',
+              boxShadow: '0 2px 6px rgba(139, 92, 246, 0.35)',
+            }}
+          />
+        );
+      case 4:
+      default:
+        return (
+          <span className="text-2xl sm:text-3xl select-none filter drop-shadow-xs">
+            🏆
+          </span>
+        );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#F0EDFF] text-slate-800 font-sans p-2 sm:p-4 md:p-6 pb-28 select-none">
       <div className="w-full max-w-[1008px] mx-auto">
-        {/* Top bar: Volver al inicio & Tutorial */}
+        {/* Top bar: Volver al inicio */}
         <div className="flex items-center justify-between mb-4">
           <button
             type="button"
@@ -91,137 +141,170 @@ export default function UnitScreen5to() {
             <span>←</span>
             <span>Volver al inicio</span>
           </button>
-
-          <button
-            type="button"
-            onClick={() => setShowWelcomeModal(true)}
-            className="inline-flex items-center gap-1.5 text-xs font-black text-purple-700 bg-white hover:bg-purple-50 px-3.5 py-1.5 rounded-full border border-purple-200 cursor-pointer transition-colors shadow-2xs"
-          >
-            <span>💡</span>
-            <span>Tutorial de Unidad</span>
-          </button>
         </div>
 
         {/* ══ Unit Hero Banner ══ */}
         <div
-          className={`relative overflow-hidden rounded-2xl md:rounded-3xl p-5 md:p-8 text-white shadow-xl bg-gradient-to-br ${heroGrad} mb-6`}
+          className={`relative overflow-hidden rounded-3xl p-6 md:p-8 text-white shadow-xl bg-gradient-to-r ${heroGrad} mb-6`}
+          style={{ boxShadow: '0 10px 30px rgba(61, 20, 104, 0.35)' }}
         >
           {HERO_STARS.map((s, idx) => (
             <span
               key={idx}
-              className="absolute rounded-full bg-white animate-pulse"
+              className="absolute rounded-full bg-white animate-pulse pointer-events-none"
               style={{
                 top: s.top,
                 left: s.left,
                 width: s.size,
                 height: s.size,
                 animationDelay: s.delay,
-                opacity: 0.7,
+                opacity: 0.75,
               }}
             />
           ))}
 
-          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div className="flex-1">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-white/90 text-xs font-black tracking-wider uppercase backdrop-blur-xs mb-3">
-                <span>🪐</span>
-                <span>Unidad {currentUnit + 1} de {book?.units?.length || 20} · 5° Grado</span>
-              </div>
-
-              <h1 className="text-2xl md:text-4xl font-black font-['Baloo_2',sans-serif] leading-tight text-white drop-shadow-sm mb-2">
-                {unitDisplayName}
-              </h1>
-
-              {unit.std && (
-                <p className="text-xs md:text-sm text-purple-100 font-bold opacity-90 max-w-2xl leading-relaxed">
-                  {unit.std}
-                </p>
-              )}
+          <div className="relative z-10">
+            {/* Unit Operation Icon */}
+            <div className="mb-2 inline-flex items-center justify-center">
+              <UnitOperationIcon3D5to unitIndex={currentUnit} fallbackIcon={unit.icon} />
             </div>
 
-            <div className="flex md:flex-col items-center gap-2 self-end md:self-auto">
-              <button
-                type="button"
-                onClick={handleSpeakUnitHero}
-                className="w-11 h-11 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-xl transition-transform active:scale-95 cursor-pointer shadow-md"
-                title="Escuchar título y objetivos"
-              >
-                🔊
-              </button>
+            <h1
+              className="text-2xl md:text-3xl font-black text-white tracking-tight"
+              style={{ fontFamily: "'Baloo 2', sans-serif" }}
+            >
+              {unitDisplayName}
+            </h1>
+
+            <p className="text-xs md:text-sm font-semibold text-white/80 mt-1">
+              {unit.short || 'Adición'}
+            </p>
+
+            <div className="mt-3">
+              <span className="inline-block px-3.5 py-1 rounded-full bg-white/15 backdrop-blur-xs border border-white/20 text-[11px] font-bold text-white tracking-wide">
+                {unit.std || 'Pensamiento Numérico · MEN Colombia'}
+              </span>
             </div>
           </div>
         </div>
 
-        {/* ══ Topics List ══ */}
-        <div className="space-y-6">
+        {/* ══ Topics List (Accordion + Vertical Cards) ══ */}
+        <div className="space-y-4">
           {(unit.topics || []).map((topic: any, tIdx: number) => {
+            const isOpen = expandedTopics[tIdx] ?? (tIdx === 0);
+            const topicLevels = topic.levels || [];
+
             return (
-              <div
-                key={topic.id || tIdx}
-                className="bg-white rounded-2xl border-2 border-[#DDD8F5] p-4 md:p-6 shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-2xl md:text-3xl">{topic.icon || '📘'}</span>
-                  <div className="flex-1">
-                    <h2 className="text-base md:text-lg font-black text-[#180D38]">
-                      Tema {tIdx + 1}: {topic.title}
-                    </h2>
-                    {topic.desc && (
-                      <p className="text-xs md:text-sm text-[#7A7299] font-semibold mt-0.5">
-                        {topic.desc}
-                      </p>
-                    )}
-                  </div>
-                </div>
+              <div key={topic.id || tIdx} className="topics-section">
+                {/* Topic Header Accordion Button */}
+                <button
+                  type="button"
+                  onClick={() => toggleTopic(tIdx)}
+                  className="w-full text-left flex items-center gap-2 py-2 px-1 text-xs md:text-sm font-black uppercase tracking-wider text-[#5B4886] hover:text-[#3D1468] transition-colors cursor-pointer select-none"
+                  style={{ letterSpacing: '0.06em' }}
+                >
+                  {isOpen ? (
+                    <>
+                      <span className="text-sm md:text-base">{topic.icon || '🔣'}</span>
+                      <span>{topic.title}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-base font-black leading-none text-[#5B4886]">+</span>
+                      <span>{topic.title}</span>
+                    </>
+                  )}
+                </button>
 
-                {/* Levels Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                  {(topic.levels || []).map((lvl: any, lIdx: number) => {
-                    const cfg = LEVEL_CONFIG_5TO[lIdx] || LEVEL_CONFIG_5TO[0];
-                    const key = `${topic.id || `u${currentUnit}t${tIdx}`}-n${lIdx + 1}`;
-                    const score = scores[key] || 0;
+                {/* Vertical list of levels */}
+                {isOpen && (
+                  <div className="space-y-3 mt-1.5 mb-5">
+                    {topicLevels.map((lvl: any, lIdx: number) => {
+                      const cfg = LEVEL_CONFIG_5TO[lIdx] || LEVEL_CONFIG_5TO[0];
+                      const levelKey1 = `${topic.id}-n${lIdx + 1}`;
+                      const levelKey2 = `${topic.id || `u${currentUnit}t${tIdx}`}-n${lIdx + 1}`;
+                      const levelKey3 = `${tIdx}-${lIdx}`;
+                      const score = scores[levelKey1] ?? scores[levelKey2] ?? scores[levelKey3] ?? 0;
+                      const isCompleted = score >= 50;
 
-                    return (
-                      <button
-                        key={lIdx}
-                        type="button"
-                        onClick={() => startLevel(currentUnit, tIdx, lIdx)}
-                        className="group flex flex-col justify-between p-3.5 rounded-xl border-2 transition-all text-left cursor-pointer hover:-translate-y-1 hover:shadow-md"
-                        style={{
-                          backgroundColor: score >= 100 ? '#DCF5EE' : '#FAF8FF',
-                          borderColor: score >= 100 ? '#16876A' : '#DDD8F5',
-                        }}
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-xl">{cfg.orb}</span>
-                          <span
-                            className="text-xs font-black px-2 py-0.5 rounded-full"
-                            style={{
-                              backgroundColor: cfg.bg,
-                              color: cfg.color,
-                            }}
+                      return (
+                        <div
+                          key={lIdx}
+                          onClick={() => startLevel(currentUnit, tIdx, lIdx)}
+                          className="w-full bg-white rounded-2xl p-3.5 sm:p-4.5 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-purple-300 transition-all flex items-center justify-between gap-4 cursor-pointer select-none group"
+                          style={{
+                            boxShadow: '0 2px 6px rgba(0, 0, 0, 0.03)',
+                            transition: 'transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'translateX(4px)';
+                            e.currentTarget.style.boxShadow = '0 6px 18px rgba(123, 47, 190, 0.1)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'translateX(0)';
+                            e.currentTarget.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.03)';
+                          }}
+                        >
+                          {/* Left 3D Sphere / Trophy Icon Badge */}
+                          <div
+                            className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+                            style={{ backgroundColor: cfg.bg }}
                           >
-                            {score > 0 ? `${score}%` : 'Iniciar'}
-                          </span>
-                        </div>
-
-                        <div>
-                          <div className="text-xs font-black text-[#180D38] group-hover:text-[#6C28B4]">
-                            {cfg.label}
+                            {renderLevelOrb(lIdx)}
                           </div>
-                          <div className="text-[10px] text-[#7A7299] font-bold mt-0.5">
-                            {lvl.title || `${lvl.blocks?.length || 20} ejercicios`}
+
+                          {/* Middle Body */}
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm sm:text-base font-black text-[#1E1B4B] leading-tight group-hover:text-[#6C28B4] transition-colors">
+                              {cfg.label}
+                            </div>
+
+                            <div className="text-xs text-slate-400 font-semibold mt-0.5 truncate">
+                              {topic.desc || lvl.title || 'Hasta centenas de mil'}
+                            </div>
+
+                            {/* 5 Dots */}
+                            <div className="flex items-center gap-1.5 mt-2">
+                              {[0, 1, 2, 3, 4].map((dotIdx) => {
+                                const isFilled = dotIdx <= lIdx;
+                                const dotColor = isFilled
+                                  ? LEVEL_CONFIG_5TO[dotIdx]?.color || '#16876A'
+                                  : '#E2E8F0';
+                                return (
+                                  <div
+                                    key={dotIdx}
+                                    className="w-2 h-2 rounded-full transition-colors"
+                                    style={{ backgroundColor: dotColor }}
+                                  />
+                                );
+                              })}
+                            </div>
+                          </div>
+
+                          {/* Right Action: Score badge (if completed) + Blue Play Button */}
+                          <div className="flex items-center gap-3 shrink-0 pl-2">
+                            {isCompleted && (
+                              <div className="text-right hidden sm:block">
+                                <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                                  {score >= 80 ? 'Excelente' : 'Completado'}
+                                </span>
+                                <div className="text-[10px] font-bold text-emerald-700 mt-0.5">
+                                  {score}% logrado
+                                </div>
+                              </div>
+                            )}
+
+                            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-[#3B82F6] hover:bg-[#2563EB] flex items-center justify-center text-white shadow-xs transition-transform group-hover:scale-110 shrink-0">
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="ml-0.5">
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
+                            </div>
                           </div>
                         </div>
-
-                        <div className="mt-3 flex items-center justify-between text-[11px] font-black text-[#6C28B4] group-hover:underline">
-                          <span>Comenzar</span>
-                          <span>➔</span>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             );
           })}
@@ -229,11 +312,14 @@ export default function UnitScreen5to() {
       </div>
 
       {/* Tutorial modal */}
-      <UnitWelcomeModal5to
-        isOpen={showWelcomeModal}
-        onClose={() => setShowWelcomeModal(false)}
-        unitIndex={currentUnit}
-      />
+      {showWelcomeModal && (
+        <UnitWelcomeModal5to
+          isOpen={showWelcomeModal}
+          onClose={() => setShowWelcomeModal(false)}
+          unitIndex={currentUnit}
+          unit={unit}
+        />
+      )}
     </div>
   );
 }
