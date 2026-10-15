@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useBook5 } from '../context/Book5Context';
 import probData from '@/mocks/data/problemas-cotidianos-5.json';
 
@@ -28,15 +28,21 @@ interface ProblemasCotidianosModal5toProps {
 
 const NIVELES: ProblemaLevel[] = (probData as any).PC_NIVELES || [];
 
-const LEVEL_GRADIENTS = [
-  'linear-gradient(135deg, #16876A, #24C496)', // Nivel 1: Adición
-  'linear-gradient(135deg, #C94B22, #F97316)', // Nivel 2: Sustracción
-  'linear-gradient(135deg, #E8650A, #F5A524)', // Nivel 3: Multiplicación
-  'linear-gradient(135deg, #1E40AF, #3B82F6)', // Nivel 4: División
-  'linear-gradient(135deg, #5C21A6, #8B3EDB)', // Nivel 5: Operaciones combinadas
+const SBCOL: [string, string][] = [
+  ['#16876A', '#24C496'], // Nivel 1: Adición
+  ['#C94B22', '#F97316'], // Nivel 2: Sustracción
+  ['#E8650A', '#F5A524'], // Nivel 3: Multiplicación
+  ['#1E40AF', '#3B82F6'], // Nivel 4: División
+  ['#5C21A6', '#8B3EDB'], // Nivel 5: Operaciones combinadas
 ];
 
-const LEVEL_COLORS = ['#16876A', '#C94B22', '#E8650A', '#1E40AF', '#5C21A6'];
+const LEVEL_GRADIENTS = [
+  'linear-gradient(135deg, #16876A, #24C496)', // Nivel 1
+  'linear-gradient(135deg, #C94B22, #F97316)', // Nivel 2
+  'linear-gradient(135deg, #E8650A, #F5A524)', // Nivel 3
+  'linear-gradient(135deg, #1E40AF, #3B82F6)', // Nivel 4
+  'linear-gradient(135deg, #5C21A6, #8B3EDB)', // Nivel 5
+];
 
 const LUG: [number, string, string][] = [
   [1000000, 'Unidades de millón', '#7C3AED'],
@@ -49,7 +55,7 @@ const LUG: [number, string, string][] = [
 ];
 
 function fmt(n: number): string {
-  return Number(n).toLocaleString('es-CO');
+  return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
 function numDe(s: string): number {
@@ -58,7 +64,9 @@ function numDe(s: string): number {
 
 function playSound(type: 'ok' | 'bad' | 'win') {
   try {
-    const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    const AudioCtx =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     if (!AudioCtx) return;
     const ctx = new AudioCtx();
     const osc = ctx.createOscillator();
@@ -94,178 +102,438 @@ function playSound(type: 'ok' | 'bad' | 'win') {
       osc.start(now);
       osc.stop(now + 0.6);
     }
-  } catch {
-    // Audio no disponible
-  }
+  } catch {}
 }
 
-// ── Representaciones del Método Fedor (Ábaco, Grilla, Tarjetas) ──
-function FedorAbaco({ val }: { val: number }) {
-  const digits = String(val).padStart(6, '0').slice(-6).split('').map(Number);
-  const labels = ['CM', 'DM', 'UM', 'C', 'D', 'U'];
-  const colors = ['#BE185D', '#0F766E', '#1E40AF', '#F97316', '#10B981', '#EAB308'];
-
+/* Grilla de puntos para cantidades <= 100 */
+function FedorGrilla({ n }: { n: number }) {
+  const cols = Math.min(10, n);
   return (
-    <div className="bg-[#180A38] rounded-xl p-3 border border-[#3D1468] shadow-inner text-center">
-      <div className="text-[10px] font-black text-[#F5C518] uppercase tracking-wider mb-2">
-        🧮 Ábaco de Cuentas Fedor (5° Grado)
-      </div>
-      <div className="flex justify-center items-end gap-2.5 sm:gap-4 py-2 border-b-4 border-[#F5C518]">
-        {digits.map((d, i) => (
-          <div key={i} className="flex flex-col items-center">
-            <div className="h-20 w-1 bg-white/20 relative flex flex-col justify-end items-center pb-1">
-              {Array.from({ length: d }).map((_, bi) => (
-                <div
-                  key={bi}
-                  className="w-4 h-2.5 rounded-full my-0.5 shadow-sm transition-transform"
-                  style={{
-                    backgroundColor: colors[i],
-                    boxShadow: `0 0 6px ${colors[i]}`,
-                  }}
-                />
-              ))}
-            </div>
-            <div className="mt-1 text-xs font-black text-white">{d}</div>
-            <div className="text-[9px] font-bold text-gray-400">{labels[i]}</div>
-          </div>
-        ))}
-      </div>
-      <div className="mt-2 text-xs font-black text-amber-300">
-        Valor representado: ${fmt(val)}
-      </div>
-    </div>
-  );
-}
-
-function FedorGrilla({ val }: { val: number }) {
-  const centenas = Math.min(10, Math.floor(val / 100));
-  const decenas = Math.floor((val % 100) / 10);
-  const unidades = val % 10;
-
-  return (
-    <div className="bg-white rounded-xl p-3 border border-purple-200 shadow-xs">
-      <div className="text-[11px] font-black text-[#5C21A6] mb-2 flex items-center justify-between">
-        <span>🔲 Descomposición en Bloques Base 10</span>
-        <span className="text-gray-500 font-bold">${fmt(val)}</span>
-      </div>
-      <div className="flex flex-wrap items-center gap-3 justify-center py-2 bg-purple-50/60 rounded-lg">
-        {centenas > 0 && (
-          <div className="flex flex-col items-center">
-            <div className="flex flex-wrap gap-1 w-16 justify-center">
-              {Array.from({ length: centenas }).map((_, i) => (
-                <div
-                  key={i}
-                  className="w-4 h-4 bg-amber-400 border border-amber-600 rounded-xs shadow-2xs"
-                  title="Centena (100)"
-                />
-              ))}
-            </div>
-            <span className="text-[10px] font-black text-amber-800 mt-1">
-              {centenas} C ({centenas * 100})
-            </span>
-          </div>
-        )}
-
-        {decenas > 0 && (
-          <div className="flex flex-col items-center">
-            <div className="flex gap-1">
-              {Array.from({ length: decenas }).map((_, i) => (
-                <div
-                  key={i}
-                  className="w-1.5 h-7 bg-emerald-500 border border-emerald-700 rounded-xs"
-                  title="Decena (10)"
-                />
-              ))}
-            </div>
-            <span className="text-[10px] font-black text-emerald-800 mt-1">
-              {decenas} D ({decenas * 10})
-            </span>
-          </div>
-        )}
-
-        {unidades > 0 && (
-          <div className="flex flex-col items-center">
-            <div className="flex flex-wrap gap-1 w-10 justify-center">
-              {Array.from({ length: unidades }).map((_, i) => (
-                <div
-                  key={i}
-                  className="w-2 h-2 bg-blue-500 rounded-full"
-                  title="Unidad (1)"
-                />
-              ))}
-            </div>
-            <span className="text-[10px] font-black text-blue-800 mt-1">
-              {unidades} U
-            </span>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function FedorTarjetasPosicionales({ val }: { val: number }) {
-  const parts: { label: string; v: number; color: string }[] = [];
-  LUG.forEach(([pot, name, color]) => {
-    const c = Math.floor(val / pot);
-    if (c > 0) {
-      parts.push({ label: `${c} ${name}`, v: c * pot, color });
-      val %= pot;
-    }
-  });
-
-  return (
-    <div className="flex flex-wrap gap-1.5 items-center justify-center my-2">
-      {parts.map((p, i) => (
-        <span
+    <div
+      className="fzr-g"
+      style={{
+        display: 'inline-grid',
+        gap: '3px',
+        gridTemplateColumns: `repeat(${cols}, 13px)`,
+        background: '#FFFFFF',
+      }}
+    >
+      {Array.from({ length: n }).map((_, i) => (
+        <i
           key={i}
-          className="px-2.5 py-1 rounded-lg text-white font-black text-xs shadow-xs"
-          style={{ background: p.color }}
-        >
-          {fmt(p.v)}
-        </span>
+          style={{
+            width: '13px',
+            height: '13px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle at 35% 30%, #FFD27A, #E8650A)',
+            display: 'block',
+          }}
+        />
       ))}
     </div>
   );
 }
 
-function FedorRepresentation({ val }: { val: number }) {
-  if (val >= 1000) {
-    return (
-      <div className="space-y-2 my-3">
-        <FedorAbaco val={val} />
-        <FedorTarjetasPosicionales val={val} />
+/* Ábaco FEDOR para cantidades > 100 con tarjetas posicionales exactas */
+function FedorAbaco({ n }: { n: number }) {
+  let r = n;
+  const rows: React.ReactNode[] = [];
+
+  LUG.forEach((L, idx) => {
+    const pot = L[0];
+    const name = L[1];
+    const color = L[2];
+    const d = Math.floor(r / pot);
+    r = r % pot;
+
+    if (pot > n) return;
+
+    let items: React.ReactNode = null;
+    if (pot === 1) {
+      if (d > 0) {
+        items = (
+          <div style={{ display: 'flex', gap: '3px', flexWrap: 'wrap' }}>
+            {Array.from({ length: d }).map((_, i) => (
+              <span
+                key={i}
+                className="fzr-ball"
+                style={{
+                  display: 'inline-block',
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%',
+                  background: 'radial-gradient(circle at 35% 30%, #FDE68A, #EAB308)',
+                  border: '1px solid #92400E',
+                }}
+              />
+            ))}
+          </div>
+        );
+      }
+    } else {
+      if (d > 0) {
+        items = (
+          <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+            {Array.from({ length: d }).map((_, i) => (
+              <span
+                key={i}
+                className="fzr-card"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minWidth: '44px',
+                  height: '26px',
+                  padding: '0 6px',
+                  borderRadius: '7px',
+                  background: '#FFFFFF',
+                  border: `2px solid ${color}`,
+                  color: color,
+                  fontSize: '11px',
+                  fontWeight: 900,
+                }}
+              >
+                {fmt(pot)}
+              </span>
+            ))}
+          </div>
+        );
+      }
+    }
+
+    rows.push(
+      <div
+        key={idx}
+        className="fzr-row"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          flexWrap: 'wrap',
+          margin: '4px 0',
+          background: '#FFFFFF',
+        }}
+      >
+        <span
+          className="fzr-lab"
+          style={{
+            minWidth: '118px',
+            fontSize: '12px',
+            fontWeight: 900,
+            color: color,
+          }}
+        >
+          {name}: {d}
+        </span>
+        {items || (
+          <span style={{ fontSize: '12px', color: '#9CA3AF', fontWeight: 800 }}>
+            —
+          </span>
+        )}
       </div>
     );
-  }
+  });
+
+  return <div>{rows}</div>;
+}
+
+function FedorRepItem({ n, etiqueta }: { n: number; etiqueta?: string }) {
   return (
-    <div className="space-y-2 my-3">
-      <FedorGrilla val={val} />
-      <FedorTarjetasPosicionales val={val} />
+    <div
+      className="fzr-n"
+      style={{
+        background: '#FFFFFF',
+        border: '1.5px dashed #D9CCFF',
+        borderRadius: '12px',
+        padding: '9px 12px',
+      }}
+    >
+      <div
+        className="fzr-t"
+        style={{
+          fontFamily: "'Baloo 2', sans-serif",
+          fontWeight: 900,
+          color: '#5C21A6',
+          fontSize: '15px',
+          marginBottom: '5px',
+        }}
+      >
+        {etiqueta || ''}
+        {n > 100 ? '🧮 Ábaco FEDOR: ' : '🔵 '}
+        {fmt(n)}
+      </div>
+      {n > 100 ? <FedorAbaco n={n} /> : <FedorGrilla n={n} />}
     </div>
   );
+}
+
+function FedorRepQuantities({
+  nums,
+  resultado,
+}: {
+  nums: number[];
+  resultado: number | null;
+}) {
+  const [minimized, setMinimized] = useState(false);
+
+  if (!nums.length && resultado == null) return null;
+
+  return (
+    <div
+      className="fzr"
+      style={{
+        margin: '10px 0',
+        background: '#FFFFFF',
+        border: '2px solid #E4DCFA',
+        borderRadius: '16px',
+        padding: '10px 14px',
+        textAlign: 'left',
+      }}
+    >
+      <div
+        className="fzr-h"
+        onClick={() => setMinimized(!minimized)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          fontWeight: 900,
+          color: '#3D1468',
+          fontSize: '13.5px',
+          marginBottom: minimized ? 0 : '8px',
+          cursor: 'pointer',
+          userSelect: 'none',
+        }}
+      >
+        <span>🧮</span>
+        <b style={{ flex: 1 }}>Representación FEDOR de las cantidades</b>
+        <span style={{ fontSize: '13px', color: '#6B5E8A' }}>
+          {minimized ? '▸' : '▾'}
+        </span>
+      </div>
+      {!minimized && (
+        <div
+          className="fzr-c"
+          style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
+        >
+          {nums.slice(0, 5).map((n, i) => (
+            <FedorRepItem key={i} n={n} />
+          ))}
+          {resultado != null && (
+            <FedorRepItem n={resultado} etiqueta="✅ Resultado · " />
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* Paso a paso en columna matemático idéntico al motor de Fedor */
+function sbColumna(li: number, e: ProblemaItem): string[] {
+  try {
+    if (!e.datos || e.datos.length !== 2) return [];
+    const a = e.datos[0];
+    const b = e.datos[1];
+    let op: any = null;
+    const r = numDe(e.ans);
+    if (li === 0) op = { a, b, op: '+', r: a + b };
+    else if (li === 1) op = { a, b, op: '-', r: a - b };
+    else if (li === 2) op = { a: b, b: a, op: '×', r: a * b };
+    else if (li === 3) op = { a, b, op: '÷', r: Math.floor(a / b) };
+    if (!op || op.r !== r) return [];
+
+    const NOM = [
+      'unidades',
+      'decenas',
+      'centenas',
+      'unidades de mil',
+      'decenas de mil',
+      'centenas de mil',
+      'unidades de millón',
+    ];
+    const o = op.op;
+    const pasos: string[] = [];
+
+    if (o === '+' || o === '-') {
+      const A = String(a).split('').reverse().map(Number);
+      const B = String(b).split('').reverse().map(Number);
+      const n = Math.max(A.length, B.length);
+      let c = 0;
+      for (let i = 0; i < n; i++) {
+        const x = A[i] || 0;
+        const y = B[i] || 0;
+        if (o === '+') {
+          const t = x + y + c;
+          const frase =
+            (i === 0 ? 'Se suman las ' : 'Luego las ') +
+            NOM[i] +
+            ': ' +
+            x +
+            ' + ' +
+            y +
+            (c ? ' + ' + c + ' que llevamos' : '') +
+            ' = ' +
+            t +
+            (t > 9 && i < n - 1 ? '; escribimos ' + (t % 10) + ' y llevamos 1' : '');
+          pasos.push(frase);
+          c = t > 9 && i < n - 1 ? 1 : 0;
+        } else {
+          const top = x - c;
+          const pres = top < y;
+          const t = (pres ? top + 10 : top) - y;
+          const frase =
+            (i === 0 ? 'Se restan las ' : 'Luego las ') +
+            NOM[i] +
+            ': ' +
+            (pres ? top + ' no alcanza, pedimos prestado: ' + (top + 10) : top) +
+            ' − ' +
+            y +
+            ' = ' +
+            t;
+          pasos.push(frase);
+          c = pres ? 1 : 0;
+        }
+      }
+      pasos.push('El resultado es ' + fmt(op.r));
+    } else if (o === '×') {
+      if (b < 10) {
+        const D = String(a).split('').reverse().map(Number);
+        let c2 = 0;
+        for (let j = 0; j < D.length; j++) {
+          const t2 = D[j] * b + c2;
+          const ult = j === D.length - 1;
+          const frase =
+            (j === 0 ? 'Se multiplican las ' : 'Luego las ') +
+            NOM[j] +
+            ': ' +
+            D[j] +
+            ' × ' +
+            b +
+            (c2 ? ' + ' + c2 + ' que llevamos' : '') +
+            ' = ' +
+            t2 +
+            (t2 > 9 && !ult
+              ? '; escribimos ' + (t2 % 10) + ' y llevamos ' + Math.floor(t2 / 10)
+              : '');
+          pasos.push(frase);
+          c2 = ult ? 0 : Math.floor(t2 / 10);
+        }
+        pasos.push('El resultado es ' + fmt(op.r));
+      } else {
+        const E = String(b).split('').reverse().map(Number);
+        const parts: number[] = [];
+        for (let k = 0; k < E.length; k++) {
+          const pp = a * E[k] * Math.pow(10, k);
+          parts.push(pp);
+          pasos.push(
+            'Multiplicamos ' +
+              fmt(a) +
+              ' por ' +
+              E[k] +
+              ' ' +
+              (E[k] === 1 ? NOM[k].replace(/es( |$)/, '$1').replace(/s( |$)/, '$1') : NOM[k]) +
+              ': ' +
+              fmt(pp)
+          );
+        }
+        pasos.push(
+          'Sumamos: ' +
+            parts.map(fmt).join(' + ') +
+            ' = ' +
+            fmt(op.r) +
+            '. El resultado es ' +
+            fmt(op.r)
+        );
+      }
+    } else if (o === '÷') {
+      const dig = String(a).split('').map(Number);
+      let resto = 0;
+      let q = '';
+      let empezo = false;
+      for (let m = 0; m < dig.length; m++) {
+        const cur = resto * 10 + dig[m];
+        const qq = Math.floor(cur / b);
+        if (!empezo && qq === 0 && m < dig.length - 1) {
+          resto = cur;
+          continue;
+        }
+        empezo = true;
+        q += qq;
+        resto = cur - qq * b;
+        pasos.push(
+          '¿Cuántas veces cabe ' +
+            b +
+            ' en ' +
+            cur +
+            '? ' +
+            qq +
+            (qq === 1 ? ' vez: ' : ' veces: ') +
+            qq +
+            ' × ' +
+            b +
+            ' = ' +
+            qq * b +
+            ', sobra ' +
+            resto
+        );
+      }
+      pasos.push('El resultado es ' + fmt(+q) + (resto ? ' y sobra ' + resto : ''));
+    }
+
+    return pasos;
+  } catch (x) {
+    return [];
+  }
 }
 
 export default function ProblemasCotidianosModal5to({
   isOpen = true,
   onClose,
-  onOpenFullScreen,
 }: ProblemasCotidianosModal5toProps) {
   const { updateStats } = useBook5();
 
+  const [view, setView] = useState<'menu' | 'level-menu' | 'ejemplos' | 'ejercicios' | 'finalizado'>('menu');
   const [activeLevel, setActiveLevel] = useState<number>(0);
-  const [subView, setSubView] = useState<'ejemplos' | 'ejercicios'>('ejemplos');
 
   // Estado Ejemplos
   const [curEjemploIdx, setCurEjemploIdx] = useState<number>(0);
-  const [showRepresentation, setShowRepresentation] = useState<boolean>(true);
 
   // Estado Ejercicios
   const [curEjercicioIdx, setCurEjercicioIdx] = useState<number>(0);
-  const [selectedOpt, setSelectedOpt] = useState<string | null>(null);
+  const [selectedOptIdx, setSelectedOptIdx] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState<boolean>(false);
+  const [showProcesoInEjercicio, setShowProcesoInEjercicio] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
+  const [correctCount, setCorrectCount] = useState<number>(0);
   const [timer, setTimer] = useState<number>(90);
+
+  // Reiniciar estado al abrir modal
+  useEffect(() => {
+    if (isOpen) {
+      setView('menu');
+      setSelectedOptIdx(null);
+      setShowFeedback(false);
+      setShowProcesoInEjercicio(false);
+    }
+  }, [isOpen]);
+
+  // Tecla Escape para volver o cerrar
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (view === 'ejemplos' || view === 'ejercicios' || view === 'finalizado') {
+          setView('level-menu');
+        } else if (view === 'level-menu') {
+          setView('menu');
+        } else {
+          onClose();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, view, onClose]);
 
   const levelData = NIVELES[activeLevel] || NIVELES[0];
   const ejemplos = levelData?.ejemplos || [];
@@ -276,46 +544,59 @@ export default function ProblemasCotidianosModal5to({
 
   // Timer para ejercicios
   useEffect(() => {
-    if (subView !== 'ejercicios' || showFeedback) return;
+    if (view !== 'ejercicios' || showFeedback) return;
     const interval = setInterval(() => {
-      setTimer((prev) => (prev > 0 ? prev - 1 : 0));
+      setTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          handleAnswerExercise(-1);
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
     return () => clearInterval(interval);
-  }, [subView, showFeedback, curEjercicioIdx]);
+  }, [view, showFeedback, curEjercicioIdx]);
 
   const handleSelectLevel = (idx: number) => {
     setActiveLevel(idx);
     setCurEjemploIdx(0);
     setCurEjercicioIdx(0);
-    setSelectedOpt(null);
+    setSelectedOptIdx(null);
     setShowFeedback(false);
+    setShowProcesoInEjercicio(false);
+    setScore(0);
+    setCorrectCount(0);
+    setTimer(ejercicios[0]?.t || 90);
   };
 
-  const handleCheckAnswer = (opt: string) => {
+  const handleAnswerExercise = (optIdx: number) => {
     if (showFeedback) return;
-    setSelectedOpt(opt);
+    setSelectedOptIdx(optIdx);
     setShowFeedback(true);
 
-    const isOk = opt === curEjercicio.ans;
+    const isOk = optIdx >= 0 && curEjercicio.opts[optIdx] === curEjercicio.ans;
     if (isOk) {
       playSound('ok');
       setScore((s) => s + (curEjercicio.pts || 10));
+      setCorrectCount((c) => c + 1);
       updateStats(10, 0, 15);
     } else {
       playSound('bad');
     }
   };
 
-  const handleNextEjercicio = () => {
+  const handleNextExercise = () => {
     if (curEjercicioIdx < ejercicios.length - 1) {
-      setCurEjercicioIdx((prev) => prev + 1);
-      setSelectedOpt(null);
+      const nextIdx = curEjercicioIdx + 1;
+      setCurEjercicioIdx(nextIdx);
+      setSelectedOptIdx(null);
       setShowFeedback(false);
-      setTimer(curEjercicio.t || 90);
+      setShowProcesoInEjercicio(false);
+      setTimer(ejercicios[nextIdx]?.t || 90);
     } else {
       playSound('win');
-      alert(`¡Completaste los 20 ejercicios del ${levelData.nombre}! Puntos logrados: ${score}`);
-      setSubView('ejemplos');
+      setView('finalizado');
     }
   };
 
@@ -323,7 +604,7 @@ export default function ProblemasCotidianosModal5to({
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = 'es-ES';
+    utter.lang = 'es-CO';
     utter.rate = 0.95;
     window.speechSynthesis.speak(utter);
   };
@@ -332,325 +613,792 @@ export default function ProblemasCotidianosModal5to({
 
   return (
     <div
-      className="fixed inset-0 z-[99995] flex items-center justify-center p-3 sm:p-5 animate-fadeIn"
-      style={{
-        background: 'rgba(18, 8, 42, 0.75)',
-        backdropFilter: 'blur(4px)',
-      }}
+      className="tool-modal-bg animate-fadeIn"
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) {
+          if (view !== 'menu') {
+            setView('menu');
+          } else {
+            onClose();
+          }
+        }
       }}
     >
-      <div
-        className="w-full max-w-4xl bg-white rounded-[26px] p-5 sm:p-7 text-[#180D38] relative shadow-2xl max-h-[92vh] flex flex-col overflow-hidden animate-fadeIn"
-        style={{
-          boxShadow: '0 25px 60px -15px rgba(25, 8, 55, 0.45)',
-          fontFamily: "'Nunito', sans-serif",
-        }}
-      >
-        {/* ══ HEADER ══ */}
-        <div className="flex items-center justify-between pb-3.5 border-b border-gray-100 shrink-0">
-          <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 rounded-2xl flex items-center justify-center text-white text-xl shadow-md shrink-0"
-              style={{ background: LEVEL_GRADIENTS[activeLevel] }}
-            >
-              🛒
+      <style>{`
+        .tool-modal-bg {
+          position: fixed;
+          inset: 0;
+          z-index: 9995;
+          background: rgba(18, 8, 42, 0.72);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 14px;
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(4px);
+          box-sizing: border-box;
+        }
+
+        .tool-modal {
+          background: #FFFFFF;
+          border-radius: 20px;
+          max-width: 720px;
+          width: 100%;
+          max-height: 88vh;
+          overflow-y: auto;
+          padding: 20px 24px 24px;
+          position: relative;
+          box-shadow: 0 24px 70px rgba(20, 8, 50, 0.5);
+          font-family: 'Nunito', sans-serif;
+          color: #180D38;
+          box-sizing: border-box;
+        }
+
+        .tm-close {
+          position: absolute;
+          right: 14px;
+          top: 14px;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          border: 1.5px solid #E4DFF5;
+          background: #F7F4FF;
+          color: #6C28B4;
+          font-weight: 900;
+          cursor: pointer;
+          font-size: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          line-height: 1;
+          transition: all 0.15s ease;
+          padding: 0;
+          outline: none;
+        }
+
+        .tm-close:hover {
+          background: #6C28B4;
+          color: #FFFFFF;
+        }
+
+        .tm-title {
+          font-family: 'Baloo 2', 'Nunito', sans-serif;
+          font-size: 20px;
+          font-weight: 900;
+          color: #3D1468;
+          margin: 0 40px 10px 0;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          line-height: 1.2;
+        }
+
+        .sb5-lv {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          width: 100%;
+          padding: 12px 20px;
+          border-radius: 16px;
+          border: none;
+          cursor: pointer;
+          margin-bottom: 9px;
+          text-align: left;
+          font-family: 'Nunito', sans-serif;
+          color: #FFFFFF;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+          transition: transform 0.12s ease, box-shadow 0.12s ease;
+          box-sizing: border-box;
+        }
+
+        .sb5-lv:hover {
+          transform: translateY(-2px);
+          filter: brightness(1.03);
+        }
+
+        .sb5-lv .n {
+          font-family: 'Baloo 2', 'Nunito', sans-serif;
+          font-size: 28px;
+          font-weight: 900;
+          width: 36px;
+          text-align: center;
+          line-height: 1;
+          color: #FFFFFF;
+          flex-shrink: 0;
+        }
+
+        .sb5-lv b {
+          font-size: 16px;
+          display: block;
+          color: #FFFFFF;
+          font-weight: 900;
+          line-height: 1.2;
+        }
+
+        .sb5-lv small {
+          font-weight: 800;
+          font-size: 12px;
+          color: #FFFFFF;
+          opacity: 0.95;
+          display: block;
+          margin-top: 2px;
+        }
+
+        .sb5-lv .arrow {
+          font-size: 20px;
+          color: #FFFFFF;
+          margin-left: auto;
+          line-height: 1;
+          flex-shrink: 0;
+          padding-right: 2px;
+        }
+
+        /* ── Opciones múltiples en ejercicios ── */
+        .sb5-op {
+          display: block;
+          width: 100%;
+          padding: 13px 18px;
+          margin-bottom: 8px;
+          border-radius: 14px;
+          border: 2px solid #D9CCFF;
+          background: #FFFFFF;
+          font-size: 18px;
+          font-weight: 900;
+          cursor: pointer;
+          font-family: 'Nunito', sans-serif;
+          color: #1A1033;
+          transition: transform 0.12s ease, border-color 0.12s ease, background 0.15s ease;
+          text-align: center;
+          box-sizing: border-box;
+        }
+
+        .sb5-op:hover:not(:disabled) {
+          transform: translateX(4px);
+          border-color: #8B3EDB;
+        }
+
+        .sb5-op.ok {
+          background: #DCFCE7 !important;
+          border-color: #16A34A !important;
+          color: #14532D !important;
+        }
+
+        .sb5-op.no {
+          background: #FEE2E2 !important;
+          border-color: #DC2626 !important;
+          color: #7F1D1D !important;
+          animation: sb5shake 0.4s ease;
+        }
+
+        @keyframes sb5shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-6px); }
+          75% { transform: translateX(6px); }
+        }
+
+        /* ── Cuadro Proceso ── */
+        .sb5-proc {
+          background: #F8F5FF;
+          border-left: 4px solid #5C21A6;
+          border-radius: 10px;
+          padding: 10px 14px;
+          margin-top: 10px;
+          font-weight: 700;
+          color: #1A1033;
+          line-height: 1.6;
+          font-size: 14px;
+          text-align: left;
+        }
+
+        .sb5-proc b {
+          color: #3D1468;
+          font-size: 14.5px;
+          display: block;
+          margin-bottom: 3px;
+        }
+
+        /* ── Botones genéricos de Fedor ── */
+        .fz-btn {
+          padding: 10px 16px;
+          border-radius: 12px;
+          font-weight: 900;
+          font-size: 14px;
+          cursor: pointer;
+          font-family: 'Nunito', sans-serif;
+          border: none;
+          color: #FFFFFF;
+          background: #5C21A6;
+          transition: all 0.15s ease;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+        }
+
+        .fz-btn:hover {
+          filter: brightness(1.08);
+          transform: translateY(-1px);
+        }
+
+        .fz-btn.g {
+          background: linear-gradient(135deg, #16876A, #24C496);
+          color: #FFFFFF;
+        }
+
+        .fz-btn.o {
+          background: linear-gradient(135deg, #E8650A, #F5A524);
+          color: #FFFFFF;
+        }
+
+        .fz-btn.w {
+          background: #FFFFFF;
+          border: 2px solid #C5BFEE;
+          color: #5C21A6;
+        }
+
+        .btn-back {
+          padding: 9px 16px;
+          border-radius: 12px;
+          font-weight: 900;
+          font-size: 13px;
+          cursor: pointer;
+          font-family: 'Nunito', sans-serif;
+          color: #5C21A6;
+          background: #F3EEFF;
+          border: 1.5px solid #C5BFEE;
+          transition: all 0.15s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .btn-back:hover {
+          background: #E9DEFF;
+          transform: translateY(-1px);
+        }
+      `}</style>
+
+      <div className="tool-modal animate-popIn">
+        {/* Botón Cerrar .tm-close */}
+        <button
+          type="button"
+          onClick={() => {
+            if (view === 'ejemplos' || view === 'ejercicios' || view === 'finalizado') {
+              setView('level-menu');
+            } else if (view === 'level-menu') {
+              setView('menu');
+            } else {
+              onClose();
+            }
+          }}
+          className="tm-close"
+          title={view !== 'menu' ? 'Volver' : 'Cerrar'}
+          aria-label="Cerrar modal"
+        >
+          ✕
+        </button>
+
+        {/* ══════════════════════════════════════════════════════════════
+            VISTA 1: MENÚ PRINCIPAL DE NIVELES
+           ══════════════════════════════════════════════════════════════ */}
+        {view === 'menu' && (
+          <div>
+            {/* Título .tm-title */}
+            <div className="tm-title">
+              <span>🛒</span>
+              <span>Problemas Cotidianos — Tipo Prueba SABER (5°)</span>
             </div>
-            <div>
-              <h2
-                className="text-lg sm:text-2xl font-black text-[#2A0F60] leading-none"
-                style={{ fontFamily: "'Baloo 2', cursive, sans-serif" }}
-              >
-                Problemas Cotidianos — Tipo Prueba SABER (5°)
-              </h2>
-              <p className="text-xs text-gray-500 font-bold mt-1">
-                Situaciones reales de compras, recetas, almacén y manejo de dinero con proceso paso a paso
-              </p>
-            </div>
-          </div>
 
-          <div className="flex items-center gap-2">
-            {onOpenFullScreen && (
-              <button
-                type="button"
-                onClick={onOpenFullScreen}
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-800 text-xs font-black border border-purple-200 transition-colors cursor-pointer"
-                title="Abrir en pantalla completa"
-              >
-                <span>🖥️</span>
-                <span>Pantalla completa</span>
-              </button>
-            )}
-
-            <button
-              type="button"
-              onClick={onClose}
-              className="w-9 h-9 rounded-full border-[1.5px] border-[#E4DFF5] bg-[#F7F4FF] hover:bg-[#E9DCFC] text-[#6C28B4] flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-xs"
-              title="Cerrar"
-            >
-              ✕
-            </button>
-          </div>
-        </div>
-
-        {/* ══ SELECTOR DE NIVELES (5 Niveles) ══ */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 my-3 shrink-0">
-          {NIVELES.map((niv, idx) => (
-            <button
-              key={idx}
-              type="button"
-              onClick={() => handleSelectLevel(idx)}
-              className={`p-2.5 rounded-xl text-xs font-black transition-all cursor-pointer text-center truncate ${
-                activeLevel === idx
-                  ? 'text-white shadow-md scale-102 ring-2 ring-purple-600'
-                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-              }`}
+            {/* Texto descriptivo idéntico a la imagen */}
+            <p
               style={{
-                background: activeLevel === idx ? LEVEL_GRADIENTS[idx] : undefined,
+                fontWeight: 700,
+                color: '#1A1033',
+                fontSize: '14px',
+                margin: '0 0 14px 0',
+                lineHeight: 1.45,
               }}
             >
-              {niv.nombre}
-            </button>
-          ))}
-        </div>
+              Situaciones reales de compras escolares, tienda, alimentos, almacén, reparticiones y manejo de dinero.
+              <br />
+              Cada nivel tiene <b>10 ejemplos</b> y <b>20 ejercicios</b>, de lo más simple a lo más complejo.
+            </p>
 
-        {/* ══ SELECTOR DE SUBVISTA: EJEMPLOS VS EJERCICIOS ══ */}
-        <div className="flex items-center justify-between border-b border-gray-200 pb-2 mb-3 shrink-0">
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => setSubView('ejemplos')}
-              className={`px-4 py-1.5 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer ${
-                subView === 'ejemplos'
-                  ? 'bg-purple-700 text-white shadow-sm'
-                  : 'bg-purple-50 text-purple-800 hover:bg-purple-100'
-              }`}
-            >
-              💡 10 Ejemplos Resueltos
-            </button>
-            <button
-              type="button"
-              onClick={() => setSubView('ejercicios')}
-              className={`px-4 py-1.5 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer ${
-                subView === 'ejercicios'
-                  ? 'bg-emerald-600 text-white shadow-sm'
-                  : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
-              }`}
-            >
-              🎯 20 Ejercicios Prácticos
-            </button>
+            {/* Lista vertical de los 5 niveles */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
+              {NIVELES.map((niv, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className="sb5-lv"
+                  style={{ background: LEVEL_GRADIENTS[i] }}
+                  onClick={() => {
+                    handleSelectLevel(i);
+                    setView('level-menu');
+                  }}
+                >
+                  <span className="n">{i + 1}</span>
+                  <span style={{ flex: 1, minWidth: 0 }}>
+                    <b>{niv.nombre}</b>
+                    <small>10 ejemplos · 20 ejercicios</small>
+                  </span>
+                  <span className="arrow">▶</span>
+                </button>
+              ))}
+            </div>
           </div>
+        )}
 
-          <div className="text-xs font-bold text-gray-500">
-            {subView === 'ejemplos' ? (
-              <span>Ejemplo {curEjemploIdx + 1} de {ejemplos.length}</span>
-            ) : (
-              <span>Ejercicio {curEjercicioIdx + 1} de {ejercicios.length} · ⏱ {timer}s</span>
+        {/* ══════════════════════════════════════════════════════════════
+            VISTA 2: MENÚ DE OPCIONES DEL NIVEL SELECCIONADO
+           ══════════════════════════════════════════════════════════════ */}
+        {view === 'level-menu' && (
+          <div>
+            <div className="tm-title">
+              <span>🛒</span>
+              <span>{levelData.nombre}</span>
+            </div>
+
+            <p
+              style={{
+                fontSize: '15px',
+                fontWeight: 800,
+                color: '#1A1033',
+                marginBottom: '16px',
+                lineHeight: 1.45,
+                textAlign: 'center',
+              }}
+            >
+              Primero mira los ejemplos resueltos y luego resuelve los 20 ejercicios.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '14px' }}>
+              <button
+                type="button"
+                className="sb5-lv"
+                style={{
+                  background: LEVEL_GRADIENTS[activeLevel],
+                  justifyContent: 'center',
+                  padding: '16px 20px',
+                  gap: '12px',
+                }}
+                onClick={() => setView('ejemplos')}
+              >
+                <span style={{ fontSize: '24px' }}>📖</span>
+                <b style={{ fontSize: '17px' }}>Ver los 10 ejemplos resueltos</b>
+              </button>
+
+              <button
+                type="button"
+                className="sb5-lv"
+                style={{
+                  background: 'linear-gradient(135deg, #3D1468, #7C3AED)',
+                  justifyContent: 'center',
+                  padding: '16px 20px',
+                  gap: '12px',
+                }}
+                onClick={() => {
+                  setCurEjercicioIdx(0);
+                  setSelectedOptIdx(null);
+                  setShowFeedback(false);
+                  setShowProcesoInEjercicio(false);
+                  setScore(0);
+                  setCorrectCount(0);
+                  setTimer(ejercicios[0]?.t || 90);
+                  setView('ejercicios');
+                }}
+              >
+                <span style={{ fontSize: '24px' }}>🎯</span>
+                <b style={{ fontSize: '17px' }}>Resolver los 20 ejercicios</b>
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <button
+                type="button"
+                onClick={() => setView('menu')}
+                className="btn-back"
+              >
+                ◀ Volver a niveles
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ══════════════════════════════════════════════════════════════
+            VISTA 3: LOS 10 EJEMPLOS RESUELTOS DEL NIVEL (IDÉNTICO A IMAGEN 1)
+           ══════════════════════════════════════════════════════════════ */}
+        {view === 'ejemplos' && curEjemplo && (
+          <div>
+            {/* Título de la modal: 📖 Nivel X · [Nombre] */}
+            <div className="tm-title">
+              <span>📖</span>
+              <span>{levelData.nombre}</span>
+            </div>
+
+            {/* Subcabecera: 📖 Ejemplo 1 de 10  ...  Nivel 1 · Adición */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                fontWeight: 900,
+                color: SBCOL[activeLevel][0],
+                fontSize: '14px',
+                marginBottom: '8px',
+              }}
+            >
+              <span>📖 Ejemplo {curEjemploIdx + 1} de {ejemplos.length}</span>
+              <span>{levelData.nombre}</span>
+            </div>
+
+            {/* Enunciado del problema */}
+            <div
+              style={{
+                fontSize: '17px',
+                fontWeight: 900,
+                color: '#1A1033',
+                lineHeight: 1.45,
+                marginBottom: '10px',
+              }}
+            >
+              {curEjemplo.q}
+            </div>
+
+            {/* Representación FEDOR de las cantidades */}
+            <FedorRepQuantities
+              nums={(curEjemplo.datos || []).filter((x) => x >= 1)}
+              resultado={numDe(curEjemplo.ans)}
+            />
+
+            {/* Cuadro Proceso con Paso a paso en columna */}
+            <div className="sb5-proc">
+              <b>🧠 Proceso</b>
+              {(curEjemplo.proc || []).map((step, idx) => (
+                <div key={idx}>{step}</div>
+              ))}
+              {sbColumna(activeLevel, curEjemplo).length > 0 && (
+                <>
+                  <b style={{ display: 'block', marginTop: '6px' }}>
+                    👣 Paso a paso en columna
+                  </b>
+                  {sbColumna(activeLevel, curEjemplo).map((colStep, idx) => (
+                    <div key={idx}>{colStep}</div>
+                  ))}
+                </>
+              )}
+            </div>
+
+            {/* Cuadro Respuesta Destacada */}
+            <div
+              style={{
+                marginTop: '12px',
+                background: '#DCFCE7',
+                border: '2px solid #16A34A',
+                borderRadius: '12px',
+                padding: '10px 14px',
+                fontWeight: 900,
+                color: '#14532D',
+                textAlign: 'center',
+                fontSize: '18px',
+              }}
+            >
+              ✅ Respuesta: {curEjemplo.ans}
+            </div>
+
+            {/* Botones de navegación */}
+            <div style={{ display: 'flex', gap: '8px', marginTop: '14px' }}>
+              <button
+                type="button"
+                className="fz-btn"
+                style={{ flex: 1 }}
+                onClick={() =>
+                  setCurEjemploIdx((prev) => (prev + ejemplos.length - 1) % ejemplos.length)
+                }
+              >
+                ◀ Anterior
+              </button>
+              <button
+                type="button"
+                className="fz-btn o"
+                onClick={() => {
+                  const colSteps = sbColumna(activeLevel, curEjemplo);
+                  speakText(
+                    curEjemplo.q +
+                      '. ' +
+                      (curEjemplo.proc || []).concat(colSteps).join('. ') +
+                      '. Respuesta: ' +
+                      curEjemplo.ans
+                  );
+                }}
+              >
+                🔊 Escuchar
+              </button>
+              <button
+                type="button"
+                className="fz-btn"
+                style={{ flex: 1 }}
+                onClick={() => {
+                  if (curEjemploIdx < ejemplos.length - 1) {
+                    setCurEjemploIdx((prev) => prev + 1);
+                  } else {
+                    setView('level-menu');
+                  }
+                }}
+              >
+                {curEjemploIdx < ejemplos.length - 1 ? 'Siguiente ▶' : '✔ Terminar'}
+              </button>
+              <button
+                type="button"
+                className="btn-back"
+                onClick={() => setView('level-menu')}
+              >
+                ◀ Menú
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ══════════════════════════════════════════════════════════════
+            VISTA 4: LOS 20 EJERCICIOS (IDÉNTICO A IMAGEN 2)
+           ══════════════════════════════════════════════════════════════ */}
+        {view === 'ejercicios' && curEjercicio && (
+          <div>
+            {/* Título de la modal: 🎯 Nivel X · [Nombre] */}
+            <div className="tm-title">
+              <span>🎯</span>
+              <span>{levelData.nombre}</span>
+            </div>
+
+            {/* Línea de estado superior */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                fontWeight: 900,
+                color: SBCOL[activeLevel][0],
+                fontSize: '14px',
+                marginBottom: '6px',
+              }}
+            >
+              <span>Ejercicio {curEjercicioIdx + 1} de {ejercicios.length}</span>
+              <span>⭐ {score} pts</span>
+              <span>⏱ {timer} s</span>
+            </div>
+
+            {/* Barra de progreso de tiempo */}
+            <div
+              style={{
+                height: '7px',
+                background: '#EEE8FB',
+                borderRadius: '4px',
+                overflow: 'hidden',
+                marginBottom: '10px',
+              }}
+            >
+              <div
+                style={{
+                  height: '7px',
+                  width: `${Math.max(0, Math.min(100, (timer / (curEjercicio.t || 90)) * 100))}%`,
+                  background: `linear-gradient(90deg, ${SBCOL[activeLevel][0]}, ${SBCOL[activeLevel][1]})`,
+                  transition: 'width 1s linear',
+                }}
+              />
+            </div>
+
+            {/* Puntos del ejercicio */}
+            <div
+              style={{
+                fontSize: '12px',
+                fontWeight: 900,
+                color: '#6B5E8A',
+                marginBottom: '4px',
+              }}
+            >
+              Vale {curEjercicio.pts || 10} puntos
+            </div>
+
+            {/* Enunciado del problema */}
+            <div
+              style={{
+                fontSize: '18px',
+                fontWeight: 900,
+                color: '#1A1033',
+                lineHeight: 1.45,
+                marginBottom: '8px',
+              }}
+            >
+              {curEjercicio.q}
+            </div>
+
+            {/* Representación FEDOR de las cantidades (sin resultado en ejercicios) */}
+            <FedorRepQuantities
+              nums={(curEjercicio.datos || []).filter((x) => x >= 1)}
+              resultado={null}
+            />
+
+            {/* Lista de las 4 opciones A), B), C), D) */}
+            <div style={{ marginTop: '8px' }}>
+              {(curEjercicio.opts || []).map((opt, j) => {
+                const optLetter = ['A', 'B', 'C', 'D'][j] || `${j + 1}`;
+                const isSelected = selectedOptIdx === j;
+                const isAns = opt === curEjercicio.ans;
+
+                let optClass = 'sb5-op';
+                if (showFeedback) {
+                  if (isAns) {
+                    optClass += ' ok';
+                  } else if (isSelected) {
+                    optClass += ' no';
+                  }
+                }
+
+                return (
+                  <button
+                    key={j}
+                    type="button"
+                    className={optClass}
+                    disabled={showFeedback}
+                    onClick={() => handleAnswerExercise(j)}
+                  >
+                    <span style={{ color: SBCOL[activeLevel][0], marginRight: '6px' }}>
+                      {optLetter})
+                    </span>{' '}
+                    <span>{opt}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Feedback y botones después de responder */}
+            {showFeedback && (
+              <div style={{ marginTop: '10px' }}>
+                <div
+                  style={{
+                    padding: '11px 14px',
+                    borderRadius: '12px',
+                    fontWeight: 900,
+                    textAlign: 'center',
+                    fontSize: '16px',
+                    background:
+                      selectedOptIdx !== null &&
+                      curEjercicio.opts[selectedOptIdx] === curEjercicio.ans
+                        ? '#DCFCE7'
+                        : '#FEE2E2',
+                    color:
+                      selectedOptIdx !== null &&
+                      curEjercicio.opts[selectedOptIdx] === curEjercicio.ans
+                        ? '#14532D'
+                        : '#7F1D1D',
+                  }}
+                >
+                  {selectedOptIdx !== null &&
+                  curEjercicio.opts[selectedOptIdx] === curEjercicio.ans
+                    ? `✅ ¡Correcto! +${curEjercicio.pts || 10} puntos`
+                    : selectedOptIdx === -1
+                    ? `⏰ Se acabó el tiempo. La respuesta correcta es ${curEjercicio.ans}`
+                    : `❌ La respuesta correcta es ${curEjercicio.ans}`}
+                </div>
+
+                <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
+                  <button
+                    type="button"
+                    className="fz-btn g"
+                    style={{ flex: 1, fontSize: '16px' }}
+                    onClick={handleNextExercise}
+                  >
+                    ➡ Seguir
+                  </button>
+                  <button
+                    type="button"
+                    className="fz-btn o"
+                    style={{ flex: 1, fontSize: '16px' }}
+                    onClick={() => setShowProcesoInEjercicio(!showProcesoInEjercicio)}
+                  >
+                    🧠 Proceso
+                  </button>
+                </div>
+
+                {/* Despliegue de Proceso si el alumno lo solicita */}
+                {showProcesoInEjercicio && (
+                  <div className="sb5-proc">
+                    <b>🧠 Proceso</b>
+                    {(curEjercicio.proc || []).map((step, idx) => (
+                      <div key={idx}>{step}</div>
+                    ))}
+                    {sbColumna(activeLevel, curEjercicio).length > 0 && (
+                      <>
+                        <b style={{ display: 'block', marginTop: '6px' }}>
+                          👣 Paso a paso en columna
+                        </b>
+                        {sbColumna(activeLevel, curEjercicio).map((colStep, idx) => (
+                          <div key={idx}>{colStep}</div>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
             )}
           </div>
-        </div>
+        )}
 
-        {/* ══ CONTENIDO CON SCROLL ══ */}
-        <div className="flex-1 overflow-y-auto pr-1">
-          {/* VISTA 1: EJEMPLOS RESUELTOS */}
-          {subView === 'ejemplos' && curEjemplo && (
-            <div className="space-y-3 animate-fadeIn">
-              {/* Enunciado */}
-              <div className="p-4 bg-gradient-to-r from-purple-50 to-amber-50 rounded-2xl border-2 border-purple-200 flex items-start justify-between gap-3">
-                <div className="space-y-1">
-                  <div className="text-[11px] font-black text-purple-700 uppercase tracking-wide">
-                    Ejemplo {curEjemploIdx + 1} · {levelData.nombre}
-                  </div>
-                  <p className="text-sm sm:text-base font-bold text-[#1A1033] leading-relaxed">
-                    {curEjemplo.q}
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => speakText(curEjemplo.q)}
-                  className="w-9 h-9 rounded-xl bg-white hover:bg-purple-100 text-purple-800 border border-purple-200 flex items-center justify-center shrink-0 cursor-pointer shadow-xs"
-                  title="Escuchar problema"
-                >
-                  🔊
-                </button>
-              </div>
-
-              {/* Botón para alternar representaciones visuales */}
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={() => setShowRepresentation(!showRepresentation)}
-                  className="text-xs font-black text-purple-700 hover:underline flex items-center gap-1 cursor-pointer"
-                >
-                  <span>{showRepresentation ? '🙈 Ocultar' : '👁️ Mostrar'}</span>
-                  <span>Representación Visual Fedor</span>
-                </button>
-              </div>
-
-              {/* Representaciones pedagógicas del Método Fedor */}
-              {showRepresentation && curEjemplo.datos && curEjemplo.datos.length > 0 && (
-                <div className="p-3 bg-gray-50 rounded-2xl border border-gray-200 space-y-2">
-                  <div className="text-xs font-black text-gray-700">
-                    🔬 Representación Visual del Problema:
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {curEjemplo.datos.slice(0, 2).map((dat, di) => (
-                      <div key={di}>
-                        <div className="text-[11px] font-bold text-gray-500 mb-1">
-                          Dato {di + 1}: ${fmt(dat)}
-                        </div>
-                        <FedorRepresentation val={dat} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Proceso Paso a Paso */}
-              <div className="p-4 bg-white rounded-2xl border-2 border-purple-300 shadow-sm space-y-2.5">
-                <div className="text-xs font-black text-purple-900 uppercase tracking-wider flex items-center gap-1.5">
-                  <span>📝</span>
-                  <span>Proceso de Solución Paso a Paso:</span>
-                </div>
-                <div className="space-y-1.5">
-                  {(curEjemplo.proc || []).map((step: string, si: number) => (
-                    <div
-                      key={si}
-                      className="p-2.5 rounded-xl bg-purple-50/70 border-l-4 border-purple-600 text-xs sm:text-sm font-bold text-[#2A0F60] leading-relaxed"
-                    >
-                      {step}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Respuesta Destacada */}
-              <div className="p-3.5 bg-emerald-50 rounded-2xl border-2 border-emerald-400 flex items-center justify-between">
-                <div>
-                  <div className="text-[11px] font-black text-emerald-800 uppercase tracking-wide">
-                    Respuesta Correcta:
-                  </div>
-                  <div className="text-lg font-black text-emerald-950">
-                    {curEjemplo.ans}
-                  </div>
-                </div>
-                <div className="text-2xl">✅</div>
-              </div>
-
-              {/* Navegación entre los 10 ejemplos */}
-              <div className="flex items-center justify-between pt-2">
-                <button
-                  type="button"
-                  disabled={curEjemploIdx === 0}
-                  onClick={() => setCurEjemploIdx((prev) => Math.max(0, prev - 1))}
-                  className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-black disabled:opacity-40 cursor-pointer"
-                >
-                  ← Anterior
-                </button>
-                <span className="text-xs font-bold text-gray-500">
-                  {curEjemploIdx + 1} de {ejemplos.length}
-                </span>
-                <button
-                  type="button"
-                  disabled={curEjemploIdx === ejemplos.length - 1}
-                  onClick={() => setCurEjemploIdx((prev) => Math.min(ejemplos.length - 1, prev + 1))}
-                  className="px-4 py-2 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-black disabled:opacity-40 cursor-pointer shadow-sm"
-                >
-                  Siguiente →
-                </button>
-              </div>
+        {/* ══════════════════════════════════════════════════════════════
+            VISTA 5: RESUMEN FINAL AL TERMINAR LOS 20 EJERCICIOS
+           ══════════════════════════════════════════════════════════════ */}
+        {view === 'finalizado' && (
+          <div style={{ textAlign: 'center', padding: '16px 8px' }}>
+            <div style={{ fontSize: '54px', marginBottom: '8px' }}>🏆</div>
+            <div
+              style={{
+                fontFamily: "'Baloo 2', sans-serif",
+                fontSize: '28px',
+                fontWeight: 900,
+                color: '#5C21A6',
+              }}
+            >
+              ¡Completaste los 20 ejercicios!
             </div>
-          )}
-
-          {/* VISTA 2: 20 EJERCICIOS PRÁCTICOS */}
-          {subView === 'ejercicios' && curEjercicio && (
-            <div className="space-y-4 animate-fadeIn">
-              {/* Enunciado del Ejercicio */}
-              <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl border-2 border-emerald-300">
-                <div className="flex items-center justify-between text-xs font-black text-emerald-800 mb-2">
-                  <span>EJERCICIO {curEjercicioIdx + 1} DE {ejercicios.length}</span>
-                  <span>+{curEjercicio.pts || 10} XP / PUNTOS</span>
-                </div>
-                <p className="text-sm sm:text-base font-bold text-[#1A1033] leading-relaxed">
-                  {curEjercicio.q}
-                </p>
-              </div>
-
-              {/* Opciones Múltiples */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {(curEjercicio.opts || []).map((opt: string, oi: number) => {
-                  const isSelected = selectedOpt === opt;
-                  const isCorrect = opt === curEjercicio.ans;
-
-                  let btnStyle = 'bg-white hover:bg-purple-50 text-gray-800 border-2 border-gray-200';
-                  if (showFeedback) {
-                    if (isCorrect) {
-                      btnStyle = 'bg-emerald-100 border-emerald-500 text-emerald-950 font-black scale-102';
-                    } else if (isSelected) {
-                      btnStyle = 'bg-red-100 border-red-500 text-red-950 font-black';
-                    } else {
-                      btnStyle = 'bg-gray-100 border-gray-200 opacity-50';
-                    }
-                  }
-
-                  return (
-                    <button
-                      key={oi}
-                      type="button"
-                      disabled={showFeedback}
-                      onClick={() => handleCheckAnswer(opt)}
-                      className={`p-3.5 rounded-xl text-left text-sm font-black transition-all cursor-pointer flex items-center justify-between ${btnStyle}`}
-                    >
-                      <span>{opt}</span>
-                      {showFeedback && isCorrect && <span>✅</span>}
-                      {showFeedback && isSelected && !isCorrect && <span>❌</span>}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Feedback y Explicación */}
-              {showFeedback && (
-                <div className="p-4 rounded-2xl bg-purple-50 border-2 border-purple-300 animate-fadeIn space-y-2">
-                  <div className="text-xs font-black text-purple-900 uppercase">
-                    Explicación del Proceso:
-                  </div>
-                  <div className="space-y-1">
-                    {(curEjercicio.proc || []).map((p: string, pi: number) => (
-                      <p key={pi} className="text-xs sm:text-sm font-bold text-[#2A0F60]">
-                        {p}
-                      </p>
-                    ))}
-                  </div>
-                  <div className="pt-2 flex justify-end">
-                    <button
-                      type="button"
-                      onClick={handleNextEjercicio}
-                      className="px-5 py-2 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-black text-xs cursor-pointer shadow-md"
-                    >
-                      Continuar al siguiente →
-                    </button>
-                  </div>
-                </div>
-              )}
+            <div style={{ fontSize: '24px', margin: '8px 0' }}>
+              {'⭐'.repeat(Math.max(1, Math.min(5, Math.ceil(correctCount / 4))))}
             </div>
-          )}
-        </div>
-
-        {/* ══ FOOTER ══ */}
-        <div className="pt-3 mt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-gray-500 shrink-0">
-          <div>
-            <span>Nivel: <strong>{levelData.nombre}</strong></span>
+            <div
+              style={{
+                fontSize: '16px',
+                fontWeight: 900,
+                color: '#1A1033',
+                marginBottom: '18px',
+              }}
+            >
+              {correctCount} de {ejercicios.length} correctas · Puntaje total: {score} puntos
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+              <button
+                type="button"
+                className="fz-btn g"
+                onClick={() => {
+                  setCurEjercicioIdx(0);
+                  setSelectedOptIdx(null);
+                  setShowFeedback(false);
+                  setShowProcesoInEjercicio(false);
+                  setScore(0);
+                  setCorrectCount(0);
+                  setTimer(ejercicios[0]?.t || 90);
+                  setView('ejercicios');
+                }}
+              >
+                🔁 Repetir ejercicios
+              </button>
+              <button
+                type="button"
+                className="fz-btn"
+                onClick={() => setView('menu')}
+              >
+                🏠 Menú de niveles
+              </button>
+            </div>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl font-black cursor-pointer transition-colors"
-          >
-            Cerrar
-          </button>
-        </div>
+        )}
       </div>
     </div>
   );

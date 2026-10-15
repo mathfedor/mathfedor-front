@@ -206,9 +206,9 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
   const handleOpenTool = (tool: string) => {
     if (tool === 'galaxy' || tool === 'universo') {
       setShowUniverseModal(true);
-    } else if (tool === 'problemas' || tool === 'saber-cotidianos') {
+    } else if (tool === 'problemas') {
       goScreen('problemas');
-    } else if (tool === 'report') {
+    } else if (tool === 'report' || tool === 'informe') {
       goScreen('report');
     } else if (tool === 'estandares') {
       goScreen('estandares');
@@ -433,11 +433,11 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
           4. 🕹️ PANEL DE COMANDO TODAS TUS HERRAMIENTAS
       ═════════════════════════════════════════════════════════════ */}
       <div className="f5sec">
-        🕹️ Panel de comando <small>todas tus herramientas de aprendizaje</small>
+        🕹️ Panel de comando <small>todas tus herramientas</small>
       </div>
       <div className="f5cmd" id="f5Cmd">
         {/* 📚 Para aprender */}
-        <h4>📚 Para aprender</h4>
+        <h4>📗 PARA APRENDER</h4>
         <div className="f5grid">
           <button
             className="f5btn"
@@ -502,10 +502,19 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
             <span>📘</span>
             <span>Concepto</span>
           </button>
+          <button
+            className="f5btn"
+            style={{ background: 'linear-gradient(145deg,#5C21A6,#8B3EDB)' }}
+            onClick={() => handleOpenTool('historia')}
+            title="Historia y pedagogía del Método Fedor"
+          >
+            <span>📜</span>
+            <span>Historia</span>
+          </button>
         </div>
 
         {/* 🎮 Para jugar y ganar */}
-        <h4>🎮 Para jugar y ganar</h4>
+        <h4>🎮 PARA JUGAR Y GANAR</h4>
         <div className="f5grid">
           <button
             className="f5btn"
@@ -546,7 +555,7 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
         </div>
 
         {/* 📝 Para ponerme a prueba */}
-        <h4>📝 Para ponerme a prueba</h4>
+        <h4>📝 PARA PONERME A PRUEBA</h4>
         <div className="f5grid">
           <button
             className="f5btn"
@@ -587,7 +596,7 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
         </div>
 
         {/* 👩‍🏫 Profes y familia */}
-        <h4>👩‍🏫 Profes y familia</h4>
+        <h4>👩‍🏫 PROFES Y FAMILIA</h4>
         <div className="f5grid">
           <button
             className="f5btn"
@@ -596,16 +605,7 @@ export default function HomeScreen5to({ onOpenIntro }: HomeScreen5toProps) {
             title="Guía docente y orientaciones pedagógicas"
           >
             <span>👩‍🏫</span>
-            <span>Guía Doc.</span>
-          </button>
-          <button
-            className="f5btn"
-            style={{ background: 'linear-gradient(145deg,#16876A,#24C496)' }}
-            onClick={() => handleOpenTool('historia')}
-            title="Historia y pedagogía del Método Fedor"
-          >
-            <span>📜</span>
-            <span>Historia</span>
+            <span>Guia Doc.</span>
           </button>
           <button
             className="f5btn"

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface GuiaDocenteModal5toProps {
   isOpen: boolean;
@@ -8,97 +8,215 @@ interface GuiaDocenteModal5toProps {
 }
 
 export default function GuiaDocenteModal5to({ isOpen, onClose }: GuiaDocenteModal5toProps) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
     <div
+      className="tool-modal-bg animate-fadeIn"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
-      className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-fadeIn"
     >
-      <div
-        className="w-full max-w-2xl bg-white rounded-3xl p-5 sm:p-7 shadow-2xl relative flex flex-col max-h-[92vh] overflow-hidden"
-        style={{ fontFamily: "'Nunito', sans-serif" }}
-      >
-        {/* Header Modal */}
-        <div className="flex items-center justify-between pb-3 mb-3 border-b border-purple-100 flex-shrink-0">
-          <div className="flex items-center gap-2.5">
-            <span className="text-2xl">👩‍🏫</span>
-            <h2
-              className="text-2xl font-black text-[#2A0F60]"
-              style={{ fontFamily: "'Baloo 2', sans-serif" }}
-            >
-              Guía Pedagógica del Docente (MEN 5°)
-            </h2>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Cerrar modal"
-            className="w-10 h-10 rounded-full bg-[#F3EEFF] hover:bg-[#E9DEFF] text-[#5C21A6] font-black text-xl flex items-center justify-center transition-colors cursor-pointer"
-          >
-            ✕
-          </button>
+      <style>{`
+        .tool-modal-bg {
+          position: fixed;
+          inset: 0;
+          z-index: 9995;
+          background: rgba(18, 8, 42, 0.72);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 14px;
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(4px);
+          box-sizing: border-box;
+        }
+
+        .tool-modal {
+          background: #FFFFFF;
+          border-radius: 20px;
+          max-width: 580px;
+          width: 100%;
+          max-height: 88vh;
+          overflow-y: auto;
+          padding: 22px 24px 26px;
+          position: relative;
+          box-shadow: 0 24px 70px rgba(20, 8, 50, 0.5);
+          font-family: 'Nunito', sans-serif;
+          color: #180D38;
+          box-sizing: border-box;
+        }
+
+        .tm-close {
+          position: absolute;
+          right: 14px;
+          top: 14px;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          border: 1.5px solid #E4DFF5;
+          background: #F7F4FF;
+          color: #6C28B4;
+          font-weight: 900;
+          cursor: pointer;
+          font-size: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          line-height: 1;
+          transition: all 0.15s ease;
+          padding: 0;
+          outline: none;
+        }
+
+        .tm-close:hover {
+          background: #6C28B4;
+          color: #FFFFFF;
+        }
+
+        .tm-title {
+          font-family: 'Baloo 2', 'Nunito', sans-serif;
+          font-size: 20px;
+          font-weight: 900;
+          color: #3D1468;
+          margin: 0 40px 14px 0;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          line-height: 1.2;
+        }
+
+        .guia-section-title {
+          font-family: 'Baloo 2', 'Nunito', sans-serif;
+          font-size: 15.5px;
+          font-weight: 900;
+          color: #5C21A6;
+          margin: 14px 0 6px 0;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          line-height: 1.3;
+        }
+
+        .guia-section-title:first-of-type {
+          margin-top: 0;
+        }
+
+        .guia-p {
+          font-size: 13.5px;
+          line-height: 1.6;
+          color: #180D38;
+          margin: 0 0 10px 0;
+          font-weight: 600;
+        }
+
+        .guia-list {
+          list-style-type: disc;
+          padding-left: 22px;
+          margin: 0 0 12px 0;
+        }
+
+        .guia-list li {
+          font-size: 13.5px;
+          line-height: 1.55;
+          color: #180D38;
+          margin-bottom: 4px;
+          font-weight: 600;
+        }
+
+        .guia-list li b {
+          color: #180D38;
+          font-weight: 800;
+        }
+      `}</style>
+
+      <div className="tool-modal animate-popIn">
+        {/* Botón Cerrar .tm-close */}
+        <button
+          type="button"
+          onClick={onClose}
+          className="tm-close"
+          title="Cerrar"
+          aria-label="Cerrar modal"
+        >
+          ✕
+        </button>
+
+        {/* Título de la modal */}
+        <div className="tm-title">
+          <span>👩‍🏫</span>
+          <span>Guía del Docente</span>
         </div>
 
-        {/* Scrollable Content */}
-        <div className="overflow-y-auto pr-1 space-y-4 flex-1 text-gray-800 leading-relaxed text-sm">
-          {/* Banner Hero */}
-          <div
-            className="rounded-2xl p-4 sm:p-5 text-white shadow-md relative overflow-hidden"
-            style={{ background: 'linear-gradient(135deg, #059669 0%, #0D9488 55%, #1E3A8A 100%)' }}
-          >
-            <h3
-              className="text-xl sm:text-2xl font-black mb-1 flex items-center gap-2"
-              style={{ fontFamily: "'Baloo 2', sans-serif" }}
-            >
-              <span>📖</span>
-              <span>Orientaciones Pedagógicas MEN · Grado 5°</span>
-            </h3>
-            <p className="text-xs sm:text-sm font-semibold text-white/95">
-              Alineación curricular con los Estándares Básicos de Competencias (EBC) y Derechos Básicos de Aprendizaje (DBA).
-            </p>
-          </div>
-
-          <div className="p-4 bg-emerald-50 border-2 border-emerald-300 rounded-2xl">
-            <h4
-              className="font-black text-emerald-950 mb-1 text-base"
-              style={{ fontFamily: "'Baloo 2', sans-serif" }}
-            >
-              🎯 Enfoque Pedagógico
-            </h4>
-            <p className="font-semibold text-emerald-900 text-xs sm:text-sm">
-              El texto interactivo de 5° grado fomenta el tránsito desde la intuición aritmética y el pensamiento concreto hacia la formalización algebraica y el razonamiento proporcional.
-            </p>
-          </div>
-
-          <div className="p-4 bg-white border border-gray-200 rounded-2xl space-y-2 shadow-xs">
-            <div className="font-black text-gray-900 text-sm">
-              Competencias Matemáticas Desarrolladas:
-            </div>
-            <ul className="list-disc pl-5 text-xs sm:text-sm text-gray-700 space-y-1.5 font-semibold">
-              <li>
-                <b>Comunicación y modelación:</b> Capacidad de traducir situaciones verbales y gráficas a expresiones aritméticas y ecuaciones básicas.
-              </li>
-              <li>
-                <b>Razonamiento y argumentación:</b> Justificación del procedimiento mediante propiedades numéricas (conmutativa, distributiva, asociativa).
-              </li>
-              <li>
-                <b>Resolución de problemas:</b> Aplicación en compras, presupuestos familiares, áreas de cultivo y análisis de encuestas cotidianas.
-              </li>
-            </ul>
-          </div>
-
-          <div className="p-4 bg-purple-50 border border-purple-200 rounded-2xl space-y-1.5">
-            <div className="font-black text-[#5C21A6] text-xs uppercase tracking-wider">
-              Recomendación para el Aula:
-            </div>
-            <p className="text-xs text-gray-800 font-semibold">
-              Inicie cada sesión proyectando el <b>Laboratorio Visual</b> para que los estudiantes manipulen las cantidades en equipo antes de resolver los ejercicios individuales del libro.
-            </p>
-          </div>
+        {/* 1. Método Fedor · Grado 5° */}
+        <div className="guia-section-title">
+          <span>📖</span>
+          <span>Método Fedor · Grado 5°</span>
         </div>
+        <p className="guia-p">
+          El <b>Método Fedor</b> combina visualización, gamificación y práctica guiada para desarrollar el pensamiento numérico, métrico, aleatorio y espacial en niños de 9-11 años.
+        </p>
+
+        {/* 2. Estándares MEN (Grado 5°) */}
+        <div className="guia-section-title">
+          <span>🎯</span>
+          <span>Estándares MEN (Grado 5°)</span>
+        </div>
+        <ul className="guia-list">
+          <li>
+            <b>Pensamiento Numérico:</b> Números hasta millones, fracciones, decimales, potencias
+          </li>
+          <li>
+            <b>Pensamiento Métrico:</b> Sistema Métrico Decimal (longitud, área, volumen)
+          </li>
+          <li>
+            <b>Pensamiento Espacial:</b> Perímetro, área, volumen de figuras geométricas
+          </li>
+          <li>
+            <b>Pensamiento Aleatorio:</b> Tablas de frecuencia, moda, media, probabilidad
+          </li>
+        </ul>
+
+        {/* 3. Niveles de Desempeño */}
+        <div className="guia-section-title">
+          <span>📊</span>
+          <span>Niveles de Desempeño</span>
+        </div>
+        <ul className="guia-list">
+          <li>
+            <b>N1 Cadete:</b> Reconoce y aplica conceptos básicos
+          </li>
+          <li>
+            <b>N2 Piloto:</b> Resuelve ejercicios con procedimiento guiado
+          </li>
+          <li>
+            <b>N3 Capitán:</b> Aplica en contextos variados
+          </li>
+          <li>
+            <b>N4 Comandante:</b> Analiza y compara estrategias
+          </li>
+          <li>
+            <b>N5 SABER:</b> Aplica en problemas tipo pruebas nacionales
+          </li>
+        </ul>
+
+        {/* 4. Evaluación */}
+        <div className="guia-section-title">
+          <span>🎓</span>
+          <span>Evaluación</span>
+        </div>
+        <p className="guia-p" style={{ marginBottom: 0 }}>
+          Cada tema aporta puntos (N1=65, N2=110, N3=145, N4=170, N5=200). El sistema calcula automáticamente el porcentaje de logro por unidad y genera reportes exportables.
+        </p>
       </div>
     </div>
   );

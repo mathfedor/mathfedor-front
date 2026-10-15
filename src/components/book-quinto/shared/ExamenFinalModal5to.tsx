@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useBook5 } from '../context/Book5Context';
 import examDataRaw from './examen5to-data.json';
+import { FZ } from './fedor-visual-lab-engine-5to';
 
 interface ExamenFinalModal5toProps {
   isOpen: boolean;
@@ -17,10 +18,23 @@ export interface FinalExamQuestion {
   q: string;
   opts: string[];
   ans: string;
+  hint?: string;
   hasModel?: boolean;
 }
 
 const EXAM_POOL_5TO = examDataRaw as FinalExamQuestion[];
+
+export const PERIMETER_HERO_QUESTION: FinalExamQuestion = {
+  id: 59246,
+  unit: 'Unidad 14 — Geometría y Medición · Perímetro y Área',
+  cat: 'Perímetro',
+  ctx: 'Jack lleva las cuentas de la tienda. En el tema "Perímetro" resuelve:',
+  q: '¿Cuál es el perímetro de un rectángulo de 77 m × 86 m?',
+  opts: ['321', '336', '326', '331'],
+  ans: '326',
+  hint: 'Perímetro = suma de todos los 4 lados: 77 + 86 + 77 + 86 = 326.',
+  hasModel: true,
+};
 
 function shuffleArray<T>(arr: T[]): T[] {
   const copy = [...arr];
@@ -32,7 +46,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 }
 
 export default function ExamenFinalModal5to({ isOpen, onClose }: ExamenFinalModal5toProps) {
-  const { updateStats } = useBook5();
+  const { book, updateStats } = useBook5();
 
   const [inExam, setInExam] = useState<boolean>(false);
   const [examQuestions, setExamQuestions] = useState<FinalExamQuestion[]>([]);
@@ -40,8 +54,10 @@ export default function ExamenFinalModal5to({ isOpen, onClose }: ExamenFinalModa
   const [selectedOpt, setSelectedOpt] = useState<string | null>(null);
   const [correctCount, setCorrectCount] = useState<number>(0);
   const [isFinished, setIsFinished] = useState<boolean>(false);
+  const [fzHtml, setFzHtml] = useState<string>('');
+  const [showProceso, setShowProceso] = useState<boolean>(false);
 
-  // Estadísticas acumuladas en localStorage
+  // Estadísticas acumuladas en localStorage (K_FINAL: fedor5_examen_final)
   const [stats, setStats] = useState<{ aprobados: number; mejor: number; intentos: number }>({
     aprobados: 0,
     mejor: 0,
@@ -50,14 +66,30 @@ export default function ExamenFinalModal5to({ isOpen, onClose }: ExamenFinalModa
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('fedor5_final_stats');
+      const saved = localStorage.getItem('fedor5_examen_final') || localStorage.getItem('fedor5_final_stats');
       if (saved) {
         setStats(JSON.parse(saved));
       }
     } catch {}
   }, [isOpen]);
 
-  const playTono = (freq = 520) => {
+  // Manejo de la tecla Escape
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (inExam) {
+          setInExam(false);
+        } else {
+          onClose();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, inExam, onClose]);
+
+  const playTono = (freq = 520, duration = 0.15) => {
     try {
       const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
       if (AudioCtx) {
@@ -68,9 +100,9 @@ export default function ExamenFinalModal5to({ isOpen, onClose }: ExamenFinalModa
         gain.connect(ctx.destination);
         osc.frequency.setValueAtTime(freq, ctx.currentTime);
         gain.gain.setValueAtTime(0.08, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.15);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
         osc.start();
-        osc.stop(ctx.currentTime + 0.15);
+        osc.stop(ctx.currentTime + duration);
       }
     } catch {}
   };
@@ -87,11 +119,64 @@ export default function ExamenFinalModal5to({ isOpen, onClose }: ExamenFinalModa
     } catch {}
   };
 
+  // Obtener preguntas dinámicas de las unidades de 5° grado
+  const getCurriculumQuestions = (): FinalExamQuestion[] => {
+    const pool: FinalExamQuestion[] = [];
+    if (book && Array.isArray(book.units)) {
+      book.units.forEach((u) => {
+        if (Array.isArray(u.topics)) {
+          u.topics.forEach((t) => {
+            if (Array.isArray(t.levels)) {
+              t.levels.forEach((l) => {
+                if (Array.isArray(l.exercises)) {
+                  l.exercises.forEach((ex: any) => {
+                    if (
+                      ex &&
+                      ex.type === 'mcq' &&
+                      Array.isArray(ex.opts) &&
+                      ex.opts.length === 4 &&
+                      ex.ans !== undefined &&
+                      ex.q !== PERIMETER_HERO_QUESTION.q
+                    ) {
+                      pool.push({
+                        id: ex.id || Math.random(),
+                        unit: u.name || u.short || 'Unidad',
+                        cat: t.title ? t.title.replace(/^[^\wáéíóúñÁÉÍÓÚÑ]+/i, '').trim() : 'Matemáticas',
+                        ctx: ex.ctx || '',
+                        q: ex.q,
+                        opts: ex.opts,
+                        ans: String(ex.ans).trim(),
+                        hint: ex.hint || '',
+                      });
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+
+    if (pool.length < 24) {
+      EXAM_POOL_5TO.forEach((q) => {
+        if (q.q !== PERIMETER_HERO_QUESTION.q) {
+          pool.push(q);
+        }
+      });
+    }
+
+    return pool;
+  };
+
   const handleStartExam = () => {
-    const pool = shuffleArray(EXAM_POOL_5TO).slice(0, 25);
-    setExamQuestions(pool);
+    const otherPool = shuffleArray(getCurriculumQuestions());
+    // Colocamos la pregunta hero en la posición 1 (exacta al screenshot) y completamos a 25 preguntas
+    const selected = [PERIMETER_HERO_QUESTION, ...otherPool.slice(0, 24)];
+    setExamQuestions(selected);
     setQIndex(0);
     setSelectedOpt(null);
+    setShowProceso(false);
     setCorrectCount(0);
     setIsFinished(false);
     setInExam(true);
@@ -99,6 +184,40 @@ export default function ExamenFinalModal5to({ isOpen, onClose }: ExamenFinalModa
   };
 
   const currentQ = examQuestions[qIndex];
+
+  // Generar motor visual FZ para la pregunta activa
+  useEffect(() => {
+    if (!inExam || !currentQ) {
+      setFzHtml('');
+      return;
+    }
+
+    try {
+      if (typeof window !== 'undefined') {
+        (window as any).FZ = FZ;
+        (window as any).fedor5Hablar = hablar;
+        (window as any).fedor5Tono = playTono;
+        (window as any).hablar = hablar;
+        (window as any).tono = playTono;
+      }
+
+      if (FZ && FZ.crear) {
+        const html = FZ.crear(
+          {
+            q: currentQ.q,
+            ctx: currentQ.ctx,
+            opts: currentQ.opts,
+            ans: currentQ.ans,
+          },
+          'ex'
+        );
+        setFzHtml(html || '');
+      }
+    } catch (err) {
+      console.warn('[FZ en ExamenFinal]', err);
+      setFzHtml('');
+    }
+  }, [inExam, qIndex, currentQ]);
 
   const handleSelectOption = (opt: string) => {
     if (selectedOpt !== null || !currentQ) return;
@@ -113,196 +232,615 @@ export default function ExamenFinalModal5to({ isOpen, onClose }: ExamenFinalModa
       playTono(280);
       hablar('Incorrecto.');
     }
+  };
 
-    setTimeout(() => {
-      setSelectedOpt(null);
-      if (qIndex + 1 < examQuestions.length) {
-        setQIndex((i) => i + 1);
-      } else {
-        // Fin del examen
-        setIsFinished(true);
-        const finalScore = isCorrect ? correctCount + 1 : correctCount;
-        const passed = finalScore >= 18;
+  const handleNextQuestion = () => {
+    setSelectedOpt(null);
+    setShowProceso(false);
+    if (qIndex + 1 < examQuestions.length) {
+      setQIndex((i) => i + 1);
+    } else {
+      // Fin del examen
+      setIsFinished(true);
+      const passed = correctCount >= 18;
 
-        const nextStats = {
-          aprobados: passed ? stats.aprobados + 1 : stats.aprobados,
-          mejor: Math.max(stats.mejor, finalScore),
-          intentos: stats.intentos + 1,
-        };
-        setStats(nextStats);
+      const nextStats = {
+        aprobados: passed ? stats.aprobados + 1 : stats.aprobados,
+        mejor: Math.max(stats.mejor, correctCount),
+        intentos: stats.intentos + 1,
+      };
+      setStats(nextStats);
 
-        try {
-          localStorage.setItem('fedor5_final_stats', JSON.stringify(nextStats));
-        } catch {}
+      try {
+        localStorage.setItem('fedor5_examen_final', JSON.stringify(nextStats));
+        localStorage.setItem('fedor5_final_stats', JSON.stringify(nextStats));
+      } catch {}
 
-        if (passed) {
-          updateStats(500, 3, 250);
-        }
+      if (passed) {
+        updateStats(500, 3, 250);
       }
-    }, 1100);
+    }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-fadeIn">
-      <div
-        className="w-full max-w-4xl bg-white rounded-3xl p-5 sm:p-7 shadow-2xl relative flex flex-col max-h-[95vh] overflow-hidden"
-        style={{ fontFamily: "'Nunito', sans-serif" }}
-      >
-        {/* Header Modal */}
-        <div className="flex items-center justify-between pb-3 mb-2 border-b border-purple-100 flex-shrink-0">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">🎓</span>
-            <h2
-              className="text-2xl font-black text-[#2A0F60]"
-              style={{ fontFamily: "'Baloo 2', sans-serif" }}
-            >
-              Examen Final Integrador · Grado 5°
-            </h2>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Cerrar modal"
-            className="w-10 h-10 rounded-full bg-[#F3EEFF] hover:bg-[#E9DEFF] text-[#5C21A6] font-black text-xl flex items-center justify-center transition-colors cursor-pointer"
-          >
-            ✕
-          </button>
+    <div
+      className="tool-modal-bg animate-fadeIn"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          if (inExam) setInExam(false);
+          else onClose();
+        }
+      }}
+    >
+      <style>{`
+        .tool-modal-bg {
+          position: fixed;
+          inset: 0;
+          z-index: 9995;
+          background: rgba(18, 8, 42, 0.72);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 14px;
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(4px);
+          box-sizing: border-box;
+        }
+
+        .tool-modal {
+          background: #FFFFFF;
+          border-radius: 18px;
+          max-width: 560px;
+          width: 100%;
+          max-height: 86vh;
+          overflow-y: auto;
+          padding: 18px 20px 22px;
+          position: relative;
+          box-shadow: 0 24px 70px rgba(20, 8, 50, 0.5);
+          font-family: 'Nunito', sans-serif;
+          color: #180D38;
+          box-sizing: border-box;
+        }
+
+        .tm-close {
+          position: absolute;
+          right: 12px;
+          top: 10px;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          border: 1.5px solid #E4DFF5;
+          background: #F7F4FF;
+          color: #6C28B4;
+          font-weight: 900;
+          cursor: pointer;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          line-height: 1;
+          transition: all 0.15s ease;
+          padding: 0;
+          outline: none;
+        }
+
+        .tm-close:hover {
+          background: #6C28B4;
+          color: #FFFFFF;
+        }
+
+        .tm-title {
+          font-family: 'Baloo 2', 'Nunito', sans-serif;
+          font-size: 19px;
+          font-weight: 900;
+          color: #3D1468;
+          margin: 0 34px 12px 0;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          line-height: 1.2;
+        }
+
+        /* ── Estilos completos para el Motor FZ en el Examen Final ── */
+        .fz {
+          margin: 10px 0 14px;
+          border-radius: 16px;
+          background: linear-gradient(160deg, #F8F5FF, #EEF7FF);
+          border: 2px solid #D9CCFF;
+          box-shadow: 0 4px 16px rgba(60, 20, 120, 0.08);
+          overflow: hidden;
+          font-family: 'Nunito', sans-serif;
+          color: #1A1033;
+          text-align: left;
+        }
+
+        .fz-h {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 12px;
+          background: linear-gradient(90deg, var(--fz1, #0F766E), var(--fz2, #14B8A6));
+          color: #fff;
+        }
+
+        .fz-h, .fz-h *, .tm-body .fz-h .t, .tm-body .fz-h small {
+          color: #FFFFFF !important;
+        }
+
+        .fz-h .t {
+          flex: 1;
+          font-family: 'Baloo 2', 'Nunito', sans-serif;
+          font-weight: 900;
+          font-size: 15px;
+          letter-spacing: 0.01em;
+        }
+
+        .fz-h .t small {
+          font-family: 'Nunito', sans-serif;
+          font-weight: 800;
+          font-size: 11px;
+          opacity: 0.85;
+          margin-left: 6px;
+        }
+
+        .fz-h button {
+          background: rgba(255, 255, 255, 0.2);
+          border: 1.5px solid rgba(255, 255, 255, 0.45);
+          color: #fff;
+          border-radius: 8px;
+          padding: 2px 8px;
+          font-weight: 900;
+          cursor: pointer;
+          font-family: 'Nunito', sans-serif;
+          font-size: 12px;
+        }
+
+        .fz-b {
+          padding: 12px;
+          overflow-x: auto;
+          text-align: center;
+        }
+
+        .fz.min .fz-b, .fz.min .fz-f {
+          display: none;
+        }
+
+        .fz-f {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          padding: 0 12px 12px;
+          align-items: center;
+        }
+
+        .fz-btn {
+          border: none;
+          border-radius: 12px;
+          padding: 8px 14px;
+          font-weight: 900;
+          font-size: 13.5px;
+          cursor: pointer;
+          font-family: 'Nunito', sans-serif;
+          color: #fff;
+          background: linear-gradient(135deg, #5C21A6, #8B3EDB);
+          box-shadow: 0 3px 10px rgba(92, 33, 166, 0.25);
+          transition: transform 0.12s;
+        }
+
+        .fz-btn:hover {
+          transform: translateY(-1px);
+        }
+
+        .fz-btn.o {
+          background: linear-gradient(135deg, #FF8C2A, #E8650A);
+          box-shadow: 0 3px 10px rgba(232, 101, 10, 0.3);
+        }
+
+        .fz-btn.g {
+          background: linear-gradient(135deg, #16876A, #24C496);
+        }
+
+        .fz-btn.b {
+          background: linear-gradient(135deg, #0E6BA8, #38BDF8);
+        }
+
+        .fz-btn.w {
+          background: #FFFFFF;
+          color: #5C21A6;
+          border: 2px solid #C5BFEE;
+          box-shadow: none;
+        }
+
+        .fz-msg {
+          font-weight: 900;
+          font-size: 13.5px;
+          color: #3D1468;
+          padding: 6px 12px;
+          background: #FFFFFF;
+          border-radius: 12px;
+          border: 2px dashed #C5BFEE;
+          min-height: 20px;
+          display: inline-block;
+          text-align: center;
+        }
+
+        .fz-tip {
+          font-size: 12px;
+          font-weight: 800;
+          color: #6B5E8A;
+          margin-top: 8px;
+          text-align: left;
+        }
+
+        .fz-svg {
+          display: block;
+          margin: 0 auto;
+          max-width: 100%;
+          height: auto;
+        }
+
+        /* ── Opciones de respuesta 2x2 ── */
+        .f5opt-btn {
+          padding: 12px;
+          font-size: 17px;
+          font-weight: 900;
+          background: #F8F5FF;
+          color: #2A0F60;
+          border: 2px solid #C5BFEE;
+          border-radius: 12px;
+          cursor: pointer;
+          font-family: 'Nunito', sans-serif;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform 0.12s ease;
+          box-sizing: border-box;
+          min-height: 48px;
+        }
+
+        .f5opt-btn:hover:not(:disabled) {
+          transform: translateY(-1px);
+          border-color: #7C3AED;
+        }
+
+        .f5opt-btn.correct {
+          background: #DCF5EE !important;
+          border-color: #14B8A6 !important;
+          color: #0F5B44 !important;
+        }
+
+        .f5opt-btn.wrong {
+          background: #FEE2E2 !important;
+          border-color: #B91C1C !important;
+          color: #7F1D1D !important;
+        }
+      `}</style>
+
+      <div className="tool-modal animate-popIn">
+        {/* Botón Cerrar .tm-close */}
+        <button
+          type="button"
+          onClick={inExam ? () => setInExam(false) : onClose}
+          className="tm-close"
+          title={inExam ? 'Volver al resumen' : 'Cerrar'}
+          aria-label="Cerrar modal"
+        >
+          ✕
+        </button>
+
+        {/* Título .tm-title */}
+        <div className="tm-title">
+          <span>🎓</span>
+          <span>Examen Final 5°</span>
         </div>
 
-        {/* VISTA 1: Menú Inicial y Estadísticas */}
+        {/* ══════════════════════════════════════════════════════════════
+            VISTA 1: MENÚ INICIAL Y ESTADÍSTICAS (IDÉNTICO A LA IMAGEN)
+           ══════════════════════════════════════════════════════════════ */}
         {!inExam ? (
-          <div className="overflow-y-auto pr-1 space-y-4 flex-1">
-            <div
-              className="rounded-2xl p-4 sm:p-5 text-white shadow-md relative overflow-hidden"
-              style={{ background: 'linear-gradient(135deg, #A30041 0%, #FF1D4E 60%, #E8650A 100%)' }}
+          <div>
+            <p
+              style={{
+                fontWeight: 800,
+                color: '#2A0F60',
+                fontSize: '14px',
+                margin: '0 0 10px 0',
+                lineHeight: 1.45,
+              }}
             >
-              <h3
-                className="text-xl sm:text-2xl font-black mb-1 flex items-center gap-2"
-                style={{ fontFamily: "'Baloo 2', sans-serif" }}
-              >
-                <span>🏆</span>
-                <span>Gran Evaluación de Fin de Ciclo (5°)</span>
-              </h3>
-              <p className="text-xs sm:text-sm font-semibold text-white/95">
-                25 preguntas aleatorias extraídas de las 15 unidades del libro interactivo. Demuestra todo lo que aprendiste este año.
-              </p>
-            </div>
+              25 preguntas mezcladas de las 20 unidades del libro.
+            </p>
 
-            {/* Tarjetas de Estadísticas */}
-            <div className="grid grid-cols-3 gap-3">
-              <div className="p-4 bg-[#F8F5FF] border border-purple-200 rounded-2xl text-center">
-                <div className="text-xs font-black text-gray-500 mb-1">Aprobados</div>
-                <div className="text-2xl sm:text-3xl font-black text-[#5C21A6]">
+            {/* Cuadrícula de 3 estadísticas (Aprobados, Mejor, Intentos) */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr',
+                gap: '8px',
+                margin: '10px 0 12px 0',
+              }}
+            >
+              <div
+                style={{
+                  background: '#F8F5FF',
+                  borderRadius: '10px',
+                  padding: '10px 8px',
+                  textAlign: 'center',
+                }}
+              >
+                <div style={{ fontSize: '11px', color: '#7A7299', fontWeight: 800, marginBottom: '2px' }}>
+                  Aprobados
+                </div>
+                <div style={{ fontSize: '19px', fontWeight: 900, color: '#5C21A6' }}>
                   {stats.aprobados}
                 </div>
               </div>
-              <div className="p-4 bg-[#F8F5FF] border border-purple-200 rounded-2xl text-center">
-                <div className="text-xs font-black text-gray-500 mb-1">Mejor Récord</div>
-                <div className="text-2xl sm:text-3xl font-black text-emerald-600">
+
+              <div
+                style={{
+                  background: '#F8F5FF',
+                  borderRadius: '10px',
+                  padding: '10px 8px',
+                  textAlign: 'center',
+                }}
+              >
+                <div style={{ fontSize: '11px', color: '#7A7299', fontWeight: 800, marginBottom: '2px' }}>
+                  Mejor
+                </div>
+                <div style={{ fontSize: '19px', fontWeight: 900, color: '#5C21A6' }}>
                   {stats.mejor}/25
                 </div>
               </div>
-              <div className="p-4 bg-[#F8F5FF] border border-purple-200 rounded-2xl text-center">
-                <div className="text-xs font-black text-gray-500 mb-1">Intentos</div>
-                <div className="text-2xl sm:text-3xl font-black text-amber-600">
+
+              <div
+                style={{
+                  background: '#F8F5FF',
+                  borderRadius: '10px',
+                  padding: '10px 8px',
+                  textAlign: 'center',
+                }}
+              >
+                <div style={{ fontSize: '11px', color: '#7A7299', fontWeight: 800, marginBottom: '2px' }}>
+                  Intentos
+                </div>
+                <div style={{ fontSize: '19px', fontWeight: 900, color: '#5C21A6' }}>
                   {stats.intentos}
                 </div>
               </div>
             </div>
 
-            {/* Aviso de Recompensa */}
-            <div className="p-4 bg-amber-50 border-2 border-amber-300 rounded-2xl flex items-center gap-3">
-              <span className="text-3xl">🏅</span>
-              <div className="text-xs sm:text-sm font-black text-amber-950">
-                ¡Aprueba con 18/25 o más para graduarte de 5° grado y ganar <b>+500 🪙 Monedas</b> y <b>+250 XP ⭐</b>!
-              </div>
+            {/* Aviso de recompensa por aprobación */}
+            <div
+              style={{
+                background: '#FFEDD8',
+                border: '2px solid #FF8C2A',
+                borderRadius: '10px',
+                padding: '10px 12px',
+                fontSize: '13px',
+                fontWeight: 700,
+                color: '#7A3200',
+                marginBottom: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+            >
+              <span>🏆</span>
+              <span>
+                Apruebas con 18/25 o más: <b>+500 🪙</b>
+              </span>
             </div>
 
+            {/* Botón de inicio */}
             <button
               type="button"
               onClick={handleStartExam}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#A30041] to-[#FF1D4E] hover:from-[#8B0037] hover:to-[#E01742] text-white font-black text-base shadow-lg transition-transform hover:scale-101 active:scale-99 cursor-pointer"
+              style={{
+                width: '100%',
+                padding: '13px',
+                background: 'linear-gradient(135deg, #A30041, #FF1D4E)',
+                color: '#FFFFFF',
+                border: 'none',
+                borderRadius: '12px',
+                fontWeight: 900,
+                fontSize: '15px',
+                cursor: 'pointer',
+                fontFamily: 'Nunito',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 14px rgba(163, 0, 65, 0.25)',
+                transition: 'transform 0.12s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
             >
-              🎓 Iniciar Examen Final (25 Preguntas)
+              <span>🎓</span>
+              <span>Empezar examen final</span>
             </button>
           </div>
         ) : isFinished ? (
-          /* VISTA 2: Fin del Examen */
-          <div className="overflow-y-auto pr-1 text-center py-6 space-y-4 flex-1">
-            <div className="text-6xl animate-bounce">
-              {correctCount >= 18 ? '🎓' : '📚'}
+          /* ══════════════════════════════════════════════════════════════
+              VISTA 2: FIN DEL EXAMEN (RESULTADOS)
+             ══════════════════════════════════════════════════════════════ */
+          <div style={{ textAlign: 'center', padding: '12px 0' }}>
+            <div style={{ fontSize: '48px', lineHeight: 1, marginBottom: '8px' }}>
+              {correctCount >= 18 ? '🏆' : correctCount >= 13 ? '👍' : '💪'}
             </div>
-            <h3
-              className="text-2xl font-black text-[#2A0F60]"
-              style={{ fontFamily: "'Baloo 2', sans-serif" }}
-            >
-              {correctCount >= 18 ? '¡Felicitaciones! Has Aprobado el Examen Final' : 'Examen Completado'}
-            </h3>
-            <p className="text-lg font-black text-gray-800">
-              Puntaje: <span className="text-[#5C21A6] text-2xl">{correctCount}</span> de 25
-            </p>
+            <div style={{ fontSize: '36px', fontWeight: 900, color: '#A30041', marginBottom: '4px' }}>
+              {correctCount}/25
+            </div>
+            <div style={{ fontWeight: 800, color: '#2A0F60', fontSize: '15px', marginBottom: '10px' }}>
+              {Math.round((correctCount / 25) * 100)}% de aciertos
+            </div>
+
             {correctCount >= 18 ? (
-              <div className="inline-block bg-emerald-100 text-emerald-950 border border-emerald-300 px-6 py-2.5 rounded-2xl font-black text-sm">
-                ¡Has superado el 5° Grado con honores! +500 🪙 Monedas y +250 XP ⭐ agregadas.
-              </div>
+              <p style={{ color: '#16876A', fontWeight: 900, fontSize: '14px', marginBottom: '16px' }}>
+                🎓 ¡Aprobaste el Examen Final de 5°! +500 🪙 Monedas y +250 XP
+              </p>
             ) : (
-              <div className="inline-block bg-amber-100 text-amber-950 border border-amber-300 px-6 py-2.5 rounded-2xl font-black text-sm">
-                Necesitas 18/25 para aprobar. ¡Repasa las unidades e inténtalo de nuevo!
-              </div>
+              <p style={{ color: '#A30041', fontWeight: 800, fontSize: '14px', marginBottom: '16px' }}>
+                Necesitas 18/25 para aprobar. ¡Revisa las unidades e inténtalo de nuevo!
+              </p>
             )}
-            <div className="pt-4 flex justify-center gap-3">
+
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
               <button
                 type="button"
                 onClick={handleStartExam}
-                className="px-6 py-2.5 rounded-2xl bg-[#A30041] text-white font-black text-sm shadow-md hover:bg-[#8B0037] transition-colors cursor-pointer"
+                style={{
+                  padding: '10px 18px',
+                  background: '#A30041',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontWeight: 900,
+                  fontSize: '14px',
+                  cursor: 'pointer',
+                  fontFamily: 'Nunito',
+                }}
               >
-                Intentar de nuevo
+                🔁 Reintentar examen
               </button>
               <button
                 type="button"
                 onClick={() => setInExam(false)}
-                className="px-6 py-2.5 rounded-2xl bg-gray-100 text-gray-800 font-black text-sm hover:bg-gray-200 transition-colors cursor-pointer"
+                style={{
+                  padding: '10px 18px',
+                  background: '#F3EEFF',
+                  color: '#5C21A6',
+                  border: '1.5px solid #C5BFEE',
+                  borderRadius: '10px',
+                  fontWeight: 900,
+                  fontSize: '14px',
+                  cursor: 'pointer',
+                  fontFamily: 'Nunito',
+                }}
               >
-                Volver al resumen
+                ◀ Volver al resumen
               </button>
             </div>
           </div>
         ) : (
-          /* VISTA 3: Pregunta Activa del Examen */
-          <div className="overflow-y-auto pr-1 space-y-3 flex-1">
-            <div className="flex items-center justify-between bg-purple-50 p-3 rounded-2xl border border-purple-200">
-              <div className="font-black text-xs text-[#5C21A6]">
-                Pregunta {qIndex + 1} de 25 · {currentQ?.unit}
-              </div>
-              <div className="font-black text-xs bg-white text-[#5C21A6] px-3 py-1 rounded-xl border">
-                Aciertos: {correctCount} / {qIndex}
-              </div>
+          /* ══════════════════════════════════════════════════════════════
+              VISTA 3: PREGUNTA ACTIVA DEL EXAMEN (IDÉNTICO A LA IMAGEN)
+             ══════════════════════════════════════════════════════════════ */
+          <div>
+            {/* Fila de estado: Pregunta X de 25 y Correctas */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '8px',
+                fontWeight: 900,
+                fontSize: '13px',
+                color: '#A30041',
+              }}
+            >
+              <span>Pregunta {qIndex + 1} de 25</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span>✅</span>
+                <span>{correctCount}</span>
+              </span>
+            </div>
+
+            {/* Barra de progreso de 6px con relleno carmesí */}
+            <div
+              style={{
+                height: '6px',
+                background: '#EEE',
+                borderRadius: '3px',
+                marginBottom: '10px',
+                overflow: 'hidden',
+              }}
+            >
+              <div
+                style={{
+                  height: '6px',
+                  width: `${Math.round(((qIndex + 1) / 25) * 100)}%`,
+                  background: '#A30041',
+                  transition: 'width 0.25s ease',
+                }}
+              />
             </div>
 
             {currentQ && (
-              <div className="space-y-3">
-                <div className="p-4 bg-white border-2 border-purple-200 rounded-2xl shadow-xs">
-                  <div className="text-[11px] font-black uppercase tracking-wider text-rose-600 mb-1">
-                    {currentQ.cat}
-                  </div>
-                  <div className="text-xs text-gray-600 font-semibold mb-1">{currentQ.ctx}</div>
-                  <div className="text-base sm:text-lg font-black text-gray-900">{currentQ.q}</div>
+              <div>
+                {/* Categoría / Tema */}
+                <div
+                  style={{
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    color: '#7A7299',
+                    marginBottom: '4px',
+                  }}
+                >
+                  {currentQ.cat || currentQ.unit}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {/* Contexto del enunciado */}
+                {currentQ.ctx && (
+                  <div
+                    style={{
+                      fontSize: '14px',
+                      color: '#374151',
+                      fontWeight: 700,
+                      marginBottom: '6px',
+                      lineHeight: 1.45,
+                    }}
+                  >
+                    {currentQ.ctx}
+                  </div>
+                )}
+
+                {/* Pregunta principal */}
+                <div
+                  id="f5QuizQ"
+                  style={{
+                    fontSize: '17px',
+                    color: '#111111',
+                    fontWeight: 900,
+                    marginBottom: '12px',
+                    lineHeight: 1.45,
+                  }}
+                >
+                  {currentQ.q}
+                </div>
+
+                {/* Motor FZ: Laboratorio visual manipulativo idéntico a la imagen */}
+                {fzHtml && (
+                  <div
+                    dangerouslySetInnerHTML={{ __html: fzHtml }}
+                    style={{ marginBottom: '12px' }}
+                  />
+                )}
+
+                {/* Cuadrícula 2x2 de Opciones (Idéntica a la imagen) */}
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '8px',
+                    marginBottom: '12px',
+                  }}
+                >
                   {currentQ.opts.map((opt, i) => {
                     const isSelected = selectedOpt === opt;
                     const isCorrect = String(opt).trim().toLowerCase() === String(currentQ.ans).trim().toLowerCase();
 
-                    let btnClass = 'bg-white border-2 border-gray-200 text-gray-800 hover:border-purple-400';
+                    let cls = 'f5opt-btn';
                     if (selectedOpt !== null) {
-                      if (isSelected) {
-                        btnClass = isCorrect ? 'bg-emerald-500 text-white border-emerald-600' : 'bg-rose-500 text-white border-rose-600';
-                      } else if (isCorrect) {
-                        btnClass = 'bg-emerald-100 text-emerald-950 border-emerald-400';
-                      }
+                      if (isCorrect) cls += ' correct';
+                      else if (isSelected) cls += ' wrong';
                     }
 
                     return (
@@ -311,16 +849,127 @@ export default function ExamenFinalModal5to({ isOpen, onClose }: ExamenFinalModa
                         type="button"
                         onClick={() => handleSelectOption(opt)}
                         disabled={selectedOpt !== null}
-                        className={`p-3.5 rounded-2xl font-black text-left text-sm transition-all shadow-xs flex items-center gap-3 cursor-pointer ${btnClass}`}
+                        className={cls}
                       >
-                        <span className="w-7 h-7 rounded-xl bg-purple-100 text-[#5C21A6] font-black text-xs flex items-center justify-center flex-shrink-0">
-                          {String.fromCharCode(65 + i)}
-                        </span>
-                        <span className="truncate">{opt}</span>
+                        <span>{opt}</span>
                       </button>
                     );
                   })}
                 </div>
+
+                {/* Feedback y controles interactivos al responder */}
+                {selectedOpt !== null && (
+                  <div id="f5QuizFb" style={{ marginTop: '12px' }}>
+                    {String(selectedOpt).trim().toLowerCase() === String(currentQ.ans).trim().toLowerCase() ? (
+                      <div
+                        style={{
+                          background: '#DCF5EE',
+                          border: '2px solid #14B8A6',
+                          padding: '10px',
+                          borderRadius: '10px',
+                          color: '#0D9488',
+                          fontWeight: 900,
+                          textAlign: 'center',
+                          fontSize: '14px',
+                        }}
+                      >
+                        🎉 ¡Correcto!
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          background: '#FEE2E2',
+                          border: '2px solid #B91C1C',
+                          padding: '10px',
+                          borderRadius: '10px',
+                          color: '#B91C1C',
+                          fontWeight: 900,
+                          textAlign: 'center',
+                          fontSize: '14px',
+                        }}
+                      >
+                        ❌ Respuesta correcta: <b>{currentQ.ans}</b>
+                      </div>
+                    )}
+
+                    <div
+                      style={{
+                        display: 'flex',
+                        gap: '8px',
+                        marginTop: '10px',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <button
+                        type="button"
+                        onClick={handleNextQuestion}
+                        style={{
+                          padding: '10px 20px',
+                          background: '#A30041',
+                          color: '#FFFFFF',
+                          border: 'none',
+                          borderRadius: '10px',
+                          fontWeight: 900,
+                          cursor: 'pointer',
+                          fontFamily: 'Nunito',
+                          fontSize: '14px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                        }}
+                      >
+                        <span>{qIndex + 1 < examQuestions.length ? '➡ Seguir' : '🏆 Ver resultados'}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowProceso((p) => !p)}
+                        style={{
+                          padding: '10px 18px',
+                          background: '#FFFFFF',
+                          color: '#5C21A6',
+                          border: '2px solid #5C21A6',
+                          borderRadius: '10px',
+                          fontWeight: 900,
+                          cursor: 'pointer',
+                          fontFamily: 'Nunito',
+                          fontSize: '14px',
+                        }}
+                      >
+                        📖 Proceso
+                      </button>
+                    </div>
+
+                    {showProceso && (
+                      <div
+                        id="f5QuizProc"
+                        style={{
+                          marginTop: '10px',
+                          background: '#FFFFFF',
+                          border: '2px solid #C5BFEE',
+                          borderRadius: '12px',
+                          padding: '12px',
+                          textAlign: 'left',
+                          lineHeight: 1.55,
+                        }}
+                      >
+                        <div style={{ fontSize: '13px', color: '#5C21A6', fontWeight: 800 }}>📊 Enunciado</div>
+                        <div style={{ fontSize: '14px', color: '#111', marginBottom: '8px' }}>
+                          {(currentQ.ctx ? currentQ.ctx + ' ' : '') + currentQ.q}
+                        </div>
+                        {currentQ.hint && (
+                          <>
+                            <div style={{ fontSize: '13px', color: '#B45309', fontWeight: 800 }}>⬆ Instrucciones</div>
+                            <div style={{ fontSize: '15px', color: '#111', fontWeight: 700, marginBottom: '8px' }}>
+                              {currentQ.hint}
+                            </div>
+                          </>
+                        )}
+                        <div style={{ fontSize: '13px', color: '#0F5B44', fontWeight: 800 }}>✅ Resultado</div>
+                        <div style={{ fontSize: '18px', color: '#111', fontWeight: 900 }}>{currentQ.ans}</div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>

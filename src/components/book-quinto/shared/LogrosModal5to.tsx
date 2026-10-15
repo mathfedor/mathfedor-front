@@ -39,8 +39,16 @@ export default function LogrosModal5to({ isOpen, onClose }: LogrosModal5toProps)
   const { student, coins, streak, totalXP, updateStats } = useBook5();
 
   const [subView, setSubView] = useState<SubViewType>('hub');
-  const [selectedCertIndex, setSelectedCertIndex] = useState<number | null>(null);
   const [ownedTrofeos, setOwnedTrofeos] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -53,13 +61,13 @@ export default function LogrosModal5to({ isOpen, onClose }: LogrosModal5toProps)
     } catch {
       // ignore
     }
-  }, []);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
   const unlockedTrofeosCount = Object.keys(ownedTrofeos).length;
 
-  // 6 Tarjetas Principales del Hub
+  // 6 Tarjetas Principales del Hub idénticas a la imagen
   const HUB_ITEMS = [
     {
       key: 'trofeos' as SubViewType,
@@ -99,8 +107,8 @@ export default function LogrosModal5to({ isOpen, onClose }: LogrosModal5toProps)
     {
       key: 'tienda' as SubViewType,
       ico: '🛒',
-      title: 'Tienda Fedor',
-      subtitle: `${coins || 0} 🪙 disponibles`,
+      title: 'Tienda',
+      subtitle: `🪙 ${coins || 0}`,
       color: '#E8650A',
     },
   ];
@@ -138,21 +146,140 @@ export default function LogrosModal5to({ isOpen, onClose }: LogrosModal5toProps)
 
   return (
     <div
-      className="fixed inset-0 z-[99995] flex items-center justify-center p-4 sm:p-6 animate-fadeIn"
-      style={{ background: 'rgba(18, 8, 42, 0.72)' }}
+      className="fixed inset-0 z-[99995] flex items-center justify-center p-3 sm:p-5 animate-fadeIn"
+      style={{
+        background: 'rgba(18, 8, 42, 0.72)',
+        backdropFilter: 'blur(4px)',
+        WebkitBackdropFilter: 'blur(4px)',
+      }}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div
-        className="w-full max-w-[565px] bg-white rounded-[24px] p-6 sm:p-7 text-[#180D38] relative shadow-2xl overflow-hidden animate-fadeIn"
-        style={{
-          boxShadow: '0 25px 60px -15px rgba(25, 8, 55, 0.45)',
-          fontFamily: "'Nunito', sans-serif",
-        }}
-      >
-        {/* ══ CABECERA: TÍTULO Y BOTÓN DE CIERRE ALINEADOS ══ */}
-        <div className="flex items-center justify-between mb-5">
+      <style>{`
+        .logros-modal-card {
+          background: #ffffff;
+          border-radius: 24px;
+          max-width: 580px;
+          width: 100%;
+          max-height: 88vh;
+          overflow-y: auto;
+          padding: 22px 24px;
+          position: relative;
+          box-shadow: 0 25px 60px -15px rgba(25, 8, 55, 0.45);
+          font-family: 'Nunito', sans-serif;
+          color: #180D38;
+          box-sizing: border-box;
+          animation: popIn 0.18s ease-out;
+        }
+
+        @keyframes popIn {
+          from {
+            opacity: 0;
+            transform: scale(0.97);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        .logros-modal-card::-webkit-scrollbar {
+          width: 6px;
+        }
+        .logros-modal-card::-webkit-scrollbar-track {
+          background: rgba(243, 238, 255, 0.5);
+          border-radius: 8px;
+        }
+        .logros-modal-card::-webkit-scrollbar-thumb {
+          background: #C5BFEE;
+          border-radius: 8px;
+        }
+        .logros-modal-card::-webkit-scrollbar-thumb:hover {
+          background: #8B3EDB;
+        }
+
+        .logros-close-circle {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          border: 1.5px solid #E4DFF5;
+          background: #F7F4FF;
+          color: #6C28B4;
+          font-weight: 900;
+          font-size: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.15s ease;
+          flex-shrink: 0;
+        }
+        .logros-close-circle:hover {
+          background: #6C28B4;
+          color: #ffffff;
+          transform: scale(1.05);
+        }
+
+        .logros-hub-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+          box-sizing: border-box;
+        }
+
+        .logros-card-btn {
+          background: #FFFFFF;
+          border-width: 2px;
+          border-style: solid;
+          border-radius: 18px;
+          padding: 16px 14px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          font-family: 'Nunito', sans-serif;
+          text-align: center;
+          box-shadow: 0 2px 10px rgba(35, 12, 80, 0.03);
+          transition: transform 0.14s ease, box-shadow 0.14s ease;
+          min-height: 104px;
+          box-sizing: border-box;
+        }
+        .logros-card-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 18px rgba(35, 12, 80, 0.08);
+        }
+
+        .logros-card-ico {
+          font-size: 32px;
+          line-height: 1;
+          margin-bottom: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .logros-card-title {
+          font-family: 'Nunito', sans-serif;
+          font-weight: 900;
+          font-size: 15px;
+          color: #1A1033;
+          line-height: 1.2;
+          margin-bottom: 3px;
+        }
+
+        .logros-card-subtitle {
+          font-family: 'Nunito', sans-serif;
+          font-size: 12px;
+          font-weight: 800;
+          line-height: 1.2;
+        }
+      `}</style>
+
+      <div className="logros-modal-card">
+        {/* ══ CABECERA: TÍTULO Y BOTÓN DE CIERRE IDÉNTICOS A LA IMAGEN ══ */}
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2.5">
             <span className="text-2xl sm:text-3xl leading-none select-none">
               {subView === 'hub' && '🏆'}
@@ -167,20 +294,21 @@ export default function LogrosModal5to({ isOpen, onClose }: LogrosModal5toProps)
               className="text-[22px] sm:text-[24px] font-black text-[#2A0F60] tracking-tight leading-none"
               style={{ fontFamily: "'Baloo 2', cursive, sans-serif" }}
             >
-              {subView === 'hub' && 'Mis Logros (5°)'}
+              {subView === 'hub' && 'Mis Logros'}
               {subView === 'trofeos' && 'Vitrina de Trofeos'}
               {subView === 'stickers' && 'Álbum de Stickers'}
               {subView === 'certificados' && 'Mis Certificados'}
               {subView === 'misiones' && 'Misiones Diarias'}
               {subView === 'diario' && 'Mi Diario'}
-              {subView === 'tienda' && 'Tienda Fedor'}
+              {subView === 'tienda' && 'Tienda'}
             </h2>
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            className="w-9 h-9 rounded-full border-[1.5px] border-[#E4DFF5] bg-[#F7F4FF] hover:bg-[#E9DCFC] text-[#6C28B4] flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-xs"
+            aria-label="Cerrar modal"
+            className="logros-close-circle"
             title="Cerrar"
           >
             ✕
@@ -189,35 +317,20 @@ export default function LogrosModal5to({ isOpen, onClose }: LogrosModal5toProps)
 
         {/* ══ VISTA PRINCIPAL (HUB: 6 TARJETAS EN GRID DE 2 COLUMNAS) ══ */}
         {subView === 'hub' && (
-          <div className="grid grid-cols-2 gap-3.5 sm:gap-4 animate-fadeIn">
+          <div className="logros-hub-grid animate-fadeIn">
             {HUB_ITEMS.map((item) => (
               <button
                 key={item.key}
                 type="button"
                 onClick={() => setSubView(item.key)}
-                className="group relative flex flex-col items-center justify-center p-4 sm:p-5 rounded-[20px] bg-white border border-[#E9E4F7] hover:border-[#D5CBEF] transition-all duration-200 cursor-pointer text-center"
+                className="logros-card-btn"
                 style={{
-                  boxShadow: '0 4px 18px rgba(35, 12, 80, 0.05)',
+                  borderColor: item.color,
                 }}
               >
-                <div
-                  className="w-13 h-13 sm:w-14 sm:h-14 rounded-[16px] flex items-center justify-center text-2xl sm:text-3xl mb-2.5 transition-transform duration-200 group-hover:scale-108 shrink-0"
-                  style={{
-                    backgroundColor: `${item.color}15`,
-                    color: item.color,
-                  }}
-                >
-                  {item.ico}
-                </div>
-
-                <div
-                  className="font-black text-[14px] sm:text-[15px] text-[#220B50] leading-tight mb-1"
-                  style={{ fontFamily: "'Baloo 2', cursive, sans-serif" }}
-                >
-                  {item.title}
-                </div>
-
-                <div className="text-[11px] sm:text-[12px] font-bold text-[#867B9E] leading-tight">
+                <div className="logros-card-ico">{item.ico}</div>
+                <div className="logros-card-title">{item.title}</div>
+                <div className="logros-card-subtitle" style={{ color: item.color }}>
                   {item.subtitle}
                 </div>
               </button>
@@ -234,7 +347,7 @@ export default function LogrosModal5to({ isOpen, onClose }: LogrosModal5toProps)
                 onClick={() => setSubView('hub')}
                 className="text-xs font-black text-purple-700 hover:underline flex items-center gap-1 cursor-pointer"
               >
-                ← Volver al Menú
+                ← Volver a Logros
               </button>
               <span className="text-xs font-bold text-gray-500">
                 {unlockedTrofeosCount} de {TROFEOS_5TO.length} desbloqueados
@@ -287,7 +400,7 @@ export default function LogrosModal5to({ isOpen, onClose }: LogrosModal5toProps)
                 onClick={() => setSubView('hub')}
                 className="text-xs font-black text-purple-700 hover:underline flex items-center gap-1 cursor-pointer"
               >
-                ← Volver al Menú
+                ← Volver a Logros
               </button>
               <span className="text-xs font-bold text-gray-500">
                 Colección Cósmica 5°
@@ -319,7 +432,7 @@ export default function LogrosModal5to({ isOpen, onClose }: LogrosModal5toProps)
                 onClick={() => setSubView('hub')}
                 className="text-xs font-black text-purple-700 hover:underline flex items-center gap-1 cursor-pointer"
               >
-                ← Volver al Menú
+                ← Volver a Logros
               </button>
               <span className="text-xs font-bold text-gray-500">
                 Diploma Oficial 5°
@@ -359,7 +472,7 @@ export default function LogrosModal5to({ isOpen, onClose }: LogrosModal5toProps)
                 onClick={() => setSubView('hub')}
                 className="text-xs font-black text-purple-700 hover:underline flex items-center gap-1 cursor-pointer"
               >
-                ← Volver al Menú
+                ← Volver a Logros
               </button>
               <span className="text-xs font-bold text-gray-500">
                 3 Misiones Diarias
@@ -368,7 +481,6 @@ export default function LogrosModal5to({ isOpen, onClose }: LogrosModal5toProps)
 
             <div className="space-y-2.5 max-h-[360px] overflow-y-auto pr-1">
               {MISIONES_DATA.map((mis) => {
-                const isComplete = mis.actual >= mis.meta;
                 const pct = Math.min(100, Math.round((mis.actual / mis.meta) * 100));
 
                 return (
@@ -415,7 +527,7 @@ export default function LogrosModal5to({ isOpen, onClose }: LogrosModal5toProps)
                 onClick={() => setSubView('hub')}
                 className="text-xs font-black text-purple-700 hover:underline flex items-center gap-1 cursor-pointer"
               >
-                ← Volver al Menú
+                ← Volver a Logros
               </button>
               <span className="text-xs font-bold text-gray-500">
                 Bitácora de Vuelo
@@ -442,7 +554,7 @@ export default function LogrosModal5to({ isOpen, onClose }: LogrosModal5toProps)
                 onClick={() => setSubView('hub')}
                 className="text-xs font-black text-purple-700 hover:underline flex items-center gap-1 cursor-pointer"
               >
-                ← Volver al Menú
+                ← Volver a Logros
               </button>
               <span className="text-xs font-black text-amber-600">
                 {coins || 0} 🪙 Monedas Cósmicas

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useBook5 } from '../context/Book5Context';
 import saberDataRaw from './saber5to-data.json';
 
@@ -109,6 +109,22 @@ export default function SaberModal5to({ isOpen, onClose }: SaberModal5toProps) {
     };
   }, [activeNivelIdx, isFinished]);
 
+  // Manejo de la tecla Escape
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (activeNivelIdx !== null) {
+          handleExitLevel();
+        } else {
+          onClose();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, activeNivelIdx, onClose]);
+
   // Audio helpers
   const playTono = (freq = 520) => {
     try {
@@ -140,51 +156,112 @@ export default function SaberModal5to({ isOpen, onClose }: SaberModal5toProps) {
     } catch {}
   };
 
-  // Iniciar nivel SABER
-  const handleStartLevel = (lvlIdx: number) => {
-    const config = LEVEL_CONFIGS[lvlIdx];
-    const poolData = SABER_POOLS[lvlIdx]?.pool || [];
+  // Iniciar nivel SABER con 10 preguntas
+  const handleStartLevel = (idx: number) => {
+    const config = LEVEL_CONFIGS[idx];
+    const poolData = SABER_POOLS.find((p) => p.level === idx + 1)?.pool || SABER_POOLS[idx]?.pool || [];
 
     if (!poolData.length) return;
 
     const chosen = shuffleArray(poolData).slice(0, 10);
+    setActiveNivelIdx(idx);
     setSessionQuestions(chosen);
     setQIndex(0);
-    setCorrectCount(0);
-    setSelectedOpt(null);
     setTimeLeft(config.time);
     setTotalTime(config.time);
+    setCorrectCount(0);
+    setSelectedOpt(null);
     setIsFinished(false);
-    setActiveNivelIdx(lvlIdx);
     setSelectedChips({});
+    setPizarraOpen(true);
     playTono(540);
+
+    if (canvasRef.current) {
+      const ctx = canvasRef.current.getContext('2d');
+      if (ctx) ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    }
+  };
+
+  const handleExitLevel = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    setActiveNivelIdx(null);
+    setIsFinished(false);
+    setSelectedOpt(null);
   };
 
   const currentQ = sessionQuestions[qIndex];
 
-  // Canvas drawing logic
-  useEffect(() => {
-    if (!canvasRef.current) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+  // Datos extraídos para los chips de la pizarra
+  const currentDatos = useMemo(() => {
+    if (!currentQ) return [];
+    return extractDatos(`${currentQ.ctx} ${currentQ.q}`);
+  }, [currentQ]);
+
+  // Manejo de dibujo en canvas (mouse y touch)
+  const getCanvasPos = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    const cv = canvasRef.current;
+    if (!cv) return [0, 0];
+    const rect = cv.getBoundingClientRect();
+    let clientX = 0;
+    let clientY = 0;
+
+    if ('touches' in e && e.touches.length > 0) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else if ('clientX' in e) {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
+    const x = (clientX - rect.left) * (cv.width / rect.width);
+    const y = (clientY - rect.top) * (cv.height / rect.height);
+    return [x, y];
+  };
+
+  const handleStartDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    const cv = canvasRef.current;
+    if (!cv) return;
+    const ctx = cv.getContext('2d');
     if (!ctx) return;
 
+    isDrawingRef.current = true;
+    const [x, y] = getCanvasPos(e);
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+  };
+
+  const handleDrawMove = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    if (!isDrawingRef.current) return;
+    e.preventDefault();
+    const cv = canvasRef.current;
+    if (!cv) return;
+    const ctx = cv.getContext('2d');
+    if (!ctx) return;
+
+    const [x, y] = getCanvasPos(e);
+    ctx.lineTo(x, y);
     ctx.strokeStyle = penColor;
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = 3.5;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-  }, [penColor, pizarraOpen]);
+    ctx.stroke();
+  };
 
-  const clearCanvas = () => {
-    if (!canvasRef.current) return;
-    const ctx = canvasRef.current.getContext('2d');
-    if (ctx) {
-      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+  const handleStopDrawing = () => {
+    isDrawingRef.current = false;
+  };
+
+  const handleClearCanvas = () => {
+    const cv = canvasRef.current;
+    if (cv) {
+      const ctx = cv.getContext('2d');
+      if (ctx) ctx.clearRect(0, 0, cv.width, cv.height);
     }
   };
 
   const handleSelectOption = (opt: string) => {
-    if (selectedOpt !== null || !currentQ) return;
+    if (selectedOpt !== null || isFinished || !currentQ) return;
     setSelectedOpt(opt);
 
     const isCorrect = String(opt).trim().toLowerCase() === String(currentQ.ans).trim().toLowerCase();
@@ -196,302 +273,773 @@ export default function SaberModal5to({ isOpen, onClose }: SaberModal5toProps) {
       playTono(280);
       hablar('Incorrecto.');
     }
+  };
 
-    setTimeout(() => {
+  const handleNextQuestion = () => {
+    if (qIndex + 1 < sessionQuestions.length) {
+      setQIndex((prev) => prev + 1);
       setSelectedOpt(null);
-      clearCanvas();
       setSelectedChips({});
+      handleClearCanvas();
+    } else {
+      // Fin del cuestionario
+      if (timerRef.current) clearInterval(timerRef.current);
+      setIsFinished(true);
 
-      if (qIndex + 1 < sessionQuestions.length) {
-        setQIndex((i) => i + 1);
-      } else {
-        // Sesión finalizada
-        setIsFinished(true);
-        if (timerRef.current) clearInterval(timerRef.current);
-
-        const finalScore = isCorrect ? correctCount + 1 : correctCount;
-        if (activeNivelIdx !== null) {
-          const currentBest = bestScores[activeNivelIdx + 1] || 0;
-          if (finalScore > currentBest) {
-            const nextBest = { ...bestScores, [activeNivelIdx + 1]: finalScore };
-            setBestScores(nextBest);
-            try {
-              localStorage.setItem('fedor5_saber_scores', JSON.stringify(nextBest));
-            } catch {}
-          }
-
-          if (finalScore >= 7) {
-            updateStats(100, 1, 60);
-          }
-        }
+      const finalCorrect = correctCount;
+      const currentBest = (activeNivelIdx !== null && bestScores[activeNivelIdx + 1]) || 0;
+      if (activeNivelIdx !== null && finalCorrect > currentBest) {
+        const nextBests = { ...bestScores, [activeNivelIdx + 1]: finalCorrect };
+        setBestScores(nextBests);
+        try {
+          localStorage.setItem('fedor5_saber_scores', JSON.stringify(nextBests));
+        } catch {}
       }
-    }, 1200);
+
+      // Recompensa si aprueba con >= 7/10 aciertos
+      if (finalCorrect >= 7) {
+        updateStats(100, 1, 60);
+      }
+    }
   };
 
   if (!isOpen) return null;
 
+  const currentLevelConfig = activeNivelIdx !== null ? LEVEL_CONFIGS[activeNivelIdx] : null;
+
   return (
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-fadeIn">
-      <div
-        className="w-full max-w-4xl bg-white rounded-3xl p-5 sm:p-7 shadow-2xl relative flex flex-col max-h-[95vh] overflow-hidden"
-        style={{ fontFamily: "'Nunito', sans-serif" }}
-      >
-        {/* Header Modal */}
-        <div className="flex items-center justify-between pb-3 mb-2 border-b border-purple-100 flex-shrink-0">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">🏆</span>
-            <h2
-              className="text-2xl font-black text-[#5C21A6]"
-              style={{ fontFamily: "'Baloo 2', sans-serif" }}
-            >
-              Pruebas SABER 5° · Entrenamiento Oficial
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          if (activeNivelIdx !== null) {
+            handleExitLevel();
+          } else {
+            onClose();
+          }
+        }
+      }}
+      className="saber-modal-overlay animate-fadeIn"
+    >
+      <style>{`
+        .saber-modal-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 99999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 16px;
+          background-color: rgba(10, 5, 30, 0.75);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+          box-sizing: border-box;
+        }
+
+        .saber-modal-container {
+          width: 100%;
+          max-width: ${activeNivelIdx !== null ? '620px' : '560px'};
+          max-height: 94vh;
+          background-color: #FFFFFF;
+          border-radius: 28px;
+          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.40);
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          font-family: 'Nunito', sans-serif;
+          box-sizing: border-box;
+          padding: 24px 28px 28px;
+          transition: max-width 0.2s ease;
+        }
+
+        .saber-header-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 12px;
+          box-sizing: border-box;
+        }
+
+        .saber-title-wrap {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .saber-header-icon {
+          font-size: 26px;
+          line-height: 1;
+        }
+
+        .saber-title-wrap h2 {
+          margin: 0;
+          font-size: 23px;
+          font-weight: 900;
+          color: #2A0F60;
+          font-family: 'Baloo 2', sans-serif;
+          letter-spacing: 0.01em;
+          line-height: 1.2;
+        }
+
+        .saber-close-circle {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background-color: #F4F0FF;
+          border: 1.5px solid #E8E0FA;
+          color: #6C28B4;
+          font-size: 19px;
+          font-weight: 900;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: background-color 0.15s ease, transform 0.12s ease;
+          flex-shrink: 0;
+          padding: 0;
+          line-height: 1;
+        }
+
+        .saber-close-circle:hover {
+          background-color: #EDE5FF;
+          transform: scale(1.06);
+        }
+
+        .saber-subtitle {
+          margin: 0 0 16px 0;
+          font-size: 14.5px;
+          font-weight: 700;
+          color: #1A1033;
+          font-family: 'Nunito', sans-serif;
+          line-height: 1.45;
+        }
+
+        .saber-grid-menu {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .saber-lvl-btn {
+          width: 100%;
+          padding: 14px 20px;
+          border-radius: 16px;
+          font-family: 'Nunito', sans-serif;
+          font-size: 15px;
+          font-weight: 900;
+          color: #FFFFFF;
+          border: none;
+          text-align: left;
+          cursor: pointer;
+          box-sizing: border-box;
+          transition: transform 0.12s ease, filter 0.15s ease, box-shadow 0.15s ease;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+          outline: none;
+        }
+
+        .saber-lvl-btn:hover {
+          transform: translateY(-2px);
+          filter: brightness(1.04);
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+        }
+
+        .saber-lvl-btn:active {
+          transform: scale(0.98);
+        }
+
+        /* ── SESIÓN DE QUIZ CON PIZARRA DE APOYO Y CUADRÍCULA ── */
+        .saber-scroll-area {
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          padding-right: 4px;
+        }
+
+        .saber-scroll-area::-webkit-scrollbar {
+          width: 6px;
+        }
+        .saber-scroll-area::-webkit-scrollbar-track {
+          background: rgba(243, 238, 255, 0.5);
+          border-radius: 8px;
+        }
+        .saber-scroll-area::-webkit-scrollbar-thumb {
+          background: #C4B5FD;
+          border-radius: 8px;
+        }
+
+        .saber-status-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-weight: 900;
+          font-size: 13.5px;
+          color: #5C21A6;
+        }
+
+        .saber-progress-track {
+          height: 6px;
+          background: #EEE;
+          border-radius: 3px;
+          overflow: hidden;
+          margin-top: 4px;
+        }
+
+        .saber-progress-fill {
+          height: 6px;
+          background: #5C21A6;
+          transition: width 0.3s ease;
+        }
+
+        .saber-timer-track {
+          height: 5px;
+          background: #FDE68A;
+          border-radius: 3px;
+          overflow: hidden;
+          margin-top: 4px;
+          margin-bottom: 6px;
+        }
+
+        .saber-timer-fill {
+          height: 5px;
+          background: #E8650A;
+          transition: width 1s linear;
+        }
+
+        .saber-topic-badge {
+          font-size: 11px;
+          font-weight: 800;
+          color: #7A7299;
+          margin-bottom: 2px;
+        }
+
+        .saber-ctx-text {
+          font-size: 13.5px;
+          color: #374151;
+          font-weight: 700;
+          line-height: 1.45;
+          margin-bottom: 4px;
+        }
+
+        .saber-question-title {
+          font-size: 17px;
+          color: #111111;
+          font-weight: 900;
+          line-height: 1.45;
+          margin-bottom: 10px;
+        }
+
+        /* ── PIZARRA DE APOYO ── */
+        .pizarra-container {
+          background: #FFFFFF;
+          border: 2px solid #D9CCFF;
+          border-radius: 18px;
+          overflow: hidden;
+          box-shadow: 0 4px 16px rgba(92, 33, 166, 0.06);
+          margin-bottom: 12px;
+        }
+
+        .pizarra-header {
+          background: #6B21A8;
+          color: #FFFFFF;
+          padding: 8px 14px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .pizarra-header-title {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-weight: 900;
+          font-size: 14px;
+        }
+
+        .pizarra-toggle-btn {
+          background: rgba(255, 255, 255, 0.2);
+          border: none;
+          color: #FFFFFF;
+          width: 26px;
+          height: 26px;
+          border-radius: 8px;
+          font-size: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+
+        .pizarra-body {
+          padding: 12px 14px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .pizarra-chips-label {
+          font-weight: 900;
+          color: #3D1468;
+          font-size: 13px;
+        }
+
+        .pizarra-chips-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+
+        .pizarra-chip-btn {
+          background: #FFFFFF;
+          border: 2px solid #C4B5FD;
+          border-radius: 12px;
+          padding: 5px 14px;
+          font-weight: 900;
+          font-size: 14.5px;
+          color: #1A1033;
+          cursor: pointer;
+          transition: all 0.15s ease;
+        }
+
+        .pizarra-chip-btn.active {
+          background: #7C3AED;
+          color: #FFFFFF;
+          border-color: #5C21A6;
+        }
+
+        .pizarra-formula-box {
+          background: #FFF7E6;
+          border: 2px dashed #F59E0B;
+          border-radius: 12px;
+          padding: 8px 14px;
+          font-weight: 900;
+          color: #7A3200;
+          font-size: 13.5px;
+        }
+
+        /* ── CUADRÍCULA CANVAS ── */
+        .pizarra-canvas {
+          width: 100%;
+          height: 200px;
+          background-color: #FFFFFF;
+          border-radius: 14px;
+          border: 2.5px solid #D9CCFF;
+          touch-action: none;
+          cursor: crosshair;
+          background-image: linear-gradient(#EEE8FB 1px, transparent 1px),
+            linear-gradient(90deg, #EEE8FB 1px, transparent 1px);
+          background-size: 22px 22px;
+        }
+
+        .pizarra-instructions {
+          font-size: 12px;
+          font-weight: 800;
+          color: #475569;
+          margin-top: 2px;
+        }
+
+        .pizarra-tools-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: wrap;
+          margin-top: 2px;
+        }
+
+        .pizarra-color-circle {
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          border: 2.5px solid #FFFFFF;
+          cursor: pointer;
+          transition: transform 0.12s ease;
+        }
+
+        .pizarra-color-circle:hover {
+          transform: scale(1.15);
+        }
+
+        .pizarra-clear-btn {
+          padding: 6px 14px;
+          border-radius: 10px;
+          background: #FFFFFF;
+          border: 1.5px solid #CBD5E1;
+          color: #334155;
+          font-weight: 900;
+          font-size: 12px;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+        }
+
+        .pizarra-draw-hint {
+          border: 1.5px dashed #C4B5FD;
+          border-radius: 10px;
+          padding: 6px 12px;
+          color: #4338CA;
+          font-weight: 800;
+          font-size: 12px;
+          text-align: center;
+          width: 100%;
+          box-sizing: border-box;
+          margin-top: 2px;
+        }
+
+        /* ── OPCIONES DE RESPUESTA ── */
+        .saber-opts-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+          margin-top: 4px;
+        }
+
+        .saber-opt-btn {
+          padding: 13px 16px;
+          border-radius: 14px;
+          font-size: 16px;
+          font-weight: 900;
+          background: #F8F5FF;
+          color: #2A0F60;
+          border: 2px solid #C5BFEE;
+          cursor: pointer;
+          font-family: 'Nunito', sans-serif;
+          transition: transform 0.12s ease, border-color 0.15s ease;
+          text-align: center;
+        }
+
+        .saber-opt-btn:hover:not(:disabled) {
+          transform: translateY(-1px);
+          border-color: #7C3AED;
+          background: #F3EEFF;
+        }
+
+        .saber-opt-btn.correct {
+          background: #DCF5EE !important;
+          border-color: #14B8A6 !important;
+          color: #0F5B44 !important;
+        }
+
+        .saber-opt-btn.wrong {
+          background: #FEE2E2 !important;
+          border-color: #B91C1C !important;
+          color: #7F1D1D !important;
+        }
+
+        .saber-next-btn {
+          padding: 12px 24px;
+          border-radius: 12px;
+          font-weight: 900;
+          font-size: 14.5px;
+          color: #FFFFFF;
+          border: none;
+          cursor: pointer;
+          font-family: 'Nunito', sans-serif;
+          align-self: center;
+          margin-top: 10px;
+          transition: transform 0.12s ease;
+        }
+
+        .saber-next-btn:hover {
+          transform: translateY(-1px);
+        }
+      `}</style>
+
+      <div className="saber-modal-container animate-popIn">
+        {/* Header */}
+        <div className="saber-header-row">
+          <div className="saber-title-wrap">
+            <span className="saber-header-icon">🏆</span>
+            <h2>
+              {activeNivelIdx !== null
+                ? `SABER 5° · Nivel ${activeNivelIdx + 1}`
+                : 'Pruebas SABER 5°'}
             </h2>
           </div>
           <button
             type="button"
-            onClick={onClose}
-            aria-label="Cerrar modal"
-            className="w-10 h-10 rounded-full bg-[#F3EEFF] hover:bg-[#E9DEFF] text-[#5C21A6] font-black text-xl flex items-center justify-center transition-colors cursor-pointer"
+            onClick={activeNivelIdx !== null ? handleExitLevel : onClose}
+            className="saber-close-circle"
+            title="Cerrar"
+            aria-label="Cerrar pruebas Saber"
           >
             ✕
           </button>
         </div>
 
-        {/* VISTA 1: Selector de Niveles */}
-        {activeNivelIdx === null ? (
-          <div className="overflow-y-auto pr-1 space-y-4 flex-1">
-            <div
-              className="rounded-2xl p-4 sm:p-5 text-white shadow-md relative overflow-hidden"
-              style={{ background: 'linear-gradient(135deg, #1E0F4A 0%, #7C3AED 55%, #059669 100%)' }}
-            >
-              <h3
-                className="text-xl sm:text-2xl font-black mb-1 flex items-center gap-2"
-                style={{ fontFamily: "'Baloo 2', sans-serif" }}
-              >
-                <span>⏱️</span>
-                <span>Simulador Cronometrado SABER 5°</span>
-              </h3>
-              <p className="text-xs sm:text-sm font-semibold text-white/95">
-                Resuelve 10 situaciones problema por nivel antes de que se agote el tiempo. ¡Aprueba con 7/10 para ganar 100 🪙!
-              </p>
+        {/* ── 1. MENÚ PRINCIPAL (REPRODUCCIÓN FIEL DE LA IMAGEN) ── */}
+        {activeNivelIdx === null && (
+          <>
+            <p className="saber-subtitle">
+              Problemas tipo prueba SABER con cronómetro. Usa los temas:{' '}
+              <b>Problemas Numéricos SABER</b> y <b>Problemas Contextuales SABER</b>.
+            </p>
+
+            <div className="saber-grid-menu">
+              {LEVEL_CONFIGS.map((lvl, idx) => (
+                <button
+                  key={lvl.nivel}
+                  type="button"
+                  onClick={() => handleStartLevel(idx)}
+                  className="saber-lvl-btn"
+                  style={{ background: lvl.color }}
+                >
+                  {lvl.label}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* ── 2. SESIÓN DE CUESTIONARIO CON PIZARRA Y CUADRÍCULA ── */}
+        {activeNivelIdx !== null && !isFinished && currentQ && (
+          <div className="saber-scroll-area">
+            {/* Status bar */}
+            <div className="saber-status-row">
+              <span>
+                Pregunta {qIndex + 1} de {sessionQuestions.length}
+              </span>
+              <span>✅ {correctCount}</span>
+              <span>⏱ {timeLeft}s</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {LEVEL_CONFIGS.map((lvl, idx) => {
-                const best = bestScores[lvl.nivel];
+            {/* Barra morada de progreso de preguntas */}
+            <div className="saber-progress-track">
+              <div
+                className="saber-progress-fill"
+                style={{
+                  width: `${((qIndex + 1) / sessionQuestions.length) * 100}%`,
+                }}
+              />
+            </div>
+
+            {/* Barra naranja de cronómetro */}
+            <div className="saber-timer-track">
+              <div
+                className="saber-timer-fill"
+                style={{
+                  width: `${Math.max(0, (timeLeft / totalTime) * 100)}%`,
+                }}
+              />
+            </div>
+
+            {/* Tema y Contexto narrativo */}
+            <div className="saber-topic-badge">{currentQ.tema}</div>
+            <div className="saber-ctx-text">{currentQ.ctx}</div>
+            <div className="saber-question-title">{currentQ.q}</div>
+
+            {/* ══ LA PIZARRA DE APOYO CON LA CUADRÍCULA ══ */}
+            <div className="pizarra-container">
+              {/* Header de la pizarra */}
+              <div className="pizarra-header">
+                <div className="pizarra-header-title">
+                  <span>🧠</span>
+                  <span>Pizarra de apoyo</span>
+                  <span style={{ fontSize: '11px', opacity: 0.85, fontWeight: 700 }}>
+                    haz tus cuentas aquí
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setPizarraOpen((prev) => !prev)}
+                  className="pizarra-toggle-btn"
+                  title="Plegar / Desplegar pizarra"
+                >
+                  {pizarraOpen ? '▾' : '▲'}
+                </button>
+              </div>
+
+              {/* Cuerpo de la pizarra */}
+              {pizarraOpen && (
+                <div className="pizarra-body">
+                  {/* Datos del problema (Chips) */}
+                  {currentDatos.length > 0 && (
+                    <>
+                      <div className="pizarra-chips-label">🔎 Datos del problema:</div>
+                      <div className="pizarra-chips-row">
+                        {currentDatos.map((dat, dIdx) => (
+                          <button
+                            key={dIdx}
+                            type="button"
+                            onClick={() =>
+                              setSelectedChips((prev) => ({
+                                ...prev,
+                                [dat]: !prev[dat],
+                              }))
+                            }
+                            className={`pizarra-chip-btn ${
+                              selectedChips[dat] ? 'active' : ''
+                            }`}
+                          >
+                            {dat}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
+
+                  {/* Fórmula / encabezado posicional */}
+                  <div className="pizarra-formula-box">
+                    {currentQ.formula || '🧠 Pensamiento Matemático 5°'}
+                  </div>
+
+                  {/* Canvas con cuadrícula interactiva */}
+                  <canvas
+                    ref={canvasRef}
+                    width={600}
+                    height={200}
+                    onMouseDown={handleStartDrawing}
+                    onMouseMove={handleDrawMove}
+                    onMouseUp={handleStopDrawing}
+                    onMouseLeave={handleStopDrawing}
+                    onTouchStart={handleStartDrawing}
+                    onTouchMove={handleDrawMove}
+                    onTouchEnd={handleStopDrawing}
+                    className="pizarra-canvas"
+                  />
+
+                  {/* Indicaciones y herramientas */}
+                  <div className="pizarra-instructions">
+                    👆 Subraya los datos tocándolos y haz la operación en la pizarra.
+                  </div>
+
+                  <div className="pizarra-tools-row">
+                    {PEN_COLORS.map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => setPenColor(c)}
+                        className="pizarra-color-circle"
+                        style={{
+                          backgroundColor: c,
+                          boxShadow:
+                            penColor === c
+                              ? `0 0 0 2px ${c}, 0 0 0 4px #FFFFFF`
+                              : `0 0 0 1.5px ${c}`,
+                        }}
+                      />
+                    ))}
+
+                    <button
+                      type="button"
+                      onClick={handleClearCanvas}
+                      className="pizarra-clear-btn"
+                    >
+                      <span>🧽</span>
+                      <span>Borrar</span>
+                    </button>
+                  </div>
+
+                  <div className="pizarra-draw-hint">
+                    Escribe o dibuja aquí tu proceso con el dedo o el ratón
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* ══ OPCIONES DE RESPUESTA (MCQ) ══ */}
+            <div className="saber-opts-grid">
+              {currentQ.opts.map((opt, oIdx) => {
+                const isSelected = selectedOpt === opt;
+                const isCorrect = opt.trim().toLowerCase() === currentQ.ans.trim().toLowerCase();
+                let optClass = 'saber-opt-btn';
+
+                if (selectedOpt !== null) {
+                  if (isCorrect) optClass += ' correct';
+                  else if (isSelected) optClass += ' wrong';
+                }
+
                 return (
                   <button
-                    key={lvl.nivel}
+                    key={oIdx}
                     type="button"
-                    onClick={() => handleStartLevel(idx)}
-                    className="p-4 rounded-2xl text-left text-white font-black shadow-md transition-transform hover:scale-102 active:scale-98 cursor-pointer flex flex-col justify-between min-h-[90px]"
-                    style={{ background: lvl.color }}
+                    onClick={() => handleSelectOption(opt)}
+                    disabled={selectedOpt !== null}
+                    className={optClass}
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg">{lvl.label}</span>
-                      <span className="text-xs bg-white/20 px-2.5 py-1 rounded-full">10 preguntas</span>
-                    </div>
-                    <div className="text-xs text-white/90 font-semibold pt-2">
-                      {best !== undefined ? `Mejor récord: ${best}/10 ⭐` : 'Sin intentos previos'}
-                    </div>
+                    {opt}
                   </button>
                 );
               })}
             </div>
-          </div>
-        ) : isFinished ? (
-          /* VISTA 2: Resultados del Nivel */
-          <div className="overflow-y-auto pr-1 text-center py-6 space-y-4 flex-1">
-            <div className="text-6xl animate-bounce">
-              {correctCount >= 7 ? '🎉' : '💪'}
-            </div>
-            <h3
-              className="text-2xl font-black text-[#5C21A6]"
-              style={{ fontFamily: "'Baloo 2', sans-serif" }}
-            >
-              {correctCount >= 7 ? '¡Prueba Superada!' : '¡Sigue Practicando!'}
-            </h3>
-            <p className="text-base font-bold text-gray-700">
-              Obtuviste <b>{correctCount} de 10</b> respuestas correctas.
-            </p>
-            {correctCount >= 7 && (
-              <div className="inline-block bg-amber-100 text-amber-900 border border-amber-300 px-5 py-2 rounded-2xl font-black text-sm">
-                +100 Monedas 🪙 y +60 XP ⭐ acreditadas a tu perfil.
-              </div>
-            )}
-            <div className="pt-4 flex justify-center gap-3">
+
+            {/* Botón para pasar a la siguiente pregunta */}
+            {selectedOpt !== null && (
               <button
                 type="button"
-                onClick={() => handleStartLevel(activeNivelIdx)}
-                className="px-6 py-2.5 rounded-2xl bg-[#5C21A6] text-white font-black text-sm shadow-md hover:bg-[#7C3AED] transition-colors cursor-pointer"
+                onClick={handleNextQuestion}
+                className="saber-next-btn"
+                style={{
+                  background: currentLevelConfig?.color || '#5C21A6',
+                }}
               >
-                Reintentar nivel
+                {qIndex + 1 < sessionQuestions.length
+                  ? 'Siguiente pregunta ➔'
+                  : 'Ver resultados finales 🏆'}
               </button>
-              <button
-                type="button"
-                onClick={() => setActiveNivelIdx(null)}
-                className="px-6 py-2.5 rounded-2xl bg-gray-100 text-gray-800 font-black text-sm hover:bg-gray-200 transition-colors cursor-pointer"
-              >
-                Volver a la selección
-              </button>
-            </div>
-          </div>
-        ) : (
-          /* VISTA 3: Pregunta en curso con Pizarra de Apoyo */
-          <div className="overflow-y-auto pr-1 space-y-3 flex-1">
-            {/* Barra superior de progreso y cronómetro */}
-            <div className="flex items-center justify-between bg-purple-50 p-3 rounded-2xl border border-purple-200">
-              <div className="font-black text-xs text-[#5C21A6]">
-                Pregunta {qIndex + 1} de 10 · Aciertos: {correctCount}
-              </div>
-              <div
-                className={`font-black text-sm px-3 py-1 rounded-xl ${
-                  timeLeft <= 20 ? 'bg-rose-500 text-white animate-pulse' : 'bg-white text-[#5C21A6] border'
-                }`}
-              >
-                ⏱ {timeLeft}s
-              </div>
-            </div>
-
-            {/* Enunciado */}
-            {currentQ && (
-              <div className="space-y-3">
-                <div className="p-4 bg-white border-2 border-purple-200 rounded-2xl shadow-xs">
-                  <div className="text-[11px] font-black uppercase tracking-wider text-purple-600 mb-1">
-                    {currentQ.tema}
-                  </div>
-                  <div className="text-xs text-gray-600 font-semibold mb-1">{currentQ.ctx}</div>
-                  <div className="text-base sm:text-lg font-black text-gray-900">{currentQ.q}</div>
-
-                  {/* Chips de datos extraídos */}
-                  {(() => {
-                    const datos = extractDatos(`${currentQ.ctx} ${currentQ.q}`);
-                    if (!datos.length) return null;
-                    return (
-                      <div className="flex items-center gap-1.5 flex-wrap mt-2 pt-2 border-t border-gray-100">
-                        <span className="text-[11px] font-bold text-gray-500">Datos clave:</span>
-                        {datos.map((d, i) => (
-                          <span
-                            key={i}
-                            className="px-2 py-0.5 rounded-lg bg-amber-100 text-amber-900 font-black text-xs border border-amber-300"
-                          >
-                            {d}
-                          </span>
-                        ))}
-                      </div>
-                    );
-                  })()}
-                </div>
-
-                {/* Opciones de respuesta */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {currentQ.opts.map((opt, i) => {
-                    const isSelected = selectedOpt === opt;
-                    const isCorrect = String(opt).trim().toLowerCase() === String(currentQ.ans).trim().toLowerCase();
-
-                    let btnClass = 'bg-white border-2 border-gray-200 text-gray-800 hover:border-purple-400';
-                    if (selectedOpt !== null) {
-                      if (isSelected) {
-                        btnClass = isCorrect ? 'bg-emerald-500 text-white border-emerald-600' : 'bg-rose-500 text-white border-rose-600';
-                      } else if (isCorrect) {
-                        btnClass = 'bg-emerald-100 text-emerald-950 border-emerald-400';
-                      }
-                    }
-
-                    return (
-                      <button
-                        key={i}
-                        type="button"
-                        onClick={() => handleSelectOption(opt)}
-                        disabled={selectedOpt !== null}
-                        className={`p-3.5 rounded-2xl font-black text-left text-sm transition-all shadow-xs flex items-center gap-3 cursor-pointer ${btnClass}`}
-                      >
-                        <span className="w-7 h-7 rounded-xl bg-purple-100 text-[#5C21A6] font-black text-xs flex items-center justify-center flex-shrink-0">
-                          {String.fromCharCode(65 + i)}
-                        </span>
-                        <span className="truncate">{opt}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Pizarra de apoyo desplegable */}
-                <div className="border-2 border-purple-200 rounded-2xl overflow-hidden bg-white shadow-xs">
-                  <div
-                    onClick={() => setPizarraOpen((o) => !o)}
-                    className="p-2.5 bg-purple-50 text-purple-900 font-black text-xs flex items-center justify-between cursor-pointer"
-                  >
-                    <span className="flex items-center gap-1.5">
-                      <span>✏️</span>
-                      <span>Pizarra de Apoyo y Borrador de Cálculos</span>
-                    </span>
-                    <span>{pizarraOpen ? '▲ Ocultar' : '▼ Dibujar aquí'}</span>
-                  </div>
-
-                  {pizarraOpen && (
-                    <div className="p-3 space-y-2 bg-gray-50">
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-1.5">
-                          {PEN_COLORS.map((col) => (
-                            <button
-                              key={col}
-                              type="button"
-                              onClick={() => setPenColor(col)}
-                              className={`w-6 h-6 rounded-full border-2 transition-transform ${
-                                penColor === col ? 'scale-125 border-gray-900' : 'border-white'
-                              }`}
-                              style={{ backgroundColor: col }}
-                            />
-                          ))}
-                        </div>
-                        <button
-                          type="button"
-                          onClick={clearCanvas}
-                          className="px-2.5 py-1 rounded-xl bg-gray-200 hover:bg-gray-300 font-black text-[11px] text-gray-800 cursor-pointer"
-                        >
-                          Limpiar trazos
-                        </button>
-                      </div>
-
-                      <div className="border-2 border-dashed border-purple-300 rounded-xl bg-white overflow-hidden">
-                        <canvas
-                          ref={canvasRef}
-                          width={600}
-                          height={140}
-                          onMouseDown={(e) => {
-                            isDrawingRef.current = true;
-                            const rect = e.currentTarget.getBoundingClientRect();
-                            const ctx = e.currentTarget.getContext('2d');
-                            if (ctx) {
-                              ctx.beginPath();
-                              ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
-                            }
-                          }}
-                          onMouseMove={(e) => {
-                            if (!isDrawingRef.current) return;
-                            const rect = e.currentTarget.getBoundingClientRect();
-                            const ctx = e.currentTarget.getContext('2d');
-                            if (ctx) {
-                              ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-                              ctx.stroke();
-                            }
-                          }}
-                          onMouseUp={() => {
-                            isDrawingRef.current = false;
-                          }}
-                          onMouseLeave={() => {
-                            isDrawingRef.current = false;
-                          }}
-                          className="w-full h-[140px] touch-none cursor-crosshair"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
             )}
           </div>
         )}
+
+        {/* ── 3. RESUMEN DE RESULTADOS ── */}
+        {activeNivelIdx !== null && isFinished && (() => {
+          const cfg = LEVEL_CONFIGS[activeNivelIdx];
+          const passed = correctCount >= 7;
+
+          return (
+            <div style={{ textAlign: 'center', padding: '16px 0' }}>
+              <div style={{ fontSize: '54px', marginBottom: '8px' }}>
+                {passed ? '🏆' : '💪'}
+              </div>
+              <h3
+                style={{
+                  margin: '0 0 6px',
+                  fontSize: '24px',
+                  fontWeight: 900,
+                  color: passed ? '#15803D' : '#92400E',
+                  fontFamily: "'Baloo 2', sans-serif",
+                }}
+              >
+                {passed
+                  ? '¡Excelente desempeño SABER!'
+                  : '¡Buen intento! Sigue practicando'}
+              </h3>
+              <p
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 800,
+                  color: '#1E0E4E',
+                  marginBottom: '18px',
+                }}
+              >
+                Obtuviste <b>{correctCount} de 10</b> aciertos (
+                {Math.round((correctCount / 10) * 100)}%).
+                {passed && ' ¡Has ganado +100 🪙 y +60 XP!'}
+              </p>
+
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                <button
+                  type="button"
+                  onClick={() => handleStartLevel(activeNivelIdx)}
+                  className="saber-next-btn"
+                  style={{ background: cfg.color, margin: 0 }}
+                >
+                  🔄 Reintentar nivel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleExitLevel}
+                  className="saber-next-btn"
+                  style={{ background: '#5C21A6', margin: 0 }}
+                >
+                  ◀ Volver a niveles
+                </button>
+              </div>
+            </div>
+          );
+        })()}
       </div>
     </div>
   );
