@@ -3,8 +3,11 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useBook5 } from '../context/Book5Context';
 import { bookService } from '@/services/book.service';
+import { mockLevelExamples5 } from '@/mocks/book-examples.mock';
 import type { LevelExample } from '@/types/book.types';
 import Swal from 'sweetalert2';
+import FedorVideoModal5to from '../modals/FedorVideoModal5to';
+import { FZ } from '../shared/fedor-visual-lab-engine-5to';
 
 interface Grade5Exercise {
   type: 'mcq' | 'input' | 'seq';
@@ -37,7 +40,7 @@ interface LevelThemeMeta5to {
 
 const LEVEL_THEMES_5TO: LevelThemeMeta5to[] = [
   {
-    grad: 'linear-gradient(155deg, #0A3D28 0%, #16876A 50%, #0E5240 100%)',
+    grad: 'linear-gradient(155deg,#0A3D28,#16876A,#0E5240)',
     headerTxt: 'Nivel Básico',
     orb: '🟢',
     sub: 'Construye las bases del concepto',
@@ -45,11 +48,11 @@ const LEVEL_THEMES_5TO: LevelThemeMeta5to[] = [
     badgeBg: '#24C496',
     badgeColor: '#FFFFFF',
     light: '#DCF5EE',
-    lightTxt: '#074F3A',
+    lightTxt: '#054F38',
     short: 'N1',
   },
   {
-    grad: 'linear-gradient(155deg, #6A3200 0%, #E8650A 50%, #BA5500 100%)',
+    grad: 'linear-gradient(155deg,#6A3200,#E8650A,#BA5500)',
     headerTxt: 'Nivel Medio',
     orb: '🟡',
     sub: 'Desarrolla el pensamiento matemático',
@@ -61,7 +64,7 @@ const LEVEL_THEMES_5TO: LevelThemeMeta5to[] = [
     short: 'N2',
   },
   {
-    grad: 'linear-gradient(155deg, #5A0A28 0%, #C94B22 50%, #8B1A00 100%)',
+    grad: 'linear-gradient(155deg,#5A0A28,#C94B22,#8B1A00)',
     headerTxt: 'Nivel Avanzado',
     orb: '🔴',
     sub: 'Domina la operación con precisión',
@@ -73,7 +76,7 @@ const LEVEL_THEMES_5TO: LevelThemeMeta5to[] = [
     short: 'N3',
   },
   {
-    grad: 'linear-gradient(155deg, #7A3500 0%, #C25400 50%, #9A4200 100%)',
+    grad: 'linear-gradient(155deg,#7A3500,#C25400,#9A4200)',
     headerTxt: 'Nivel Experto',
     orb: '🟣',
     sub: 'Aplica en retos de alta exigencia',
@@ -85,7 +88,7 @@ const LEVEL_THEMES_5TO: LevelThemeMeta5to[] = [
     short: 'N4',
   },
   {
-    grad: 'linear-gradient(155deg, #3A1060 0%, #6A1B9A 50%, #4A0080 100%)',
+    grad: 'linear-gradient(155deg,#3A1060,#6A1B9A,#4A0080)',
     headerTxt: 'Nivel Pruebas SABER',
     orb: '🏆',
     sub: 'Preguntas tipo Saber del MEN',
@@ -99,12 +102,13 @@ const LEVEL_THEMES_5TO: LevelThemeMeta5to[] = [
 ];
 
 const HERO_STARS = [
-  { top: '12%', left: '14%', size: 2 },
-  { top: '25%', left: '78%', size: 2.5 },
-  { top: '68%', left: '22%', size: 1.5 },
-  { top: '55%', left: '88%', size: 2 },
-  { top: '35%', left: '50%', size: 1.5 },
-  { top: '80%', left: '60%', size: 2 },
+  { top: '2%', left: '8%', size: 2.2 },
+  { top: '20%', left: '61%', size: 2 },
+  { top: '22%', left: '30%', size: 2 },
+  { top: '32%', left: '67%', size: 2 },
+  { top: '38%', left: '56%', size: 2.5 },
+  { top: '49%', left: '86%', size: 2 },
+  { top: '59%', left: '85%', size: 2.5 },
 ];
 
 export default function LessonScreen5to() {
@@ -123,16 +127,31 @@ export default function LessonScreen5to() {
 
   const theme = LEVEL_THEMES_5TO[currentLevel] || LEVEL_THEMES_5TO[0];
 
+  const fallbackKey = `u${currentUnit}t${currentTopic}-n${currentLevel + 1}`;
+  const secondaryKey = topic?.id ? `${topic.id}-n${currentLevel + 1}` : fallbackKey;
   const primaryKey = `u${currentUnit}t${currentTopic}l${currentLevel}`;
-  const secondaryKey = topic?.id ? `${topic.id}-n${currentLevel + 1}` : primaryKey;
+
+  // Helper to remove duplicated step button from explain HTML
+  const cleanExplanation = (html: string) => {
+    if (!html) return '';
+    return html
+      .replace(/<(div|button)[^>]*class=["'](?:f4PasoAPaso|f4pasos-btn)["'][^>]*>[\s\S]*?<\/\1>/gi, '')
+      .trim();
+  };
 
   // Examples from synchronous or async catalog
   const examples: LevelExample[] = useMemo(() => {
-    const list =
+    let list =
       bookService.getExamplesSync(secondaryKey, 'matematicas-fedor-5') ||
+      bookService.getExamplesSync(fallbackKey, 'matematicas-fedor-5') ||
       bookService.getExamplesSync(primaryKey, 'matematicas-fedor-5');
+    if (!list || list.length === 0) {
+      if (currentUnit === 0 && currentTopic === 0 && currentLevel === 0) {
+        list = mockLevelExamples5['01a_adicion_t0-n1'] || [];
+      }
+    }
     return Array.isArray(list) ? list : [];
-  }, [primaryKey, secondaryKey]);
+  }, [primaryKey, secondaryKey, fallbackKey, currentUnit, currentTopic, currentLevel]);
 
   // Mode: Showing Examples vs Solving Exercises
   const [showingExamples, setShowingExamples] = useState(true);
@@ -147,6 +166,9 @@ export default function LessonScreen5to() {
   const [isAnswered, setIsAnswered] = useState(false);
   const isAnsweredRef = useRef(false);
   const [openSteps, setOpenSteps] = useState<Record<number, boolean>>({});
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [openLabs, setOpenLabs] = useState<Record<number, boolean>>({});
+  const [labHtmls, setLabHtmls] = useState<Record<number, string>>({});
 
   // Parse exercises from book curriculum
   const exercises: Grade5Exercise[] = useMemo(() => {
@@ -172,7 +194,87 @@ export default function LessonScreen5to() {
     setAnswersLog([]);
     setFeedback(null);
     setOpenSteps({});
+    setOpenLabs({});
+    setLabHtmls({});
   }, [primaryKey, secondaryKey]);
+
+  // Synchronize globals for FZ engine and audio
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      (window as any).FZ = FZ;
+      (window as any).curUnit = currentUnit;
+      (window as any).curTopicIdx = currentTopic;
+      (window as any).curLevelIdx = currentLevel;
+      (window as any).UNITS = book?.units || [];
+      if (!(window as any).fedor5Tono) {
+        (window as any).fedor5Tono = (freq = 520) => {
+          try {
+            const AudioContextClass =
+              window.AudioContext || (window as any).webkitAudioContext;
+            if (!AudioContextClass) return;
+            const ctx = new AudioContextClass();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
+            gain.gain.setValueAtTime(0.08, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.3);
+          } catch (_) {}
+        };
+      }
+    }
+  }, [currentUnit, currentTopic, currentLevel, book]);
+
+  // Available laboratories detection for current examples
+  const availableLabs = useMemo(() => {
+    if (typeof window === 'undefined') return {};
+    (window as any).curUnit = currentUnit;
+    (window as any).curTopicIdx = currentTopic;
+    (window as any).curLevelIdx = currentLevel;
+    (window as any).UNITS = book?.units || [];
+
+    const map: Record<number, boolean> = {};
+    examples.forEach((e: any, idx: number) => {
+      try {
+        const d = FZ.detectar ? FZ.detectar(e.q, e.ctx) : null;
+        map[idx] = !!d || !!FZ.crear(e, 'ej');
+      } catch {
+        map[idx] = true;
+      }
+    });
+    return map;
+  }, [examples, currentUnit, currentTopic, currentLevel, book]);
+
+  // Visual Laboratory toggle handler
+  const toggleLab = (idx: number, e: any) => {
+    const isOpening = !openLabs[idx];
+    if (isOpening) {
+      try {
+        if (typeof window !== 'undefined') {
+          (window as any).curUnit = currentUnit;
+          (window as any).curTopicIdx = currentTopic;
+          (window as any).curLevelIdx = currentLevel;
+          (window as any).UNITS = book?.units || [];
+        }
+        const html = FZ.crear(e, 'ej');
+        if (html) {
+          setLabHtmls((prev) => ({ ...prev, [idx]: html }));
+        }
+      } catch (err) {
+        console.warn('[FZ] Error creating lab:', err);
+      }
+      try {
+        if (typeof window !== 'undefined' && typeof (window as any).fedor5Tono === 'function') {
+          (window as any).fedor5Tono(580);
+        }
+      } catch (_) {}
+    }
+    setOpenLabs((prev) => ({ ...prev, [idx]: isOpening }));
+  };
 
   // Timer per question in practice mode
   useEffect(() => {
@@ -312,16 +414,7 @@ export default function LessonScreen5to() {
   };
 
   const handleOpenVideoTema = () => {
-    Swal.fire({
-      title: '🎬 Video del Tema',
-      html: `<div style="font-size:14px;color:#4A1278;line-height:1.6">
-        <b>${topic?.title || 'Tema'}</b><br/>
-        Observa cómo dominar este concepto paso a paso con los métodos animados de Fedor.
-      </div>`,
-      icon: 'info',
-      confirmButtonText: '¡Comenzar video!',
-      confirmButtonColor: '#6C28B4',
-    });
+    setIsVideoModalOpen(true);
   };
 
   const handleOpenVideoNivel = () => {
@@ -340,57 +433,87 @@ export default function LessonScreen5to() {
   if (!level) return null;
 
   return (
-    <div className="w-full max-w-[1008px] mx-auto px-3 sm:px-4 py-2 select-none font-sans">
+    <div className="w-full max-w-[1008px] mx-auto px-2 sm:px-3 py-2 select-none font-sans">
       <style jsx global>{`
-        .f4vis {
-          background: #ffffff !important;
-          border-radius: 16px;
-          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-          padding: 16px 14px;
-          text-align: center;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
-          margin: 0.5rem 0;
-        }
-        .f4vis:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-        }
-        .f4result {
-          font-size: 26px;
-          font-weight: 900;
-          color: #111;
-          margin-top: 10px;
-          padding-top: 8px;
-          border-top: 2px dashed #e2e8f0;
-          font-family: 'Baloo 2', sans-serif;
-        }
-        .f4pasos-btn {
+        .f5nube {
+          position: relative;
           display: inline-flex;
           align-items: center;
-          gap: 6px;
+          justify-content: center;
+          width: 74px;
+          height: 62px;
+          background: #ffffff;
+          border-radius: 40px 44px 36px 40px;
+          box-shadow: -18px 6px 0 -6px #ffffff, 18px 6px 0 -6px #ffffff, 0 -12px 0 -4px #ffffff,
+            0 6px 16px rgba(0, 0, 0, 0.18);
+          margin-bottom: 4px;
+        }
+        .f5nube > * {
+          position: relative;
+          z-index: 1;
+        }
+        .f4vis {
+          background: #ffffff !important;
+          border-radius: 14px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+          padding: 14px 12px;
+          text-align: center;
+          margin: 0.5rem 0;
+          color: #1e293b;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .f4vis:hover {
+          transform: translateY(-2px) scale(1.01);
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        }
+        .f4result {
+          font-size: 22px;
+          font-weight: 900;
+          color: #111;
+          margin-top: 8px;
+          padding-top: 6px;
+          border-top: 2px dashed #ddd;
+          font-family: 'Baloo 2', sans-serif;
+        }
+        .ej-explica-rica {
+          margin-top: 0.5rem;
+          padding: 0.7rem 0.8rem;
+          background: #ffffff;
+          color: #243b53;
+          border-radius: 10px;
+          border-left: 3px solid #f5c518;
+          overflow-x: auto;
+        }
+        .ej-explica-rica .f4PasoAPaso {
+          display: inline-block;
+          font-size: 13px;
+          font-weight: 900;
+          color: #5c21a6;
+          margin-bottom: 8px;
+        }
+        .ej-explica-rica .f4pasos-btn {
+          display: inline-block;
           background: linear-gradient(135deg, #5c21a6, #7c3aed);
           color: #fff;
           border: 2px solid #f5c518;
-          border-radius: 12px;
-          padding: 8px 18px;
+          border-radius: 10px;
+          padding: 8px 16px;
           font-size: 13px;
           font-weight: 900;
           cursor: pointer;
           margin-bottom: 10px;
-          font-family: inherit;
-          transition: transform 0.15s ease;
+          font-family: 'Nunito', sans-serif;
+          transition: transform 0.15s;
         }
-        .f4pasos-btn:hover {
-          transform: scale(1.03);
+        .ej-explica-rica .f4pasos-btn:hover {
+          transform: scale(1.05);
         }
-        .ej-explica-rica {
-          margin-top: 0.65rem;
-          padding: 0.85rem 1rem;
-          background: #ffffff;
-          color: #1e293b;
-          border-radius: 12px;
-          border-left: 4px solid #f5c518;
-          overflow-x: auto;
+        .f4-paso {
+          margin: 2px 0;
+          line-height: 1.55;
+        }
+        .f4-paso b {
+          color: #5c21a6;
         }
       `}</style>
 
@@ -399,7 +522,7 @@ export default function LessonScreen5to() {
         <button
           type="button"
           onClick={() => goScreen('unit')}
-          className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#5C21A6] hover:opacity-80 cursor-pointer transition-opacity select-none"
+          className="inline-flex items-center gap-1.5 text-[13px] font-extrabold text-[#6C28B4] hover:opacity-75 cursor-pointer transition-opacity select-none"
         >
           <span className="text-sm font-black leading-none">←</span>
           <span>Volver a temas</span>
@@ -407,21 +530,26 @@ export default function LessonScreen5to() {
       </div>
 
       {/* ══ 2. Lesson Header & Multimedia Sub-Bar ══ */}
-      <div className="mb-4">
-        {/* Title */}
-        <h1
-          className="text-xl sm:text-2xl font-black text-[#1E1B4B] tracking-tight leading-snug flex items-center gap-2 mb-2.5"
-          style={{ fontFamily: "'Baloo 2', sans-serif" }}
-        >
-          <span className="text-xl sm:text-2xl">{topic?.icon || '🔢'}</span>
-          <span>{topic?.title || 'Números Naturales Conteo y Posición'}</span>
-        </h1>
+      <div className="mb-3">
+        {/* Title with Blue 12 34 badge */}
+        <div className="flex items-center gap-2.5 mb-2.5">
+          <div className="w-8 h-8 rounded-lg bg-[#3B82F6] text-white font-black text-xs flex flex-col items-center justify-center leading-none shadow-xs shrink-0 select-none">
+            <span className="tracking-tighter text-[10px]">12</span>
+            <span className="tracking-tighter text-[10px]">34</span>
+          </div>
+          <h1
+            className="text-xl sm:text-2xl font-black text-[#180D38] tracking-tight leading-snug"
+            style={{ fontFamily: "'Baloo 2', sans-serif" }}
+          >
+            {topic?.title || 'Números Naturales Conteo y Posición'}
+          </h1>
+        </div>
 
         {/* Buttons Sub-Bar */}
         <div className="flex items-center gap-2.5 flex-wrap">
           {/* Level Pill Badge */}
           <span
-            className="px-3 py-1.5 rounded-xl font-black text-xs shrink-0"
+            className="px-3 py-1 rounded-xl font-black text-xs shrink-0 select-none"
             style={{ backgroundColor: theme.light, color: theme.lightTxt }}
           >
             {theme.short}
@@ -431,10 +559,12 @@ export default function LessonScreen5to() {
           <button
             type="button"
             onClick={handleOpenVideoTema}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-white font-extrabold text-xs shadow-xs hover:shadow-md transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl font-black text-xs shadow-xs hover:scale-102 transition-transform cursor-pointer"
             style={{
-              background: 'linear-gradient(135deg, #5C21A6 0%, #8B3EDB 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.25)',
+              background: 'linear-gradient(135deg, #5C21A6, #8B3EDB)',
+              color: '#FFE066',
+              border: '1.5px solid #F5C518',
+              fontFamily: "'Nunito', sans-serif",
             }}
           >
             <span>🎬</span>
@@ -451,13 +581,14 @@ export default function LessonScreen5to() {
                 }`
               )
             }
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-white font-extrabold text-xs shadow-xs hover:shadow-md transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-white font-black text-xs shadow-xs hover:scale-102 transition-transform cursor-pointer"
             style={{
-              background: 'linear-gradient(135deg, #D4286A 0%, #F054A0 100%)',
+              background: 'linear-gradient(135deg, #D4286A, #F054A0)',
               border: '1.5px solid #FFE066',
+              fontFamily: "'Nunito', sans-serif",
             }}
           >
-            <span>🎙</span>
+            <span>🎙️</span>
             <span>Escuchar</span>
           </button>
 
@@ -465,28 +596,29 @@ export default function LessonScreen5to() {
           <button
             type="button"
             onClick={handleOpenVideoNivel}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-white font-extrabold text-xs shadow-xs hover:shadow-md transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-white font-black text-xs shadow-xs hover:scale-102 transition-transform cursor-pointer"
             style={{
-              background: 'linear-gradient(135deg, #0284C7 0%, #38BDF8 100%)',
+              background: 'linear-gradient(135deg, #0E6BA8, #38BDF8)',
               border: '1.5px solid #FFE066',
+              fontFamily: "'Nunito', sans-serif",
             }}
           >
-            <span>🏙</span>
+            <span>🎦</span>
             <span>Video del Nivel {currentLevel + 1}</span>
           </button>
         </div>
       </div>
 
       {/* ══ 3. Numbered Exercise Track Dots (#progTrack) ══ */}
-      <div className="flex items-center gap-1.5 flex-wrap my-3.5">
+      <div className="flex items-center gap-[5px] flex-wrap my-3.5" id="progTrack">
         {exercises.map((_, i) => {
           const isCurrent = !showingExamples && i === curExIndex;
           const isDone = answersLog[i] !== undefined;
           const isCorrect = answersLog[i]?.ok;
 
-          let dotBg = '#EFEAF6';
+          let dotBg = '#E8E4F5';
           let dotBorder = '#DDD8F5';
-          let dotColor = '#948EA5';
+          let dotColor = '#C5BFEE';
 
           if (isCurrent) {
             dotBg = '#6C28B4';
@@ -494,12 +626,12 @@ export default function LessonScreen5to() {
             dotColor = '#FFFFFF';
           } else if (isDone) {
             if (isCorrect) {
-              dotBg = '#10B981';
-              dotBorder = '#10B981';
+              dotBg = '#16876A';
+              dotBorder = '#16876A';
               dotColor = '#FFFFFF';
             } else {
-              dotBg = '#EF4444';
-              dotBorder = '#EF4444';
+              dotBg = '#C94B22';
+              dotBorder = '#C94B22';
               dotColor = '#FFFFFF';
             }
           }
@@ -507,9 +639,7 @@ export default function LessonScreen5to() {
           return (
             <div
               key={i}
-              className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[9px] sm:text-[10px] font-black transition-all ${
-                isCurrent ? 'scale-115 shadow-sm' : ''
-              }`}
+              className="w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-black transition-all cursor-default select-none"
               style={{
                 backgroundColor: dotBg,
                 borderColor: dotBorder,
@@ -517,7 +647,7 @@ export default function LessonScreen5to() {
                 borderStyle: 'solid',
                 color: dotColor,
               }}
-              title={`Ejercicio ${i + 1}`}
+              title={`Ej.${i + 1}`}
             >
               {i + 1}
             </div>
@@ -528,10 +658,13 @@ export default function LessonScreen5to() {
       {/* ══ 4. MAIN CONTAINER: EXAMPLES PANEL OR PRACTICE ══ */}
       {showingExamples ? (
         <div
-          className="relative overflow-hidden rounded-[24px] p-5 sm:p-7 md:p-8 text-white shadow-xl mb-8"
           style={{
             background: theme.grad,
-            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.3)',
+            borderRadius: '22px',
+            overflow: 'hidden',
+            boxShadow: '0 12px 40px rgba(0,0,0,.3)',
+            marginBottom: '1rem',
+            position: 'relative',
           }}
         >
           {/* Cosmic Stars */}
@@ -549,168 +682,353 @@ export default function LessonScreen5to() {
             />
           ))}
 
-          <div className="relative z-10">
-            {/* Top Badge: PANEL DE EJEMPLOS · MÉTODO FEDOR */}
-            <div className="mb-3">
-              <span className="inline-block text-[10.5px] sm:text-[11px] font-black text-[#FDE047] uppercase tracking-wider bg-[#F5C518]/15 border border-[#F5C518]/40 px-3.5 py-1 rounded-full">
-                📖 PANEL DE EJEMPLOS · MÉTODO FEDOR
-              </span>
+          {/* HEADER */}
+          <div style={{ padding: '1.5rem 1.25rem 1rem', position: 'relative', zIndex: 1 }}>
+            <div
+              style={{
+                display: 'inline-block',
+                fontSize: '10px',
+                fontWeight: 900,
+                color: 'rgba(245,197,24,.8)',
+                textTransform: 'uppercase',
+                letterSpacing: '.12em',
+                background: 'rgba(245,197,24,.15)',
+                border: '1px solid rgba(245,197,24,.35)',
+                padding: '3px 12px',
+                borderRadius: '20px',
+                marginBottom: '.75rem',
+              }}
+            >
+              📖 Panel de Ejemplos · Método Fedor
             </div>
-
-            {/* Header: Level Title & Exercise Count */}
-            <div className="flex items-start justify-between gap-4 mb-4">
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '10px',
+              }}
+            >
               <div>
-                <h2
-                  className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight flex items-center gap-2.5"
-                  style={{ fontFamily: "'Baloo 2', sans-serif" }}
+                <div
+                  style={{
+                    fontFamily: "'Baloo 2', sans-serif",
+                    fontSize: '22px',
+                    fontWeight: 900,
+                    color: '#fff',
+                    marginBottom: '2px',
+                  }}
                 >
-                  <span className="text-xl sm:text-2xl">{theme.orb}</span>
-                  <span>{theme.headerTxt}</span>
-                </h2>
-                <p className="text-xs sm:text-sm text-white/75 font-semibold mt-1">
+                  {theme.orb} {theme.headerTxt}
+                </div>
+                <div style={{ fontSize: '12px', color: 'rgba(255,255,255,.65)' }}>
                   {theme.sub} · {topic?.title}
-                </p>
+                </div>
               </div>
-
-              <div className="text-right shrink-0">
-                <div className="text-[10px] font-black uppercase text-white/50 tracking-wider">
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: '11px', color: 'rgba(255,255,255,.5)', fontWeight: 700 }}>
                   EJERCICIOS
                 </div>
                 <div
-                  className="text-2xl sm:text-3xl font-black text-[#FF8C2A] leading-none mt-0.5"
-                  style={{ fontFamily: "'Baloo 2', sans-serif" }}
+                  style={{
+                    fontSize: '22px',
+                    fontWeight: 900,
+                    color: '#FF8C2A',
+                    fontFamily: "'Baloo 2', sans-serif",
+                  }}
                 >
                   {exercises.length}
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* 3 Mascots in Clouds */}
-            <div className="flex items-center justify-center gap-4 sm:gap-6 my-6">
-              {[
-                { icon: '🧑‍🚀', name: 'Math' },
-                { icon: '👩‍🚀', name: 'Sumy' },
-                { icon: '👦', name: 'Jack' },
-              ].map((char, i) => (
-                <div key={i} className="text-center group">
-                  <div className="w-16 h-12 sm:w-20 sm:h-14 rounded-full bg-white shadow-md flex items-center justify-center transition-transform group-hover:scale-105">
-                    <span className="text-2xl sm:text-3xl select-none">{char.icon}</span>
-                  </div>
-                  <div className="text-[11px] sm:text-xs font-black text-white/90 mt-1.5">
-                    {char.name}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Pedagogical Concept Box */}
-            <div className="bg-white/10 border border-white/15 border-l-4 border-l-[#24C496] rounded-2xl p-4 sm:p-5 my-5">
-              <div className="text-xs sm:text-sm font-bold text-white/95 leading-relaxed mb-1.5">
-                Aplica el método paso a paso.
+          {/* CHARACTERS (Inside .f5nube white clouds) */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '20px',
+              padding: '0 1.25rem .75rem',
+              position: 'relative',
+              zIndex: 1,
+            }}
+          >
+            <div style={{ textAlign: 'center' }}>
+              <div className="f5nube">
+                <span style={{ fontSize: '36px', lineHeight: 1 }} role="img" aria-label="Math">
+                  🧑‍🚀
+                </span>
               </div>
               <div
-                className="text-xs sm:text-sm font-normal text-white/85 leading-relaxed"
-                dangerouslySetInnerHTML={{
-                  __html:
-                    topic?.teach ||
-                    'Los números naturales sirven para contar. El valor de cada cifra depende de la posición.',
-                }}
-              />
-              {topic?.formula && (
-                <div className="inline-flex items-center gap-1.5 mt-3 px-3 py-1 rounded-full bg-white/15 border border-white/20 text-xs font-bold text-white">
-                  <span>🗨</span>
-                  <span>{topic.formula}</span>
-                </div>
-              )}
-            </div>
-
-            {/* Examples Count Header */}
-            <div className="flex items-center gap-1.5 text-xs font-black text-white/70 uppercase tracking-wider mb-3">
-              <span>✨</span>
-              <span>{examples.length} EJEMPLOS RESUELTOS</span>
-            </div>
-
-            {/* Examples List */}
-            <div className="space-y-4 mb-6">
-              {examples.map((e: any, i: number) => {
-                const isOpen = !!openSteps[i];
-
-                return (
-                  <div
-                    key={i}
-                    className="bg-white/10 border border-white/20 rounded-2xl p-4 sm:p-5 backdrop-blur-xs transition-all"
-                  >
-                    {/* Top Row: Icon + Question + Answer Badge */}
-                    <div className="flex items-start justify-between gap-3 mb-3">
-                      <div className="w-9 h-9 rounded-xl bg-blue-500/25 border border-blue-400/30 flex items-center justify-center text-lg shrink-0">
-                        {e.icon || '🔁'}
-                      </div>
-
-                      <div className="flex-1 text-sm sm:text-base font-bold text-white/95 leading-snug">
-                        {e.q}
-                      </div>
-
-                      <div
-                        className="bg-[#6B8E23]/35 border border-[#9ACD32]/50 text-[#FDE047] font-black text-base sm:text-lg px-3 py-1 rounded-xl shrink-0 min-w-[36px] text-center"
-                        style={{ fontFamily: "'Baloo 2', sans-serif" }}
-                      >
-                        {e.a}
-                      </div>
-                    </div>
-
-                    {/* Visual Card (White box with notebooks/abacus/figures) */}
-                    {e.vis && (
-                      <div
-                        className="f4vis my-3"
-                        dangerouslySetInnerHTML={{ __html: e.vis }}
-                      />
-                    )}
-
-                    {/* Step-by-Step Accordion */}
-                    {e.explain && (
-                      <div className="mt-3">
-                        <button
-                          type="button"
-                          onClick={() => toggleStep(i)}
-                          className="w-full flex items-center justify-between py-2 px-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-white/95 text-xs sm:text-sm font-black transition-colors cursor-pointer select-none"
-                        >
-                          <span className="flex items-center gap-2">
-                            <span>📗</span>
-                            <span>Ver paso a paso</span>
-                          </span>
-                          <span className="text-xs font-bold opacity-80">
-                            {isOpen ? '▲ Ocultar' : '▼ Mostrar'}
-                          </span>
-                        </button>
-
-                        {isOpen && (
-                          <div
-                            className="mt-2.5 p-4 rounded-xl bg-white text-slate-800 text-xs sm:text-sm font-normal overflow-x-auto shadow-sm"
-                            dangerouslySetInnerHTML={{ __html: e.explain }}
-                          />
-                        )}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Bottom Button: ¡Empezar ejercicios! */}
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={() => setShowingExamples(false)}
-                className="w-full py-4 px-6 rounded-2xl font-black text-base sm:text-lg text-[#2A0F60] shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer select-none"
                 style={{
-                  background: 'linear-gradient(135deg, #F5C518 0%, #FF8C2A 100%)',
-                  boxShadow: '0 8px 24px rgba(245, 197, 24, 0.45)',
-                  fontFamily: "'Nunito', sans-serif",
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  color: 'rgba(255,255,255,.7)',
+                  marginTop: '4px',
                 }}
               >
-                🎮 ¡Empezar {exercises.length} ejercicios!
-              </button>
+                Math
+              </div>
             </div>
+            <div style={{ textAlign: 'center' }}>
+              <div className="f5nube">
+                <span style={{ fontSize: '36px', lineHeight: 1 }} role="img" aria-label="Sumy">
+                  👩‍🚀
+                </span>
+              </div>
+              <div
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  color: 'rgba(255,255,255,.7)',
+                  marginTop: '4px',
+                }}
+              >
+                Sumy
+              </div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div className="f5nube">
+                <span style={{ fontSize: '36px', lineHeight: 1 }} role="img" aria-label="Jack">
+                  👦
+                </span>
+              </div>
+              <div
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  color: 'rgba(255,255,255,.7)',
+                  marginTop: '4px',
+                }}
+              >
+                Jack
+              </div>
+            </div>
+          </div>
+
+          {/* CONCEPT */}
+          <div
+            style={{
+              margin: '0 1.25rem .75rem',
+              padding: '.85rem 1rem',
+              background: 'rgba(255,255,255,.1)',
+              borderRadius: '14px',
+              borderLeft: `4px solid ${theme.accent}`,
+              position: 'relative',
+              zIndex: 1,
+            }}
+          >
+            <div
+              style={{
+                fontSize: '13px',
+                color: 'rgba(255,255,255,.9)',
+                fontWeight: 700,
+                lineHeight: 1.6,
+              }}
+            >
+              {topic?.std || 'Aplica el método paso a paso.'}
+            </div>
+            {topic?.teach && (
+              <div
+                style={{
+                  fontSize: '13px',
+                  color: 'rgba(255,255,255,.95)',
+                  fontWeight: 600,
+                  lineHeight: 1.6,
+                  marginTop: '.5rem',
+                }}
+                dangerouslySetInnerHTML={{ __html: topic.teach }}
+              />
+            )}
+            {topic?.formula && (
+              <div
+                style={{
+                  display: 'inline-block',
+                  marginTop: '.5rem',
+                  padding: '.3rem .65rem',
+                  background: 'rgba(255,255,255,.18)',
+                  borderRadius: '10px',
+                  fontSize: '12px',
+                  fontWeight: 800,
+                  color: '#fff',
+                  letterSpacing: '.02em',
+                }}
+              >
+                🧠 {topic.formula}
+              </div>
+            )}
+          </div>
+
+          {/* EXAMPLE CARDS */}
+          <div style={{ padding: '0 1.25rem .5rem', position: 'relative', zIndex: 1 }}>
+            <div
+              style={{
+                fontSize: '11px',
+                fontWeight: 900,
+                color: 'rgba(255,255,255,.6)',
+                textTransform: 'uppercase',
+                letterSpacing: '.1em',
+                marginBottom: '.65rem',
+              }}
+            >
+              ✨ {examples.length} Ejemplos resueltos
+            </div>
+
+            {examples.map((e: any, i: number) => (
+              <div
+                key={i}
+                style={{
+                  background: 'rgba(255,255,255,.12)',
+                  border: '1px solid rgba(255,255,255,.2)',
+                  borderRadius: '16px',
+                  padding: '1rem',
+                  marginBottom: '.65rem',
+                  position: 'relative',
+                }}
+              >
+                {/* Top Row: Icon + Question + Answer */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '10px',
+                    marginBottom: e.vis ? '.5rem' : '0',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '10px',
+                      background: 'rgba(255,255,255,.2)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '18px',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {e.icon || '🔁'}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div
+                      style={{
+                        fontSize: '14px',
+                        fontWeight: 800,
+                        color: 'rgba(255,255,255,.9)',
+                        lineHeight: 1.45,
+                      }}
+                    >
+                      {e.q}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      fontSize: '20px',
+                      fontWeight: 900,
+                      color: '#FFE066',
+                      background: 'rgba(245,197,24,.2)',
+                      border: '1px solid rgba(245,197,24,.4)',
+                      padding: '4px 12px',
+                      borderRadius: '10px',
+                      flexShrink: 0,
+                      fontFamily: "'Baloo 2', sans-serif",
+                    }}
+                  >
+                    {e.a}
+                  </div>
+                </div>
+
+                {/* Visual */}
+                {e.vis && (
+                  <div
+                    className={e.vis.includes('f4vis') ? '' : 'f4vis'}
+                    dangerouslySetInnerHTML={{ __html: e.vis }}
+                  />
+                )}
+
+                {/* Explain */}
+                {e.explain && (
+                  <div
+                    className="ej-explica-rica"
+                    dangerouslySetInnerHTML={{ __html: e.explain }}
+                  />
+                )}
+
+                {/* Orange Visual Laboratory Button & Unfolded Lab Container */}
+                {availableLabs[i] && (
+                  <div style={{ marginTop: '0.75rem' }}>
+                    <button
+                      type="button"
+                      onClick={() => toggleLab(i, e)}
+                      className="fz-btn o"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '8px 14px',
+                        borderRadius: '12px',
+                        border: 'none',
+                        background: 'linear-gradient(135deg, #FF8C2A, #E8650A)',
+                        color: '#FFFFFF',
+                        fontFamily: "'Nunito', sans-serif",
+                        fontWeight: 900,
+                        fontSize: '13.5px',
+                        cursor: 'pointer',
+                        boxShadow: '0 3px 10px rgba(232, 101, 10, 0.35)',
+                        transition: 'all 0.18s ease',
+                      }}
+                      onMouseEnter={(ev) => (ev.currentTarget.style.filter = 'brightness(1.1)')}
+                      onMouseLeave={(ev) => (ev.currentTarget.style.filter = 'none')}
+                    >
+                      <span>{openLabs[i] ? '✖' : '🎮'}</span>
+                      <span>{openLabs[i] ? 'Cerrar laboratorio' : 'Explorar con el laboratorio visual'}</span>
+                    </button>
+
+                    {/* Interactive Visual Laboratory */}
+                    {openLabs[i] && labHtmls[i] && (
+                      <div
+                        style={{ marginTop: '0.75rem' }}
+                        dangerouslySetInnerHTML={{ __html: labHtmls[i] }}
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* START BUTTON */}
+          <div style={{ padding: '.75rem 1.25rem 1.5rem', position: 'relative', zIndex: 1 }}>
+            <button
+              type="button"
+              onClick={() => setShowingExamples(false)}
+              style={{
+                width: '100%',
+                padding: '14px',
+                fontSize: '16px',
+                fontWeight: 900,
+                background: 'linear-gradient(135deg,#F5C518,#FF8C2A)',
+                color: '#2A0F60',
+                border: 'none',
+                borderRadius: '14px',
+                cursor: 'pointer',
+                fontFamily: "'Nunito', sans-serif",
+                letterSpacing: '.03em',
+                boxShadow: '0 6px 20px rgba(245,197,24,.45)',
+                transition: 'all .2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              🚀 ¡Empezar ejercicios!
+            </button>
           </div>
         </div>
       ) : (
@@ -852,6 +1170,143 @@ export default function LessonScreen5to() {
           )}
         </div>
       )}
+
+      {/* Fedor Video Animated Modal */}
+      <FedorVideoModal5to
+        isOpen={isVideoModalOpen}
+        topicTitle={topic?.title || 'Números Naturales Conteo y Posición'}
+        onClose={() => setIsVideoModalOpen(false)}
+      />
+
+      {/* Global styles for visual laboratories */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            .fz {
+              margin: 12px 0 14px;
+              border-radius: 20px;
+              background: linear-gradient(160deg, #F8F5FF, #EEF7FF);
+              border: 2.5px solid #D9CCFF;
+              box-shadow: 0 8px 22px rgba(60, 20, 120, 0.10);
+              overflow: hidden;
+              font-family: 'Nunito', sans-serif;
+              color: #1A1033;
+              text-align: left;
+            }
+            .fz-h {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              padding: 8px 12px;
+              background: linear-gradient(90deg, var(--fz1, #5C21A6), var(--fz2, #8B3EDB));
+              color: #fff;
+            }
+            .fz-h, .fz-h *, .tm-body .fz-h .t, .tm-body .fz-h small {
+              color: #FFFFFF !important;
+            }
+            .fz-h .t {
+              flex: 1;
+              font-family: 'Baloo 2', 'Nunito', sans-serif;
+              font-weight: 900;
+              font-size: 15px;
+              letter-spacing: 0.01em;
+            }
+            .fz-h .t small {
+              font-family: 'Nunito', sans-serif;
+              font-weight: 800;
+              font-size: 11px;
+              opacity: 0.85;
+              margin-left: 6px;
+            }
+            .fz-h button {
+              background: rgba(255, 255, 255, 0.2);
+              border: 1.5px solid rgba(255, 255, 255, 0.45);
+              color: #fff;
+              border-radius: 10px;
+              padding: 3px 10px;
+              font-weight: 900;
+              cursor: pointer;
+              font-family: 'Nunito', sans-serif;
+              transition: transform 0.15s ease;
+            }
+            .fz-h button:hover {
+              transform: scale(1.08);
+            }
+            .fz-b {
+              padding: 12px;
+              overflow-x: auto;
+            }
+            .fz.min .fz-b, .fz.min .fz-f {
+              display: none;
+            }
+            .fz-f {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 6px;
+              padding: 0 12px 12px;
+              align-items: center;
+            }
+            .fz-btn {
+              border: none;
+              border-radius: 12px;
+              padding: 8px 13px;
+              font-weight: 900;
+              font-size: 13px;
+              cursor: pointer;
+              font-family: 'Nunito', sans-serif;
+              color: #fff;
+              background: linear-gradient(135deg, #5C21A6, #8B3EDB);
+              box-shadow: 0 3px 10px rgba(92, 33, 166, 0.3);
+              transition: transform 0.12s;
+            }
+            .fz-btn:hover {
+              transform: translateY(-2px);
+            }
+            .fz-btn.o {
+              background: linear-gradient(135deg, #FF8C2A, #E8650A);
+            }
+            .fz-btn.g {
+              background: linear-gradient(135deg, #16876A, #24C496);
+            }
+            .fz-btn.b {
+              background: linear-gradient(135deg, #0E6BA8, #38BDF8);
+            }
+            .fz-btn.w {
+              background: #FFFFFF;
+              color: #5C21A6;
+              border: 2px solid #C5BFEE;
+              box-shadow: none;
+            }
+            .fz-btn.on {
+              outline: 3px solid #FFE066;
+            }
+            .fz-msg {
+              font-weight: 900;
+              font-size: 14px;
+              color: #3D1468;
+              padding: 6px 10px;
+              background: #FFFFFF;
+              border-radius: 12px;
+              border: 2px dashed #C5BFEE;
+              min-height: 20px;
+              display: inline-flex;
+              align-items: center;
+            }
+            .fz-tip {
+              font-size: 12px;
+              font-weight: 800;
+              color: #6B5E8A;
+              margin-top: 8px;
+            }
+            .fz-svg {
+              max-width: 100%;
+              height: auto;
+              display: block;
+              margin: 0 auto;
+            }
+          `,
+        }}
+      />
     </div>
   );
 }

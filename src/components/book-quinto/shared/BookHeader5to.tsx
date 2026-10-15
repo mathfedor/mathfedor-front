@@ -93,6 +93,19 @@ export default function BookHeader5to({ onOpenIntro, onOpenGalaxy }: BookHeader5
     }
   };
 
+  const handleToggleSound = () => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+      } else {
+        const text = `Matemáticas de Fedor, 5° Grado. Tienes ${coins} monedas y ${streak} días de racha.`;
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'es-CO';
+        window.speechSynthesis.speak(utter);
+      }
+    }
+  };
+
   return (
     <header className="hdr-5to">
       <div className="hdr-left">
@@ -165,18 +178,17 @@ export default function BookHeader5to({ onOpenIntro, onOpenGalaxy }: BookHeader5
               <rect x="19" y="33" width="6" height="3" rx="1.5" fill="#B8B8C8" />
             </svg>
           </div>
-          <div style={{ lineHeight: 1 }}>
-            <div style={{ fontSize: 9, fontWeight: 900, color: '#7B2FBE', letterSpacing: '.06em', textTransform: 'uppercase' }}>
-              Matemáticas de
+          <div style={{ lineHeight: 1.05 }}>
+            <div style={{ fontSize: 9, fontWeight: 900, color: '#6C28B4', letterSpacing: '.07em', textTransform: 'uppercase' }}>
+              MATEMÁTICAS DE
             </div>
-            <div style={{ fontFamily: "'Baloo 2', sans-serif", fontSize: 18, fontWeight: 900, color: '#E8650A', textShadow: '0 1px 0 rgba(245,197,24,.5)' }}>
-              feDOR
+            <div style={{ fontFamily: "'Baloo 2', sans-serif", fontSize: 18, fontWeight: 900 }}>
+              <span style={{ color: '#6C28B4' }}>fe</span>
+              <span style={{ color: '#E8650A' }}>DOR</span>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="hdr-mid">
         <span className="grade-pill-5to">5° Grado</span>
       </div>
 
@@ -190,160 +202,127 @@ export default function BookHeader5to({ onOpenIntro, onOpenGalaxy }: BookHeader5
           <span>{streak}</span>
         </div>
 
-        {screen !== 'home' && screen !== 'setup' && (
-          <button
-            type="button"
-            className="hdr-btn student"
-            onClick={() => goScreen('home')}
-          >
-            🏠 Inicio
-          </button>
-        )}
-
-        {screen === 'home' && onOpenIntro && (
-          <button
-            type="button"
-            className="hdr-btn"
-            style={{
-              background: 'linear-gradient(135deg, rgba(232,101,10,0.15), rgba(245,197,24,0.15))',
-              borderColor: '#F5C518',
-              color: '#B45309',
-            }}
-            onClick={onOpenIntro}
-            title="Ver intro cinemática de despegue"
-          >
-            🎬 Intro
-          </button>
-        )}
+        <button
+          type="button"
+          className="hdr-btn sound-btn"
+          onClick={handleToggleSound}
+          title="Voz y audio"
+        >
+          🔊
+        </button>
 
         <button
           type="button"
           className="hdr-btn report-btn"
           onClick={() => goScreen('report')}
+          title="Ver reporte detallado"
         >
           📊 Reporte
         </button>
 
         <button
           type="button"
-          className="hdr-btn"
-          style={{
-            background: 'linear-gradient(135deg, #E8650A, #FF8C2A)',
-            color: '#fff',
-            borderColor: '#E8650A',
-          }}
+          className="hdr-btn export-btn"
+          onClick={handleExportJSON}
+          title="Exportar progreso"
+        >
+          🗂️ Exportar
+        </button>
+
+        <button
+          type="button"
+          className="hdr-btn save-btn"
           onClick={handleSaveProgress}
           title="Guardar progreso actual"
         >
           ⬇ Guardar
         </button>
-
-        {student?.name && (
-          <button
-            type="button"
-            className="hdr-btn"
-            style={{
-              background: '#FEE2E2',
-              borderColor: '#FCA5A5',
-              color: '#991B1B',
-              padding: '6px 10px',
-            }}
-            onClick={() => {
-              Swal.fire({
-                title: '¿Reiniciar sesión?',
-                text: 'Volverás al formulario inicial con tus datos de estudiante.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#E8650A',
-                cancelButtonColor: '#6B7280',
-                confirmButtonText: 'Sí, reiniciar',
-                cancelButtonText: 'Cancelar',
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  resetStudent();
-                }
-              });
-            }}
-            title="Cambiar de estudiante / Reiniciar formulario"
-          >
-            🔄
-          </button>
-        )}
       </div>
 
       <style>{`
         .hdr-5to {
           background: #ffffff;
+          border: 1px solid rgba(221, 216, 245, 0.6);
           border-bottom: 2px solid #e8dbff;
-          box-shadow: 0 4px 18px rgba(42, 15, 96, 0.08);
-          border-radius: 20px;
-          padding: 8px 16px;
+          box-shadow: 0 4px 20px rgba(108, 40, 180, 0.08);
+          border-radius: 24px;
+          padding: 8px 18px;
           display: flex;
           align-items: center;
           justify-content: space-between;
           gap: 12px;
           position: sticky;
-          top: calc(4rem + 12px);
+          top: calc(4rem + 8px);
           z-index: 40;
           font-family: 'Nunito', sans-serif;
+          max-width: 1020px;
+          margin: 0 auto;
         }
 
         .hdr-left {
           display: flex;
           align-items: center;
-          gap: 12px;
-        }
-
-        .hdr-mid {
-          display: flex;
-          align-items: center;
+          gap: 14px;
         }
 
         .grade-pill-5to {
-          background: linear-gradient(135deg, #fef0e6, #ffe2c8);
-          color: #9a3412;
-          border: 1.5px solid #f97316;
-          border-radius: 14px;
+          background: #fff3e0;
+          color: #c2410c;
+          border: 1.5px solid #ffb74d;
+          border-radius: 9999px;
           padding: 3px 12px;
           font-size: 12px;
-          font-weight: 900;
-          letter-spacing: 0.03em;
+          font-weight: 800;
+          letter-spacing: 0.02em;
+          display: inline-flex;
+          align-items: center;
         }
 
         .hdr-btns {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 7px;
+          flex-wrap: wrap;
         }
 
-        .coin-hdr,
-        .streak-hdr {
+        .coin-hdr {
+          background: #fef9c3;
+          border: 1.5px solid #fde047;
+          color: #854d0e;
+          border-radius: 9999px;
+          padding: 3.5px 11px;
+          font-size: 12.5px;
+          font-weight: 900;
           display: flex;
           align-items: center;
           gap: 4px;
-          background: #f7f4ff;
-          border: 1.5px solid #c5bfee;
-          border-radius: 12px;
-          padding: 4px 10px;
-          font-size: 13px;
+        }
+
+        .streak-hdr {
+          background: #fee2e2;
+          border: 1.5px solid #fca5a5;
+          color: #991b1b;
+          border-radius: 9999px;
+          padding: 3.5px 11px;
+          font-size: 12.5px;
           font-weight: 900;
-          color: #3d1468;
+          display: flex;
+          align-items: center;
+          gap: 4px;
         }
 
         .hdr-btn {
           border-radius: 12px;
-          border: 1.5px solid #c5bfee;
-          background: #f7f4ff;
-          color: #3d1468;
           font-family: 'Nunito', sans-serif;
           font-size: 12px;
-          font-weight: 900;
-          padding: 6px 12px;
+          font-weight: 800;
+          padding: 5.5px 12px;
           cursor: pointer;
           transition: all 0.15s ease;
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: 5px;
+          line-height: 1.2;
         }
 
         .hdr-btn:hover {
@@ -351,16 +330,33 @@ export default function BookHeader5to({ onOpenIntro, onOpenGalaxy }: BookHeader5
           filter: brightness(1.05);
         }
 
-        .hdr-btn.student {
-          background: #eeedfe;
-          border-color: #a78bfa;
-          color: #4338ca;
+        .sound-btn {
+          background: #ede9fe;
+          border: 1.5px solid #ddd6fe;
+          color: #6d28d9;
+          padding: 5.5px 10px;
+          font-size: 13px;
         }
 
-        .hdr-btn.report-btn {
-          background: #e0f2fe;
-          border-color: #38bdf8;
-          color: #0369a1;
+        .report-btn {
+          background: #fffbeb;
+          border: 1.5px solid #fde68a;
+          color: #92400e;
+        }
+
+        .export-btn {
+          background: #f3e8ff;
+          border: 1.5px solid #e9d5ff;
+          color: #6b21a8;
+        }
+
+        .save-btn {
+          background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+          border: 1.5px solid #ea580c;
+          color: #ffffff;
+          font-weight: 900;
+          padding: 5.5px 15px;
+          box-shadow: 0 2px 8px rgba(234, 88, 12, 0.28);
         }
 
         @media (max-width: 768px) {
@@ -372,7 +368,7 @@ export default function BookHeader5to({ onOpenIntro, onOpenGalaxy }: BookHeader5
           }
           .coin-hdr,
           .streak-hdr {
-            padding: 3px 6px;
+            padding: 2.5px 6px;
             font-size: 11px;
           }
           .hdr-btn {

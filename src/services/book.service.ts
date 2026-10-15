@@ -57,6 +57,9 @@ interface RawTopic {
   desc: string;
   levels?: RawLevel[];
   levelDescs?: string[];
+  teach?: string;
+  formula?: string;
+  std?: string;
 }
 
 interface RawUnit {
@@ -117,6 +120,9 @@ function mapTopic(raw: RawTopic, topicIndex: number, unitId: string): Topic {
     desc: raw.desc,
     levels: (raw.levels || []).map((lv, i) => mapLevel(lv, i, id)),
     levelDescs: raw.levelDescs,
+    teach: raw.teach,
+    formula: raw.formula,
+    std: raw.std,
   };
 }
 
@@ -216,6 +222,7 @@ function mapBookFromBackend(data: any, slug: string): Book {
  */
 export function resolvePhysicalLevelKey(levelKey: string, slug: string, book?: Book): string {
   const isBook1 = slug === 'libro-1ro' || slug === 'matematicas-fedor-1';
+  const isBook5 = slug === 'libro-5to' || slug === 'matematicas-fedor-5';
   
   const m = /^u(\d+)t(\d+)-n(\d+)$/.exec(levelKey);
   if (!m) return levelKey;
@@ -228,6 +235,14 @@ export function resolvePhysicalLevelKey(levelKey: string, slug: string, book?: B
     const topicId =
       book?.units[uIdx]?.topics[tIdx]?.id ||
       (bookCurriculum1.UNITS[uIdx]?.topics[tIdx] as { id?: string } | undefined)?.id;
+    if (topicId) {
+      return `${topicId}-n${lNum}`;
+    }
+    return levelKey;
+  } else if (isBook5) {
+    const topicId =
+      book?.units[uIdx]?.topics[tIdx]?.id ||
+      (bookCurriculum5.UNITS[uIdx]?.topics[tIdx] as { id?: string } | undefined)?.id;
     if (topicId) {
       return `${topicId}-n${lNum}`;
     }

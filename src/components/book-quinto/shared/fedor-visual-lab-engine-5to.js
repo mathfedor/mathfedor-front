@@ -24,7 +24,7 @@ function lcm(a,b){ return a/gcd(a,b)*b; }
 function divisores(n){ var d=[]; for(var i=1;i<=n;i++) if(n%i===0) d.push(i); return d; }
 function factores(n){ var f=[], p=2; while(n>1 && p*p<=n){ while(n%p===0){ f.push(p); n/=p; } p++; } if(n>1) f.push(n); return f; }
 function hablar(t){ try{ if(typeof fedor5Hablar==='function') fedor5Hablar(t); }catch(e){} }
-function tono(f){ try{ if(typeof fedor5Tono==='function') fedor5Tono(f); }catch(e){} }
+function tono(f){ try{ if(typeof fedor5Tono==='function') fedor5Tono(f); else if(typeof window!=='undefined'&&typeof window.fedor5Tono==='function') window.fedor5Tono(f); }catch(e){} }
 
 /* ═══════════════ ESTILOS ═══════════════ */
 var CSS = [
@@ -1021,7 +1021,7 @@ W.serie = function(d, modo, id){
   FZ.st[id].dx = dx; FZ.st[id].np = pts.length;
   return marco(id, 'op', 'Saltos de la serie', 'de '+fmt(p)+' en '+fmt(p), sv, '<button class="fz-btn g" onclick="FZ.serieSalto(\''+id+'\')">🐸 Dar el siguiente salto</button><span class="fz-msg" id="'+id+'m">¿Cuánto aumenta cada salto?</span>', 'Mira los saltos verdes: todos son iguales.');
 };
-FZ.serieSalto = function(id){ var s=FZ.st[id]; if(!s || s.k>=2) return; FZ.toque(id); var i=s.np+s.k, x=30+i*s.dx; $(id+'j').innerHTML += '<path d="M'+(x-s.dx+6)+' 70 Q'+(x-s.dx/2)+' 26 '+(x-6)+' 70" stroke="#E8650A" stroke-width="3" fill="none" stroke-dasharray="5 4"/><text x="'+(x-s.dx/2)+'" y="34" font-size="13" font-weight="900" text-anchor="middle" fill="#E8650A">+'+fmt(s.p)+'</text>'; var t=$(id+'t'+i); if(t) t.textContent = fmt(s.v[s.v.length-1]+s.p*(s.k+1)); s.k++; tono(); };
+FZ.serieSalto = function(id){ var s=FZ.st[id]; if(!s || s.k>=2) return; FZ.toque(id); var i=s.np+s.k, x=30+i*s.dx; $(id+'j').innerHTML += '<path d="M'+(x-s.dx+6)+' 70 Q'+(x-s.dx/2)+' 26 '+(x-6)+' 70" stroke="#E8650A" stroke-width="3" fill="none" stroke-dasharray="5 4"/><text x="'+(x-s.dx/2)+'" y="34" font-size="13" font-weight="900" text-anchor="middle" fill="#E8650A">+'+fmt(s.p)+'</text>'; var t=$(id+'t'+i); var nextVal = s.v[s.v.length-1]+s.p*(s.k+1); if(t){ t.textContent = fmt(nextVal); t.setAttribute('fill', '#E8650A'); } s.k++; var m=$(id+'m'); if(m){ if(s.k===1) m.textContent = 'Saltamos de '+fmt(s.p)+' en '+fmt(s.p)+': el siguiente es '+fmt(nextVal); else if(s.k>=2) m.textContent = '✅ ¡Secuencia completada: '+fmt(nextVal)+'! ('+s.v.map(fmt).join(', ')+', '+fmt(s.v[s.v.length-1]+s.p)+', '+fmt(nextVal)+')'; } tono(); };
 
 /* ── 19. Tabla de proporción (regla de tres) ── */
 W.r3 = function(d, modo, id){

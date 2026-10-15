@@ -81,9 +81,9 @@ function Book5Shell() {
           : 'bg-[#140830] text-white'
       } min-h-screen relative font-sans`}
     >
-      <div style={{ maxWidth: '1320px', margin: '0 auto', width: '100%', boxSizing: 'border-box', position: 'relative' }}>
+      <div style={{ maxWidth: screen === 'lesson' ? '1040px' : '1320px', margin: '0 auto', width: '100%', boxSizing: 'border-box', position: 'relative' }}>
         {/* ══ Header Superior de Fedor 5° con Logo Orb y Estado ══ */}
-        <div style={{ padding: '5.25rem 1rem 0.5rem' }}>
+        <div style={{ padding: '5.25rem 0.75rem 0.5rem' }}>
           <BookHeader5to
             onOpenIntro={() => setShowLaunchIntro(true)}
             onOpenGalaxy={() => setShowGalaxyModal(true)}

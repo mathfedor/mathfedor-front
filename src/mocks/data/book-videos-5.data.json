@@ -1,0 +1,1187 @@
+[
+  {
+    "k": "adicion_basica",
+    "t": "Adición Básica · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Sumy recogió 234 cristales espaciales y Jack le regaló 512 más.",
+        "Historia"
+      ],
+      [
+        "Datos: tenía 234 · recibe 512",
+        "Los datos del problema"
+      ],
+      [
+        "🤔 ¿Cuántos cristales tiene ahora en total?",
+        "Piensa antes de operar"
+      ],
+      [
+        "💡 SUMAR es juntar cantidades en un solo grupo.",
+        "El concepto clave"
+      ],
+      [
+        "234 + 512 = ?",
+        "Planteamos la operación"
+      ],
+      [
+        "DRAW:234+512",
+        "Míralo con dibujos"
+      ],
+      [
+        "  234\n+ 512\n─────\n    6",
+        "Se suman las unidades: 4 + 2 = 6",
+        "sub"
+      ],
+      [
+        "  234\n+ 512\n─────\n   46",
+        "Luego las decenas: 3 + 1 = 4",
+        "sub"
+      ],
+      [
+        "  234\n+ 512\n─────\n  746",
+        "Luego las centenas: 2 + 5 = 7",
+        "sub"
+      ],
+      [
+        "  234\n+ 512\n─────\n  746",
+        "El resultado es 746",
+        "sub"
+      ],
+      [
+        "✅ 234 + 512 = 746",
+        "¡Resultado!"
+      ],
+      [
+        "🎉 ¡Sumando, Sumy llenó su nave! Tú también puedes.",
+        "Lo lograste"
+      ]
+    ],
+    "_op": {
+      "a": 234,
+      "b": 512,
+      "op": "+",
+      "r": 746
+    }
+  },
+  {
+    "k": "adicion_llevadas",
+    "t": "Adición con Llevadas · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Sumy recogió 456 cristales espaciales y Jack le regaló 278 más.",
+        "Historia"
+      ],
+      [
+        "Datos: tenía 456 · recibe 278",
+        "Los datos del problema"
+      ],
+      [
+        "🤔 ¿Cuántos cristales tiene ahora en total?",
+        "Piensa antes de operar"
+      ],
+      [
+        "💡 SUMAR es juntar cantidades en un solo grupo.",
+        "El concepto clave"
+      ],
+      [
+        "456 + 278 = ?",
+        "Planteamos la operación"
+      ],
+      [
+        "DRAW:456+278",
+        "Míralo con dibujos"
+      ],
+      [
+        "  456\n+ 278\n─────\n    4",
+        "Se suman las unidades: 6 + 8 = 14; escribimos 4 y llevamos 1",
+        "sub"
+      ],
+      [
+        "  456\n+ 278\n─────\n   34",
+        "Luego las decenas: 5 + 7 + 1 que llevamos = 13; escribimos 3 y llevamos 1",
+        "sub"
+      ],
+      [
+        "  456\n+ 278\n─────\n  734",
+        "Luego las centenas: 4 + 2 + 1 que llevamos = 7",
+        "sub"
+      ],
+      [
+        "  456\n+ 278\n─────\n  734",
+        "El resultado es 734",
+        "sub"
+      ],
+      [
+        "✅ 456 + 278 = 734",
+        "¡Resultado!"
+      ],
+      [
+        "🎉 ¡Sumando, Sumy llenó su nave! Tú también puedes.",
+        "Lo lograste"
+      ]
+    ],
+    "_op": {
+      "a": 456,
+      "b": 278,
+      "op": "+",
+      "r": 734
+    }
+  },
+  {
+    "k": "sustraccion_basica",
+    "t": "Sustracción Básica · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Jack tenía 785 monedas estelares y usó 342 para reparar su nave.",
+        "Historia"
+      ],
+      [
+        "Datos: tenía 785 · gastó 342",
+        "Los datos del problema"
+      ],
+      [
+        "🤔 ¿Cuántas monedas le quedan?",
+        "Piensa antes de operar"
+      ],
+      [
+        "💡 RESTAR es quitar una cantidad de otra.",
+        "El concepto clave"
+      ],
+      [
+        "785 - 342 = ?",
+        "Planteamos la operación"
+      ],
+      [
+        "DRAW:785-342",
+        "Míralo con dibujos"
+      ],
+      [
+        "  785\n− 342\n─────\n    3",
+        "Se restan las unidades: 5 − 2 = 3",
+        "sub"
+      ],
+      [
+        "  785\n− 342\n─────\n   43",
+        "Luego las decenas: 8 − 4 = 4",
+        "sub"
+      ],
+      [
+        "  785\n− 342\n─────\n  443",
+        "Luego las centenas: 7 − 3 = 4",
+        "sub"
+      ],
+      [
+        "  785\n− 342\n─────\n  443",
+        "El resultado es 443",
+        "sub"
+      ],
+      [
+        "✅ 785 - 342 = 443",
+        "¡Resultado!"
+      ],
+      [
+        "🎉 ¡Jack administró bien sus monedas! Sigue así.",
+        "Lo lograste"
+      ]
+    ],
+    "_op": {
+      "a": 785,
+      "b": 342,
+      "op": "-",
+      "r": 443
+    }
+  },
+  {
+    "k": "sustraccion_prestamo",
+    "t": "Sustracción con Préstamo · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Jack tenía 632 monedas estelares y usó 158 para reparar su nave.",
+        "Historia"
+      ],
+      [
+        "Datos: tenía 632 · gastó 158",
+        "Los datos del problema"
+      ],
+      [
+        "🤔 ¿Cuántas monedas le quedan?",
+        "Piensa antes de operar"
+      ],
+      [
+        "💡 RESTAR es quitar una cantidad de otra.",
+        "El concepto clave"
+      ],
+      [
+        "632 - 158 = ?",
+        "Planteamos la operación"
+      ],
+      [
+        "DRAW:632-158",
+        "Míralo con dibujos"
+      ],
+      [
+        "  632\n− 158\n─────\n    4",
+        "Se restan las unidades: 2 no alcanza, pedimos prestado: 12 − 8 = 4",
+        "sub"
+      ],
+      [
+        "  632\n− 158\n─────\n   74",
+        "Luego las decenas: 2 no alcanza, pedimos prestado: 12 − 5 = 7",
+        "sub"
+      ],
+      [
+        "  632\n− 158\n─────\n  474",
+        "Luego las centenas: 5 − 1 = 4",
+        "sub"
+      ],
+      [
+        "  632\n− 158\n─────\n  474",
+        "El resultado es 474",
+        "sub"
+      ],
+      [
+        "✅ 632 - 158 = 474",
+        "¡Resultado!"
+      ],
+      [
+        "🎉 ¡Jack administró bien sus monedas! Sigue así.",
+        "Lo lograste"
+      ]
+    ],
+    "_op": {
+      "a": 632,
+      "b": 158,
+      "op": "-",
+      "r": 474
+    }
+  },
+  {
+    "k": "multi_1cifra",
+    "t": "Multiplicación por 1 cifra · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Leo organiza 5 cajas con 234 balones espaciales cada una.",
+        "Historia"
+      ],
+      [
+        "Datos: 5 cajas · 234 balones por caja",
+        "Los datos del problema"
+      ],
+      [
+        "🤔 ¿Cuántos balones hay en total?",
+        "Piensa antes de operar"
+      ],
+      [
+        "💡 MULTIPLICAR es sumar el mismo número varias veces.",
+        "El concepto clave"
+      ],
+      [
+        "234 × 5 = ?",
+        "Planteamos la operación"
+      ],
+      [
+        "DRAW:234×5",
+        "Míralo con dibujos"
+      ],
+      [
+        "   234\n×    5\n──────\n     0",
+        "Se multiplican las unidades: 4 × 5 = 20; escribimos 0 y llevamos 2"
+      ],
+      [
+        "   234\n×    5\n──────\n    70",
+        "Luego las decenas: 3 × 5 + 2 que llevamos = 17; escribimos 7 y llevamos 1"
+      ],
+      [
+        "   234\n×    5\n──────\n  1170",
+        "Luego las centenas: 2 × 5 + 1 que llevamos = 11"
+      ],
+      [
+        "   234\n×    5\n──────\n  1170",
+        "El resultado es 1.170"
+      ],
+      [
+        "✅ 234 × 5 = 1170",
+        "¡Resultado!"
+      ],
+      [
+        "🎉 ¡Leo contó todo en segundos gracias a la multiplicación!",
+        "Lo lograste"
+      ]
+    ],
+    "_op": {
+      "a": 234,
+      "b": 5,
+      "op": "×",
+      "r": 1170
+    }
+  },
+  {
+    "k": "multi_2cifras",
+    "t": "Multiplicación por 2 cifras · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Leo organiza 23 cajas con 45 balones espaciales cada una.",
+        "Historia"
+      ],
+      [
+        "Datos: 23 cajas · 45 balones por caja",
+        "Los datos del problema"
+      ],
+      [
+        "🤔 ¿Cuántos balones hay en total?",
+        "Piensa antes de operar"
+      ],
+      [
+        "💡 MULTIPLICAR es sumar el mismo número varias veces.",
+        "El concepto clave"
+      ],
+      [
+        "45 × 23 = ?",
+        "Planteamos la operación"
+      ],
+      [
+        "DRAW:45×23",
+        "Míralo con dibujos"
+      ],
+      [
+        "    45\n×   23\n──────\n   135",
+        "Multiplicamos 45 por 3 unidades: 135"
+      ],
+      [
+        "    45\n×   23\n──────\n   900",
+        "Multiplicamos 45 por 2 decenas: 900"
+      ],
+      [
+        "    45\n×   23\n──────\n  1035",
+        "Sumamos: 135 + 900 = 1.035. El resultado es 1.035"
+      ],
+      [
+        "✅ 45 × 23 = 1035",
+        "¡Resultado!"
+      ],
+      [
+        "🎉 ¡Leo contó todo en segundos gracias a la multiplicación!",
+        "Lo lograste"
+      ]
+    ],
+    "_op": {
+      "a": 45,
+      "b": 23,
+      "op": "×",
+      "r": 1035
+    }
+  },
+  {
+    "k": "division_exacta",
+    "t": "División Exacta · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Sora reparte 84 caramelos cósmicos entre 4 amigos por igual.",
+        "Historia"
+      ],
+      [
+        "Datos: 84 caramelos · 4 amigos",
+        "Los datos del problema"
+      ],
+      [
+        "🤔 ¿Cuántos caramelos recibe cada amigo?",
+        "Piensa antes de operar"
+      ],
+      [
+        "💡 DIVIDIR es repartir en partes iguales.",
+        "El concepto clave"
+      ],
+      [
+        "84 ÷ 4 = ?",
+        "Planteamos la operación"
+      ],
+      [
+        "DRAW:84÷4",
+        "Míralo con dibujos"
+      ],
+      [
+        " 84 ÷ 4\n = 2",
+        "¿Cuántas veces cabe 4 en 8? 2 veces: 2 × 4 = 8, sobra 0"
+      ],
+      [
+        " 84 ÷ 4\n = 21",
+        "¿Cuántas veces cabe 4 en 4? 1 vez: 1 × 4 = 4, sobra 0"
+      ],
+      [
+        " 84 ÷ 4\n = 21",
+        "El resultado es 21"
+      ],
+      [
+        "✅ 84 ÷ 4 = 21",
+        "¡Resultado!"
+      ],
+      [
+        "🎉 ¡Todos recibieron lo mismo! Así se comparte.",
+        "Lo lograste"
+      ]
+    ],
+    "_op": {
+      "a": 84,
+      "b": 4,
+      "op": "÷",
+      "r": 21
+    }
+  },
+  {
+    "k": "division_residuo",
+    "t": "División con Residuo · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Sora reparte 97 caramelos cósmicos entre 4 amigos por igual.",
+        "Historia"
+      ],
+      [
+        "Datos: 97 caramelos · 4 amigos",
+        "Los datos del problema"
+      ],
+      [
+        "🤔 ¿Cuántos caramelos recibe cada amigo?",
+        "Piensa antes de operar"
+      ],
+      [
+        "💡 DIVIDIR es repartir en partes iguales.",
+        "El concepto clave"
+      ],
+      [
+        "97 ÷ 4 = ?",
+        "Planteamos la operación"
+      ],
+      [
+        "DRAW:97÷4",
+        "Míralo con dibujos"
+      ],
+      [
+        " 97 ÷ 4\n = 2",
+        "¿Cuántas veces cabe 4 en 9? 2 veces: 2 × 4 = 8, sobra 1"
+      ],
+      [
+        " 97 ÷ 4\n = 24",
+        "¿Cuántas veces cabe 4 en 17? 4 veces: 4 × 4 = 16, sobra 1"
+      ],
+      [
+        " 97 ÷ 4\n = 24",
+        "El resultado es 24 y sobra 1"
+      ],
+      [
+        "✅ 97 ÷ 4 = 24",
+        "¡Resultado!"
+      ],
+      [
+        "🎉 ¡Todos recibieron lo mismo! Así se comparte.",
+        "Lo lograste"
+      ]
+    ],
+    "_op": {
+      "a": 97,
+      "b": 4,
+      "op": "÷",
+      "r": 24
+    }
+  },
+  {
+    "k": "divisores",
+    "t": "Divisores · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: Divisores",
+        "Atento a cada paso"
+      ],
+      [
+        "Ejemplo: divisores de 12",
+        "Números que dividen a 12"
+      ],
+      [
+        "12 ÷ 1 = 12",
+        "Probamos 12 entre 1: 12 ÷ 1 = 12, es exacta; 1 es divisor",
+        "sub"
+      ],
+      [
+        "12 ÷ 2 = 6",
+        "Probamos 12 entre 2: 12 ÷ 2 = 6, es exacta; 2 es divisor",
+        "sub"
+      ],
+      [
+        "12 ÷ 3 = 4",
+        "Probamos 12 entre 3: 12 ÷ 3 = 4, es exacta; 3 es divisor",
+        "sub"
+      ],
+      [
+        "12 ÷ 4 = 3",
+        "Probamos 12 entre 4: 12 ÷ 4 = 3, es exacta; 4 es divisor",
+        "sub"
+      ],
+      [
+        "12 ÷ 5 = 2 y sobra 2",
+        "Probamos 12 entre 5: sobra 2; 5 no es divisor",
+        "sub"
+      ],
+      [
+        "12 ÷ 6 = 2",
+        "Probamos 12 entre 6: 12 ÷ 6 = 2, es exacta; 6 es divisor",
+        "sub"
+      ],
+      [
+        "12 ÷ 12 = 1",
+        "Probamos 12 entre 12: 12 ÷ 12 = 1, es exacta; 12 es divisor",
+        "sub"
+      ],
+      [
+        "✅ 12 = {1, 2, 3, 4, 6, 12}",
+        "Los divisores de 12 son 1, 2, 3, 4, 6 y 12",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "primos",
+    "t": "Números Primos · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: Números Primos",
+        "Atento a cada paso"
+      ],
+      [
+        "Un número PRIMO tiene solo 2 divisores",
+        "1 y él mismo"
+      ],
+      [
+        "2 = {1, 2}",
+        "2 solo se divide entre 1 y 2: es primo",
+        "sub"
+      ],
+      [
+        "3 = {1, 3}",
+        "3 solo se divide entre 1 y 3: es primo",
+        "sub"
+      ],
+      [
+        "5 = {1, 5}",
+        "5 solo se divide entre 1 y 5: es primo",
+        "sub"
+      ],
+      [
+        "7 = {1, 7}",
+        "7 solo se divide entre 1 y 7: es primo",
+        "sub"
+      ],
+      [
+        "11 = {1, 11}",
+        "11 solo se divide entre 1 y 11: es primo",
+        "sub"
+      ],
+      [
+        "4 = {1, 2, 4}",
+        "4 se divide entre 1, 2 y 4: tiene más de dos divisores, es compuesto",
+        "sub"
+      ],
+      [
+        "✅ 2, 3, 5, 7, 11, 13…",
+        "Los primeros números primos son 2, 3, 5, 7, 11 y 13",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "mcd",
+    "t": "MCD · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: MCD",
+        "Atento a cada paso"
+      ],
+      [
+        "Ejemplo: MCD(12, 18)",
+        "Máximo Común Divisor"
+      ],
+      [
+        "Div. de 12: 1, 2, 3, 4, 6, 12",
+        "Escribimos los divisores de 12: 1, 2, 3, 4, 6 y 12",
+        "sub"
+      ],
+      [
+        "Div. de 18: 1, 2, 3, 6, 9, 18",
+        "Luego los divisores de 18: 1, 2, 3, 6, 9 y 18",
+        "sub"
+      ],
+      [
+        "Comunes: 1, 2, 3, 6",
+        "Los divisores comunes son 1, 2, 3 y 6",
+        "sub"
+      ],
+      [
+        "✅ MCD(12, 18) = 6",
+        "El mayor de los comunes es 6: el MCD es 6",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "mcm",
+    "t": "MCM · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: MCM",
+        "Atento a cada paso"
+      ],
+      [
+        "Ejemplo: MCM(4, 6)",
+        "Mínimo Común Múltiplo"
+      ],
+      [
+        "Múlt. de 4: 4, 8, 12, 16, 20, 24",
+        "Escribimos los múltiplos de 4: 4, 8, 12, 16, 20 y 24",
+        "sub"
+      ],
+      [
+        "Múlt. de 6: 6, 12, 18, 24",
+        "Luego los múltiplos de 6: 6, 12, 18 y 24",
+        "sub"
+      ],
+      [
+        "Comunes: 12, 24",
+        "Los múltiplos comunes son 12 y 24",
+        "sub"
+      ],
+      [
+        "✅ MCM(4, 6) = 12",
+        "El menor de los comunes es 12: el MCM es 12",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "frac_simpl",
+    "t": "Simplificar Fracciones · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: Simplificar Fracciones",
+        "Atento a cada paso"
+      ],
+      [
+        "Ejemplo: 8/12",
+        "Simplificar"
+      ],
+      [
+        "MCD(8, 12) = 4",
+        "Buscamos el MCD de 8 y 12: es 4",
+        "sub"
+      ],
+      [
+        "8 ÷ 4 = 2",
+        "Dividimos el numerador: 8 ÷ 4 = 2",
+        "sub"
+      ],
+      [
+        "12 ÷ 4 = 3",
+        "Dividimos el denominador: 12 ÷ 4 = 3",
+        "sub"
+      ],
+      [
+        "✅ 8/12 = 2/3",
+        "El resultado es 2/3",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "frac_homog",
+    "t": "Fracciones Homogéneas · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: Fracciones Homogéneas",
+        "Atento a cada paso"
+      ],
+      [
+        "Ejemplo: 3/7 + 2/7",
+        "Mismo denominador"
+      ],
+      [
+        "3 + 2 = 5",
+        "Como el denominador es el mismo, sumamos los numeradores: 3 + 2 = 5",
+        "sub"
+      ],
+      [
+        "denominador: 7",
+        "El denominador se queda igual: 7",
+        "sub"
+      ],
+      [
+        "✅ 3/7 + 2/7 = 5/7",
+        "El resultado es 5/7",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "frac_heter",
+    "t": "Fracciones Heterogéneas · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: Fracciones Heterogéneas",
+        "Atento a cada paso"
+      ],
+      [
+        "Ejemplo: 1/2 + 1/3",
+        "Distinto denominador"
+      ],
+      [
+        "MCM(2, 3) = 6",
+        "Buscamos el MCM de los denominadores 2 y 3: es 6",
+        "sub"
+      ],
+      [
+        "1/2 = 3/6",
+        "Convertimos 1/2: 6 ÷ 2 = 3, entonces 1/2 = 3/6",
+        "sub"
+      ],
+      [
+        "1/3 = 2/6",
+        "Convertimos 1/3: 6 ÷ 3 = 2, entonces 1/3 = 2/6",
+        "sub"
+      ],
+      [
+        "3/6 + 2/6 = 5/6",
+        "Sumamos los numeradores: 3 + 2 = 5",
+        "sub"
+      ],
+      [
+        "✅ 1/2 + 1/3 = 5/6",
+        "El resultado es 5/6",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "frac_multi",
+    "t": "Multiplicación de Fracciones · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: Multiplicación de Fracciones",
+        "Atento a cada paso"
+      ],
+      [
+        "Ejemplo: 2/3 × 4/5",
+        "Multiplicación"
+      ],
+      [
+        "2 × 4 = 8",
+        "Multiplicamos los numeradores: 2 × 4 = 8",
+        "sub"
+      ],
+      [
+        "3 × 5 = 15",
+        "Multiplicamos los denominadores: 3 × 5 = 15",
+        "sub"
+      ],
+      [
+        "✅ 2/3 × 4/5 = 8/15",
+        "El resultado es 8/15",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "frac_div",
+    "t": "División de Fracciones · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: División de Fracciones",
+        "Atento a cada paso"
+      ],
+      [
+        "Ejemplo: 2/3 ÷ 4/5",
+        "División"
+      ],
+      [
+        "4/5 → 5/4",
+        "Invertimos la segunda fracción: 4/5 se vuelve 5/4",
+        "sub"
+      ],
+      [
+        "2/3 × 5/4",
+        "Ahora multiplicamos: 2/3 × 5/4",
+        "sub"
+      ],
+      [
+        "2 × 5 = 10 · 3 × 4 = 12",
+        "Numeradores: 2 × 5 = 10; denominadores: 3 × 4 = 12",
+        "sub"
+      ],
+      [
+        "10/12 = 5/6",
+        "Simplificamos 10/12 dividiendo entre 2: 5/6",
+        "sub"
+      ],
+      [
+        "✅ 2/3 ÷ 4/5 = 5/6",
+        "El resultado es 5/6",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "sistema_metrico",
+    "t": "Sistema Métrico · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: Sistema Métrico",
+        "Atento a cada paso"
+      ],
+      [
+        "km, hm, dam, m, dm, cm, mm",
+        "Escala"
+      ],
+      [
+        "m → cm: 2 escalones",
+        "De metros a centímetros bajamos 2 escalones: multiplicamos por 100",
+        "sub"
+      ],
+      [
+        "5 × 100 = 500 cm",
+        "5 × 100 = 500: 5 m son 500 cm",
+        "sub"
+      ],
+      [
+        "m → mm: 3 escalones",
+        "De metros a milímetros bajamos 3 escalones: multiplicamos por 1.000",
+        "sub"
+      ],
+      [
+        "5 × 1.000 = 5.000 mm",
+        "5 × 1.000 = 5.000: 5 m son 5.000 mm",
+        "sub"
+      ],
+      [
+        "✅ 5 m = 500 cm = 5.000 mm",
+        "El resultado es 5 m = 500 cm = 5.000 mm",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "perimetro",
+    "t": "Perímetro · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: Perímetro",
+        "Atento a cada paso"
+      ],
+      [
+        "Perímetro = suma de lados",
+        "Definición"
+      ],
+      [
+        "5 + 5 + 5 + 5 = 20",
+        "Cuadrado de lado 5 m: sumamos los 4 lados: 5 + 5 + 5 + 5 = 20",
+        "sub"
+      ],
+      [
+        "✅ P = 20 m",
+        "El perímetro del cuadrado es 20 m",
+        "sub"
+      ],
+      [
+        "6 + 4 + 6 + 4 = 20",
+        "Rectángulo de 6 m por 4 m: sumamos los lados: 6 + 4 + 6 + 4 = 20",
+        "sub"
+      ],
+      [
+        "✅ P = 20 m",
+        "El perímetro del rectángulo es 20 m",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "area",
+    "t": "Área de Figuras · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: Área de Figuras",
+        "Atento a cada paso"
+      ],
+      [
+        "Área = base × altura",
+        "Rectángulo"
+      ],
+      [
+        "8 × 5 = 40",
+        "Rectángulo de 8 m por 5 m: multiplicamos base por altura: 8 × 5 = 40",
+        "sub"
+      ],
+      [
+        "✅ A = 40 m²",
+        "El área es 40 m²",
+        "sub"
+      ],
+      [
+        "6 × 6 = 36",
+        "Cuadrado de lado 6 m: multiplicamos lado por lado: 6 × 6 = 36",
+        "sub"
+      ],
+      [
+        "✅ A = 36 m²",
+        "El área es 36 m²",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "volumen",
+    "t": "Volumen · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: Volumen",
+        "Atento a cada paso"
+      ],
+      [
+        "Volumen = L × A × H",
+        "Prisma"
+      ],
+      [
+        "4 × 3 = 12",
+        "Prisma de 4 por 3 por 2 metros: primero 4 × 3 = 12",
+        "sub"
+      ],
+      [
+        "12 × 2 = 24",
+        "Luego 12 × 2 = 24",
+        "sub"
+      ],
+      [
+        "✅ V = 24 m³",
+        "El volumen es 24 m³",
+        "sub"
+      ],
+      [
+        "3 × 3 × 3 = 27",
+        "Cubo de lado 3 m: 3 × 3 = 9 y 9 × 3 = 27",
+        "sub"
+      ],
+      [
+        "✅ V = 27 m³",
+        "El volumen del cubo es 27 m³",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "potencias",
+    "t": "Potencias · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: Potencias",
+        "Atento a cada paso"
+      ],
+      [
+        "Potencia: base^exponente",
+        "Definición"
+      ],
+      [
+        "2³ = 2 × 2 × 2",
+        "La base 2 se multiplica 3 veces: 2 × 2 × 2",
+        "sub"
+      ],
+      [
+        "2 × 2 = 4",
+        "Primero: 2 × 2 = 4",
+        "sub"
+      ],
+      [
+        "4 × 2 = 8",
+        "Luego: 4 × 2 = 8",
+        "sub"
+      ],
+      [
+        "✅ 2³ = 8",
+        "El resultado es 8",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "raiz_cuadrada",
+    "t": "Raíz Cuadrada · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: Raíz Cuadrada",
+        "Atento a cada paso"
+      ],
+      [
+        "√25 = ?",
+        "Raíz cuadrada"
+      ],
+      [
+        "5 × 5 = 25",
+        "Buscamos un número que multiplicado por sí mismo dé 25: 5 × 5 = 25",
+        "sub"
+      ],
+      [
+        "✅ √25 = 5",
+        "La raíz cuadrada de 25 es 5",
+        "sub"
+      ],
+      [
+        "9 × 9 = 81",
+        "Para 81: 9 × 9 = 81",
+        "sub"
+      ],
+      [
+        "✅ √81 = 9",
+        "La raíz cuadrada de 81 es 9",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "estadistica",
+    "t": "Estadística · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: Estadística",
+        "Atento a cada paso"
+      ],
+      [
+        "Datos: 3, 5, 3, 7, 5, 3",
+        "Ejemplo"
+      ],
+      [
+        "3 → 3 veces · 5 → 2 veces · 7 → 1 vez",
+        "Contamos: el 3 aparece 3 veces, el 5 aparece 2 veces y el 7 aparece 1 vez",
+        "sub"
+      ],
+      [
+        "✅ Moda = 3",
+        "El que más se repite es el 3: la moda es 3",
+        "sub"
+      ],
+      [
+        "3 + 5 + 3 + 7 + 5 + 3 = 26",
+        "Para la media sumamos los datos: 3 + 5 + 3 + 7 + 5 + 3 = 26",
+        "sub"
+      ],
+      [
+        "26 ÷ 6 ≈ 4,3",
+        "Dividimos entre la cantidad de datos, 6: 26 ÷ 6 es aproximadamente 4,3",
+        "sub"
+      ],
+      [
+        "✅ Media ≈ 4,3",
+        "La media es aproximadamente 4,3",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  },
+  {
+    "k": "probabilidad",
+    "t": "Probabilidad · 5°",
+    "frames": [
+      [
+        "🧑‍🚀 Fedor te explica: Probabilidad",
+        "Atento a cada paso"
+      ],
+      [
+        "P = favorables/posibles",
+        "Fórmula"
+      ],
+      [
+        "Posibles: 1, 2, 3, 4, 5, 6",
+        "El dado tiene 6 resultados posibles",
+        "sub"
+      ],
+      [
+        "Sacar un 3: 1 favorable",
+        "Para sacar un 3 hay 1 caso favorable",
+        "sub"
+      ],
+      [
+        "✅ P(3) = 1/6",
+        "La probabilidad es 1 de 6: 1/6",
+        "sub"
+      ],
+      [
+        "Par: 2, 4, 6 → 3 favorables",
+        "Para sacar un número par hay 3 casos favorables: 2, 4 y 6",
+        "sub"
+      ],
+      [
+        "✅ P(par) = 3/6 = 1/2",
+        "La probabilidad es 3/6, que simplificado es 1/2",
+        "sub"
+      ],
+      [
+        "🎉 ¡Ahora practícalo en los ejercicios!",
+        "Tú puedes"
+      ]
+    ]
+  }
+]
