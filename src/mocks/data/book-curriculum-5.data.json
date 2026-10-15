@@ -1595,7 +1595,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Los <em>números naturales</em> sirven para contar: N = {0, 1, 2, 3, 4, ...}. El valor de cada cifra depende de la <em>posición</em>: unidades (U), decenas (D), centenas (C), unidades de mil (UM), decenas de mil (DM), centenas de mil (CM).",
+          "formula": "CM · DM · UM · C · D · U"
         },
         {
           "id": "01a_adicion_t1",
@@ -3078,7 +3080,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Suma cada columna por separado: ninguna pasa de 9, así que no hay que llevar.",
+          "formula": "unidades + unidades · decenas + decenas · centenas + centenas"
         },
         {
           "id": "01a_adicion_t2",
@@ -4561,7 +4565,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Cuando una columna pasa de 9, se escribe la unidad y se lleva una decena a la columna siguiente.",
+          "formula": "si la columna > 9 → escribo las unidades y llevo 1"
         },
         {
           "id": "01a_adicion_t3",
@@ -6066,7 +6072,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "En la <em>adición</em>, los números que se suman se llaman <em>sumandos</em> y el resultado <em>suma</em> o <em>total</em>. Para sumar, organiza los números por columnas: <em>unidades con unidades</em>, decenas con decenas, etc.",
+          "formula": "<em>sumando</em> + <em>sumando</em> = <em>suma</em>"
         },
         {
           "id": "01a_adicion_t4",
@@ -7549,7 +7557,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Lee el problema, identifica las cantidades y súmalas representándolas en el Ábaco Fedor.",
+          "formula": "cantidad 1 + cantidad 2 = total"
         }
       ]
     },
@@ -9076,7 +9086,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "La <em>sustracción</em> o resta es hallar la <em>diferencia</em> entre dos cantidades. <em>Minuendo</em> (lo que tengo) − <em>Sustraendo</em> (lo que quito) = <em>Diferencia</em>.",
+          "formula": "<em>Minuendo</em> − <em>Sustraendo</em> = <em>Diferencia</em>"
         },
         {
           "id": "01b_sustraccion_t1",
@@ -10659,7 +10671,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Cuando el número de arriba es menor, pide prestado 10 a la columna izquierda.",
+          "formula": "a - b, pidiendo prestado"
         },
         {
           "id": "01b_sustraccion_t2",
@@ -12242,7 +12256,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Identifica qué debes restar y traduce a operación.",
+          "formula": "total − parte = resto"
         }
       ]
     },
@@ -13812,7 +13828,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "<em>Multiplicar</em> es sumar un mismo número varias veces. <em>5 × 3 = 5 + 5 + 5 = 15</em>. Las partes: <em>multiplicando × multiplicador = producto</em>. Signos usados: ·, ×, *.",
+          "formula": "<em>multiplicando</em> × <em>multiplicador</em> = <em>producto</em>"
         },
         {
           "id": "01c_multiplicacion_t1",
@@ -15500,7 +15518,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Memoriza las tablas. Truco: la tabla del 9 suma cifras = 9.",
+          "formula": "tabla × k"
         },
         {
           "id": "01c_multiplicacion_t2",
@@ -17188,7 +17208,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Multiplica cada dígito por separado, luego suma con desplazamientos.",
+          "formula": "ab × cd"
         }
       ]
     },
@@ -18757,7 +18779,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "<em>Dividir</em> es repartir en partes iguales. <em>Dividendo</em> ÷ <em>Divisor</em> = <em>Cociente</em>. Si sobra, eso es el <em>Residuo</em>. Si el residuo es 0, la división es <em>exacta</em>.",
+          "formula": "<em>Dividendo</em> ÷ <em>Divisor</em> = <em>Cociente</em>  (residuo: r)"
         },
         {
           "id": "01d_division_t1",
@@ -20324,7 +20348,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Es cuando el resto es 0. El dividendo es múltiplo del divisor.",
+          "formula": "a ÷ b = c, r=0"
         },
         {
           "id": "01d_division_t2",
@@ -21907,7 +21933,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Verifica: dividendo = cociente × divisor + residuo.",
+          "formula": "a = c×b + r"
         }
       ]
     },
@@ -23434,7 +23462,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Para resolver un <em>problema</em>: 1) Lee atentamente. 2) Identifica qué te preguntan. 3) Reconoce los datos. 4) Elige la operación: <em>suma</em>, <em>resta</em>, <em>multiplicación</em> o <em>división</em>. 5) Verifica.",
+          "formula": "Lee → Piensa → Calcula → Verifica"
         },
         {
           "id": "01e_problemas_t1",
@@ -25017,7 +25047,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Aplica operaciones básicas para calcular.",
+          "formula": "Varias fórmulas"
         },
         {
           "id": "01e_problemas_t2",
@@ -26600,7 +26632,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Traduce la situación real a operaciones matemáticas.",
+          "formula": "Lee → identifica → calcula"
         }
       ]
     },
@@ -28186,7 +28220,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Un <em>divisor</em> divide a otro número de forma exacta. Los divisores de 12 son: 1, 2, 3, 4, 6 y 12.",
+          "formula": "Divisor: divide exactamente"
         },
         {
           "id": "02_divisores_t1",
@@ -29591,7 +29627,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Un <em>primo</em> tiene 2 divisores. Un <em>compuesto</em> tiene 3 o más.",
+          "formula": "Primo: 2 divisores · Compuesto: 3+"
         },
         {
           "id": "02_divisores_t2",
@@ -31104,7 +31142,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Los <em>múltiplos</em> son el resultado de multiplicar por 1, 2, 3...",
+          "formula": "Múltiplo(n,k) = n × k"
         }
       ]
     },
@@ -32637,7 +32677,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "El <em>MCD</em> es el mayor número que divide a otros. MCD(12,18)=6.",
+          "formula": "MCD(a,b)=mayor divisor común"
         },
         {
           "id": "03_mcd_mcm_t1",
@@ -34150,7 +34192,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "El <em>MCM</em> es el menor múltiplo común. MCM(4,6)=12.",
+          "formula": "MCM(a,b)=menor múltiplo común"
         },
         {
           "id": "03_mcd_mcm_t2",
@@ -35691,7 +35735,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Problemas contextualizados del método Fedor · Excel Parte 2. Personajes: Leo, Apolo, Sora, Lucas, Jack, Roxy.",
+          "formula": "Problemas del Excel · P2"
         }
       ]
     },
@@ -37264,7 +37310,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Para <em>simplificar</em> divide numerador y denominador entre su MCD.",
+          "formula": "a/b → (a÷MCD)/(b÷MCD)"
         },
         {
           "id": "04_fracciones_t1",
@@ -38963,7 +39011,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Mismo denominador: suma o resta solo numeradores.",
+          "formula": "a/n ± b/n = (a±b)/n"
         },
         {
           "id": "04_fracciones_t2",
@@ -40664,7 +40714,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Distinto denominador: usa MCM como común denominador.",
+          "formula": "Usa MCM"
         },
         {
           "id": "04_fracciones_t3",
@@ -42333,7 +42385,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "× : num×num, den×den. ÷ : multiplica por el inverso.",
+          "formula": "a/b × c/d = ac/bd"
         }
       ]
     },
@@ -44012,7 +44066,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Fracciones representan partes de un todo.",
+          "formula": "Todo − parte usada = parte restante"
         },
         {
           "id": "05_aplic_fracciones_t1",
@@ -45595,7 +45651,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "MCM: coincidencias. MCD: grupos iguales.",
+          "formula": "MCM → coincidencias · MCD → grupos"
         },
         {
           "id": "05_aplic_fracciones_t2",
@@ -46912,7 +46970,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Problemas contextualizados del método Fedor · Excel Parte 2. Personajes: Leo, Apolo, Sora, Lucas, Jack, Roxy.",
+          "formula": "Problemas del Excel · P2"
         }
       ]
     },
@@ -48409,7 +48469,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Potencia a^n = a × a × ... × a (n veces).",
+          "formula": "a^n = producto de a n veces"
         },
         {
           "id": "06_potenciacion_t1",
@@ -49936,7 +49998,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "a^m × a^n = a^(m+n) · √(n²) = n.",
+          "formula": "√(n²) = n"
         }
       ]
     },
@@ -50735,7 +50799,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "La <em>radicación</em> de índice <em>n</em> de un número <em>a</em> es un número <em>b</em> tal que bⁿ = a. En ⁿ√a = b, <em>a</em> es el radicando, <em>n</em> el índice (2 si no se escribe) y <em>b</em> la raíz. Para hallar la raíz cuadrada se busca un número que multiplicado por sí mismo dé el radicando: √9 = 3 porque 3 × 3 = 9.",
+          "formula": "ⁿ√a = b ⟺ bⁿ = a · √25 = 5 · √144 = 12",
+          "std": null
         },
         {
           "id": "rad_t1",
@@ -51520,7 +51587,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "La raíz de un <em>producto</em> es el producto de las raíces: √(a × b) = √a × √b. La raíz de un <em>cociente</em> es el cociente de las raíces: √(a ÷ b) = √a ÷ √b. ¡Cuidado!: la raíz <em>no</em> se reparte en una suma ni en una resta: √(9 + 16) = 5, pero √9 + √16 = 7.",
+          "formula": "√(a·b) = √a·√b · √(a÷b) = √a÷√b · √(a+b) ≠ √a+√b",
+          "std": null
         },
         {
           "id": "rad_t2",
@@ -52339,7 +52409,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "En un triángulo rectángulo, los <em>catetos</em> son los lados que forman el ángulo recto y la <em>hipotenusa</em> es el lado más largo, frente al ángulo recto. El cuadrado de la hipotenusa es igual a la suma de los cuadrados de los catetos: h² = a² + b². Por eso h = √(a² + b²).",
+          "formula": "h² = a² + b² · 3² + 4² = 25 → h = 5",
+          "std": null
         },
         {
           "id": "rad_t3",
@@ -53122,7 +53195,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "El área de un cuadrado es lado × lado (una potencia: A = L²); por eso el lado es la raíz cuadrada del área: L = √A. El perímetro es 4 veces el lado. Con la raíz también se cuentan las filas de una cuadrícula de baldosas cuadradas.",
+          "formula": "A = L² · L = √A · P = 4 × L",
+          "std": null
         }
       ]
     },
@@ -54820,7 +54896,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Bajar de mayor a menor: multiplica por 10. Subir: divide por 10.",
+          "formula": "× 10 al bajar · ÷ 10 al subir"
         },
         {
           "id": "07_sistema_metrico_t1",
@@ -56393,7 +56471,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Área rectángulo = base × altura.",
+          "formula": "A = b × h"
         },
         {
           "id": "07_sistema_metrico_t2",
@@ -57966,7 +58046,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Volumen prisma = largo × ancho × alto.",
+          "formula": "V = L × A × H"
         },
         {
           "id": "07_sistema_metrico_t3",
@@ -59549,7 +59631,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "El perímetro es la suma de todos los lados.",
+          "formula": "Cuadrado: 4L"
         }
       ]
     },
@@ -60390,7 +60474,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Un <em>número decimal</em> tiene una parte entera y una parte decimal separadas por una coma. Es otra forma de escribir una fracción: para pasar de fracción a decimal se divide el numerador entre el denominador (3/4 = 3 ÷ 4 = 0,75). Si el numerador es mayor que el denominador (fracción impropia), el decimal es mayor que 1.",
+          "formula": "a/b = a ÷ b · 3/4 = 0,75 · 3/2 = 1,5",
+          "std": null
         },
         {
           "id": "ndec_t1",
@@ -61203,7 +61290,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Una misma cantidad se puede escribir como <em>fracción</em>, como <em>decimal</em> y como <em>porcentaje</em>: 1/2 = 0,5 = 50 %. Del porcentaje al decimal se divide entre 100; del decimal al porcentaje se multiplica por 100.",
+          "formula": "1/2 = 0,5 = 50 % · 1/4 = 0,25 = 25 % · 1/8 = 0,125 = 12,5 %",
+          "std": null
         },
         {
           "id": "ndec_t2",
@@ -62058,7 +62148,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Un decimal <em>exacto</em> tiene un número limitado de cifras (0,25). Uno <em>periódico</em> tiene infinitas cifras que se repiten: <em>puro</em> si el período empieza justo después de la coma (0,333… ; 3,2525…) y <em>mixto</em> si antes hay cifras que no se repiten, el anteperíodo (7/15 = 0,4666…). Un decimal <em>no periódico</em> tiene infinitas cifras sin patrón, como π = 3,141592653589…",
+          "formula": "exacto: 0,25 · puro: 0,333… · mixto: 0,4666… · no periódico: π",
+          "std": null
         },
         {
           "id": "ndec_t3",
@@ -62841,7 +62934,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Para sumar o restar decimales se completan con ceros las cifras que faltan, se alinean las comas y se opera cifra con cifra: 5,33 + 1,3 → 5,33 + 1,30 = 6,63. La coma queda en la misma columna.",
+          "formula": "5,33 + 1,30 = 6,63 · 17,02 − 15,85 = 1,17",
+          "std": null
         },
         {
           "id": "ndec_t4",
@@ -63624,7 +63720,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Al multiplicar se opera sin comas y se separan, de derecha a izquierda, tantas cifras como decimales tienen los dos factores juntos: 7,25 × 3,59 → 4 decimales → 26,0275. Al dividir se igualan las cifras decimales y se quitan las comas: 5 ÷ 0,1 = 50 ÷ 1 = 50. Por 10, 100 o 1000 la coma se corre a la derecha (÷: a la izquierda).",
+          "formula": "7,25 × 3,59 = 26,0275 · 5 ÷ 0,1 = 50 · 0,358 × 10 = 3,58",
+          "std": null
         }
       ]
     },
@@ -64489,7 +64588,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Una <em>razón</em> compara dos cantidades con un cociente a/b. Una <em>proporción</em> es la igualdad de dos razones: a/b = c/d. Se cumple cuando el producto de los extremos es igual al de los medios (a·d = b·c).",
+          "formula": "a/b = c/d ⟺ a × d = b × c",
+          "std": null
         },
         {
           "id": "prop_t1",
@@ -65272,7 +65374,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "La <em>regla de tres simple directa</em> se usa cuando dos magnitudes son directamente proporcionales: si una aumenta, la otra también. Se plantea a → b; c → x y se multiplica en cruz.",
+          "formula": "x = (b × c) ÷ a",
+          "std": null
         },
         {
           "id": "prop_t2",
@@ -66055,7 +66160,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Las proporciones aparecen al <em>escalar recetas</em>, leer <em>mapas y planos</em>, preparar <em>mezclas</em> y completar <em>tablas de proporcionalidad</em>: en todos los casos las razones se mantienen iguales.",
+          "formula": "Cantidad nueva = cantidad inicial × (nueva base ÷ base inicial)",
+          "std": null
         }
       ]
     },
@@ -66876,7 +66984,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "En una <em>igualdad</em> los dos lados valen lo mismo, como los dos platos de una balanza en equilibrio. Una <em>ecuación</em> es una igualdad con un valor desconocido, la <em>incógnita</em> (x). Si quitas o agregas lo mismo en los dos platos, la balanza sigue en equilibrio.",
+          "formula": "5 = 4 + 1 · x + 3 = 10 → x = 7",
+          "std": null
         },
         {
           "id": "ecu_t1",
@@ -67655,7 +67766,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Para hallar x en <em>x + a = b</em> se resta a en los dos lados: x = b − a. En <em>x − a = b</em> se suma a: x = b + a. Conclusión de la hoja: lo que está positivo en un lado pasa al otro con signo contrario. Si hay varios números, primero se juntan.",
+          "formula": "x + a = b → x = b − a · x − a = b → x = b + a",
+          "std": null
         },
         {
           "id": "ecu_t2",
@@ -68440,7 +68554,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Cuando un número multiplica a x (el <em>coeficiente</em>), se divide entre él en los dos lados: 5x = 20 → x = 20 ÷ 5 = 4. Si además hay sumas o restas, primero se pasan al otro lado y después se divide: 4x + 9 = 29 → 4x = 20 → x = 5.",
+          "formula": "ax = b → x = b ÷ a · 4x + 9 = 29 → x = 5",
+          "std": null
         },
         {
           "id": "ecu_t3",
@@ -69265,7 +69382,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Si x está multiplicada por una fracción a/b, se multiplican los dos lados por la fracción inversa b/a: (a/b)x = c/d → x = (b × c) ÷ (a × d). Lo que multiplica en el numerador pasa al otro lado a dividir, y lo que multiplica en el denominador pasa a multiplicar.",
+          "formula": "(a/b)x = c/d → x = bc/(ad) · (3/5)x = 90 → x = 150",
+          "std": null
         },
         {
           "id": "ecu_t4",
@@ -70072,7 +70192,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Para resolver un problema con una ecuación: 1) llama <em>x</em> al valor que no conoces; 2) escribe la ecuación con la historia (juntar → +, quitar → −, partes iguales → ×); 3) resuélvela; 4) responde con una frase.",
+          "formula": "x = lo que buscas · x + a = b, x − a = b, ax = b",
+          "std": null
         }
       ]
     },
@@ -70913,7 +71036,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "El <em>porcentaje</em> (%) es una razón con denominador 100: «25 %» quiere decir 25 de cada 100. Se puede escribir como fracción (25/100 = 1/4) y como decimal (0,25).",
+          "formula": "p % = p/100 = p ÷ 100",
+          "std": null
         },
         {
           "id": "pct_t1",
@@ -71696,7 +71822,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Para hallar el <em>p %</em> de una cantidad <em>N</em>, multiplica p × N y divide el resultado entre 100. Al revés: si conoces la parte, divide entre p para hallar el 1 % y multiplica por 100.",
+          "formula": "p % de N = (p × N) ÷ 100",
+          "std": null
         },
         {
           "id": "pct_t2",
@@ -72479,7 +72608,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "En un problema, identifica cuál es el <em>total</em> (el 100 %) y cuál es la <em>parte</em>. Un descuento se <em>resta</em>; un aumento, un interés o el IVA se <em>suman</em> al valor inicial.",
+          "formula": "Precio final = precio ± (p % del precio)",
+          "std": null
         }
       ]
     },
@@ -74158,7 +74290,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Cada nivel trabaja un tema: primero los ángulos, luego los polígonos regulares y después los movimientos en el plano: simetría, traslación y rotación.",
+          "formula": "complementarios 90° · suplementarios 180° · interiores (n − 2) × 180 · central 360 ÷ n · vuelta completa 360°"
         },
         {
           "id": "12_geometria_estadistica_t1",
@@ -75741,7 +75875,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Perímetro=suma de lados. Área=superficie.",
+          "formula": "A cuadrado = L² · A rectángulo = w×h"
         },
         {
           "id": "12_geometria_estadistica_t2",
@@ -77284,7 +77420,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Cubo V = L³. Prisma V = L×A×H.",
+          "formula": "Cubo: L³"
         },
         {
           "id": "12_geometria_estadistica_t3",
@@ -78825,7 +78963,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Problemas contextualizados del método Fedor · Excel Parte 2. Personajes: Leo, Apolo, Sora, Lucas, Jack, Roxy.",
+          "formula": "Problemas del Excel · P2"
         },
         {
           "id": "12_geometria_estadistica_t4",
@@ -80663,7 +80803,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Organiza los datos en una tabla de frecuencias y léelos en la gráfica: la frecuencia absoluta cuenta, la relativa compara con el total y el porcentaje lo expresa de 100.",
+          "formula": "frecuencia relativa = frecuencia absoluta ÷ total · porcentaje = frecuencia relativa × 100"
         },
         {
           "id": "12_geometria_estadistica_t5",
@@ -82501,7 +82643,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Moda: valor más repetido. Media: suma÷cantidad.",
+          "formula": "Media = Suma/Cantidad"
         }
       ]
     },
@@ -83320,7 +83464,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Una <em>magnitud</em> es cualquier propiedad que se puede medir numéricamente (distancia, precio, tiempo…). Dos magnitudes son <em>directamente proporcionales</em> cuando al aumentar una, la otra aumenta en la misma proporción: si compras el doble, pagas el doble. El cociente valor ÷ cantidad es siempre el mismo.",
+          "formula": "valor ÷ cantidad = constante · 1 → $100, 2 → $200, 3 → $300",
+          "std": null
         },
         {
           "id": "mag_t1",
@@ -84129,7 +84276,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Dos magnitudes son <em>inversamente proporcionales</em> cuando al aumentar una, la otra disminuye en la misma proporción: si se duplica el número de personas, a cada una le toca la mitad. El producto cantidad × valor es siempre el mismo (el total repartido).",
+          "formula": "cantidad × valor = constante · 12 monedas: 1×12 = 2×6 = 3×4 = 12",
+          "std": null
         },
         {
           "id": "mag_t2",
@@ -84988,7 +85138,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "<em>Directa:</em> a más cantidad, más resultado (el cociente es constante). <em>Inversa:</em> a más cantidad, menos resultado (el producto es constante). Hay magnitudes que no son proporcionales: ni el cociente ni el producto se mantienen.",
+          "formula": "directa: y ÷ x constante · inversa: x × y constante",
+          "std": null
         },
         {
           "id": "mag_t3",
@@ -85771,7 +85924,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "La regla de tres simple inversa se usa cuando dos magnitudes son inversamente proporcionales. Se organizan los datos, <em>se invierte una razón</em> y se aplica «producto de extremos = producto de medios». En la práctica: x = (a × b) ÷ c. Si 4 obreros hacen una obra en 12 días, 6 obreros tardan (4 × 12) ÷ 6 = 8 días.",
+          "formula": "a → b y c → x  →  x = (a × b) ÷ c",
+          "std": null
         },
         {
           "id": "mag_t4",
@@ -86554,7 +86710,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "En cada problema pregúntate: ¿al aumentar una cantidad la otra aumenta (directa) o disminuye (inversa)? Si es directa, se usa el valor de uno o una regla de tres directa; si es inversa, el total se mantiene y se reparte.",
+          "formula": "directa: x = (b × c) ÷ a · inversa: x = (a × b) ÷ c",
+          "std": null
         }
       ]
     },
@@ -88385,7 +88544,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Probabilidad = casos favorables ÷ casos posibles.",
+          "formula": "P(A) = favorables/posibles"
         },
         {
           "id": "14_probabilidad_t1",
@@ -89975,7 +90136,9 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Problemas contextualizados del método Fedor · Excel Parte 2. Personajes: Leo, Apolo, Sora, Lucas, Jack, Roxy.",
+          "formula": "Problemas del Excel · P2"
         }
       ]
     },
@@ -90828,7 +90991,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Una <em>fracción decimal</em> tiene denominador 10, 100, 1000… y se escribe con coma: 3/10 = 0,3 · 17/100 = 0,17 · 352/1000 = 0,352. Se lee con la cantidad y la unidad: «diecisiete centésimas». Cada cifra vale según su posición: décimas, centésimas, milésimas.",
+          "formula": "1 décima = 1/10 = 0,1 · 1 centésima = 1/100 = 0,01 · 1 milésima = 1/1000 = 0,001",
+          "std": null
         },
         {
           "id": "sdec_t1",
@@ -91659,7 +91825,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Entre dos enteros consecutivos hay 10 décimas; cada décima se puede dividir en 10 centésimas. Para leer un punto, mira cuánto vale cada marca y cuenta cuántas hay desde el número de la izquierda.",
+          "formula": "valor del punto = número de la izquierda + (marcas contadas × valor de cada marca)",
+          "std": null
         },
         {
           "id": "sdec_t2",
@@ -92442,7 +92611,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Para sumar o restar decimales se alinean las comas y se completa con ceros: 12 + 3,8 → 12,0 + 3,8 = 15,8. Se opera cifra con cifra y la coma queda en la misma columna.",
+          "formula": "12,0 + 3,8 = 15,8 · 81,00 − 5,24 = 75,76",
+          "std": null
         },
         {
           "id": "sdec_t3",
@@ -93225,7 +93397,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Para multiplicar, opera como si no hubiera coma y separa, de derecha a izquierda, tantas cifras como decimales tiene el factor: 7 × 3,07 → 7 × 307 = 2149 → 21,49. Para dividir entre un decimal, multiplica dividendo y divisor por 10, 100… hasta que el divisor sea entero: 100 ÷ 0,25 = 10 000 ÷ 25 = 400.",
+          "formula": "7 × 3,07 = 21,49 · 100 ÷ 0,25 = 400",
+          "std": null
         },
         {
           "id": "sdec_t4",
@@ -94008,7 +94183,10 @@
                 }
               ]
             }
-          ]
+          ],
+          "teach": "Para aproximar a dos cifras decimales, mira la tercera: si es 5 o más, la segunda sube 1; si es menor que 5, se queda igual; luego se elimina la última cifra. La <em>frecuencia relativa</em> es hi = fi ÷ N, donde fi es cuántas veces se repite un dato y N es el total.",
+          "formula": "hi = fi ÷ N · 3,478 ≈ 3,48 · 2,994 ≈ 2,99",
+          "std": null
         }
       ]
     }

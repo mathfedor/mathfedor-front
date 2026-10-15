@@ -110,6 +110,9 @@ export interface Topic {
   desc: string;
   levels: Level[];
   levelDescs?: string[];
+  teach?: string;
+  formula?: string;
+  std?: string;
 }
 
 /** Unidad de aprendizaje del libro. */
