@@ -6,6 +6,7 @@ import {
   isModuleInFreeTrial,
   isPurchaseExpired,
   getPurchaseExpirationDate,
+  FREE_TRIAL_END_DATE,
   type ModuleAccessInfo,
   type ModuleAccessType,
 } from '@/constants/module-access.constants';
@@ -80,7 +81,13 @@ export function ModuleAccessProvider({ children }: { children: ReactNode }) {
             'libro-3ro', 'matematicas-fedor-3',
             'libro-4to', 'matematicas-fedor-4',
             'libro-5to', 'matematicas-fedor-5'
-          ].includes(module.slug))
+          ].includes(module.slug)) ||
+          [
+            '6830d368fecd7406dc6f9525', '6830d619fecd7406dc6f96ad',
+            '6832543f6fee7c84b2f077c0', '6832543f6fee7c84b2f077c1',
+            '694c7c4322a78467aa1783b6', '6832543f6fee7c84b2f077c2',
+            '694c7c4322a78467aa1783b7'
+          ].includes(moduleId)
         ) {
           // Sin compra, pero módulo de Grado 1, 2, 3, 4 o 5 en periodo de trial hasta el 31/Oct/2026
           accessType = 'free_trial';
@@ -131,11 +138,16 @@ export function ModuleAccessProvider({ children }: { children: ReactNode }) {
 
   const hasExerciseAccess = useCallback((moduleId: string) => {
     const norm = (moduleId || '').toLowerCase().trim();
+    const isTrialActive = new Date() <= FREE_TRIAL_END_DATE;
     if (
-      norm === '1' || norm === '2' || norm === '3' ||
-      norm === 'libro-1ro' || norm === 'libro-2do' || norm === 'libro-3ro' ||
-      norm === 'matematicas-fedor-1' || norm === 'matematicas-fedor-2' || norm === 'matematicas-fedor-3' ||
-      norm === '6830d368fecd7406dc6f9525' || norm === '6830d619fecd7406dc6f96ad' || norm === '6832543f6fee7c84b2f077c0'
+      isTrialActive && (
+        norm === '1' || norm === '2' || norm === '3' || norm === '4' || norm === '5' ||
+        norm === 'libro-1ro' || norm === 'libro-2do' || norm === 'libro-3ro' || norm === 'libro-4to' || norm === 'libro-5to' ||
+        norm === 'matematicas-fedor-1' || norm === 'matematicas-fedor-2' || norm === 'matematicas-fedor-3' || norm === 'matematicas-fedor-4' || norm === 'matematicas-fedor-5' ||
+        norm === '6830d368fecd7406dc6f9525' || norm === '6830d619fecd7406dc6f96ad' || norm === '6832543f6fee7c84b2f077c0' ||
+        norm === '6832543f6fee7c84b2f077c1' || norm === '694c7c4322a78467aa1783b6' ||
+        norm === '6832543f6fee7c84b2f077c2' || norm === '694c7c4322a78467aa1783b7'
+      )
     ) {
       return true;
     }

@@ -185,8 +185,22 @@ export default function MisModulosPage() {
 }
 
 function ModuleCard({ module, t }: { module: StudentModuleAccess; t: ReturnType<typeof useTranslations> }) {
+  const isFreeTrialModule =
+    isModuleInFreeTrial(module.group) ||
+    [
+      'libro-1ro', 'matematicas-fedor-1',
+      'libro-2do', 'matematicas-fedor-2',
+      'libro-3ro', 'matematicas-fedor-3',
+      'libro-4to', 'matematicas-fedor-4',
+      'libro-5to', 'matematicas-fedor-5'
+    ].includes((module as any).slug || '') ||
+    [
+      '6830d368fecd7406dc6f9525', '6830d619fecd7406dc6f96ad',
+      '6832543f6fee7c84b2f077c0', '6832543f6fee7c84b2f077c1',
+      '694c7c4322a78467aa1783b6', '6832543f6fee7c84b2f077c2',
+      '694c7c4322a78467aa1783b7'
+    ].includes(module.module_id);
   const isInstitution = module.source === 'institution';
-  const isFreeTrialModule = isModuleInFreeTrial(module.group);
   const expired = module.purchaseDate ? isPurchaseExpired(module.purchaseDate) : false;
   const expirationDate = module.purchaseDate
     ? getPurchaseExpirationDate(module.purchaseDate)

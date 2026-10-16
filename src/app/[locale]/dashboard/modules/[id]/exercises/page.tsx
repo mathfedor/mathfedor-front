@@ -15,6 +15,7 @@ import { User } from '@/types/auth.types';
 import { AlertDialog } from '@/components/ui/alert-dialog';
 import { Module, moduleService } from '@/services/module.service';
 import { useModuleAccess } from '@/contexts/ModuleAccessContext';
+import { FREE_TRIAL_END_DATE } from '@/constants/module-access.constants';
 import { LearningResult, learningResultsService } from '@/services/learning-results.service';
 import { LearningComment, LearningReply, learningCommentsService } from '@/services/learning-comments.service';
 import BookExperience from '@/components/book/BookExperience';
@@ -626,12 +627,16 @@ export default function ModuleExercisesPage({ params }: { params: Promise<{ id: 
           throw new Error('No se encontró información del usuario');
         }
 
-        // Grados 1, 2, 3 y 4 siempre tienen acceso garantizado a ejercicios (Free Trial)
+        // Grados 1, 2, 3, 4 y 5 siempre tienen acceso garantizado a ejercicios (Free Trial)
+        const isTrialActive = new Date() <= FREE_TRIAL_END_DATE;
         const isGradeBook =
-          moduleMatchesGrade(null, resolvedParams.id, 1) ||
-          moduleMatchesGrade(null, resolvedParams.id, 2) ||
-          moduleMatchesGrade(null, resolvedParams.id, 3) ||
-          moduleMatchesGrade(null, resolvedParams.id, 4);
+          isTrialActive && (
+            moduleMatchesGrade(null, resolvedParams.id, 1) ||
+            moduleMatchesGrade(null, resolvedParams.id, 2) ||
+            moduleMatchesGrade(null, resolvedParams.id, 3) ||
+            moduleMatchesGrade(null, resolvedParams.id, 4) ||
+            moduleMatchesGrade(null, resolvedParams.id, 5)
+          );
 
         if (!isGradeBook) {
           if (isLoadingAccess) {

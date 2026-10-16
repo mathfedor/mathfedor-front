@@ -53,6 +53,22 @@ function getLandingGradeConfig(pathname: string | null): LandingGradeConfig {
     };
   }
 
+  if (path.includes('/landing/cuarto') || path.includes('/cuarto')) {
+    return {
+      gradeName: '4° Primaria',
+      message: 'Hola, tengo una pregunta sobre el Módulo de 4° Primaria',
+      tooltipText: '¿Dudas de 4° Primaria? Escríbenos',
+    };
+  }
+
+  if (path.includes('/landing/quinto') || path.includes('/quinto')) {
+    return {
+      gradeName: '5° Primaria',
+      message: 'Hola, tengo una pregunta sobre el Módulo de 5° Primaria',
+      tooltipText: '¿Dudas de 5° Primaria? Escríbenos',
+    };
+  }
+
   // Predeterminado: Landing principal (Grado 11 - ICFES Saber 11°)
   return {
     gradeName: 'Grado 11',

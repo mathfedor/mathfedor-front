@@ -81,6 +81,14 @@ function GraciasContent() {
     resolvedProductName = 'Módulo Matemáticas Grado 3° Primaria';
     resolvedProductId = 'modulo-grado-3';
     resolvedSubheading = 'Has dado el paso más importante para que tu hijo(a) domine las tablas de multiplicar, la división y se prepare para las <strong>Pruebas SABER 3°</strong>.';
+  } else if (gradeParam === '4' || transactionRef.includes('FEDOR-G4-')) {
+    resolvedProductName = 'Módulo Matemáticas Grado 4° Primaria';
+    resolvedProductId = 'modulo-grado-4';
+    resolvedSubheading = 'Has dado el paso más importante para que tu hijo(a) domine las fracciones, los números decimales y la división en <strong>4° de primaria</strong>.';
+  } else if (gradeParam === '5' || transactionRef.includes('FEDOR-G5-')) {
+    resolvedProductName = 'Módulo Matemáticas Grado 5° Primaria';
+    resolvedProductId = 'modulo-grado-5';
+    resolvedSubheading = 'Has dado el paso más importante para que tu hijo(a) domine las operaciones combinadas, fracciones heterogéneas, teoría de números y se prepare con éxito para el <strong>bachillerato</strong>.';
   }
 
   useEffect(() => {
