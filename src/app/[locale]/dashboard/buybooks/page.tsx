@@ -9,6 +9,8 @@ import { authService } from '@/services/auth.service';
 import { trackMetaAddToCart } from '@/lib/analytics/meta';
 import { trackTikTokAddToCart } from '@/lib/analytics/tiktok';
 import { trackGTMAddToCart } from '@/lib/analytics/google';
+import PlanSelectModal from '@/components/pricing/PlanSelectModal';
+import { Plan } from '@/types/plan.types';
 
 const moduleBooksImages: Record<string, { src: string; alt: string }> = {
     Grado1: { src: '/fedor-modulo-1-libros.png', alt: 'Libros del módulo 1' },
@@ -32,6 +34,10 @@ export default function BuyBooksPage() {
     const [isBenefitsModalOpen, setIsBenefitsModalOpen] = useState(false);
     const [, setSelectedModule] = useState<Module | null>(null);
     const [isFichaModalOpen, setIsFichaModalOpen] = useState(false);
+
+    // Modal de selección de planes
+    const [selectedModuleForPlan, setSelectedModuleForPlan] = useState<Module | null>(null);
+    const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
 
     useEffect(() => {
         if (!authService.isAuthenticated()) {
@@ -62,55 +68,64 @@ export default function BuyBooksPage() {
         fetchModules();
     }, [router]);
 
-    const handleModuleClick = (moduleId: string) => {
-        const selected = modules.find((m) => m._id === moduleId);
-        if (selected) {
-            const price = selected.price || 0;
-            trackMetaAddToCart({
-                content_ids: [selected._id],
-                content_type: 'product',
-                value: price,
-                currency: 'COP',
-            });
-            trackTikTokAddToCart({
-                contents: [
-                    {
-                        content_id: selected._id,
-                        content_name: selected.title,
-                        content_type: 'product',
-                        price: price,
-                        quantity: 1,
-                    },
-                ],
-                value: price,
-                currency: 'COP',
-            });
-            trackGTMAddToCart({
-                currency: 'COP',
-                value: price,
-                items: [
-                    {
-                        item_id: selected._id,
-                        item_name: selected.title,
-                        item_category: selected.group || 'Modulo',
-                        price: price,
-                        quantity: 1,
-                    },
-                ],
-            });
+    const handleOpenPlanModal = (event: MouseEvent | undefined, mod: Module) => {
+        if (event) {
+            event.stopPropagation();
         }
-        router.push(`/dashboard/buybooks/${moduleId}`);
+        setSelectedModuleForPlan(mod);
+        setIsPlanModalOpen(true);
     };
 
-    const openBenefitsModal = (event: MouseEvent, module: Module) => {
+    const handleConfirmPlan = (plan: Plan, quantity: number, finalPrice: number) => {
+        if (!selectedModuleForPlan) return;
+        const moduleId = selectedModuleForPlan._id;
+
+        trackMetaAddToCart({
+            content_ids: [moduleId],
+            content_type: 'product',
+            value: finalPrice,
+            currency: 'COP',
+        });
+        trackTikTokAddToCart({
+            contents: [
+                {
+                    content_id: moduleId,
+                    content_name: `${selectedModuleForPlan.title} (${plan.name})`,
+                    content_type: 'product',
+                    price: finalPrice,
+                    quantity: quantity,
+                },
+            ],
+            value: finalPrice,
+            currency: 'COP',
+        });
+        trackGTMAddToCart({
+            currency: 'COP',
+            value: finalPrice,
+            items: [
+                {
+                    item_id: moduleId,
+                    item_name: `${selectedModuleForPlan.title} (${plan.name})`,
+                    item_category: selectedModuleForPlan.group || 'Modulo',
+                    price: finalPrice,
+                    quantity: quantity,
+                },
+            ],
+        });
+
+        setIsPlanModalOpen(false);
+        router.push(`/dashboard/buybooks/${moduleId}?plan=${plan.slug}&qty=${quantity}`);
+    };
+
+    const openBenefitsModal = (event: MouseEvent, mod: Module) => {
         event.stopPropagation();
-        setSelectedModule(module);
+        setSelectedModule(mod);
         setIsBenefitsModalOpen(true);
     };
 
-    const openFichaModal = (event: MouseEvent, module: Module) => {
+    const openFichaModal = (event: MouseEvent, mod: Module) => {
         event.stopPropagation();
-        setSelectedModule(module);
+        setSelectedModule(mod);
         setIsFichaModalOpen(true);
     };
 
@@ -140,16 +155,38 @@ export default function BuyBooksPage() {
                     <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">
                         {t('title')}
                     </h2>
-                    <p className="text-center text-gray-600 mb-12 text-lg">
+                    <p className="text-center text-gray-600 mb-8 text-lg">
                         {t('subtitle')}
                     </p>
+
+                    {/* Banner Destacado Planes Familiares */}
+                    <div className="mb-12 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-orange-500/15 flex flex-col md:flex-row items-center justify-between gap-6 border border-orange-400/30">
+                        <div className="space-y-2 text-center md:text-left">
+                            <span className="inline-block px-3 py-0.5 rounded-full text-xs font-black bg-white/20 backdrop-blur-sm uppercase tracking-wider">
+                                💡 Ahorro Familiar
+                            </span>
+                            <h3 className="text-xl sm:text-2xl font-black">
+                                ¿Tienes 2 o más hijos o prefieres pagos mensuales?
+                            </h3>
+                            <p className="text-orange-100 text-xs sm:text-sm max-w-2xl leading-relaxed">
+                                Conoce el Plan Familiar Anual: 2do hijo a solo <strong>$120.000</strong> y a partir del 3ero a <strong>$80.000 c/u</strong>. O suscríbete mensual desde $24.999/mes.
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => router.push('/planes')}
+                            className="px-6 py-3.5 bg-white text-orange-600 hover:bg-orange-50 font-black rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 whitespace-nowrap text-sm cursor-pointer"
+                        >
+                            Ver Todos los Planes →
+                        </button>
+                    </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {modules.map((module) => (
                             <div
                                 key={module._id}
                                 className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl border border-gray-100"
-                                onClick={() => handleModuleClick(module._id)}
+                                onClick={(e) => handleOpenPlanModal(e, module)}
                             >
                                 <div className="bg-gradient-to-br from-orange-50 to-white p-5">
                                     <div className="mb-4 rounded-2xl bg-white/90 px-4 py-3 text-center shadow-sm border border-orange-100/80 backdrop-blur-sm">
@@ -180,7 +217,7 @@ export default function BuyBooksPage() {
                                                 type="button"
                                                 onClick={(event) => {
                                                     event.stopPropagation();
-                                                    handleModuleClick(module._id);
+                                                    router.push(`/modulos/${module._id}`);
                                                 }}
                                                 className="group flex w-full items-center justify-between rounded-2xl border border-orange-100 bg-white px-4 py-4 text-left shadow-sm transition hover:border-orange-300 hover:shadow-md"
                                             >
@@ -261,32 +298,27 @@ export default function BuyBooksPage() {
                                             />
                                         </div>
                                     )}
-                                    <div className="flex justify-between items-center">
+                                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 border-t border-gray-100">
                                         <div>
-                                            {new Date() < new Date('2026-05-31') ? (
-                                                <div className="flex flex-col">
-                                                    <span className="text-sm text-gray-500 line-through">
-                                                        ${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                                                    </span>
-                                                    <span className="text-3xl font-bold text-orange-500">
-                                                        ${((module.price || 0) * 0.5).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                                                    </span>
-                                                </div>
-                                            ) : (
-                                                <span className="text-3xl font-bold text-orange-500">
-                                                    ${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                                                </span>
-                                            )}
-                                            <span className="text-gray-500 text-sm ml-2">COP</span>
+                                            <div className="text-xs text-gray-400 font-medium line-through">
+                                                Precio regular: ${(module.price || 203000).toLocaleString('es-CO')} COP
+                                            </div>
+                                            <div className="flex items-baseline gap-1 mt-0.5">
+                                                <span className="text-xs font-semibold text-emerald-600">Con Plan Anual:</span>
+                                                <span className="text-2xl font-black text-gray-900">$179.999</span>
+                                                <span className="text-xs text-gray-500 font-medium">COP / año</span>
+                                            </div>
+                                            <p className="text-[11px] text-emerald-600 font-medium">
+                                                ⚡ Equivale a solo $15.000 / mes (o mensual desde $24.999)
+                                            </p>
                                         </div>
                                         <button
-                                            onClick={(event) => {
-                                                event.stopPropagation();
-                                                handleModuleClick(module._id);
-                                            }}
-                                            className="bg-orange-500 text-white py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors font-semibold"
+                                            type="button"
+                                            onClick={(event) => handleOpenPlanModal(event, module)}
+                                            className="inline-flex items-center justify-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white py-3 px-5 rounded-xl font-bold transition-colors shadow-md shadow-orange-500/20 text-sm cursor-pointer whitespace-nowrap"
                                         >
-                                            {t('buy_now')}
+                                            <span>Elegir Plan</span>
+                                            <span>→</span>
                                         </button>
                                     </div>
                                 </div>
@@ -295,6 +327,19 @@ export default function BuyBooksPage() {
                     </div>
                 </div>
             </section>
+
+            {/* Modal de Selección de Plan */}
+            {selectedModuleForPlan && (
+                <PlanSelectModal
+                    isOpen={isPlanModalOpen}
+                    onClose={() => {
+                        setIsPlanModalOpen(false);
+                        setSelectedModuleForPlan(null);
+                    }}
+                    module={selectedModuleForPlan}
+                    onConfirmPlan={handleConfirmPlan}
+                />
+            )}
 
             {isBenefitsModalOpen && (
                 <div

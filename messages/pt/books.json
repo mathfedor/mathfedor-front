@@ -92,6 +92,17 @@
   "whatsapp_floating": {
     "aria_label": "Falar pelo WhatsApp"
   },
+  "institutions": {
+    "badge": "Colégios e Instituições de Ensino",
+    "title": "Você é diretor, coordenador ou professor?",
+    "desc": "Transforme o rendimento matemático da sua escola com o Método Fedor. Acesse licenças institucionais por volume, painel de métricas para professores, suporte pedagógico e todos os módulos interativos do 1º ao 11º ano sem restrições.",
+    "feature_licenses": "Licenças em massa para alunos",
+    "feature_dashboard": "Painel de acompanhamento e notas",
+    "feature_training": "Capacitação para professores",
+    "feature_simulations": "Simulados e avaliações padronizadas",
+    "cta_quote": "Solicitar Cotação Institucional",
+    "cta_plan": "Conhecer Plano Institucional"
+  },
   "loading": "Carregando módulos...",
   "error_loading": "Erro ao carregar os módulos"
 }

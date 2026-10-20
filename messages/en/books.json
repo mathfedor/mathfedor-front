@@ -92,6 +92,17 @@
   "whatsapp_floating": {
     "aria_label": "Contact via WhatsApp"
   },
+  "institutions": {
+    "badge": "Schools and Educational Institutions",
+    "title": "Are you a principal, coordinator, or teacher?",
+    "desc": "Transform your school's math performance with the Fedor Method. Access volume institutional licenses, an analytics and metrics dashboard for teachers, pedagogical support, and all interactive modules from 1st to 11th grade without restrictions.",
+    "feature_licenses": "Bulk student licenses",
+    "feature_dashboard": "Progress and grades tracking dashboard",
+    "feature_training": "Teacher training & onboarding",
+    "feature_simulations": "Standardized test simulations",
+    "cta_quote": "Request Quote for my School",
+    "cta_plan": "Explore Institutional Plan"
+  },
   "loading": "Loading modules...",
   "error_loading": "Error loading modules"
 }

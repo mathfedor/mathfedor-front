@@ -4,7 +4,7 @@ import React from 'react';
 import { usePathname, useRouter } from '@/i18n/routing';
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
-import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart, FiTag, FiHelpCircle, FiLayers, FiTarget } from 'react-icons/fi';
+import { FiHome, FiBook, FiUsers, FiPlusCircle, FiFileText, FiChevronDown, FiChevronRight, FiUser, FiSun, FiMoon, FiGlobe, FiBarChart, FiMonitor, FiPackage, FiCode, FiShoppingCart, FiTag, FiHelpCircle, FiLayers, FiTarget, FiCreditCard } from 'react-icons/fi';
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import { Tooltip } from '@/components/ui/tooltip';
 import { authService } from '@/services/auth.service';
@@ -82,6 +82,7 @@ const getRoleMenuItems = (t: (key: string) => string): Record<string, MenuItem[]
     { icon: <FiUsers className="w-5 h-5" />, title: t('users'), href: '/dashboard/users' },
     { icon: <FiBarChart className="w-5 h-5" />, title: t('results'), href: '/dashboard/results' },
     { icon: <FiTag className="w-5 h-5" />, title: t('coupons'), href: '/dashboard/coupons' },
+    { icon: <FiCreditCard className="w-5 h-5" />, title: t('payment_plans'), href: '/dashboard/plans' },
     { icon: <FiFileText className="w-5 h-5" />, title: t('legal_docs'), href: '/dashboard/legal' }
   ]
 });

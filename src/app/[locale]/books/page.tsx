@@ -399,9 +399,31 @@ export default function BooksPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">
               {t('catalog.title')}
             </h2>
-            <p className="text-center text-gray-600 mb-12 text-lg">
+            <p className="text-center text-gray-600 mb-8 text-lg">
               {t('catalog.subtitle')}
             </p>
+
+            {/* Banner Destacado Planes Familiares */}
+            <div className="mb-12 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-orange-500/15 flex flex-col md:flex-row items-center justify-between gap-6 border border-orange-400/30">
+              <div className="space-y-2 text-center md:text-left">
+                <span className="inline-block px-3 py-0.5 rounded-full text-xs font-black bg-white/20 backdrop-blur-sm uppercase tracking-wider">
+                  💡 Ahorro Familiar
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black">
+                  ¿Tienes 2 o más hijos o prefieres pagos mensuales?
+                </h3>
+                <p className="text-orange-100 text-xs sm:text-sm max-w-2xl leading-relaxed">
+                  Conoce el Plan Familiar Anual: 2do hijo a solo <strong>$120.000</strong> y a partir del 3ero a <strong>$80.000 c/u</strong>. O suscríbete mensual desde $24.999.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => router.push('/planes')}
+                className="px-6 py-3.5 bg-white text-orange-600 hover:bg-orange-50 font-black rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 whitespace-nowrap text-sm cursor-pointer"
+              >
+                Ver Todos los Planes →
+              </button>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {modules.map((module) => (
@@ -540,37 +562,92 @@ export default function BooksPage() {
                         />
                       </div>
                     )}
-                    <div className="flex justify-between items-center">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 border-t border-gray-100">
                       <div>
-                        {new Date() < new Date('2026-05-31') ? (
-                          <div className="flex flex-col">
-                            <span className="text-sm text-gray-500 line-through">
-                              ${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                            </span>
-                            <span className="text-3xl font-bold text-orange-500">
-                              ${((module.price || 0) * 0.5).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                            </span>
-                          </div>
-                        ) : (
-                          <span className="text-3xl font-bold text-orange-500">
-                            ${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                          </span>
-                        )}
-                        <span className="text-gray-500 text-sm ml-2">COP</span>
+                        <div className="text-xs text-gray-400 font-medium line-through">
+                          Precio regular: ${(module.price || 203000).toLocaleString('es-CO')} COP
+                        </div>
+                        <div className="flex items-baseline gap-1 mt-0.5">
+                          <span className="text-xs font-semibold text-emerald-600">Con Plan Anual:</span>
+                          <span className="text-2xl font-black text-gray-900">$179.999</span>
+                          <span className="text-xs text-gray-500 font-medium">COP / año</span>
+                        </div>
+                        <p className="text-[11px] text-emerald-600 font-medium">
+                          ⚡ Equivale a solo $15.000 / mes
+                        </p>
                       </div>
                       <button
                         onClick={(event) => {
                           event.stopPropagation();
                           handleModuleClick(module._id);
                         }}
-                        className="bg-orange-500 text-white py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors font-semibold"
+                        className="inline-flex items-center justify-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white py-3 px-5 rounded-xl font-bold transition-colors shadow-md shadow-orange-500/20 text-sm cursor-pointer whitespace-nowrap"
                       >
-                        {t('catalog.buy_now')}
+                        <span>Ver Contenido y Comprar</span>
+                        <span>→</span>
                       </button>
                     </div>
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Sección para Rectores, Coordinadores y Docentes */}
+        <section className="py-16 bg-slate-900 text-white relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/30 via-slate-900 to-orange-950/20 pointer-events-none" />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-3xl p-8 sm:p-12 border border-slate-700/80 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-8 backdrop-blur-sm">
+              <div className="space-y-4 text-center lg:text-left max-w-3xl">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-orange-500/20 text-orange-400 border border-orange-500/30">
+                  <span>🏫</span>
+                  <span>{t('institutions.badge')}</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
+                  {t('institutions.title')}
+                </h2>
+                <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
+                  {t('institutions.desc')}
+                </p>
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2 text-xs font-semibold text-slate-300">
+                  <span className="flex items-center gap-1.5 bg-slate-800/70 px-3 py-1.5 rounded-lg border border-slate-700/60">
+                    <span className="text-emerald-400 font-bold">✓</span> {t('institutions.feature_licenses')}
+                  </span>
+                  <span className="flex items-center gap-1.5 bg-slate-800/70 px-3 py-1.5 rounded-lg border border-slate-700/60">
+                    <span className="text-emerald-400 font-bold">✓</span> {t('institutions.feature_dashboard')}
+                  </span>
+                  <span className="flex items-center gap-1.5 bg-slate-800/70 px-3 py-1.5 rounded-lg border border-slate-700/60">
+                    <span className="text-emerald-400 font-bold">✓</span> {t('institutions.feature_training')}
+                  </span>
+                  <span className="flex items-center gap-1.5 bg-slate-800/70 px-3 py-1.5 rounded-lg border border-slate-700/60">
+                    <span className="text-emerald-400 font-bold">✓</span> {t('institutions.feature_simulations')}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full lg:w-auto shrink-0 justify-center">
+                <a
+                  href="https://wa.me/573107199897?text=Hola,%20soy%20rector/coordinador/docente%20y%20quisiera%20solicitar%20una%20cotizaci%C3%B3n%20institucional%20para%20mi%20colegio"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => {
+                    trackMetaContact({ content_name: 'Cotización Institucional (Libros)' });
+                    trackTikTokContact({ description: 'Cotización Institucional (Libros)' });
+                    trackGTMGenerateLead({ method: 'WhatsApp Institucional', value: 0, currency: 'COP' });
+                  }}
+                  className="px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-extrabold rounded-xl shadow-lg shadow-orange-500/25 transition-all transform hover:-translate-y-0.5 text-center text-sm sm:text-base whitespace-nowrap cursor-pointer"
+                >
+                  {t('institutions.cta_quote')} →
+                </a>
+                <button
+                  type="button"
+                  onClick={() => router.push('/planes')}
+                  className="px-8 py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 font-bold rounded-xl transition-all text-center text-xs sm:text-sm whitespace-nowrap cursor-pointer"
+                >
+                  {t('institutions.cta_plan')}
+                </button>
+              </div>
             </div>
           </div>
         </section>

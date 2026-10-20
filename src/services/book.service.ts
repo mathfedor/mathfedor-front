@@ -71,6 +71,19 @@ interface RawUnit {
   topics?: RawTopic[];
 }
 
+interface RawCurriculum {
+  UNITS?: RawUnit[];
+  AVATAR_UNLOCKS?: any[];
+  ALL_BADGES?: any[];
+  RANKS?: any[];
+  SHOP_ITEMS?: any[];
+}
+
+const cur1 = bookCurriculum1 as unknown as RawCurriculum;
+const cur3 = bookCurriculum3 as unknown as RawCurriculum;
+const cur4 = bookCurriculum4 as unknown as RawCurriculum;
+const cur5 = bookCurriculum5 as unknown as RawCurriculum;
+
 function mapExercise(raw: RawExercise, id: string): Exercise {
   const base = {
     id,
@@ -146,7 +159,7 @@ const mockBook1: Book = {
   title: 'Matemáticas de Fedor 1°',
   grade: '1° de Primaria',
   standard: 'Pensamiento Numérico · MEN Colombia',
-  units: ((bookCurriculum1.UNITS || []) as unknown as RawUnit[]).map((u, i) => mapUnit(u, i)),
+  units: ((cur1.UNITS || []) as unknown as RawUnit[]).map((u, i) => mapUnit(u, i)),
 };
 
 const mockBook3: Book = {
@@ -155,14 +168,14 @@ const mockBook3: Book = {
   title: 'Matemáticas de Fedor 3°',
   grade: '3° de Primaria',
   standard: 'Pensamiento Numérico · MEN Colombia',
-  units: ((bookCurriculum3.UNITS || []) as unknown as RawUnit[]).map((u, i) => mapUnit(u, i)),
+  units: ((cur3.UNITS || []) as unknown as RawUnit[]).map((u, i) => mapUnit(u, i)),
 };
 
 const mockGamificationCatalog3: GamificationCatalog = {
-  avatars: (bookCurriculum3.AVATAR_UNLOCKS || []) as any[],
-  badges: (bookCurriculum3.ALL_BADGES || []) as any[],
-  ranks: (bookCurriculum3.RANKS || []) as any[],
-  shopItems: (bookCurriculum3.SHOP_ITEMS || []) as any[],
+  avatars: (cur3.AVATAR_UNLOCKS || []) as any[],
+  badges: (cur3.ALL_BADGES || []) as any[],
+  ranks: (cur3.RANKS || []) as any[],
+  shopItems: (cur3.SHOP_ITEMS || []) as any[],
 };
 
 const mockBook4: Book = {
@@ -171,14 +184,14 @@ const mockBook4: Book = {
   title: 'Matemáticas de Fedor 4°',
   grade: '4° de Primaria',
   standard: 'Pensamiento Numérico · MEN Colombia',
-  units: ((bookCurriculum4.UNITS || []) as unknown as RawUnit[]).map((u, i) => mapUnit(u, i)),
+  units: ((cur4.UNITS || []) as unknown as RawUnit[]).map((u, i) => mapUnit(u, i)),
 };
 
 const mockGamificationCatalog4: GamificationCatalog = {
-  avatars: (bookCurriculum4.AVATAR_UNLOCKS || []) as any[],
-  badges: (bookCurriculum4.ALL_BADGES || []) as any[],
-  ranks: (bookCurriculum4.RANKS || []) as any[],
-  shopItems: (bookCurriculum4.SHOP_ITEMS || []) as any[],
+  avatars: (cur4.AVATAR_UNLOCKS || []) as any[],
+  badges: (cur4.ALL_BADGES || []) as any[],
+  ranks: (cur4.RANKS || []) as any[],
+  shopItems: (cur4.SHOP_ITEMS || []) as any[],
 };
 
 const mockBook5: Book = {
@@ -187,13 +200,13 @@ const mockBook5: Book = {
   title: 'Matemáticas de Fedor 5°',
   grade: '5° de Primaria',
   standard: 'Pensamiento Numérico · MEN Colombia',
-  units: ((bookCurriculum5.UNITS || []) as unknown as RawUnit[]).map((u, i) => mapUnit(u, i)),
+  units: ((cur5.UNITS || []) as unknown as RawUnit[]).map((u, i) => mapUnit(u, i)),
 };
 
 const mockGamificationCatalog5: GamificationCatalog = {
-  avatars: (bookCurriculum5.AVATAR_UNLOCKS || []) as any[],
-  badges: (bookCurriculum5.ALL_BADGES || []) as any[],
-  ranks: (bookCurriculum5.RANKS || []) as any[],
+  avatars: (cur5.AVATAR_UNLOCKS || []) as any[],
+  badges: (cur5.ALL_BADGES || []) as any[],
+  ranks: (cur5.RANKS || []) as any[],
   shopItems: [],
 };
 
@@ -234,7 +247,7 @@ export function resolvePhysicalLevelKey(levelKey: string, slug: string, book?: B
   if (isBook1) {
     const topicId =
       book?.units[uIdx]?.topics[tIdx]?.id ||
-      (bookCurriculum1.UNITS[uIdx]?.topics[tIdx] as { id?: string } | undefined)?.id;
+      (cur1.UNITS?.[uIdx]?.topics?.[tIdx] as { id?: string } | undefined)?.id;
     if (topicId) {
       return `${topicId}-n${lNum}`;
     }
@@ -242,7 +255,7 @@ export function resolvePhysicalLevelKey(levelKey: string, slug: string, book?: B
   } else if (isBook5) {
     const topicId =
       book?.units[uIdx]?.topics[tIdx]?.id ||
-      (bookCurriculum5.UNITS[uIdx]?.topics[tIdx] as { id?: string } | undefined)?.id;
+      (cur5.UNITS?.[uIdx]?.topics?.[tIdx] as { id?: string } | undefined)?.id;
     if (topicId) {
       return `${topicId}-n${lNum}`;
     }

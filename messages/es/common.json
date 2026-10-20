@@ -2,6 +2,7 @@
   "nav": {
     "home": "Inicio",
     "modules": "Módulos",
+    "plans": "Planes",
     "station": "Estación Fedor",
     "login": "Iniciar Sesión",
     "logout": "Cerrar Sesión",

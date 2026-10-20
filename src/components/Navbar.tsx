@@ -13,6 +13,13 @@ export default function Navbar() {
   const isDashboard = pathname?.startsWith('/dashboard');
   const isSalesLanding = pathname?.startsWith('/landing') || pathname?.startsWith('/gracias');
 
+  let plansLabel = 'Planes';
+  try {
+    plansLabel = t('plans');
+  } catch {
+    plansLabel = 'Planes';
+  }
+
   if (isDashboard || isSalesLanding) return null;
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 bg-[#FF6B00] transition-all duration-300`}>
@@ -61,6 +68,15 @@ export default function Navbar() {
                 }`}
             >
               {t('station')}
+            </Link>
+            <Link
+              href="/planes"
+              className={`px-3 py-2 rounded-md text-sm font-medium ${pathname === '/planes'
+                  ? 'text-fedor-orange bg-white'
+                  : 'text-white hover:bg-white hover:text-fedor-orange'
+                }`}
+            >
+              {plansLabel}
             </Link>
 
             {/* Selector de idiomas */}
@@ -139,6 +155,15 @@ export default function Navbar() {
                 }`}
             >
               {t('station')}
+            </Link>
+            <Link
+              href="/planes"
+              className={`block px-3 py-2 rounded-md text-base font-medium ${pathname === '/planes'
+                  ? 'text-fedor-orange bg-white'
+                  : 'text-white hover:bg-white hover:text-fedor-orange'
+                }`}
+            >
+              {plansLabel}
             </Link>
             <Link
               href="/login"

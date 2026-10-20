@@ -92,6 +92,17 @@
   "whatsapp_floating": {
     "aria_label": "Contacter sur WhatsApp"
   },
+  "institutions": {
+    "badge": "Écoles et Établissements Scolaires",
+    "title": "Êtes-vous directeur, coordinateur ou enseignant ?",
+    "desc": "Transformez les résultats en mathématiques de votre école avec la Méthode Fedor. Accédez à des licences institutionnelles groupées, un tableau de bord d'analyse pour les enseignants, un accompagnement pédagogique et tous les modules interactifs de la 1ère à la 11ème année.",
+    "feature_licenses": "Licences groupées pour les élèves",
+    "feature_dashboard": "Tableau de suivi des progrès et notes",
+    "feature_training": "Formation continue des enseignants",
+    "feature_simulations": "Simulations d'examens et évaluations",
+    "cta_quote": "Demander un devis pour mon établissement",
+    "cta_plan": "Découvrir le Plan Institutionnel"
+  },
   "loading": "Chargement des modules...",
   "error_loading": "Erreur lors du chargement des modules"
 }

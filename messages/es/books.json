@@ -92,6 +92,17 @@
   "whatsapp_floating": {
     "aria_label": "Contactar por WhatsApp"
   },
+  "institutions": {
+    "badge": "Colegios e Instituciones Educativas",
+    "title": "¿Eres rector, coordinador o docente?",
+    "desc": "Transforma el rendimiento matemático de tu colegio con el Método Fedor. Accede a licencias institucionales por volumen, tablero de analítica y métricas para docentes, acompañamiento pedagógico y todos los módulos interactivos de 1° a 11° sin restricciones.",
+    "feature_licenses": "Licencias masivas para estudiantes",
+    "feature_dashboard": "Panel de seguimiento y notas",
+    "feature_training": "Capacitación a profesores",
+    "feature_simulations": "Simulacros ICFES / Saber",
+    "cta_quote": "Cotizar para mi Institución",
+    "cta_plan": "Conocer Plan Institucional"
+  },
   "loading": "Cargando módulos...",
   "error_loading": "Error al cargar los módulos"
 }

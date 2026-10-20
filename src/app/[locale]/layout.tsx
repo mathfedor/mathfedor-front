@@ -11,6 +11,7 @@ import { notFound } from 'next/navigation';
 import { routing, Locale } from '@/i18n/routing';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://matematicasdefedor.com'),
   title: 'Matemáticas de Fedor',
   description: 'Plataforma Educativa de Matemáticas',
 };

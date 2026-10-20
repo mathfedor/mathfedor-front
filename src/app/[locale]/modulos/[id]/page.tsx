@@ -10,6 +10,8 @@ import Footer from "@/components/Footer";
 import { trackMetaViewContent, trackMetaAddToCart } from '@/lib/analytics/meta';
 import { trackTikTokViewContent, trackTikTokAddToCart } from '@/lib/analytics/tiktok';
 import { trackGTMViewItem, trackGTMAddToCart } from '@/lib/analytics/google';
+import PlanSelectModal from '@/components/pricing/PlanSelectModal';
+import { Plan } from '@/types/plan.types';
 
 const getGradeNumber = (group?: string) => {
   const match = group?.match(/Grado(\d+)/);
@@ -33,6 +35,7 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showPdf, setShowPdf] = useState(false);
+  const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchModule = async () => {
@@ -90,48 +93,52 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
   }, [id]);
 
   const handleBuyClick = () => {
+    setIsPlanModalOpen(true);
+  };
+
+  const handleConfirmPlan = (plan: Plan, quantity: number, finalPrice: number) => {
     if (module) {
-      const price = module.price || 0;
       trackMetaAddToCart({
         content_ids: [module._id],
         content_type: 'product',
-        value: price,
+        value: finalPrice,
         currency: 'COP',
       });
       trackTikTokAddToCart({
         contents: [
           {
             content_id: module._id,
-            content_name: module.title,
+            content_name: `${module.title} (${plan.name})`,
             content_type: 'product',
-            price: price,
-            quantity: 1,
+            price: finalPrice,
+            quantity: quantity,
           },
         ],
-        value: price,
+        value: finalPrice,
         currency: 'COP',
       });
       trackGTMAddToCart({
         currency: 'COP',
-        value: price,
+        value: finalPrice,
         items: [
           {
             item_id: module._id,
-            item_name: module.title,
+            item_name: `${module.title} (${plan.name})`,
             item_category: module.group || 'Modulo',
-            price: price,
-            quantity: 1,
+            price: finalPrice,
+            quantity: quantity,
           },
         ],
       });
     }
 
     const isAuthenticated = authService.isAuthenticated();
+    const targetUrl = `/dashboard/buybooks/${id}?plan=${plan.slug}&qty=${quantity}`;
 
     if (!isAuthenticated) {
-      router.push(`/login?redirect=/dashboard/buybooks/${id}`);
+      router.push(`/login?redirect=${encodeURIComponent(targetUrl)}`);
     } else {
-      router.push(`/dashboard/buybooks/${id}`);
+      router.push(targetUrl);
     }
   };
 
@@ -182,28 +189,25 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
                 <h1 className="text-4xl font-bold mb-4">{module.title}</h1>
 
                 <div className="border-b pb-6 mb-6">
-                  <div className="flex justify-between items-center">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div className="flex flex-col">
-                      {new Date() < new Date('2026-05-31') ? (
-                        <>
-                          <span className="text-lg text-gray-500 line-through">
-                            ${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                          </span>
-                          <span className="text-3xl font-bold text-orange-500">
-                            ${((module.price || 0) * 0.5).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                          </span>
-                        </>
-                      ) : (
-                        <span className="text-3xl font-bold text-orange-500">
-                          ${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                        </span>
-                      )}
+                      <span className="text-sm text-gray-400 font-medium line-through">
+                        Precio regular: ${(module.price || 203000).toLocaleString('es-CO')} COP
+                      </span>
+                      <div className="flex items-baseline gap-1 mt-0.5">
+                        <span className="text-xs font-semibold text-emerald-600">Con Plan Anual:</span>
+                        <span className="text-3xl font-black text-orange-500">$179.999</span>
+                        <span className="text-xs text-gray-500 font-semibold">COP / año</span>
+                      </div>
+                      <p className="text-xs text-emerald-600 font-semibold mt-1">
+                        ⚡ Equivale a $15.000 / mes (o mensual desde $24.999)
+                      </p>
                     </div>
                     <button
                       onClick={handleBuyClick}
-                      className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors text-lg font-semibold"
+                      className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3.5 rounded-xl transition-all shadow-lg shadow-orange-500/25 text-lg font-bold cursor-pointer whitespace-nowrap"
                     >
-                      Comprar
+                      Elegir Plan de Acceso
                     </button>
                   </div>
                 </div>
@@ -261,6 +265,16 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
           </div>
         </div>
       </main>
+
+      {/* Modal de Selección de Plan */}
+      {module && (
+        <PlanSelectModal
+          isOpen={isPlanModalOpen}
+          onClose={() => setIsPlanModalOpen(false)}
+          module={module}
+          onConfirmPlan={handleConfirmPlan}
+        />
+      )}
 
       <Footer />
     </div>

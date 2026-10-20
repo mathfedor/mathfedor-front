@@ -92,6 +92,17 @@
   "whatsapp_floating": {
     "aria_label": "Über WhatsApp kontaktieren"
   },
+  "institutions": {
+    "badge": "Schulen und Bildungseinrichtungen",
+    "title": "Sind Sie Schulleiter, Koordinator oder Lehrkraft?",
+    "desc": "Steigern Sie die Mathematikleistungen Ihrer Schule mit der Fedor-Methode. Erhalten Sie institutionelle Volumenlizenzen, ein Analyse- und Noten-Dashboard für Lehrkräfte, pädagogische Betreuung und unbegrenzten Zugriff auf alle interaktiven Module der Klassen 1 bis 11.",
+    "feature_licenses": "Volumenlizenzen für Schüler",
+    "feature_dashboard": "Dashboard für Fortschritt und Noten",
+    "feature_training": "Schulungen für Lehrkräfte",
+    "feature_simulations": "Standardisierte Testsimulationen",
+    "cta_quote": "Angebot für meine Schule anfordern",
+    "cta_plan": "Institutionellen Tarif entdecken"
+  },
   "loading": "Module werden geladen...",
   "error_loading": "Fehler beim Laden der Module"
 }

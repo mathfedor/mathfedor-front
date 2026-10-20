@@ -11,6 +11,16 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   // Cargar namespaces de mensajes
   const commonMessages = (await import(`../../messages/${locale}/common.json`)).default;
+  if (commonMessages?.nav && !commonMessages.nav.plans) {
+    const plansFallbackByLocale: Record<string, string> = {
+      es: 'Planes',
+      en: 'Plans',
+      pt: 'Planos',
+      fr: 'Plans',
+      de: 'Tarife',
+    };
+    commonMessages.nav.plans = plansFallbackByLocale[locale] || 'Planes';
+  }
   const authMessages = (await import(`../../messages/${locale}/auth.json`)).default;
   const homeMessages = (await import(`../../messages/${locale}/home.json`)).default;
   const booksMessages = (await import(`../../messages/${locale}/books.json`)).default;
