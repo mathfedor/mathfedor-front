@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import Sidebar from '@/components/Sidebar';
 import { authService } from '@/services/auth.service';
 import { institutionModuleService, StudentModuleAccess } from '@/services/institution-module.service';
-import { FiBook, FiShoppingBag, FiArrowRight, FiRefreshCw, FiSearch, FiLayers, FiAlertCircle, FiClock } from 'react-icons/fi';
+import { FiBook, FiShoppingBag, FiArrowRight, FiRefreshCw, FiSearch, FiLayers, FiAlertCircle, FiClock, FiLock } from 'react-icons/fi';
 import {
   isModuleInFreeTrial,
   isPurchaseExpired,
@@ -281,11 +281,16 @@ function ModuleCard({ module, t }: { module: StudentModuleAccess; t: ReturnType<
           </p>
         )}
 
-        {/* Archivos descargables (solo B2C) */}
-        {module.gradeConfig?.downloadFiles?.length && !expired ? (
+        {/* Archivos descargables (solo compras B2C activas) */}
+        {module.gradeConfig?.downloadFiles?.length && !expired && module.source === 'purchase' ? (
           <div className="flex items-center gap-1 text-xs text-slate-400 mb-3">
             <FiLayers className="w-3 h-3" />
             <span>{module.gradeConfig.downloadFiles.length} {t('files_available')}</span>
+          </div>
+        ) : isFreeTrialModule && module.source !== 'purchase' ? (
+          <div className="flex items-center gap-1 text-xs text-amber-400/90 mb-3">
+            <FiLock className="w-3 h-3" />
+            <span>Libro digital (Descargas Excel con Plan Anual)</span>
           </div>
         ) : null}
 

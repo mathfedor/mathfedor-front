@@ -4,6 +4,8 @@ import { authService } from '@/services/auth.service';
 import { moduleService, Module } from '@/services/module.service';
 import {
   isModuleInFreeTrial,
+  isFreeTrialGrade,
+  isAnnualPlanPurchase,
   isPurchaseExpired,
   getPurchaseExpirationDate,
   FREE_TRIAL_END_DATE,
@@ -16,7 +18,7 @@ interface ModuleAccessContextType {
   hasAccess: (moduleId: string) => boolean;
   /** Verifica si el usuario puede acceder a los ejercicios del módulo (incluye trial gratuito). */
   hasExerciseAccess: (moduleId: string) => boolean;
-  /** Verifica si el usuario puede acceder a las descargas del módulo (requiere compra activa). */
+  /** Verifica si el usuario puede acceder a las descargas del módulo (requiere compra activa de Plan Anual). */
   hasDownloadAccess: (moduleId: string) => boolean;
   /** Obtiene información detallada del tipo de acceso al módulo. */
   getAccessInfo: (moduleId: string) => ModuleAccessInfo;
@@ -53,7 +55,8 @@ export function ModuleAccessProvider({ children }: { children: ReactNode }) {
 
         // Buscar compra aprobada para este módulo
         const purchase = purchases.find(
-          p => p?.module_id === moduleId && p?.transaction?.status === 'APPROVED'
+          p => (p?.module_id === moduleId || (module.slug && p?.module_id === module.slug)) &&
+            p?.transaction?.status === 'APPROVED'
         );
 
         let accessType: ModuleAccessType = 'none';
@@ -65,7 +68,8 @@ export function ModuleAccessProvider({ children }: { children: ReactNode }) {
           // Compra activa (menos de 1 año)
           accessType = 'purchased';
           canAccessExercises = true;
-          canAccessDownloads = true;
+          // Las descargas de Excel requieren Plan Anual (o institucional)
+          canAccessDownloads = isAnnualPlanPurchase(purchase);
           expiresAt = getPurchaseExpirationDate(purchase.purchase_date);
         } else if (purchase && isPurchaseExpired(purchase.purchase_date)) {
           // Compra expirada (más de 1 año)
@@ -75,24 +79,14 @@ export function ModuleAccessProvider({ children }: { children: ReactNode }) {
           expiresAt = getPurchaseExpirationDate(purchase.purchase_date);
         } else if (
           isModuleInFreeTrial(group) ||
-          (module.slug && [
-            'libro-1ro', 'matematicas-fedor-1',
-            'libro-2do', 'matematicas-fedor-2',
-            'libro-3ro', 'matematicas-fedor-3',
-            'libro-4to', 'matematicas-fedor-4',
-            'libro-5to', 'matematicas-fedor-5'
-          ].includes(module.slug)) ||
-          [
-            '6830d368fecd7406dc6f9525', '6830d619fecd7406dc6f96ad',
-            '6832543f6fee7c84b2f077c0', '6832543f6fee7c84b2f077c1',
-            '694c7c4322a78467aa1783b6', '6832543f6fee7c84b2f077c2',
-            '694c7c4322a78467aa1783b7'
-          ].includes(moduleId)
+          isFreeTrialGrade(module.slug) ||
+          isFreeTrialGrade(moduleId) ||
+          isFreeTrialGrade(module.title)
         ) {
           // Sin compra, pero módulo de Grado 1, 2, 3, 4 o 5 en periodo de trial hasta el 31/Oct/2026
           accessType = 'free_trial';
           canAccessExercises = true;
-          canAccessDownloads = false; // Descargas requieren compra
+          canAccessDownloads = false; // Descargas de Excel requieren compra de Plan Anual
         }
         // else: 'none' — sin acceso
 
@@ -139,16 +133,7 @@ export function ModuleAccessProvider({ children }: { children: ReactNode }) {
   const hasExerciseAccess = useCallback((moduleId: string) => {
     const norm = (moduleId || '').toLowerCase().trim();
     const isTrialActive = new Date() <= FREE_TRIAL_END_DATE;
-    if (
-      isTrialActive && (
-        norm === '1' || norm === '2' || norm === '3' || norm === '4' || norm === '5' ||
-        norm === 'libro-1ro' || norm === 'libro-2do' || norm === 'libro-3ro' || norm === 'libro-4to' || norm === 'libro-5to' ||
-        norm === 'matematicas-fedor-1' || norm === 'matematicas-fedor-2' || norm === 'matematicas-fedor-3' || norm === 'matematicas-fedor-4' || norm === 'matematicas-fedor-5' ||
-        norm === '6830d368fecd7406dc6f9525' || norm === '6830d619fecd7406dc6f96ad' || norm === '6832543f6fee7c84b2f077c0' ||
-        norm === '6832543f6fee7c84b2f077c1' || norm === '694c7c4322a78467aa1783b6' ||
-        norm === '6832543f6fee7c84b2f077c2' || norm === '694c7c4322a78467aa1783b7'
-      )
-    ) {
+    if (isTrialActive && isFreeTrialGrade(norm)) {
       return true;
     }
     const info = moduleAccess[moduleId] || moduleAccess[norm];
@@ -156,12 +141,26 @@ export function ModuleAccessProvider({ children }: { children: ReactNode }) {
   }, [moduleAccess]);
 
   const hasDownloadAccess = useCallback((moduleId: string) => {
-    const info = moduleAccess[moduleId];
-    return info?.canAccessDownloads || false;
+    const norm = (moduleId || '').toLowerCase().trim();
+    const info = moduleAccess[moduleId] || moduleAccess[norm];
+    if (!info) return false;
+    return info.canAccessDownloads === true;
   }, [moduleAccess]);
 
   const getAccessInfo = useCallback((moduleId: string): ModuleAccessInfo => {
-    return moduleAccess[moduleId] || {
+    const norm = (moduleId || '').toLowerCase().trim();
+    if (moduleAccess[moduleId]) return moduleAccess[moduleId];
+    if (moduleAccess[norm]) return moduleAccess[norm];
+
+    if (isFreeTrialGrade(norm)) {
+      return {
+        type: 'free_trial',
+        canAccessExercises: true,
+        canAccessDownloads: false,
+      };
+    }
+
+    return {
       type: 'none' as ModuleAccessType,
       canAccessExercises: false,
       canAccessDownloads: false,

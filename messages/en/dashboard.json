@@ -162,7 +162,22 @@
     "download_excel": "Download Excel",
     "success_download": "File downloaded successfully",
     "error_download": "Could not download file",
-    "error_load_modules": "Error loading modules"
+    "error_load_modules": "Error loading modules",
+    "badge_annual": "Annual Plan",
+    "badge_free_trial": "Free Trial (Digital Book)",
+    "badge_locked": "Locked",
+    "locked_requires_annual": "Locked — Requires Annual Plan",
+    "valid_free_trial": "Free through Oct 31, 2026 (Digital Book Only)",
+    "banner_free_trial_title": "Grades 1 to 5 on free trial through October 31",
+    "banner_free_trial_desc": "Your account includes full access to interactive digital books for online study. Downloading modules in Excel format (.xlsx) requires an Annual Plan subscription.",
+    "btn_get_annual_plan": "Get Annual Plan",
+    "btn_study_online": "Study online",
+    "upgrade_modal_title": "Excel downloads exclusive to Annual Plan",
+    "upgrade_modal_desc": "Grades 1 to 5 are freely accessible through October 31 for interactive digital book study. Excel module and template downloads are reserved for users with an active Annual Plan.",
+    "upgrade_modal_btn_plan": "View Plans & Buy Annual Plan",
+    "upgrade_modal_btn_cancel": "Continue with digital book",
+    "empty_no_downloads_title": "No Excel downloads available",
+    "empty_no_downloads_desc": "Your account has free access to interactive digital books for grades 1-5 through October 31. To download Excel files and templates, please subscribe to an Annual Plan."
   },
   "legal": {
     "title": "Legal Documents Administration",

@@ -1,4 +1,6 @@
 import { authService } from './auth.service';
+import { purchaseService } from './purchase.service';
+import { canUserDownloadModule } from '@/constants/module-access.constants';
 import { ModuleFormData, Module } from '@/types/module.types';
 
 export type { Module };
@@ -322,6 +324,23 @@ export const moduleService = {
     const token = authService.getToken();
     if (!token) {
       throw new Error('No se encontró el token de autenticación');
+    }
+
+    // Validación de seguridad: verificar que el usuario tenga Plan Anual activo para este módulo
+    try {
+      const purchases = await purchaseService.getUserPurchases(userId);
+      const canDownload = canUserDownloadModule(moduleId, purchases);
+      if (!canDownload) {
+        throw new Error(
+          'La descarga de módulos en formato Excel está reservada para usuarios con Plan Anual activo. ' +
+          'El acceso gratuito hasta el 31 de octubre solo incluye el libro digital interactivo para practicar en línea.'
+        );
+      }
+    } catch (err) {
+      if (err instanceof Error && err.message.includes('Plan Anual')) {
+        throw err;
+      }
+      // En caso de fallo de red al consultar compras locales, el backend validará
     }
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/learning/download/${moduleId}/${userId}/${fileIndex}`, {

@@ -162,7 +162,22 @@
     "download_excel": "Descargar Excel",
     "success_download": "Archivo descargado correctamente",
     "error_download": "No se pudo descargar el archivo",
-    "error_load_modules": "Error al cargar los módulos"
+    "error_load_modules": "Error al cargar los módulos",
+    "badge_annual": "Plan Anual",
+    "badge_free_trial": "Prueba Gratuita (Libro Digital)",
+    "badge_locked": "Bloqueado",
+    "locked_requires_annual": "Bloqueado — Requiere Plan Anual",
+    "valid_free_trial": "Gratis hasta 31 Oct 2026 (Solo Libro Digital)",
+    "banner_free_trial_title": "Módulos de 1° a 5° en prueba gratuita hasta el 31 de octubre",
+    "banner_free_trial_desc": "Tu cuenta incluye acceso completo a los libros digitales interactivos para estudiar y practicar en línea. Las descargas de módulos en formato Excel (.xlsx) requieren una suscripción a un Plan Anual.",
+    "btn_get_annual_plan": "Adquirir Plan Anual",
+    "btn_study_online": "Estudiar en línea",
+    "upgrade_modal_title": "Descargas de Excel exclusivas para Plan Anual",
+    "upgrade_modal_desc": "Los módulos de 1°, 2°, 3°, 4° y 5° están disponibles de forma gratuita hasta el 31 de octubre para que puedas estudiar y practicar con el libro digital interactivo dentro de la plataforma. La descarga de módulos y plantillas en formato Excel está reservada para usuarios con un Plan Anual activo.",
+    "upgrade_modal_btn_plan": "Ver Planes y Comprar Plan Anual",
+    "upgrade_modal_btn_cancel": "Seguir con libro digital",
+    "empty_no_downloads_title": "Sin descargas de Excel disponibles",
+    "empty_no_downloads_desc": "Tu cuenta tiene acceso gratuito a los libros digitales interactivos de 1° a 5° hasta el 31 de octubre. Para descargar los archivos Excel y plantillas imprimibles, debes suscribirte a un Plan Anual."
   },
   "legal": {
     "title": "Administración de Documentos Legales",
