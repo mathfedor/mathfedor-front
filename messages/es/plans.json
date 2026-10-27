@@ -1,0 +1,70 @@
+{
+  "header": {
+    "badge": "Planes Flexibles y Accesibles",
+    "title": "Invierte en el aprendizaje matemático de tus hijos",
+    "subtitle": "Libro digital interactivo completo, Zona Fedor con gamificación y módulos de Excel incluidos."
+  },
+  "trial_banner": {
+    "badge": "Sin compromiso ni tarjeta",
+    "title": "Prueba 17 días completamente GRATIS",
+    "description": "Acceso sin restricciones al libro digital completo y a la Zona Fedor para que tu hijo viva la experiencia antes de comprar.",
+    "button": "Comenzar Prueba Gratis (17 Días)"
+  },
+  "monthly": {
+    "title": "Plan Mensual",
+    "subtitle": "Flexibilidad mes a mes",
+    "period": "COP / mes",
+    "daily_estimate": "Equivale a solo $833 al día",
+    "feature_book": "Libro digital interactivo completo",
+    "feature_zone": "Zona Fedor completa con gamificación",
+    "feature_excel": "Cortesía Excel: 1° = Libro 2 / 2° a 11° = Libro 3",
+    "button": "Elegir Mensual"
+  },
+  "semestral": {
+    "title": "Plan Semestral",
+    "subtitle": "Para el semestre escolar",
+    "save_badge": "Ahorra 26%",
+    "period": "COP / 6 meses",
+    "monthly_estimate": "$18.333 / mes · Solo $611 al día",
+    "feature_book": "Libro digital interactivo completo",
+    "feature_zone": "Zona Fedor completa con gamificación",
+    "feature_excel": "Cortesía Excel: Todos los libros del grado en curso",
+    "button": "Elegir Semestral"
+  },
+  "annual": {
+    "badge_top": "⭐ Más Popular · Beneficio Familiar",
+    "title": "Plan Anual",
+    "subtitle": "El favorito de las familias colombianas",
+    "save_badge": "Ahorra 40%",
+    "stepper_title": "¿Cuántos grados o hijos necesitas?",
+    "grade_singular": "Grado",
+    "grade_plural": "Grados",
+    "student_1": "1 Estudiante",
+    "student_2": "2 Estudiantes (Hijos)",
+    "students_multi": "{count} Estudiantes / Grados",
+    "tip_1": "💡 Tip familiar: ¿Tienes otro hijo? Agrega el 2do por solo $120.000.",
+    "tip_2": "🎉 ¡Desbloqueado! Del 3er grado en adelante, cada uno cuesta solo $80.000 COP.",
+    "tip_3": "⭐ Tarifa protegida: Del 3° en adelante solo $80.000 c/u (¡más del 55% de ahorro!).",
+    "period": "COP / año",
+    "daily_estimate": "⚡ Equivale a $15.000 / mes · ¡Solo $493 al día!",
+    "you_save": "🎉 Ahorras ${amount}",
+    "feature_book": "Libro digital completo para {count} grado(s)",
+    "feature_zone": "Zona Fedor completa con gamificación",
+    "feature_excel": "Todos los libros en Excel de los grados seleccionados incluidos",
+    "feature_warranty": "Garantía de actualización continua durante todo el año escolar",
+    "button": "Elegir Plan Anual ({count} {modules})",
+    "module_singular": "Módulo",
+    "module_plural": "Módulos"
+  },
+  "institutions": {
+    "badge": "Colegios e Instituciones",
+    "title": "¿Eres rector, coordinador o docente?",
+    "description": "Implementa Matemáticas de Fedor en toda tu institución con licencias por volumen, panel de métricas docentes, capacitación y todos los módulos de 1° a 11° sin límites.",
+    "button": "Cotizar para mi Institución"
+  },
+  "trust": {
+    "encrypted": "Pagos encriptados con Wompi Bancolombia",
+    "methods": "Aceptamos Nequi, Daviplata, PSE y Tarjetas",
+    "instant": "Activación inmediata al confirmar el pago"
+  }
+}

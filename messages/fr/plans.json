@@ -1,0 +1,70 @@
+{
+  "header": {
+    "badge": "Formules Flexibles et Accessibles",
+    "title": "Investissez dans l'apprentissage mathématique de vos enfants",
+    "subtitle": "Livre numérique interactif complet, Zone Fedor avec ludification et modules Excel inclus."
+  },
+  "trial_banner": {
+    "badge": "Sans engagement ni carte bancaire",
+    "title": "Essayez 17 jours entièrement GRATUITEMENT",
+    "description": "Accès illimité au livre numérique complet et à la Zone Fedor pour que votre enfant vive l'expérience avant d'acheter.",
+    "button": "Commencer l'Essai Gratuit (17 Jours)"
+  },
+  "monthly": {
+    "title": "Formule Mensuelle",
+    "subtitle": "Flexibilité mois par mois",
+    "period": "COP / mois",
+    "daily_estimate": "Équivaut à seulement $833 par jour",
+    "feature_book": "Livre numérique interactif complet",
+    "feature_zone": "Zone Fedor complète avec ludification",
+    "feature_excel": "Courtoisie Excel : 1re = Livre 2 / 2e à 11e = Livre 3",
+    "button": "Choisir Mensuel"
+  },
+  "semestral": {
+    "title": "Formule Semestrielle",
+    "subtitle": "Pour le semestre scolaire",
+    "save_badge": "Économisez 26%",
+    "period": "COP / 6 mois",
+    "monthly_estimate": "$18.333 / mois · Seulement $611 par jour",
+    "feature_book": "Livre numérique interactif complet",
+    "feature_zone": "Zone Fedor complète avec ludification",
+    "feature_excel": "Courtoisie Excel : Tous les livres du niveau en cours",
+    "button": "Choisir Semestriel"
+  },
+  "annual": {
+    "badge_top": "⭐ Plus Populaire · Avantage Famille",
+    "title": "Formule Annuelle",
+    "subtitle": "Le choix préféré des familles colombiennes",
+    "save_badge": "Économisez 40%",
+    "stepper_title": "Combien de niveaux ou d'enfants avez-vous besoin ?",
+    "grade_singular": "Niveau",
+    "grade_plural": "Niveaux",
+    "student_1": "1 Élève",
+    "student_2": "2 Élèves (Enfants)",
+    "students_multi": "{count} Élèves / Niveaux",
+    "tip_1": "💡 Astuce famille : Vous avez un autre enfant ? Ajoutez le 2e pour seulement $120.000 COP.",
+    "tip_2": "🎉 Débloqué ! À partir du 3e niveau, chacun ne coûte que $80.000 COP.",
+    "tip_3": "⭐ Tarif protégé : Dès le 3e seulement $80.000 chacun (plus de 55% d'économie !).",
+    "period": "COP / an",
+    "daily_estimate": "⚡ Équivaut à $15.000 / mois · Seulement $493 par jour !",
+    "you_save": "🎉 Vous économisez ${amount}",
+    "feature_book": "Livre numérique complet pour {count} niveau(x)",
+    "feature_zone": "Zone Fedor complète avec ludification",
+    "feature_excel": "Tous les livres Excel des niveaux sélectionnés inclus",
+    "feature_warranty": "Garantie de mises à jour continues tout au long de l'année scolaire",
+    "button": "Choisir la Formule Annuelle ({count} {modules})",
+    "module_singular": "Module",
+    "module_plural": "Modules"
+  },
+  "institutions": {
+    "badge": "Écoles et Établissements",
+    "title": "Êtes-vous directeur, coordinateur ou enseignant ?",
+    "description": "Déployez Mathématiques de Fedor dans tout votre établissement avec des licences en volume, un tableau de bord pour enseignants, des formations et tous les modules de la 1re à la 11e sans limites.",
+    "button": "Demander un Devis pour mon Établissement"
+  },
+  "trust": {
+    "encrypted": "Paiements cryptés avec Wompi Bancolombia",
+    "methods": "Nous acceptons Nequi, Daviplata, PSE et Cartes",
+    "instant": "Activation immédiate dès confirmation du paiement"
+  }
+}

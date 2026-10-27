@@ -26,6 +26,10 @@ export default getRequestConfig(async ({ requestLocale }) => {
   const booksMessages = (await import(`../../messages/${locale}/books.json`)).default;
   const dashboardMessages = (await import(`../../messages/${locale}/dashboard.json`)).default;
   const retosMessages = (await import(`../../messages/${locale}/retos.json`)).default;
+  let plansMessages = {};
+  try {
+    plansMessages = (await import(`../../messages/${locale}/plans.json`)).default;
+  } catch {}
 
   return {
     locale,
@@ -36,6 +40,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
       books: booksMessages,
       dashboard: dashboardMessages,
       retos: retosMessages,
+      plans: plansMessages,
     },
   };
 });

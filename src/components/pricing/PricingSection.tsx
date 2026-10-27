@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Plan } from '@/types/plan.types';
 import { FiCheck, FiStar, FiPlus, FiMinus, FiArrowRight, FiShield, FiGift, FiAward, FiUsers } from 'react-icons/fi';
 import { useRouter } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 
 interface PricingSectionProps {
   plans?: Plan[];
@@ -19,6 +20,7 @@ export default function PricingSection({
   showTrialBanner = true,
 }: PricingSectionProps) {
   const router = useRouter();
+  const t = useTranslations('plans');
   const [annualModulesCount, setAnnualModulesCount] = useState<number>(1);
 
   // Precios configurables para cálculo familiar
@@ -64,13 +66,13 @@ export default function PricingSection({
         <div className="text-center max-w-3xl mx-auto mb-10">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 mb-3">
             <FiAward className="w-3.5 h-3.5" />
-            Planes Flexibles y Accesibles
+            {t('header.badge')}
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            Invierte en el aprendizaje matemático de tus hijos
+            {t('header.title')}
           </h2>
           <p className="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300">
-            Libro digital interactivo completo, Zona Fedor con gamificación y módulos de Excel incluidos.
+            {t('header.subtitle')}
           </p>
         </div>
 

@@ -1,0 +1,70 @@
+{
+  "header": {
+    "badge": "Flexible & Accessible Plans",
+    "title": "Invest in your children's math learning",
+    "subtitle": "Complete interactive digital book, Fedor Zone with gamification, and Excel modules included."
+  },
+  "trial_banner": {
+    "badge": "No commitment, no credit card required",
+    "title": "Try 17 days completely FREE",
+    "description": "Unrestricted access to the complete digital book and Fedor Zone so your child experiences it before buying.",
+    "button": "Start Free Trial (17 Days)"
+  },
+  "monthly": {
+    "title": "Monthly Plan",
+    "subtitle": "Month-to-month flexibility",
+    "period": "COP / month",
+    "daily_estimate": "Equivalent to only $833/day",
+    "feature_book": "Complete interactive digital book",
+    "feature_zone": "Complete Fedor Zone with gamification",
+    "feature_excel": "Excel Courtesy: 1st = Book 2 / 2nd to 11th = Book 3",
+    "button": "Choose Monthly"
+  },
+  "semestral": {
+    "title": "Semester Plan",
+    "subtitle": "For the school semester",
+    "save_badge": "Save 26%",
+    "period": "COP / 6 months",
+    "monthly_estimate": "$18,333 / month · Only $611/day",
+    "feature_book": "Complete interactive digital book",
+    "feature_zone": "Complete Fedor Zone with gamification",
+    "feature_excel": "Excel Courtesy: All books for the current grade",
+    "button": "Choose Semester"
+  },
+  "annual": {
+    "badge_top": "⭐ Most Popular · Family Benefit",
+    "title": "Annual Plan",
+    "subtitle": "The favorite of Colombian families",
+    "save_badge": "Save 40%",
+    "stepper_title": "How many grades or children do you need?",
+    "grade_singular": "Grade",
+    "grade_plural": "Grades",
+    "student_1": "1 Student",
+    "student_2": "2 Students (Children)",
+    "students_multi": "{count} Students / Grades",
+    "tip_1": "💡 Family tip: Have another child? Add the 2nd for only $120,000 COP.",
+    "tip_2": "🎉 Unlocked! From the 3rd grade onwards, each costs only $80,000 COP.",
+    "tip_3": "⭐ Protected rate: From the 3rd onwards only $80,000 each (over 55% savings!).",
+    "period": "COP / year",
+    "daily_estimate": "⚡ Equivalent to $15,000 / month · Only $493/day!",
+    "you_save": "🎉 You save ${amount}",
+    "feature_book": "Complete digital book for {count} grade(s)",
+    "feature_zone": "Complete Fedor Zone with gamification",
+    "feature_excel": "All Excel books for selected grades included",
+    "feature_warranty": "Continuous update guarantee throughout the school year",
+    "button": "Choose Annual Plan ({count} {modules})",
+    "module_singular": "Module",
+    "module_plural": "Modules"
+  },
+  "institutions": {
+    "badge": "Schools & Institutions",
+    "title": "Are you a principal, coordinator, or teacher?",
+    "description": "Implement Fedor Mathematics across your institution with volume licenses, teacher metrics dashboard, training, and all modules from 1st to 11th grade with no limits.",
+    "button": "Get a Quote for My Institution"
+  },
+  "trust": {
+    "encrypted": "Encrypted payments with Wompi Bancolombia",
+    "methods": "We accept Nequi, Daviplata, PSE, and Cards",
+    "instant": "Immediate activation upon payment confirmation"
+  }
+}

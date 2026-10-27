@@ -1,0 +1,70 @@
+{
+  "header": {
+    "badge": "Flexible & Günstige Tarife",
+    "title": "Investieren Sie in das mathematische Lernen Ihrer Kinder",
+    "subtitle": "Vollständiges interaktives digitales Buch, Fedor-Zone mit Gamification und Excel-Module inklusive."
+  },
+  "trial_banner": {
+    "badge": "Ohne Verpflichtung und ohne Kreditkarte",
+    "title": "Testen Sie 17 Tage völlig KOSTENLOS",
+    "description": "Uneingeschränkter Zugang zum vollständigen digitalen Buch und zur Fedor-Zone, damit Ihr Kind die Erfahrung vor dem Kauf erleben kann.",
+    "button": "Kostenlose Testversion starten (17 Tage)"
+  },
+  "monthly": {
+    "title": "Monatlicher Tarif",
+    "subtitle": "Monatliche Flexibilität",
+    "period": "COP / Monat",
+    "daily_estimate": "Entspricht nur $833 pro Tag",
+    "feature_book": "Vollständiges interaktives digitales Buch",
+    "feature_zone": "Vollständige Fedor-Zone mit Gamification",
+    "feature_excel": "Excel-Zugabe: 1. = Buch 2 / 2. bis 11. = Buch 3",
+    "button": "Monatlich wählen"
+  },
+  "semestral": {
+    "title": "Halbjahres-Tarif",
+    "subtitle": "Für das Schulhalbjahr",
+    "save_badge": "26% sparen",
+    "period": "COP / 6 Monate",
+    "monthly_estimate": "$18.333 / Monat · Nur $611 pro Tag",
+    "feature_book": "Vollständiges interaktives digitales Buch",
+    "feature_zone": "Vollständige Fedor-Zone mit Gamification",
+    "feature_excel": "Excel-Zugabe: Alle Bücher der aktuellen Klassenstufe",
+    "button": "Halbjährlich wählen"
+  },
+  "annual": {
+    "badge_top": "⭐ Am Beliebtesten · Familienvorteil",
+    "title": "Jahres-Tarif",
+    "subtitle": "Der Favorit kolumbianischer Familien",
+    "save_badge": "40% sparen",
+    "stepper_title": "Wie viele Klassenstufen oder Kinder benötigen Sie?",
+    "grade_singular": "Klasse",
+    "grade_plural": "Klassen",
+    "student_1": "1 Schüler",
+    "student_2": "2 Schüler (Kinder)",
+    "students_multi": "{count} Schüler / Klassen",
+    "tip_1": "💡 Familientipp: Weiteres Kind? Fügen Sie das 2. für nur $120.000 COP hinzu.",
+    "tip_2": "🎉 Freigeschaltet! Ab der 3. Klasse kostet jedes weitere nur $80.000 COP.",
+    "tip_3": "⭐ Geschützter Tarif: Ab der 3. nur $80.000 je (über 55% Ersparnis!).",
+    "period": "COP / Jahr",
+    "daily_estimate": "⚡ Entspricht $15.000 / Monat · Nur $493 pro Tag!",
+    "you_save": "🎉 Sie sparen ${amount}",
+    "feature_book": "Vollständiges digitales Buch für {count} Klassenstufe(n)",
+    "feature_zone": "Vollständige Fedor-Zone mit Gamification",
+    "feature_excel": "Alle Excel-Bücher der gewählten Klassenstufen inklusive",
+    "feature_warranty": "Garantie für kontinuierliche Aktualisierungen während des gesamten Schuljahres",
+    "button": "Jahres-Tarif wählen ({count} {modules})",
+    "module_singular": "Modul",
+    "module_plural": "Module"
+  },
+  "institutions": {
+    "badge": "Schulen & Bildungseinrichtungen",
+    "title": "Sind Sie Schulleiter, Koordinator oder Lehrkraft?",
+    "description": "Setzen Sie Matemáticas de Fedor in Ihrer gesamten Einrichtung ein – mit Volumenlizenzen, Lehrkräfte-Dashboard, Schulungen und allen Modulen von der 1. bis 11. Klasse ohne Einschränkungen.",
+    "button": "Angebot für meine Schule anfordern"
+  },
+  "trust": {
+    "encrypted": "Verschlüsselte Zahlungen mit Wompi Bancolombia",
+    "methods": "Wir akzeptieren Nequi, Daviplata, PSE und Karten",
+    "instant": "Sofortige Aktivierung nach Zahlungsbestätigung"
+  }
+}
