@@ -69,6 +69,8 @@ interface Book1ContextType {
   goScreen: (s: Book1Screen, options?: { autoRunAI?: boolean }) => void;
   reportAutoRunAI: boolean;
   setReportAutoRunAI: (val: boolean) => void;
+  showLaunchIntro: boolean;
+  setShowLaunchIntro: (val: boolean) => void;
   startStudent: (st: StudentProfile1) => void;
   selectUnit: (uIdx: number) => void;
   selectTopic: (tIdx: number) => void;
@@ -114,6 +116,7 @@ export function Book1Provider({
   const [loading, setLoading] = useState(true);
   const [screen, setScreen] = useState<Book1Screen>('setup');
   const [reportAutoRunAI, setReportAutoRunAI] = useState(false);
+  const [showLaunchIntro, setShowLaunchIntro] = useState(false);
   const [student, setStudent] = useState<StudentProfile1>(defaultStudent);
 
   const [coins, setCoins] = useState(0);
@@ -259,6 +262,7 @@ export function Book1Provider({
       );
     } catch {}
     setScreen('home');
+    setShowLaunchIntro(true);
   }, [slug]);
 
   const resetStudent = useCallback(() => {
@@ -383,6 +387,8 @@ export function Book1Provider({
         goScreen,
         reportAutoRunAI,
         setReportAutoRunAI,
+        showLaunchIntro,
+        setShowLaunchIntro,
         startStudent,
         selectUnit,
         selectTopic,

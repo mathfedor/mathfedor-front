@@ -8438,6 +8438,17 @@ function enterBook(){
   setTimeout(function(){ safe(function(){ if(typeof updateQuickStats==='function') updateQuickStats(); }, 'updateQuickStats'); }, 200);
   setTimeout(function(){ safe(function(){ if(typeof buildPlanetRow==='function') buildPlanetRow(); }, 'buildPlanetRow'); }, 300);
 
+  // 11. Disparar SIEMPRE la animación de Primero (Laboratorio Espacial)
+  setTimeout(function(){
+    safe(function(){
+      if(typeof window.openLaunchIntro === 'function'){
+        window.openLaunchIntro();
+      } else if(typeof runIntro === 'function'){
+        runIntro();
+      }
+    }, 'openLaunchIntro');
+  }, 250);
+
   if(!navigated){
     // Última defensa: avisar al usuario pero NO bloquear
     console.error('No se pudo navegar a home en enterBook');
@@ -12409,11 +12420,11 @@ if(!CanvasRenderingContext2D.prototype.roundRect){
         if(!localStorage.getItem('fedor_cin_done')){
           localStorage.setItem('fedor_cin_done', '1');
         }
-        // Disparar la intro nueva Tierra→Luna, sólo si nunca se vio y existe.
-        if(!localStorage.getItem('fedor1_intro_seen') && typeof window.openLaunchIntro==='function'){
+        // Disparar la intro de Primero (Laboratorio Espacial -> Despegue -> Luna)
+        if(typeof window.openLaunchIntro === 'function'){
           setTimeout(function(){
             try{ window.openLaunchIntro(); }catch(e){}
-          }, 400);
+          }, 250);
         }
       } catch(e){}
       // Apply equipped avatar after entering
@@ -13147,7 +13158,7 @@ if(!CanvasRenderingContext2D.prototype.roundRect){
   /* ─── ESTILOS DE LA INTRO ─── */
   var s = document.createElement('style');
   s.textContent = [
-    '#fedor1IntroBG{position:fixed;inset:0;z-index:99995;background:#000;display:none;overflow:hidden;font-family:Baloo 2,Nunito,sans-serif}',
+    '#fedor1IntroBG{position:fixed;inset:0;z-index:100000;background:#000;display:none;overflow:hidden;font-family:Baloo 2,Nunito,sans-serif}',
     '#fedor1IntroBG.on{display:block}',
     '.f1intro-skip{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.4);padding:10px 18px;border-radius:24px;cursor:pointer;font-weight:900;font-size:15px;z-index:99999;font-family:Nunito,sans-serif}',
     '.f1intro-cap{position:absolute;bottom:7%;left:50%;transform:translateX(-50%);color:#fff;font-size:26px;font-weight:900;text-shadow:0 4px 18px rgba(0,0,0,.9),0 0 30px rgba(245,197,24,.5);padding:18px 32px;background:rgba(0,0,0,.55);border-radius:30px;border:2.5px solid rgba(245,197,24,.55);text-align:center;letter-spacing:.02em;max-width:88%;line-height:1.35}',
@@ -13534,6 +13545,10 @@ if(!CanvasRenderingContext2D.prototype.roundRect){
 
   /* ─── RUNNER ─── */
   function runIntro(){
+    clearAllTimers();
+    introWrap.style.transition = 'none';
+    introWrap.style.opacity = '1';
+    introWrap.style.display = 'block';
     introWrap.classList.add('on');
     var scenes = [sceneLab, sceneWalk, sceneRamp, sceneCount, sceneLiftoff, sceneSpace, sceneMoonArrive, sceneFinal];
     var i = 0;
@@ -13549,6 +13564,7 @@ if(!CanvasRenderingContext2D.prototype.roundRect){
     introWrap.style.opacity = '0';
     setTimeout(function(){
       introWrap.classList.remove('on');
+      introWrap.style.display = 'none';
       introWrap.style.opacity = '1';
       clearStage();
       try{ localStorage.setItem('fedor1_intro_seen','1'); }catch(e){}
@@ -22534,24 +22550,19 @@ body[data-unit="1"] [style*="Blink"] {
     }
   }
   
-  // 2. Auto-skip intro después de 12 segundos por si se queda enganchado
+  // 2. Auto-skip intro watchdog si la animación lleva demasiado tiempo activa
   function autoSkipIntro(){
     setTimeout(function(){
-      try{
-        localStorage.setItem('fedor1_intro_seen', '1');
-      }catch(e){}
       var intro = document.getElementById('fedor1IntroBG');
       if(intro && intro.classList.contains('on')){
-        // Buscar el botón skip
         var skip = document.getElementById('f1IntroSkip');
         if(skip){ skip.click(); }
         else{
-          // Fallback: ocultar directamente
           intro.classList.remove('on');
           intro.style.display = 'none';
         }
       }
-    }, 12000);
+    }, 45000);
   }
   
   if(document.readyState === 'loading'){

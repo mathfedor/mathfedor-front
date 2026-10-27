@@ -334,7 +334,7 @@ export default function LaunchIntro({ onClose, isGrade1: isGrade1Prop }: { onClo
         clearStage();
         stage.innerHTML = `
           <div style="position:absolute;inset:0;background:linear-gradient(180deg,#1A0540 0%,#2A1054 50%,#3D1C66 100%);overflow:hidden">
-            ${sceneHeader(1, '🔬 LABORATORIO ESPACIAL')}
+            <div style="position:absolute;top:5%;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#5BBFFF,#9B5CFF);color:#fff;padding:8px 20px;border-radius:24px;font-weight:900;font-size:14px;letter-spacing:.08em;box-shadow:0 6px 20px rgba(91,191,255,.5);border:2px solid #fff;z-index:10">🧪 LABORATORIO ESPACIAL</div>
             <div style="position:absolute;top:0;left:0;right:0;height:40%;background:repeating-linear-gradient(90deg,rgba(91,191,255,.15) 0 30px,rgba(91,191,255,.05) 30px 60px);border-bottom:3px solid rgba(91,191,255,.4)"></div>
             <div style="position:absolute;bottom:0;left:0;right:0;height:25%;background:linear-gradient(180deg,#1A2A4E,#0A1330);border-top:3px solid #5BBFFF;background-image:repeating-linear-gradient(90deg,rgba(91,191,255,.2) 0 40px,transparent 40px 80px)"></div>
             <div style="position:absolute;top:18%;left:4%;width:140px;height:55%;background:linear-gradient(180deg,#2A3A6E,#0A1B40);border:3px solid #5BBFFF;border-radius:8px;display:flex;flex-direction:column;justify-content:space-around;padding:8px">

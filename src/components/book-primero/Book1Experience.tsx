@@ -25,7 +25,7 @@ import DiaryScreen1ro from './screens/DiaryScreen1ro';
 import ShopScreen1ro from './screens/ShopScreen1ro';
 
 function Book1Shell() {
-  const { screen, loading, grantReward } = useBook1();
+  const { screen, loading, grantReward, showLaunchIntro, setShowLaunchIntro } = useBook1();
   const [showIntro, setShowIntro] = useState(false);
   const [showStatsLab, setShowStatsLab] = useState(false);
 
@@ -136,10 +136,13 @@ function Book1Shell() {
         />
       </div>
 
-      {showIntro && (
+      {(showIntro || showLaunchIntro) && (
         <LaunchIntro
           isGrade1={true}
-          onClose={() => setShowIntro(false)}
+          onClose={() => {
+            setShowIntro(false);
+            setShowLaunchIntro(false);
+          }}
         />
       )}
 
