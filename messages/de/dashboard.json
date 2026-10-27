@@ -162,7 +162,22 @@
     "download_excel": "Excel herunterladen",
     "success_download": "Datei erfolgreich heruntergeladen",
     "error_download": "Datei konnte nicht heruntergeladen werden",
-    "error_load_modules": "Fehler beim Laden der Module"
+    "error_load_modules": "Fehler beim Laden der Module",
+    "badge_annual": "Jahres-Tarif",
+    "badge_free_trial": "Kostenlose Testversion (Digitales Buch)",
+    "badge_locked": "Gesperrt",
+    "locked_requires_annual": "Gesperrt — Erfordert Jahres-Tarif",
+    "valid_free_trial": "Kostenlos bis 31. Okt. 2026 (Nur Digitales Buch)",
+    "banner_free_trial_title": "Module der 1. bis 5. Klasse in kostenloser Testphase bis 31. Oktober",
+    "banner_free_trial_desc": "Ihr Konto beinhaltet vollen Zugriff auf die interaktiven digitalen Bücher zum Online-Lernen. Das Herunterladen von Modulen im Excel-Format (.xlsx) erfordert ein Jahres-Abonnement.",
+    "btn_get_annual_plan": "Jahres-Tarif erwerben",
+    "btn_study_online": "Online lernen",
+    "upgrade_modal_title": "Excel-Downloads exklusiv im Jahres-Tarif",
+    "upgrade_modal_desc": "Die Module der 1. bis 5. Klasse sind bis zum 31. Oktober kostenlos verfügbar, um mit dem interaktiven digitalen Buch auf der Plattform zu lernen. Der Download von Excel-Modulen und Vorlagen ist Nutzern mit aktivem Jahres-Tarif vorbehalten.",
+    "upgrade_modal_btn_plan": "Tarife anzeigen und Jahres-Tarif kaufen",
+    "upgrade_modal_btn_cancel": "Mit digitalem Buch fortfahren",
+    "empty_no_downloads_title": "Keine Excel-Downloads verfügbar",
+    "empty_no_downloads_desc": "Ihr Konto hat bis zum 31. Oktober kostenlosen Zugriff auf die interaktiven digitalen Bücher der 1. bis 5. Klasse. Um Excel-Dateien und Vorlagen herunterzuladen, abonnieren Sie bitte einen Jahres-Tarif."
   },
   "legal": {
     "title": "Verwaltung rechtlicher Dokumente",

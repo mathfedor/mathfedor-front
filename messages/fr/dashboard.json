@@ -162,7 +162,22 @@
     "download_excel": "Télécharger Excel",
     "success_download": "Fichier téléchargé avec succès",
     "error_download": "Impossible de télécharger le fichier",
-    "error_load_modules": "Erreur lors du chargement des modules"
+    "error_load_modules": "Erreur lors du chargement des modules",
+    "badge_annual": "Formule Annuelle",
+    "badge_free_trial": "Essai Gratuit (Livre Numérique)",
+    "badge_locked": "Verrouillé",
+    "locked_requires_annual": "Verrouillé — Nécessite une Formule Annuelle",
+    "valid_free_trial": "Gratuit jusqu'au 31 oct. 2026 (Livre Numérique uniquement)",
+    "banner_free_trial_title": "Modules de la 1re à la 5e en essai gratuit jusqu'au 31 octobre",
+    "banner_free_trial_desc": "Votre compte comprend un accès complet aux livres numériques interactifs pour étudier et pratiquer en ligne. Le téléchargement des modules au format Excel (.xlsx) nécessite un abonnement à la Formule Annuelle.",
+    "btn_get_annual_plan": "Souscrire à la Formule Annuelle",
+    "btn_study_online": "Étudier en ligne",
+    "upgrade_modal_title": "Téléchargements Excel exclusifs à la Formule Annuelle",
+    "upgrade_modal_desc": "Les modules de la 1re à la 5e sont disponibles gratuitement jusqu'au 31 octobre pour étudier et vous entraîner avec le livre numérique interactif sur la plateforme. Le téléchargement de modules et modèles Excel est réservé aux utilisateurs ayant une Formule Annuelle active.",
+    "upgrade_modal_btn_plan": "Voir les Formules et Acheter",
+    "upgrade_modal_btn_cancel": "Continuer avec le livre numérique",
+    "empty_no_downloads_title": "Aucun téléchargement Excel disponible",
+    "empty_no_downloads_desc": "Votre compte dispose d'un accès gratuit aux livres numériques interactifs de la 1re à la 5e jusqu'au 31 octobre. Pour télécharger les fichiers et modèles Excel, veuillez souscrire à une Formule Annuelle."
   },
   "legal": {
     "title": "Administration des Documents Légaux",
