@@ -19,7 +19,9 @@ const LEGAL_DOCUMENT_VERSIONS = {
 interface FormErrors {
   name?: string;
   email?: string;
+  confirmEmail?: string;
   password?: string;
+  confirmPassword?: string;
 }
 
 export default function RegisterPage() {
@@ -30,7 +32,9 @@ export default function RegisterPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    password: ''
+    confirmEmail: '',
+    password: '',
+    confirmPassword: ''
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -47,6 +51,20 @@ export default function RegisterPage() {
       ...prev,
       [name]: value
     }));
+    if (
+      errors[name as keyof FormErrors] ||
+      (name === 'email' && errors.confirmEmail) ||
+      (name === 'confirmEmail' && errors.confirmEmail) ||
+      (name === 'password' && errors.confirmPassword) ||
+      (name === 'confirmPassword' && errors.confirmPassword)
+    ) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: undefined,
+        ...(name === 'email' || name === 'confirmEmail' ? { confirmEmail: undefined } : {}),
+        ...(name === 'password' || name === 'confirmPassword' ? { confirmPassword: undefined } : {})
+      }));
+    }
   };
 
   const validateForm = () => {
@@ -64,11 +82,25 @@ export default function RegisterPage() {
       newErrors.email = tVal('email_invalid');
     }
 
+    // Validar confirmación de email
+    if (!formData.confirmEmail) {
+      newErrors.confirmEmail = tVal('confirm_email_required');
+    } else if (formData.email.trim().toLowerCase() !== formData.confirmEmail.trim().toLowerCase()) {
+      newErrors.confirmEmail = tVal('emails_not_matching');
+    }
+
     // Validar contraseña
     if (!formData.password) {
       newErrors.password = tVal('password_required');
     } else if (formData.password.length < 6) {
       newErrors.password = tVal('password_min');
+    }
+
+    // Validar confirmación de contraseña
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = tVal('confirm_password_required');
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = tVal('passwords_not_matching');
     }
 
     setErrors(newErrors);
@@ -97,8 +129,8 @@ export default function RegisterPage() {
       }
 
       await usersService.createUser({
-        name: formData.name,
-        email: formData.email,
+        name: formData.name.trim(),
+        email: formData.email.trim().toLowerCase(),
         password: formData.password,
         rol: 'Student', // Por defecto todos los usuarios nuevos son estudiantes
         recaptchaToken,
@@ -194,6 +226,25 @@ export default function RegisterPage() {
               </div>
 
               <div>
+                <label htmlFor="confirmEmail" className="sr-only">{t('confirm_email')}</label>
+                <input
+                  id="confirmEmail"
+                  name="confirmEmail"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className={`appearance-none rounded-md relative block w-full px-3 py-4 border ${errors.confirmEmail ? 'border-red-500' : 'border-gray-300'
+                    } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm`}
+                  placeholder={t('confirm_email')}
+                  value={formData.confirmEmail}
+                  onChange={handleChange}
+                />
+                {errors.confirmEmail && (
+                  <p className="text-red-500 text-xs mt-1">{errors.confirmEmail}</p>
+                )}
+              </div>
+
+              <div>
                 <label htmlFor="password" className="sr-only">{t('password')}</label>
                 <input
                   id="password"
@@ -209,6 +260,25 @@ export default function RegisterPage() {
                 />
                 {errors.password && (
                   <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="confirmPassword" className="sr-only">{t('confirm_password')}</label>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  className={`appearance-none rounded-md relative block w-full px-3 py-4 border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                    } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm`}
+                  placeholder={t('confirm_password')}
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>
                 )}
               </div>
             </div>
