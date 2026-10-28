@@ -1006,56 +1006,133 @@ export function CountVisual1ro({ exercise }: { exercise: Exercise }) {
   return null;
 }
 
+function deriveTitle(q: string): string {
+  const l = (q || '').toLowerCase();
+  if (/mayor|menor|compara|m.s grande|m.s peque/.test(l)) return 'Comparemos los números';
+  if (/despu.s|siguiente|sigue/.test(l)) return 'Número posterior';
+  if (/antes|anterior/.test(l)) return 'Número anterior';
+  if (/entre/.test(l)) return 'Número intermedio';
+  if (/cuenta|cu.ntos elementos|cu.ntos|cu.ntas/.test(l)) return '¡Vamos a contar!';
+  if (/decena/.test(l)) return 'La Decena';
+  if (/docena/.test(l)) return 'La Docena';
+  if (/centena/.test(l)) return 'La Centena';
+  if (/\+|suma/.test(l)) return 'Vamos a sumar';
+  if (/\-|−|resta/.test(l)) return 'Vamos a restar';
+  if (/×|veces/.test(l)) return 'Vamos a multiplicar';
+  if (/÷|repart|divid/.test(l)) return 'Vamos a repartir';
+  if (/per.metro/.test(l)) return 'Perímetro';
+  if (/punto|l.nea|recta/.test(l)) return 'Geometría';
+  return 'Resolvamos paso a paso';
+}
+
 function deriveInstr(q: string, hint?: string): string {
   if (hint) return hint;
   const l = (q || '').toLowerCase();
-  if (/cu.ntos elementos|cuenta|cu.ntas|cu.ntos/.test(l)) return 'Lee con atención y cuenta cada elemento visual.';
-  if (/despu.s|siguiente|sigue/.test(l)) return 'Seguimos la secuencia hacia adelante (+1).';
-  if (/antes|anterior/.test(l)) return 'Pensamos en el número anterior (-1).';
-  if (/entre/.test(l)) return 'Buscamos el número que está en el medio.';
-  if (/mayor|menor|compara/.test(l)) return 'Comparamos las cantidades para escoger la correcta.';
-  if (/decena|docena/.test(l)) return 'Recordamos el valor de la decena o docena.';
-  if (/\+|suma/.test(l)) return 'Sumamos con cuidado ambas cantidades.';
-  if (/\-|−|resta/.test(l)) return 'Restamos con cuidado las cantidades.';
-  return 'Lee la pregunta con atención y piensa paso a paso.';
+  if (/cu.ntos elementos|cuenta|cu.ntas|cu.ntos/.test(l)) return 'Lee con atención y cuenta cada elemento.';
+  if (/despu.s|antes|siguiente|sigue/.test(l)) return 'Seguimos la secuencia de los números.';
+  if (/entre/.test(l)) return 'Busca el número que está en medio.';
+  if (/mayor|menor|compara/.test(l)) return 'Compara las cantidades para escoger la correcta.';
+  if (/decena|docena|centena/.test(l)) return 'Recuerda el valor posicional.';
+  if (/\+|suma/.test(l)) return 'Suma con cuidado las cantidades.';
+  if (/\-|−|resta/.test(l)) return 'Resta con cuidado las cantidades.';
+  if (/×|veces/.test(l)) return 'Multiplica con orden, paso a paso.';
+  if (/÷|repart|divid/.test(l)) return 'Reparte en partes iguales.';
+  return 'Lee la pregunta y piensa paso a paso.';
 }
 
 function deriveProcedure(q: string, a: string, ex?: Exercise): string {
-  if (ex?.explain) return ex.explain;
+  if (ex?.proc) return ex.proc;
+  if (ex?.explain && ex.explain.indexOf('<') === -1) return ex.explain;
   const l = (q || '').toLowerCase();
-  const m = (q || '').match(/(\d+)\s*([\+\-−×÷xX])\s*(\d+)/);
+  let m = (q || '').match(/(\d+)\s*([\+\-−×÷xX])\s*(\d+)/);
   if (m) {
-    const n1 = parseInt(m[1], 10), n2 = parseInt(m[3], 10);
+    const n1 = parseInt(m[1], 10),
+      n2 = parseInt(m[3], 10);
     const sym = m[2];
     if (sym === '+') return `Sumamos: ${n1} + ${n2} = ${a}.`;
     if (sym === '-' || sym === '−') return `Restamos: ${n1} − ${n2} = ${a}.`;
     if (sym === '×' || sym === 'x' || sym === 'X') return `Multiplicamos: ${n1} × ${n2} = ${a}.`;
     if (sym === '÷') return `Repartimos: ${n1} ÷ ${n2} = ${a}.`;
   }
-  if (/cu.ntos elementos|cuenta|cu.ntas|cu.ntos/.test(l)) {
+  m = (q || '').match(/mayor.*?(\d+)\s*[ou]\s*(\d+)/i);
+  if (m) {
+    const a1 = parseInt(m[1], 10),
+      a2 = parseInt(m[2], 10);
+    return `Comparamos ${a1} y ${a2}. El mayor es ${Math.max(a1, a2)}.`;
+  }
+  m = (q || '').match(/menor.*?(\d+)\s*[ou]\s*(\d+)/i);
+  if (m) {
+    const b1 = parseInt(m[1], 10),
+      b2 = parseInt(m[2], 10);
+    return `Comparamos ${b1} y ${b2}. El menor es ${Math.min(b1, b2)}.`;
+  }
+  m = (q || '').match(/despu.s.*?(\d+)/i);
+  if (m) {
+    const n = parseInt(m[1], 10);
+    return `El número que va después de ${n} es ${n} + 1 = ${n + 1}.`;
+  }
+  m = (q || '').match(/antes.*?(\d+)/i);
+  if (m) {
+    const n = parseInt(m[1], 10);
+    return `El número que va antes de ${n} es ${n} − 1 = ${n - 1}.`;
+  }
+  m = (q || '').match(/entre.*?(\d+).*?(\d+)/i);
+  if (m) {
+    const c1 = parseInt(m[1], 10),
+      c2 = parseInt(m[2], 10);
+    const mid = Math.floor((c1 + c2) / 2);
+    return `Los números en orden son ${c1}, ${c1 + 1}, ${c1 + 2}. El que está entre ${c1} y ${c2} es ${mid}.`;
+  }
+  if (/decena/.test(l)) return `Una decena son 10 unidades. Por eso la respuesta es ${a}.`;
+  if (/docena/.test(l)) return `Una docena son 12 unidades. Por eso la respuesta es ${a}.`;
+  if (/centena/.test(l)) return `Una centena son 100 unidades. Por eso la respuesta es ${a}.`;
+  if (/cu.ntos elementos|cuenta|cu.ntos|cu.ntas/.test(l)) {
     const num = parseInt(a, 10) || 3;
     const nums = Array.from({ length: Math.min(num, 15) }, (_, i) => i + 1).join(', ');
     return `Contamos uno a uno: ${nums}. Total: ${a}.`;
   }
-  if (/despu.s|siguiente/.test(l)) {
-    const nMatch = (q || '').match(/despu.s.*?(\d+)/i) || (q || '').match(/(\d+)/);
-    if (nMatch) {
-      const n = parseInt(nMatch[1], 10);
-      return `El número que va después de ${n} es ${n} + 1 = ${n + 1}.`;
-    }
-  }
-  if (/antes|anterior/.test(l)) {
-    const nMatch = (q || '').match(/antes.*?(\d+)/i) || (q || '').match(/(\d+)/);
-    if (nMatch) {
-      const n = parseInt(nMatch[1], 10);
-      return `El número que va antes de ${n} es ${n} − 1 = ${n - 1}.`;
-    }
-  }
-  if (/decena/.test(l)) return `Una decena equivale a 10 unidades. Por eso la respuesta es ${a}.`;
-  return `Resolvamos con calma observando los elementos. La respuesta correcta es ${a}.`;
+  return `Resolvamos con calma. La respuesta correcta es ${a}.`;
 }
 
-/** Modal interactivo del procedimiento paso a paso (Imagen 1) */
+/** Botón circular de audio para las cajas del modal (Idéntico a Imagen) */
+function ModalAudioBtn({ text }: { text: string }) {
+  return (
+    <button
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        fedorTTS.speak(text);
+      }}
+      style={{
+        width: '32px',
+        height: '32px',
+        borderRadius: '50%',
+        background: 'linear-gradient(135deg, #06B6D4, #0891B2)',
+        border: 'none',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '14px',
+        color: '#ffffff',
+        cursor: 'pointer',
+        boxShadow: '0 2px 8px rgba(6, 182, 212, 0.4)',
+        flexShrink: 0,
+        transition: 'transform 0.15s ease',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'scale(1.12)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'scale(1)';
+      }}
+      title="Escuchar"
+    >
+      🔊
+    </button>
+  );
+}
+
+/** Modal interactivo del procedimiento paso a paso (Idéntico a MatematicasDeFedor_1.html) */
 function ProcedimientoModal1ro({
   exercise,
   onClose,
@@ -1065,9 +1142,13 @@ function ProcedimientoModal1ro({
 }) {
   const [revealed, setRevealed] = useState(false);
   const q = exercise.q || '';
-  const a = (exercise as any).ans || '';
-  const instr = deriveInstr(q, (exercise as any).hint);
-  const proc = deriveProcedure(q, a, exercise);
+  const a = (exercise as any).ans != null ? String((exercise as any).ans) : '';
+  const title = deriveTitle(q);
+  const instr = (exercise as any).hint || deriveInstr(q);
+  const proc = (exercise as any).proc || deriveProcedure(q, a, exercise);
+  const explain = (exercise as any).explain || '';
+  const svgFig = (exercise as any).svgFig || '';
+  const ctx = (exercise as any).ctx || '';
 
   return (
     <div
@@ -1090,9 +1171,9 @@ function ProcedimientoModal1ro({
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
-          background: '#fff',
-          borderRadius: 24,
-          maxWidth: 540,
+          background: '#ffffff',
+          borderRadius: '24px',
+          maxWidth: '560px',
           width: '100%',
           maxHeight: '90vh',
           overflow: 'hidden',
@@ -1103,6 +1184,7 @@ function ProcedimientoModal1ro({
           fontFamily: "'Nunito', sans-serif",
         }}
       >
+        {/* Cabecera del Modal (Naranja degradado) */}
         <div
           style={{
             background: 'linear-gradient(135deg, #FF8A1F, #FFB066)',
@@ -1114,12 +1196,20 @@ function ProcedimientoModal1ro({
             fontFamily: "'Baloo 2', sans-serif",
           }}
         >
-          <span style={{ fontSize: 34, lineHeight: 1, filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.35))' }}>
+          <span
+            style={{
+              fontSize: '34px',
+              lineHeight: 1,
+              filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.35))',
+            }}
+          >
             💡
           </span>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 20, fontWeight: 900, lineHeight: 1.15 }}>Procedimiento</div>
-            <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.9, marginTop: 2 }}>
+            <div style={{ fontSize: '20px', fontWeight: 900, lineHeight: 1.15 }}>
+              Procedimiento
+            </div>
+            <div style={{ fontSize: '11px', fontWeight: 700, opacity: 0.85, marginTop: '2px' }}>
               Resolvamos juntos paso a paso
             </div>
           </div>
@@ -1129,30 +1219,43 @@ function ProcedimientoModal1ro({
             style={{
               background: 'rgba(255,255,255,0.22)',
               border: 'none',
-              color: '#fff',
-              fontSize: 24,
-              width: 38,
-              height: 38,
+              color: '#ffffff',
+              fontSize: '24px',
+              width: '38px',
+              height: '38px',
               borderRadius: '50%',
               cursor: 'pointer',
               fontWeight: 900,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              lineHeight: 1,
             }}
           >
             ×
           </button>
         </div>
 
-        <div style={{ padding: '1.25rem 1.35rem', overflowY: 'auto', flex: 1, background: 'linear-gradient(180deg, #FFF8E0, #FFFCEF)' }}>
+        {/* Cuerpo del Modal con cajas didácticas de colores */}
+        <div
+          style={{
+            padding: '1.2rem 1.3rem',
+            overflowY: 'auto',
+            flex: 1,
+            background: 'linear-gradient(180deg, #FFF8E0, #FFFCEF)',
+          }}
+        >
+          {/* Caja Pregunta */}
           <div
             style={{
               background: '#F0EDFF',
               border: '2px solid #C5BFEE',
-              borderRadius: 14,
+              borderRadius: '14px',
               padding: '0.8rem 1rem',
               marginBottom: '1rem',
               textAlign: 'center',
               fontFamily: "'Baloo 2', sans-serif",
-              fontSize: 20,
+              fontSize: '21px',
               fontWeight: 900,
               color: '#3D1468',
               lineHeight: 1.3,
@@ -1161,54 +1264,176 @@ function ProcedimientoModal1ro({
             {q}
           </div>
 
+          {/* SVG si existe */}
+          {svgFig && (
+            <div
+              style={{
+                background: '#ffffff',
+                border: '2px solid #C5BFEE',
+                borderRadius: '12px',
+                padding: '8px',
+                marginBottom: '0.8rem',
+                textAlign: 'center',
+              }}
+              dangerouslySetInnerHTML={{ __html: svgFig }}
+            />
+          )}
+
+          {/* Contexto si existe */}
+          {ctx && (
+            <div
+              style={{
+                background: '#EAF6FF',
+                color: '#0A3A6A',
+                borderLeft: '5px solid #1A6CB4',
+                borderRadius: '12px',
+                padding: '0.7rem 1rem',
+                marginBottom: '0.65rem',
+                fontSize: '14px',
+                fontWeight: 800,
+                lineHeight: 1.45,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '12px',
+              }}
+            >
+              <span>💭 {ctx}</span>
+              <ModalAudioBtn text={ctx} />
+            </div>
+          )}
+
+          {/* Caja 1: Título / Concepto (Celeste con borde azul izquierdo) */}
           <div
             style={{
-              borderRadius: 12,
-              padding: '0.75rem 1rem',
+              borderRadius: '12px',
+              padding: '0.7rem 1rem',
               marginBottom: '0.65rem',
-              fontSize: 14,
+              fontSize: '16px',
+              lineHeight: 1.45,
+              fontWeight: 900,
+              background: '#E0F7FF',
+              color: '#0A3A6A',
+              borderLeft: '5px solid #1A6CB4',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '12px',
+            }}
+          >
+            <span>👉 {title}</span>
+            <ModalAudioBtn text={title} />
+          </div>
+
+          {/* Caja 2: Instrucción (Amarillo suave con borde dorado izquierdo) */}
+          <div
+            style={{
+              borderRadius: '12px',
+              padding: '0.7rem 1rem',
+              marginBottom: '0.65rem',
+              fontSize: '15px',
               lineHeight: 1.45,
               fontWeight: 800,
               background: '#FFF8DC',
               color: '#7A3200',
               borderLeft: '5px solid #F5C518',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '12px',
             }}
           >
-            📖 Instrucción: {instr}
+            <span>📖 Instrucción: {instr}</span>
+            <ModalAudioBtn text={`Instrucción: ${instr}`} />
           </div>
 
-          <div
-            style={{
-              borderRadius: 12,
-              padding: '0.75rem 1rem',
-              marginBottom: '0.65rem',
-              fontSize: 15,
-              lineHeight: 1.45,
-              fontWeight: 800,
-              background: '#FFFFFF',
-              color: '#1a1a1a',
-              border: '2px solid #FFB066',
-            }}
-          >
-            🧮 Procedimiento: {proc}
-          </div>
+          {/* Caja 3: Procedimiento explícito (Blanco con borde naranja) */}
+          {proc && (
+            <div
+              style={{
+                borderRadius: '12px',
+                padding: '0.7rem 1rem',
+                marginBottom: '0.65rem',
+                fontSize: '15px',
+                lineHeight: 1.45,
+                fontWeight: 800,
+                background: '#FFFFFF',
+                color: '#1a1a1a',
+                border: '2px solid #FFB066',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '12px',
+              }}
+            >
+              <span>🧮 Procedimiento: {proc}</span>
+              <ModalAudioBtn text={`Procedimiento: ${proc}`} />
+            </div>
+          )}
 
+          {/* Explain detallado si existe */}
+          {explain && explain.indexOf('<') !== -1 ? (
+            <div
+              style={{
+                background: 'linear-gradient(180deg, #FFF7E0, #FFFFFF)',
+                border: '2px dashed #F0C674',
+                borderRadius: '12px',
+                padding: '0.8rem',
+                marginBottom: '0.7rem',
+                fontSize: '14px',
+                color: '#3D1468',
+                lineHeight: 1.5,
+              }}
+              dangerouslySetInnerHTML={{ __html: explain }}
+            />
+          ) : explain ? (
+            <div
+              style={{
+                borderRadius: '12px',
+                padding: '0.7rem 1rem',
+                marginBottom: '0.65rem',
+                fontSize: '14px',
+                background: '#FFF7E0',
+                color: '#3D1468',
+                borderLeft: '5px solid #7B2FBE',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '12px',
+              }}
+            >
+              <span>📝 {explain}</span>
+              <ModalAudioBtn text={explain} />
+            </div>
+          ) : null}
+
+          {/* Botón Mostrar Respuesta / Respuesta revelada */}
           {!revealed ? (
             <button
               type="button"
               onClick={() => setRevealed(true)}
               style={{
                 width: '100%',
-                padding: 14,
-                fontSize: 15,
+                padding: '14px',
+                fontSize: '16px',
                 fontWeight: 900,
                 background: 'linear-gradient(135deg, #16876A, #24C496)',
-                color: '#fff',
+                color: '#ffffff',
                 border: 'none',
-                borderRadius: 14,
+                borderRadius: '14px',
                 cursor: 'pointer',
                 marginTop: '1rem',
                 fontFamily: "'Nunito', sans-serif",
+                letterSpacing: '0.02em',
+                transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 20px rgba(22,135,106,0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             >
               👁️ Mostrar respuesta
@@ -1216,18 +1441,25 @@ function ProcedimientoModal1ro({
           ) : (
             <div
               style={{
-                borderRadius: 12,
+                borderRadius: '12px',
                 padding: '0.85rem 1rem',
                 marginTop: '1rem',
-                fontSize: 16,
+                fontSize: '17px',
                 fontWeight: 900,
                 background: '#FFE9C4',
                 color: '#7A1B00',
                 borderLeft: '5px solid #FF8A1F',
-                animation: 'popIn 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '12px',
+                animation: 'slideUp 0.35s ease',
               }}
             >
-              ✅ Respuesta correcta: <strong>{a}</strong>
+              <span>
+                ✅ Respuesta: <strong>{a}</strong>
+              </span>
+              <ModalAudioBtn text={`Respuesta correcta: ${a}`} />
             </div>
           )}
         </div>

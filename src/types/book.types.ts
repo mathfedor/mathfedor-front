@@ -62,6 +62,7 @@ interface ExerciseBase {
   svgFig?: string;
   visObjs?: Array<{ e: string; n: number; label?: string }>;
   hint?: string;
+  proc?: string;
 }
 
 /** Ejercicio de opción múltiple. */
