@@ -305,44 +305,58 @@ export default function UnitWelcomeModal4to({
   return (
     <div
       id="tutOverlay"
+      role="dialog"
+      aria-modal="true"
       style={{
         position: 'fixed',
         inset: 0,
         zIndex: 99995,
-        background: 'rgba(0, 0, 0, 0.8)',
+        background: 'rgba(0, 0, 0, 0.78)',
+        backdropFilter: 'blur(4px)',
+        WebkitBackdropFilter: 'blur(4px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backdropFilter: 'blur(4px)',
-        WebkitBackdropFilter: 'blur(4px)',
         padding: '1rem',
+        overflowY: 'auto',
       }}
       onClick={(e) => {
         if (e.target === e.currentTarget) handleClose();
       }}
     >
       <div
+        className="unit-welcome-card"
         style={{
           background: '#ffffff',
-          borderRadius: 24,
-          maxWidth: 380,
+          borderRadius: 28,
+          maxWidth: 415,
           width: '92%',
-          padding: '1.5rem',
+          padding: '2rem 1.75rem 1.75rem',
           textAlign: 'center',
-          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
+          boxShadow: '0 24px 65px rgba(0, 0, 0, 0.45)',
+          border: '1px solid rgba(255, 255, 255, 0.8)',
           fontFamily: "'Nunito', sans-serif",
           position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          margin: 'auto',
+          maxHeight: '90vh',
+          overflowY: 'auto',
+          animation: 'popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards',
         }}
       >
         {/* Top 3D / Floating Unit Icon */}
         <div
           id="tutIcon"
           style={{
-            marginBottom: '0.4rem',
+            marginBottom: '1.1rem',
             lineHeight: 1,
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
+            animation: 'floatIcon 2.6s ease-in-out infinite',
+            flexShrink: 0,
           }}
         >
           <UnitOperationIcon3D4to unitIndex={unitIndex} fallbackIcon={tut.icon} />
@@ -353,11 +367,13 @@ export default function UnitWelcomeModal4to({
           id="tutTitle"
           style={{
             fontFamily: "'Baloo 2', 'Nunito', sans-serif",
-            fontSize: 20,
+            fontSize: 22,
             fontWeight: 900,
             color: '#7B2FBE',
-            lineHeight: 1.25,
-            marginBottom: '0.45rem',
+            lineHeight: 1.3,
+            marginBottom: '0.5rem',
+            letterSpacing: '-0.02em',
+            width: '100%',
             textAlign: 'center',
           }}
         >
@@ -365,7 +381,7 @@ export default function UnitWelcomeModal4to({
         </div>
 
         {/* Sound / Read Aloud Button */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.6rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.85rem' }}>
           <button
             type="button"
             onClick={handleSpeak}
@@ -401,11 +417,12 @@ export default function UnitWelcomeModal4to({
         <div
           id="tutText"
           style={{
-            fontSize: 13,
+            fontSize: 13.5,
             fontWeight: 700,
-            color: '#666666',
+            color: '#555555',
             lineHeight: 1.55,
-            marginBottom: '0.85rem',
+            maxWidth: 320,
+            margin: '0 auto 1.35rem auto',
             textAlign: 'center',
           }}
         >
@@ -416,10 +433,12 @@ export default function UnitWelcomeModal4to({
         <div
           id="tutSteps"
           style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 10,
+            marginBottom: '1.5rem',
             textAlign: 'left',
-            marginBottom: '1rem',
-            display: 'grid',
-            gap: 7,
+            width: '100%',
           }}
         >
           {tut.steps.map((s, i) => (
@@ -427,37 +446,42 @@ export default function UnitWelcomeModal4to({
               key={i}
               style={{
                 display: 'flex',
-                alignItems: 'flex-start',
-                gap: 8,
-                padding: '6px 10px',
+                alignItems: 'center',
+                gap: 12,
+                padding: '11px 14px',
                 background: '#F7F4FF',
-                borderRadius: 10,
+                borderRadius: 14,
+                border: '1px solid #ECE6FA',
+                boxShadow: '0 1px 3px rgba(123, 47, 190, 0.04)',
+                flexShrink: 0,
               }}
             >
               <div
                 style={{
-                  minWidth: 20,
-                  height: 20,
+                  width: 24,
+                  height: 24,
+                  minWidth: 24,
                   borderRadius: '50%',
                   background: 'linear-gradient(135deg, #7B2FBE, #A864E8)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: 10,
+                  fontSize: 11,
                   fontWeight: 900,
                   color: '#ffffff',
                   flexShrink: 0,
-                  marginTop: 1,
+                  boxShadow: '0 2px 5px rgba(123, 47, 190, 0.3)',
                 }}
               >
                 {i + 1}
               </div>
               <div
                 style={{
-                  fontSize: 12,
+                  fontSize: 12.5,
                   fontWeight: 700,
                   color: '#333333',
                   lineHeight: 1.45,
+                  flex: 1,
                 }}
               >
                 {s}
@@ -472,51 +496,62 @@ export default function UnitWelcomeModal4to({
           onClick={handleClose}
           style={{
             width: '100%',
-            padding: 13,
-            fontSize: 14,
+            padding: '14px 20px',
+            fontSize: 15,
             fontWeight: 900,
             background: 'linear-gradient(135deg, #7B2FBE, #A864E8)',
             color: '#ffffff',
             border: 'none',
-            borderRadius: 12,
+            borderRadius: 14,
             cursor: 'pointer',
             fontFamily: "'Nunito', sans-serif",
-            marginBottom: '0.65rem',
-            boxShadow: '0 4px 14px rgba(123, 47, 190, 0.35)',
+            marginBottom: '0.85rem',
+            boxShadow: '0 6px 20px rgba(123, 47, 190, 0.35)',
             transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+            flexShrink: 0,
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-1px)';
-            e.currentTarget.style.boxShadow = '0 6px 18px rgba(123, 47, 190, 0.45)';
+            e.currentTarget.style.transform = 'translateY(-1px) scale(1.01)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(123, 47, 190, 0.45)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 4px 14px rgba(123, 47, 190, 0.35)';
+            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+            e.currentTarget.style.boxShadow = '0 6px 20px rgba(123, 47, 190, 0.35)';
           }}
         >
-          ¡Empezar Aventura! 🚀
+          <span>¡Empezar Aventura!</span>
+          <span style={{ fontSize: 16 }}>🚀</span>
         </button>
 
         {/* Skip Link */}
-        <div
-          onClick={handleClose}
-          style={{
-            fontSize: 12,
-            color: '#aaaaaa',
-            cursor: 'pointer',
-            textDecoration: 'underline',
-            userSelect: 'none',
-            fontFamily: "'Nunito', sans-serif",
-            transition: 'color 0.15s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = '#7B2FBE';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = '#aaaaaa';
-          }}
-        >
-          Omitir tutorial
+        <div style={{ width: '100%', textAlign: 'center', paddingBottom: 2 }}>
+          <div
+            onClick={handleClose}
+            style={{
+              fontSize: 12.5,
+              color: '#aaaaaa',
+              cursor: 'pointer',
+              textDecoration: 'underline',
+              textUnderlineOffset: 3,
+              userSelect: 'none',
+              fontFamily: "'Nunito', sans-serif",
+              padding: '4px 8px',
+              display: 'inline-block',
+              transition: 'color 0.15s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#7B2FBE';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = '#aaaaaa';
+            }}
+          >
+            Omitir tutorial
+          </div>
         </div>
       </div>
     </div>

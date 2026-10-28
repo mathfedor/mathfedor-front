@@ -422,8 +422,8 @@ export const bookService = {
           const res = await fetch(`${API_URL}/books/${slug}/tutorials`, { headers: bookHeaders() });
           if (res.ok) {
             const data = await res.json();
-            if (Array.isArray(data)) {
-              return (data[unitIndex] as UnitTutorial) ?? null;
+            if (Array.isArray(data) && data.length > unitIndex && data[unitIndex]) {
+              return (data[unitIndex] as UnitTutorial);
             }
           }
         } catch (err) {

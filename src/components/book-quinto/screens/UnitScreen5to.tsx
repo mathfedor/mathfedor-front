@@ -54,10 +54,11 @@ const HERO_STARS = [
 
 export default function UnitScreen5to() {
   const { book, currentUnit, scores, goScreen, startLevel } = useBook5();
-  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(true);
   const [expandedTopics, setExpandedTopics] = useState<Record<number, boolean>>({ 0: true });
 
   useEffect(() => {
+    setShowWelcomeModal(true);
     setExpandedTopics({ 0: true });
   }, [currentUnit]);
 
@@ -168,16 +169,30 @@ export default function UnitScreen5to() {
 
           <div className="relative z-10">
             {/* Unit Operation Icon */}
-            <div className="mb-2.5 inline-flex items-center justify-center">
+            <div
+              className="mb-2.5 inline-flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
+              title="Ver tutorial de la unidad"
+              onClick={() => setShowWelcomeModal(true)}
+            >
               <UnitOperationIcon3D5to unitIndex={currentUnit} fallbackIcon={unit.icon} />
             </div>
 
-            <h1
-              className="text-xl sm:text-2xl md:text-[26px] font-black text-white tracking-tight leading-snug"
-              style={{ fontFamily: "'Baloo 2', sans-serif" }}
-            >
-              {unitDisplayName}
-            </h1>
+            <div className="flex items-center gap-2.5">
+              <h1
+                className="text-xl sm:text-2xl md:text-[26px] font-black text-white tracking-tight leading-snug"
+                style={{ fontFamily: "'Baloo 2', sans-serif" }}
+              >
+                {unitDisplayName}
+              </h1>
+              <button
+                type="button"
+                onClick={() => setShowWelcomeModal(true)}
+                className="bg-white/20 hover:bg-white/30 text-white rounded-full w-7 h-7 flex items-center justify-center text-xs shadow border border-white/40 transition-transform active:scale-90 cursor-pointer"
+                title="Ver tutorial de la unidad"
+              >
+                💡
+              </button>
+            </div>
 
             <p className="text-xs sm:text-sm font-semibold text-white/85 mt-1">
               {unit.short || 'Adición'}

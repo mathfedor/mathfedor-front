@@ -313,46 +313,150 @@ export default function UnitWelcomeModal1ro({
 
   return (
     <div
-      className="fixed inset-0 z-[9995] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn select-none overflow-y-auto"
+      className="fixed inset-0 z-[9995] flex items-center justify-center select-none"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby="tutTitle1ro"
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9995,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '1rem',
+        background: 'rgba(0, 0, 0, 0.78)',
+        backdropFilter: 'blur(4px)',
+        WebkitBackdropFilter: 'blur(4px)',
+        overflowY: 'auto',
+      }}
     >
-      {/* Contenedor central blanco estilizado según la captura */}
+      {/* Contenedor central blanco estilizado según Image 1 */}
       <div
-        className="relative w-full max-w-[390px] md:max-w-[415px] bg-white rounded-[32px] md:rounded-[36px] pt-10 pb-9 px-7 md:px-8 text-center shadow-[0_24px_65px_rgba(0,0,0,0.45)] animate-popIn my-auto border border-white/60 flex flex-col items-center"
+        className="unit-welcome-card"
         onClick={(e) => e.stopPropagation()}
+        style={{
+          position: 'relative',
+          width: '92%',
+          maxWidth: 415,
+          background: '#ffffff',
+          borderRadius: 28,
+          padding: '2rem 1.75rem 1.75rem',
+          textAlign: 'center',
+          boxShadow: '0 24px 65px rgba(0, 0, 0, 0.45)',
+          border: '1px solid rgba(255, 255, 255, 0.8)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          margin: 'auto',
+          maxHeight: '90vh',
+          overflowY: 'auto',
+          animation: 'popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        }}
       >
         {/* Símbolo matemático 3D con animación flotante continua */}
-        <div className="floating-unit-icon flex items-center justify-center mb-6">
-          <UnitOperationIcon3D1ro unitIndex={unitIndex} />
+        <div
+          className="floating-unit-icon"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '1.25rem',
+            animation: 'floatIcon 2.6s ease-in-out infinite',
+            flexShrink: 0,
+          }}
+        >
+          <UnitOperationIcon3D1ro unitIndex={unitIndex} size={76} />
         </div>
 
         {/* Título de la Unidad */}
         <h2
           id="tutTitle1ro"
-          className="text-[21px] md:text-[23px] font-black text-[#7B2FBE] font-['Baloo_2',sans-serif] leading-snug mb-2.5 tracking-tight w-full"
+          style={{
+            fontSize: 22,
+            fontWeight: 900,
+            color: '#7B2FBE',
+            fontFamily: "'Baloo 2', 'Nunito', sans-serif",
+            lineHeight: 1.3,
+            marginBottom: '0.65rem',
+            letterSpacing: '-0.02em',
+            width: '100%',
+            textAlign: 'center',
+          }}
         >
           {tut.title}
         </h2>
 
         {/* Subtítulo / Descripción pedagógica */}
-        <p className="text-[13px] font-bold text-[#555555] leading-relaxed max-w-[310px] mx-auto mb-6">
+        <p
+          style={{
+            fontSize: 13.5,
+            fontWeight: 700,
+            color: '#555555',
+            lineHeight: 1.55,
+            maxWidth: 320,
+            margin: '0 auto 1.35rem auto',
+            textAlign: 'center',
+          }}
+        >
           {tut.text}
         </p>
 
-        {/* 4 Pasos / Destacados numerados */}
-        <div className="space-y-3.5 mb-7 text-left w-full">
+        {/* 4 Pasos / Destacados numerados con espaciado amplio */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 10,
+            marginBottom: '1.5rem',
+            textAlign: 'left',
+            width: '100%',
+          }}
+        >
           {tut.steps.map((step, idx) => (
             <div
               key={idx}
-              className="flex items-center gap-4 py-3.5 px-4 md:px-5 bg-[#F6F3FF] rounded-[20px] border border-purple-100/60 shadow-2xs hover:border-purple-200 transition-colors"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                padding: '11px 14px',
+                background: '#F7F4FF',
+                borderRadius: 14,
+                border: '1px solid #ECE6FA',
+                boxShadow: '0 1px 3px rgba(123, 47, 190, 0.04)',
+                flexShrink: 0,
+              }}
             >
-              <div className="w-6 h-6 rounded-full bg-[#8338EC] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-sm">
+              <div
+                style={{
+                  width: 24,
+                  height: 24,
+                  minWidth: 24,
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #7B2FBE, #A864E8)',
+                  color: '#ffffff',
+                  fontWeight: 900,
+                  fontSize: 11,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  boxShadow: '0 2px 5px rgba(123, 47, 190, 0.3)',
+                }}
+              >
                 {idx + 1}
               </div>
-              <div className="text-[12px] md:text-[13px] font-bold text-[#333333] leading-snug flex-1">
+              <div
+                style={{
+                  fontSize: 12.5,
+                  fontWeight: 700,
+                  color: '#333333',
+                  lineHeight: 1.45,
+                  flex: 1,
+                }}
+              >
                 {step}
               </div>
             </div>
@@ -360,23 +464,67 @@ export default function UnitWelcomeModal1ro({
         </div>
 
         {/* Botón Principal: ¡Empezar Aventura! 🚀 */}
-        <div className="w-full pt-1 mb-4">
-          <button
-            type="button"
-            onClick={handleStart}
-            className="w-full py-4 px-6 rounded-[20px] bg-gradient-to-r from-[#7B2FBE] via-[#8538E5] to-[#9D4EDD] hover:from-[#6D24B0] hover:to-[#8E3AD5] text-white font-black text-sm md:text-base shadow-lg shadow-purple-600/25 transition-all hover:scale-[1.015] active:scale-[0.985] cursor-pointer flex items-center justify-center gap-2"
-          >
-            <span>¡Empezar Aventura!</span>
-            <span>🚀</span>
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={handleStart}
+          style={{
+            width: '100%',
+            padding: '14px 20px',
+            borderRadius: 14,
+            background: 'linear-gradient(135deg, #7B2FBE 0%, #8E3AD5 50%, #A864E8 100%)',
+            color: '#ffffff',
+            fontWeight: 900,
+            fontSize: 15,
+            border: 'none',
+            boxShadow: '0 6px 20px rgba(123, 47, 190, 0.35)',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+            marginBottom: '0.85rem',
+            fontFamily: "'Nunito', sans-serif",
+            transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+            flexShrink: 0,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-1px) scale(1.01)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(123, 47, 190, 0.45)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+            e.currentTarget.style.boxShadow = '0 6px 20px rgba(123, 47, 190, 0.35)';
+          }}
+        >
+          <span>¡Empezar Aventura!</span>
+          <span style={{ fontSize: 16 }}>🚀</span>
+        </button>
 
         {/* Enlace secundario: Omitir tutorial */}
-        <div className="w-full text-center pb-1">
+        <div style={{ width: '100%', textAlign: 'center', paddingBottom: 2 }}>
           <button
             type="button"
             onClick={onClose}
-            className="text-xs md:text-[13px] text-gray-400 hover:text-gray-600 font-semibold underline cursor-pointer transition-colors inline-block tracking-wide"
+            style={{
+              background: 'none',
+              border: 'none',
+              fontSize: 12.5,
+              color: '#aaaaaa',
+              fontWeight: 600,
+              textDecoration: 'underline',
+              textUnderlineOffset: 3,
+              cursor: 'pointer',
+              padding: '4px 8px',
+              fontFamily: "'Nunito', sans-serif",
+              letterSpacing: '0.01em',
+              transition: 'color 0.15s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#7B2FBE';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = '#aaaaaa';
+            }}
           >
             Omitir tutorial
           </button>
@@ -396,10 +544,6 @@ export default function UnitWelcomeModal1ro({
               opacity: 1;
             }
           }
-          .animate-popIn {
-            animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          }
-
           @keyframes floatIcon {
             0%, 100% {
               transform: translateY(0);

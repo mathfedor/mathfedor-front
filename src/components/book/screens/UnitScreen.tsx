@@ -5,6 +5,7 @@ import { useBook } from '../context/BookContext';
 import Starfield from '../shared/Starfield';
 import UnitTutorialOverlay from '../shared/UnitTutorialOverlay';
 import { bookService } from '@/services/book.service';
+import { mockUnitTutorials } from '@/mocks/book-unit-tuts.mock';
 import { levelKey, topicCompletedLevels } from '../shared/progress.utils';
 import type { UnitTutorial } from '@/types/book.types';
 import { computeGrade } from '@/services/gamification.service';
@@ -14,14 +15,19 @@ import { fedorTTS } from '@/services/tts.service';
 /** Detalle de una unidad: temas y sus niveles desbloqueables. */
 export default function UnitScreen() {
   const { book, progress, currentUnit, openLesson, goScreen } = useBook();
-  const [tut, setTut] = useState<UnitTutorial | null>(null);
+  const [tut, setTut] = useState<UnitTutorial | null>(() => mockUnitTutorials[currentUnit] ?? null);
   const isGrade1 = book?.slug === 'libro-1ro';
 
   // Muestra el tutorial cada vez que se entra a una unidad (comportamiento del HTML original).
   useEffect(() => {
+    let active = true;
+    setTut(mockUnitTutorials[currentUnit] ?? null);
     bookService.getUnitTutorial(currentUnit, book?.slug).then((t) => {
-      if (t) setTut(t);
-    }).catch(() => { /* sin tutorial */ });
+      if (active && t) setTut(t);
+    }).catch(() => { /* fallback local ya activo */ });
+    return () => {
+      active = false;
+    };
   }, [currentUnit, book?.slug]);
 
   const closeTut = () => setTut(null);
@@ -32,7 +38,7 @@ export default function UnitScreen() {
 
   return (
     <div className="screen active" id="screen-unit">
-      {tut && <UnitTutorialOverlay tut={tut} onClose={closeTut} />}
+      {tut && <UnitTutorialOverlay tut={tut} unitIndex={currentUnit} onClose={closeTut} />}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '0 0.5rem 1.25rem' }}>
         <div
@@ -76,7 +82,14 @@ export default function UnitScreen() {
 
       <div className={`unit-hero-band ${unit.heroCls}`}>
         <Starfield count={30} />
-        <span className="uhb-icon">{unit.icon}</span>
+        <span
+          className="uhb-icon"
+          style={{ cursor: 'pointer' }}
+          title="Ver tutorial de la unidad"
+          onClick={() => setTut(mockUnitTutorials[currentUnit] ?? null)}
+        >
+          {unit.icon}
+        </span>
         <div className="uhb-title" style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
           <span>{unit.short} — {unit.name}</span>
           <button
