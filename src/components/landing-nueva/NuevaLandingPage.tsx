@@ -10,6 +10,11 @@ import {
   WA_PHONE,
   GradoItem
 } from './nuevaLandingData';
+import { usersService } from '@/services/users.service';
+import { authService } from '@/services/auth.service';
+import { generateAutoPassword } from '@/lib/password';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { trackFreeAccountCreated } from '@/lib/analytics/leads';
 import './nueva-landing.css';
 
 export default function NuevaLandingPage() {
@@ -29,6 +34,9 @@ export default function NuevaLandingPage() {
   const [formCorreo, setFormCorreo] = useState<string>('');
   const [formError, setFormError] = useState<string>('');
   const [formSuccess, setFormSuccess] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   // Refs
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -278,8 +286,8 @@ export default function NuevaLandingPage() {
     }
   };
 
-  // Form submit handler
-  const handleAltaSubmit = (e: FormEvent) => {
+  // Form submit handler with real backend registration and auto-login
+  const handleAltaSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const nombre = formNombre.trim();
     const correo = formCorreo.trim();
@@ -294,7 +302,82 @@ export default function NuevaLandingPage() {
     }
 
     setFormError('');
-    setFormSuccess(true);
+    setIsSubmitting(true);
+    const autoPassword = generateAutoPassword();
+
+    try {
+      let recaptchaToken = '';
+      if (executeRecaptcha) {
+        try {
+          recaptchaToken = await executeRecaptcha('register');
+        } catch (rcError) {
+          console.warn('No se pudo generar token de reCAPTCHA:', rcError);
+        }
+      }
+
+      const gradoNombre = `Grado ${sel}° ${currentGrado.etapa === 'primaria' ? 'Primaria' : 'Bachillerato'}`;
+
+      await usersService.createUser({
+        name: nombre,
+        email: correo,
+        password: autoPassword,
+        rol: 'Student',
+        recaptchaToken,
+        legalConsents: {
+          termsAndPrivacyAccepted: true,
+          termsVersion: '1.0',
+          privacyPolicyVersion: '1.0',
+          commercialCommunicationsAccepted: true,
+          commercialCommunicationsAcceptedAt: new Date().toISOString(),
+        },
+      });
+
+      // Tracking analítica de registro exitoso
+      try {
+        trackFreeAccountCreated(gradoNombre);
+      } catch (trackErr) {
+        console.warn('Analytics tracking error:', trackErr);
+      }
+
+      setFormSuccess(true);
+
+      // Limpiar cualquier sesión previa en localStorage para evitar heredar roles anteriores
+      authService.logout();
+
+      // Intentar auto-login para que quede autenticado y entre directo
+      try {
+        let loginToken = recaptchaToken;
+        if (executeRecaptcha) {
+          try {
+            loginToken = await executeRecaptcha('login');
+          } catch {
+            // fallback al token obtenido previamente
+          }
+        }
+
+        await authService.login({
+          email: correo,
+          password: autoPassword,
+          recaptchaToken: loginToken,
+        });
+
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('userUpdated'));
+        }
+      } catch (loginErr) {
+        console.warn('Auto-login post-registro no completado:', loginErr);
+      }
+    } catch (err: any) {
+      let msg = 'Ocurrió un error al registrar el usuario. Por favor verifica tus datos e intenta nuevamente.';
+      if (err?.response?.data?.message) {
+        msg = err.response.data.message;
+      } else if (err?.message) {
+        msg = err.message;
+      }
+      setFormError(msg);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const openAlta = () => {
@@ -402,7 +485,7 @@ export default function NuevaLandingPage() {
             </h1>
             <p className="bajada">
               Ningún papá lo dice en voz alta: yo tampoco me sé la tabla del 7. Por eso su hijo
-              aprende aquí solo, <b>sin que usted tenga que sentarse al lado</b>. Pruébelo una semana
+              aprende aquí solo, <b>sin que usted tenga que sentarse al lado</b>. Pruébelo 17 días
               gratis.
             </p>
 
@@ -571,7 +654,7 @@ export default function NuevaLandingPage() {
               </a>
             </div>
             <p className="nota-btn">
-              No pedimos tarjeta. Solo su nombre y su correo. A los 7 días no se le cobra nada: usted
+              No pedimos tarjeta. Solo su nombre y su correo. A los 17 días no se le cobra nada: usted
               decide si sigue.
             </p>
           </div>
@@ -660,7 +743,7 @@ export default function NuevaLandingPage() {
             <p className="rotulo">Precios</p>
             <h2 className="titular">Cuánto cuesta si decide seguir</h2>
             <p className="entrada">
-              Primero la semana gratis. Ahí ve si a su hijo le sirve. Si sigue, el anual queda en
+              Primero los 17 días gratis. Ahí ve si a su hijo le sirve. Si sigue, el anual queda en
               $15.000 al mes y es el único que le deja descargar los libros y quedárselos para
               siempre, incluso si después cancela.
             </p>
@@ -669,7 +752,7 @@ export default function NuevaLandingPage() {
               <div className="plan">
                 <p className="nombre">Prueba</p>
                 <p className="precio">Gratis</p>
-                <p className="equiv">7 días</p>
+                <p className="equiv">17 días</p>
                 <p className="detalle">El libro completo y la Zona Fedor. No pedimos tarjeta.</p>
               </div>
               <div className="plan">
@@ -705,8 +788,8 @@ export default function NuevaLandingPage() {
                 🛡️
               </span>
               <p>
-                <b>Garantía de 7 días</b>
-                Si paga y no ve a su hijo más suelto con las matemáticas, nos escribe por WhatsApp y
+                <b>Garantía de 17 días</b>
+                Si paga y no ve a su hijo más suelto con las matemáticas dentro de los 17 días, nos escribe por WhatsApp y
                 le devolvemos el 100%. Sin trámites.
               </p>
             </div>
@@ -750,7 +833,7 @@ export default function NuevaLandingPage() {
               <details>
                 <summary>¿Cómo cancelo?</summary>
                 <p>
-                  Durante los 7 días no hay nada que cancelar, porque no hay tarjeta de por medio. Si
+                  Durante los 17 días no hay nada que cancelar, porque no hay tarjeta de por medio. Si
                   ya está pagando, se cancela desde su cuenta o escribiéndonos. No hay que llamar a
                   nadie.
                 </p>
@@ -764,7 +847,7 @@ export default function NuevaLandingPage() {
           <div className="caja" style={{ textAlign: 'center' }}>
             <h2 className="titular">Entonces, ¿en qué grado está su hijo?</h2>
             <p className="entrada" style={{ marginInline: 'auto' }}>
-              Siete días completos para probarlo con él. Si en esa semana no lo ve más suelto
+              17 días completos para probarlo con él. Si en esos 17 días no lo ve más suelto
               haciendo la tarea, lo deja ahí y no pasa nada. No hay tarjeta, no hay cobro, no hay que
               llamar a cancelar.
             </p>
@@ -869,7 +952,7 @@ export default function NuevaLandingPage() {
         <div className="hoja-panel">
           <div className="hoja-tope">
             <h3 id="alta-t">
-              {isAvailable ? 'Active los 7 días gratis' : `Le avisamos cuando salga ${sel}°`}
+              {isAvailable ? 'Active los 17 días gratis' : `Le avisamos cuando salga ${sel}°`}
             </h3>
             <button
               className="cerrar"
@@ -891,19 +974,30 @@ export default function NuevaLandingPage() {
                 <div className="tic" aria-hidden="true">
                   🎉
                 </div>
-                <h3>Listo, {formNombre.split(' ')[0]}</h3>
+                <h3>¡Listo, {formNombre.split(' ')[0]}!</h3>
                 <p>
-                  Su prueba gratis para <b>Grado {sel}°</b> ha sido activada con el correo{' '}
-                  <b>{formCorreo}</b>. Le hemos enviado las instrucciones de acceso.
+                  Hemos activado sus <b>17 días gratis</b> para el módulo de <b>Grado {sel}°</b>.
+                  Le enviamos un correo a <b>{formCorreo}</b> con su clave de acceso para entrar de inmediato.
                 </p>
-                <div style={{ marginTop: '18px' }}>
+                <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   <Link
-                    href={`/es/modulos/grado-${sel}`}
+                    href={`/es/dashboard/mis-modulos`}
                     className="btn btn-primario"
                     style={{ width: '100%' }}
                   >
-                    Entrar directo al libro de {sel}°
+                    Ir a mis libros interactivos
                   </Link>
+                  <a
+                    href={`https://wa.me/${WA_PHONE}?text=${encodeURIComponent(
+                      `Hola, acabo de activar mi prueba de 17 días para Grado ${sel}° (${formCorreo})`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-fantasma"
+                    style={{ width: '100%' }}
+                  >
+                    Escribir por WhatsApp
+                  </a>
                 </div>
               </div>
             ) : (
@@ -918,6 +1012,7 @@ export default function NuevaLandingPage() {
                     autoCapitalize="words"
                     enterKeyHint="next"
                     required
+                    disabled={isSubmitting}
                     value={formNombre}
                     onChange={(e) => setFormNombre(e.target.value)}
                     placeholder="Ej. María Pérez"
@@ -936,14 +1031,22 @@ export default function NuevaLandingPage() {
                     spellCheck="false"
                     enterKeyHint="go"
                     required
+                    disabled={isSubmitting}
                     value={formCorreo}
                     onChange={(e) => setFormCorreo(e.target.value)}
                     placeholder="correo@ejemplo.com"
                   />
                 </label>
 
-                <button className="btn btn-primario" type="submit" style={{ width: '100%' }}>
-                  {isAvailable ? 'Empezar la prueba gratis' : `Notificarme cuando salga ${sel}°`}
+                <button
+                  className="btn btn-primario"
+                  type="submit"
+                  style={{ width: '100%' }}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting
+                    ? 'Activando 17 días...'
+                    : (isAvailable ? 'Empezar la prueba gratis de 17 días' : `Notificarme cuando salga ${sel}°`)}
                 </button>
 
                 {formError && (
@@ -953,7 +1056,7 @@ export default function NuevaLandingPage() {
                 )}
 
                 <p className="nota-btn" style={{ textAlign: 'center' }}>
-                  No pedimos tarjeta. A los 7 días no se le cobra nada.
+                  No pedimos tarjeta. A los 17 días no se le cobra nada.
                 </p>
               </form>
             )}
