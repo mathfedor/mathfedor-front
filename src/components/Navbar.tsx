@@ -11,7 +11,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const isDashboard = pathname?.startsWith('/dashboard');
-  const isSalesLanding = pathname?.startsWith('/landing') || pathname?.startsWith('/gracias');
+  const isSalesLanding = pathname?.startsWith('/landing') || pathname?.startsWith('/gracias') || pathname?.startsWith('/nueva-landing');
 
   let plansLabel = 'Planes';
   try {
