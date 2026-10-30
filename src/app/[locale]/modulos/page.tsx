@@ -1,13 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/routing';
+import { useLocale, useTranslations } from 'next-intl';
 import Footer from "@/components/Footer";
 import { Module, moduleService } from '@/services/module.service';
 import Image from 'next/image';
 
 export default function ModulosPage() {
   const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations('books.modules_list');
+  const tBooks = useTranslations('books');
   const [modules, setModules] = useState<Module[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -15,16 +19,16 @@ export default function ModulosPage() {
   useEffect(() => {
     const fetchModules = async () => {
       try {
-        const data = await moduleService.getAllModules();
+        const data = await moduleService.getAllModules(locale);
         setModules(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error al cargar los módulos');
+        setError(err instanceof Error ? err.message : t('load_error'));
       } finally {
         setIsLoading(false);
       }
     };
     fetchModules();
-  }, []);
+  }, [locale, t]);
 
   const handleModuleClick = (moduleId: string) => {
     router.push(`/modulos/${moduleId}`);
@@ -53,7 +57,7 @@ export default function ModulosPage() {
     <div className="min-h-screen bg-gray-50">
       <main className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center mt-16">Módulos de Aprendizaje</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center mt-16">{t('title')}</h1>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
             {modules.map((module) => (
@@ -68,6 +72,7 @@ export default function ModulosPage() {
                       src={module.image.startsWith('/') ? module.image : `/${module.image}`}
                       alt={module.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-contain"
                     />
                   ) : (
@@ -77,11 +82,15 @@ export default function ModulosPage() {
                   )}
                 </div>
                 <div className="p-6">
-                  <h2 className="text-2xl font-bold mb-2">{module.title}</h2>
+                  <h2 className="text-2xl font-bold mb-2">
+                    {module.group && tBooks.has(`modules_content.${module.group}.title`)
+                      ? tBooks(`modules_content.${module.group}.title`)
+                      : module.title}
+                  </h2>
                   <div className="flex justify-between items-center">
                     <span className="text-orange-500 font-semibold">${module.price?.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
                     <button className="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600 transition-colors">
-                      Ver Detalles
+                      {t('view_details')}
                     </button>
                   </div>
                 </div>

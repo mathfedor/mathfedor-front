@@ -58,6 +58,15 @@
   "catalog": {
     "title": "Unsere Lernmodule",
     "subtitle": "Wählen Sie das perfekte Modul für Ihre Bedürfnisse und kaufen Sie sicher ein.",
+    "family_savings_badge": "💡 Familienrabatt",
+    "family_savings_title": "Haben Sie 2 oder mehr Kinder oder bevorzugen monatliche Zahlungen?",
+    "family_savings_desc": "Entdecken Sie den Jahres-Familientarif: 2. Kind für nur <strong>120.000 COP</strong> und ab dem 3. für jeweils <strong>80.000 COP</strong>. Oder monatlich ab 24.999 COP abonnieren.",
+    "view_all_plans": "Alle Tarife anzeigen →",
+    "regular_price": "Regulärer Preis:",
+    "with_annual_plan": "Mit Jahrestarif:",
+    "per_year": "COP / Jahr",
+    "monthly_equivalent": "⚡ Entspricht nur 15.000 COP / Monat",
+    "view_and_buy": "Inhalt ansehen & kaufen",
     "grado1_books": "Das Modul enthält 2 Bücher zum Download und ein gamifiziertes Online-Buch:",
     "other_books": "Das Modul enthält 3 Bücher zum Download und ein gamifiziertes Online-Buch:",
     "content_btn": "Inhalt",
@@ -104,5 +113,74 @@
     "cta_plan": "Institutionellen Tarif entdecken"
   },
   "loading": "Module werden geladen...",
-  "error_loading": "Fehler beim Laden der Module"
+  "error_loading": "Fehler beim Laden der Module",
+  "module_detail": {
+    "loading": "Modul wird geladen...",
+    "error_title": "Fehler",
+    "not_found": "Modul nicht gefunden",
+    "load_error": "Fehler beim Laden des Moduls",
+    "book_fallback": "Buch",
+    "regular_price": "Regulärer Preis:",
+    "with_annual_plan": "Mit Jahrestarif:",
+    "per_year": "COP / Jahr",
+    "monthly_equivalent": "⚡ Entspricht 15.000 COP / Monat (oder monatlich ab 24.999 COP)",
+    "choose_access_plan": "Zugangstarif wählen",
+    "competency_standards": "Grundlegende Kompetenzstandards:",
+    "no_standards": "Keine grundlegenden Kompetenzstandards definiert",
+    "show_standards_pdf": "PDF mit Standards und Kompetenzen anzeigen",
+    "hide_standards_pdf": "PDF mit Standards und Kompetenzen ausblenden",
+    "standards_and_competencies": "Standards und Kompetenzen",
+    "what_included_header": "Was beinhaltet das Modul?"
+  },
+  "modules_list": {
+    "title": "Lernmodule",
+    "view_details": "Details anzeigen",
+    "load_error": "Fehler beim Laden der Module"
+  },
+  "modules_content": {
+    "Grado1": {
+      "title": "1. Klasse",
+      "description": "✅ <strong>Was beinhaltet das Modul?</strong>\n\n<strong>1. Klasse – Solide Grundlagen mit Freude aufbauen</strong>\n\n<strong>- Buch 1:</strong> Grundrechenarten (Addition, Subtraktion, Multiplikation und Division) und intelligente Übungsaufgaben für unbegrenztes Üben ohne Beeinträchtigung des Punktestands. M.E.N.-Standards klar und schrittweise vermittelt.\n<strong>- Buch 2:</strong> Projekte, Lernspiele, ergänzende Aktivitäten und ein Saber-Abschlusstest.\n\nAlle Bücher enthalten Aufgaben im Stil des <strong>Saber-Abschlusstests</strong>."
+    },
+    "Grado2": {
+      "title": "2. Klasse",
+      "description": "✅ <strong>Was beinhaltet das Modul?</strong>\n<strong>2. Klasse – Solide Grundlagen mit Freude aufbauen</strong>\n\n<strong>- Buch 1:</strong> Grundrechenarten (Addition, Subtraktion, Multiplikation und Division) und intelligente Übungsaufgaben für unbegrenztes Üben.\n<strong>- Buch 2:</strong> M.E.N.-Standards klar und schrittweise vermittelt.\n<strong>- Buch 3:</strong> Projekte, Lernspiele, ergänzende Aktivitäten und ein Saber-Abschlusstest.\n\nAlle Bücher enthalten Aufgaben im Stil des <strong>Saber-Abschlusstests</strong>."
+    },
+    "Grado3": {
+      "title": "3. Klasse",
+      "description": "✅ <strong>Was beinhaltet das Modul?</strong>\n\n<strong>3. Klasse – Beherrschung der Grundrechenarten und logisches Denken</strong>\n\n<strong>- Buch 1:</strong> Grundrechenarten und intelligente Übungsaufgaben für praxisnahe Anwendungen.\n<strong>- Buch 2:</strong> Vollständige Umsetzung der M.E.N.-Standards.\n<strong>- Buch 3:</strong> Projekte, Lernspiele, ergänzende Aktivitäten und Saber-Abschlusstest.\n\nAufgaben im Stil des <strong>Saber-Abschlusstests</strong> in jedem Buch."
+    },
+    "Grado4": {
+      "title": "4. Klasse",
+      "description": "✅ <strong>Was beinhaltet das Modul?</strong>\n<strong>4. Klasse – Mathematik für den Alltag angewandt.</strong>\n\n<strong>- Buch 1:</strong> Vertiefung der Grundrechenarten.\n<strong>- Buch 2:</strong> M.E.N.-Standards mit praxisbezogenen Aufgaben.\n<strong>- Buch 3:</strong> Projekte, Lernspiele, ergänzende Aktivitäten und Saber-Abschlusstest.\n\nAufgaben im Stil des <strong>Saber-Abschlusstests</strong> im gesamten Modul."
+    },
+    "Grado5": {
+      "title": "5. Klasse",
+      "description": "✅ <strong>Was beinhaltet das Modul?</strong>\n<strong>5. Klasse – Vorbereitung auf anspruchsvolle mathematische Herausforderungen</strong>\n\n<strong>- Buch 1:</strong> Grundrechenarten mit Schwerpunkt auf Beherrschung.\n<strong>- Buch 2:</strong> M.E.N.-Standards verständlich und klar vermittelt.\n<strong>- Buch 3:</strong> Projekte, Lernspiele, ergänzende Aktivitäten und Saber-Abschlusstest.\n\nAufgaben im Stil des <strong>Saber-Abschlusstests</strong> in jedem Buch."
+    },
+    "Grado6": {
+      "title": "6. Klasse",
+      "description": "✅ <strong>Was beinhaltet das Modul?</strong>\n<strong>6. Klasse – Übergang zu tieferem mathematischem Denken</strong>\n\n<strong>- Buch 1:</strong> Grundlegende Rechenoperationen als Basis für neue Konzepte.\n<strong>- Buch 2:</strong> M.E.N.-Standards für die 6. Klasse.\n<strong>- Buch 3:</strong> Projekte, Lernspiele, ergänzende Aktivitäten und Saber-Abschlusstest.\n\nAufgaben im Stil des <strong>Saber-Abschlusstests</strong> im gesamten Modul."
+    },
+    "Grado7": {
+      "title": "7. Klasse",
+      "description": "✅ <strong>Was beinhaltet das Modul?</strong>\n<strong>7. Klasse – Mathematik zum Verständnis der Welt</strong>\n\n<strong>- Buch 1:</strong> Rechenoperationen angewendet auf neue Kontexte.\n<strong>- Buch 2:</strong> M.E.N.-Standards mit praktischem Schwerpunkt vermittelt.\n<strong>- Buch 3:</strong> Projekte, Lernspiele, ergänzende Aktivitäten und Saber-Abschlusstest.\n\nAufgaben im Stil des <strong>Saber-Abschlusstests</strong> in jedem Buch."
+    },
+    "Grado8": {
+      "title": "8. Klasse",
+      "description": "✅ <strong>Was beinhaltet das Modul?</strong>\n<strong>8. Klasse – Mathematik zum Verständnis der Welt</strong>\n\n<strong>- Buch 1:</strong> Rechenoperationen angewendet auf neue Kontexte.\n<strong>- Buch 2:</strong> M.E.N.-Standards mit praktischem Schwerpunkt vermittelt.\n<strong>- Buch 3:</strong> Projekte, Lernspiele, ergänzende Aktivitäten und Saber-Abschlusstest.\n\nAufgaben im Stil des <strong>Saber-Abschlusstests</strong> in jedem Buch."
+    },
+    "Grado9": {
+      "title": "9. Klasse",
+      "description": "✅ <strong>Was beinhaltet das Modul?</strong>\n<strong>9. Klasse – Mathematik zum Verständnis der Welt</strong>\n\n<strong>- Buch 1:</strong> Rechenoperationen angewendet auf neue Kontexte.\n<strong>- Buch 2:</strong> M.E.N.-Standards mit praktischem Schwerpunkt vermittelt.\n<strong>- Buch 3:</strong> Projekte, Lernspiele, ergänzende Aktivitäten und Saber-Abschlusstest.\n\nAufgaben im Stil des <strong>Saber-Abschlusstests</strong> in jedem Buch."
+    },
+    "Grado10": {
+      "title": "10. Klasse",
+      "description": "✅ <strong>Was beinhaltet das Modul?</strong>\n<strong>10. Klasse – Strategische Vorbereitung auf den Saber-Test</strong>\n\n<strong>- Buch 1:</strong> M.E.N.-Standards.\n<strong>- Buch 2:</strong> Diagnose\n<strong>- Buch 3:</strong> Testsimulation zur Leistungsmessung und gezielten Förderung."
+    },
+    "Grado11": {
+      "title": "11. Klasse & Universitätsvorbereitung",
+      "description": "<strong>✅ Was beinhaltet das Modul?</strong>\n<strong>11. Klasse – Abschlusstraining für akademische Spitzenleistungen</strong>\n\n<strong>- Buch 1:</strong> M.E.N.-Standards.\n<strong>- Buch 2:</strong> Diagnose\n<strong>- Buch 3:</strong> Testsimulation zur Sicherung eines erstklassigen Vorbereitungsniveaus."
+    }
+  }
 }

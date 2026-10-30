@@ -407,13 +407,15 @@ export default function BooksPage() {
             <div className="mb-12 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-orange-500/15 flex flex-col md:flex-row items-center justify-between gap-6 border border-orange-400/30">
               <div className="space-y-2 text-center md:text-left">
                 <span className="inline-block px-3 py-0.5 rounded-full text-xs font-black bg-white/20 backdrop-blur-sm uppercase tracking-wider">
-                  💡 Ahorro Familiar
+                  {t('catalog.family_savings_badge')}
                 </span>
                 <h3 className="text-xl sm:text-2xl font-black">
-                  ¿Tienes 2 o más hijos o prefieres pagos mensuales?
+                  {t('catalog.family_savings_title')}
                 </h3>
                 <p className="text-orange-100 text-xs sm:text-sm max-w-2xl leading-relaxed">
-                  Conoce el Plan Familiar Anual: 2do hijo a solo <strong>$120.000</strong> y a partir del 3ero a <strong>$80.000 c/u</strong>. O suscríbete mensual desde $24.999.
+                  {t.rich('catalog.family_savings_desc', {
+                    strong: (chunks) => <strong>{chunks}</strong>,
+                  })}
                 </p>
               </div>
               <button
@@ -421,7 +423,7 @@ export default function BooksPage() {
                 onClick={() => router.push('/planes')}
                 className="px-6 py-3.5 bg-white text-orange-600 hover:bg-orange-50 font-black rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 whitespace-nowrap text-sm cursor-pointer"
               >
-                Ver Todos los Planes →
+                {t('catalog.view_all_plans')}
               </button>
             </div>
 
@@ -565,15 +567,15 @@ export default function BooksPage() {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 border-t border-gray-100">
                       <div>
                         <div className="text-xs text-gray-400 font-medium line-through">
-                          Precio regular: ${(module.price || 203000).toLocaleString('es-CO')} COP
+                          {t('catalog.regular_price')} ${(module.price || 203000).toLocaleString('es-CO')} COP
                         </div>
                         <div className="flex items-baseline gap-1 mt-0.5">
-                          <span className="text-xs font-semibold text-emerald-600">Con Plan Anual:</span>
+                          <span className="text-xs font-semibold text-emerald-600">{t('catalog.with_annual_plan')}</span>
                           <span className="text-2xl font-black text-gray-900">$179.999</span>
-                          <span className="text-xs text-gray-500 font-medium">COP / año</span>
+                          <span className="text-xs text-gray-500 font-medium">{t('catalog.per_year')}</span>
                         </div>
                         <p className="text-[11px] text-emerald-600 font-medium">
-                          ⚡ Equivale a solo $15.000 / mes
+                          {t('catalog.monthly_equivalent')}
                         </p>
                       </div>
                       <button
@@ -583,7 +585,7 @@ export default function BooksPage() {
                         }}
                         className="inline-flex items-center justify-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white py-3 px-5 rounded-xl font-bold transition-colors shadow-md shadow-orange-500/20 text-sm cursor-pointer whitespace-nowrap"
                       >
-                        <span>Ver Contenido y Comprar</span>
+                        <span>{t('catalog.view_and_buy')}</span>
                         <span>→</span>
                       </button>
                     </div>

@@ -58,6 +58,15 @@
   "catalog": {
     "title": "Nossos Módulos de Aprendizagem",
     "subtitle": "Escolha o módulo perfeito para as suas necessidades e compre com total segurança.",
+    "family_savings_badge": "💡 Economia Familiar",
+    "family_savings_title": "Tem 2 ou mais filhos ou prefere pagamentos mensais?",
+    "family_savings_desc": "Conheça o Plano Familiar Anual: 2º filho por apenas <strong>$120.000 COP</strong> e a partir do 3º por <strong>$80.000 COP cada</strong>. Ou assine mensalmente a partir de $24.999.",
+    "view_all_plans": "Ver Todos os Planos →",
+    "regular_price": "Preço regular:",
+    "with_annual_plan": "Com Plano Anual:",
+    "per_year": "COP / ano",
+    "monthly_equivalent": "⚡ Equivale a apenas $15.000 / mês",
+    "view_and_buy": "Ver Conteúdo e Comprar",
     "grado1_books": "O módulo contém 2 livros para download e um livro digital gamificado online:",
     "other_books": "O módulo contém 3 livros para download e um livro digital gamificado online:",
     "content_btn": "Conteúdo",
@@ -104,5 +113,74 @@
     "cta_plan": "Conhecer Plano Institucional"
   },
   "loading": "Carregando módulos...",
-  "error_loading": "Erro ao carregar os módulos"
+  "error_loading": "Erro ao carregar os módulos",
+  "module_detail": {
+    "loading": "Carregando módulo...",
+    "error_title": "Erro",
+    "not_found": "Módulo não encontrado",
+    "load_error": "Erro ao carregar o módulo",
+    "book_fallback": "Livro",
+    "regular_price": "Preço regular:",
+    "with_annual_plan": "Com Plano Anual:",
+    "per_year": "COP / ano",
+    "monthly_equivalent": "⚡ Equivale a $15.000 / mês (ou mensal a partir de $24.999)",
+    "choose_access_plan": "Escolher Plano de Acesso",
+    "competency_standards": "Padrões básicos de competência:",
+    "no_standards": "Nenhum padrão básico de competência definido",
+    "show_standards_pdf": "Mostrar PDF de padrões e competências",
+    "hide_standards_pdf": "Ocultar PDF de padrões e competências",
+    "standards_and_competencies": "Padrões e competências",
+    "what_included_header": "O que inclui o módulo?"
+  },
+  "modules_list": {
+    "title": "Módulos de Aprendizagem",
+    "view_details": "Ver Detalhes",
+    "load_error": "Erro ao carregar os módulos"
+  },
+  "modules_content": {
+    "Grado1": {
+      "title": "1º Ano",
+      "description": "✅ <strong>O que inclui o módulo?</strong>\n\n<strong>1º Ano – Construindo bases sólidas com diversão</strong>\n\n<strong>- Livro 1:</strong> Operações básicas (Adição, Subtração, Multiplicação e Divisão) e Problemas Inteligentes para praticar ilimitadamente sem alterar a pontuação. Padrões do M.E.N. desenvolvidos de forma clara e progressiva.\n<strong>- Livro 2:</strong> Projetos, jogos educativos, atividades complementares e uma Prova Saber.\n\nTodos os livros incluem exercícios com foco no formato <strong>Prova Saber</strong>."
+    },
+    "Grado2": {
+      "title": "2º Ano",
+      "description": "✅ <strong>O que inclui o módulo?</strong>\n<strong>2º Ano – Construindo bases sólidas com diversão</strong>\n\n<strong>- Livro 1:</strong> Operações básicas (Adição, Subtração, Multiplicação e Divisão) e Problemas Inteligentes para prática ilimitada.\n<strong>- Livro 2:</strong> Padrões do M.E.N. desenvolvidos de forma clara e progressiva.\n<strong>- Livro 3:</strong> Projetos, jogos, atividades complementares e uma Prova Saber.\n\nTodos os livros incluem exercícios com foco no formato <strong>Prova Saber</strong>."
+    },
+    "Grado3": {
+      "title": "3º Ano",
+      "description": "✅ <strong>O que inclui o módulo?</strong>\n\n<strong>3º Ano – Domínio de operações e raciocínio lógico</strong>\n\n<strong>- Livro 1:</strong> Operações básicas e Problemas Inteligentes para aprofundar em aplicações práticas.\n<strong>- Livro 2:</strong> Desenvolvimento completo dos padrões do M.E.N.\n<strong>- Livro 3:</strong> Projetos, jogos, atividades complementares e Prova Saber.\n\nAtividades no estilo <strong>Prova Saber</strong> em todos os livros."
+    },
+    "Grado4": {
+      "title": "4º Ano",
+      "description": "✅ <strong>O que inclui o módulo?</strong>\n<strong>4º Ano – Matemática aplicada à vida real.</strong>\n\n<strong>- Livro 1:</strong> Operações básicas reforçadas.\n<strong>- Livro 2:</strong> Padrões do M.E.N. com atividades práticas.\n<strong>- Livro 3:</strong> Projetos, jogos, atividades complementares e Prova Saber.\n\nExercícios no estilo <strong>Prova Saber</strong> em todo o módulo."
+    },
+    "Grado5": {
+      "title": "5º Ano",
+      "description": "✅ <strong>O que inclui o módulo?</strong>\n<strong>5º Ano – Preparação para desafios matemáticos avançados</strong>\n\n<strong>- Livro 1:</strong> Operações básicas com foco no domínio conceitual.\n<strong>- Livro 2:</strong> Padrões do M.E.N. desenvolvidos com clareza.\n<strong>- Livro 3:</strong> Projetos, jogos, atividades complementares e Prova Saber.\n\nAtividades no estilo <strong>Prova Saber</strong> em todos os livros."
+    },
+    "Grado6": {
+      "title": "6º Ano",
+      "description": "✅ <strong>O que inclui o módulo?</strong>\n<strong>6º Ano – Transição para um raciocínio matemático mais aprofundado</strong>\n\n<strong>- Livro 1:</strong> Operações essenciais como base para novos conceitos.\n<strong>- Livro 2:</strong> Padrões do M.E.N. para o 6º ano.\n<strong>- Livro 3:</strong> Projetos, jogos, atividades complementares e Prova Saber.\n\nExercícios no estilo <strong>Prova Saber</strong> em todo o módulo."
+    },
+    "Grado7": {
+      "title": "7º Ano",
+      "description": "✅ <strong>O que inclui o módulo?</strong>\n<strong>7º Ano – Matemática para compreender o mundo</strong>\n\n<strong>- Livro 1:</strong> Operações aplicadas a novos contextos práticos.\n<strong>- Livro 2:</strong> Padrões do M.E.N. desenvolvidos com foco prático.\n<strong>- Livro 3:</strong> Projetos, jogos, atividades complementares e Prova Saber.\n\nAtividades no estilo <strong>Prova Saber</strong> em todos os livros."
+    },
+    "Grado8": {
+      "title": "8º Ano",
+      "description": "✅ <strong>O que inclui o módulo?</strong>\n<strong>8º Ano – Matemática para compreender o mundo</strong>\n\n<strong>- Livro 1:</strong> Operações aplicadas a novos contextos.\n<strong>- Livro 2:</strong> Padrões do M.E.N. desenvolvidos com foco prático.\n<strong>- Livro 3:</strong> Projetos, jogos, atividades complementares e Prova Saber.\n\nAtividades no estilo <strong>Prova Saber</strong> em todos os livros."
+    },
+    "Grado9": {
+      "title": "9º Ano",
+      "description": "✅ <strong>O que inclui o módulo?</strong>\n<strong>9º Ano – Matemática para compreender o mundo</strong>\n\n<strong>- Livro 1:</strong> Operações aplicadas a novos contextos.\n<strong>- Livro 2:</strong> Padrões do M.E.N. desenvolvidos com foco prático.\n<strong>- Livro 3:</strong> Projetos, jogos, atividades complementares e Prova Saber.\n\nAtividades no estilo <strong>Prova Saber</strong> em todos os livros."
+    },
+    "Grado10": {
+      "title": "10º Ano",
+      "description": "✅ <strong>O que inclui o módulo?</strong>\n<strong>10º Ano – Preparação estratégica para a Prova Saber</strong>\n\n<strong>- Livro 1:</strong> Padrões do M.E.N.\n<strong>- Livro 2:</strong> Diagnóstico\n<strong>- Livro 3:</strong> Simulado. Para medir e fortalecer o desempenho."
+    },
+    "Grado11": {
+      "title": "11º Ano e Pré-Universitário",
+      "description": "<strong>✅ O que inclui o módulo?</strong>\n<strong>11º Ano – Treinamento final para a excelência acadêmica</strong>\n\n<strong>- Livro 1:</strong> Padrões do M.E.N.\n<strong>- Livro 2:</strong> Diagnóstico\n<strong>- Livro 3:</strong> Simulado. Para garantir um alto nível de preparação."
+    }
+  }
 }

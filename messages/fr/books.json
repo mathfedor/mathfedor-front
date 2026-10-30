@@ -58,6 +58,15 @@
   "catalog": {
     "title": "Nos modules d'apprentissage",
     "subtitle": "Choisissez le module adapté à vos objectifs et commandez en toute sécurité.",
+    "family_savings_badge": "💡 Économie Familiale",
+    "family_savings_title": "Vous avez 2 enfants ou plus ou préférez des paiements mensuels ?",
+    "family_savings_desc": "Découvrez le Plan Familial Annuel : 2e enfant à seulement <strong>120 000 $ COP</strong> et à partir du 3e à <strong>80 000 $ COP chacun</strong>. Ou abonnez-vous au mois dès 24 999 $.",
+    "view_all_plans": "Voir tous les plans →",
+    "regular_price": "Prix habituel :",
+    "with_annual_plan": "Avec le Plan Annuel :",
+    "per_year": "COP / an",
+    "monthly_equivalent": "⚡ Équivaut à seulement 15 000 $ / mois",
+    "view_and_buy": "Voir le contenu et acheter",
     "grado1_books": "Le module comprend 2 livres à télécharger et un manuel numérique gamifié en ligne :",
     "other_books": "Le module comprend 3 livres à télécharger et un manuel numérique gamifié en ligne :",
     "content_btn": "Contenu",
@@ -104,5 +113,74 @@
     "cta_plan": "Découvrir le Plan Institutionnel"
   },
   "loading": "Chargement des modules...",
-  "error_loading": "Erreur lors du chargement des modules"
+  "error_loading": "Erreur lors du chargement des modules",
+  "module_detail": {
+    "loading": "Chargement du module...",
+    "error_title": "Erreur",
+    "not_found": "Module introuvable",
+    "load_error": "Erreur lors du chargement du module",
+    "book_fallback": "Livre",
+    "regular_price": "Prix habituel :",
+    "with_annual_plan": "Avec le Plan Annuel :",
+    "per_year": "COP / an",
+    "monthly_equivalent": "⚡ Équivaut à 15 000 $ / mois (ou mensuel dès 24 999 $)",
+    "choose_access_plan": "Choisir un plan d'accès",
+    "competency_standards": "Normes fondamentales de compétences :",
+    "no_standards": "Aucune norme fondamentale de compétences définie",
+    "show_standards_pdf": "Afficher le PDF des normes et compétences",
+    "hide_standards_pdf": "Masquer le PDF des normes et compétences",
+    "standards_and_competencies": "Normes et compétences",
+    "what_included_header": "Que comprend le module ?"
+  },
+  "modules_list": {
+    "title": "Modules d'apprentissage",
+    "view_details": "Voir les détails",
+    "load_error": "Erreur lors du chargement des modules"
+  },
+  "modules_content": {
+    "Grado1": {
+      "title": "1re Année",
+      "description": "✅ <strong>Que comprend le module ?</strong>\n\n<strong>1re Année – Construire des bases solides en s'amusant</strong>\n\n<strong>- Livre 1 :</strong> Opérations fondamentales (Addition, Soustraction, Multiplication et Division) et Problèmes Intelligents permettant une pratique illimitée sans altérer le score. Normes du M.E.N. développées de manière claire et progressive.\n<strong>- Livre 2 :</strong> Projets, jeux ludo-éducatifs, activités complémentaires et une Épreuve Saber.\n\nTous les livres comprennent des exercices axés sur les épreuves de type <strong>Épreuve Saber</strong>."
+    },
+    "Grado2": {
+      "title": "2e Année",
+      "description": "✅ <strong>Que comprend le module ?</strong>\n<strong>2e Année – Construire des bases solides en s'amusant</strong>\n\n<strong>- Livre 1 :</strong> Opérations fondamentales (Addition, Soustraction, Multiplication et Division) et Problèmes Intelligents pour s'entraîner sans limite.\n<strong>- Livre 2 :</strong> Normes du M.E.N. développées de manière claire et progressive.\n<strong>- Livre 3 :</strong> Projets, jeux, activités complémentaires et une Épreuve Saber.\n\nTous les livres comprennent des exercices axés sur les épreuves de type <strong>Épreuve Saber</strong>."
+    },
+    "Grado3": {
+      "title": "3e Année",
+      "description": "✅ <strong>Que comprend le module ?</strong>\n\n<strong>3e Année – Maîtrise des opérations et raisonnement logique</strong>\n\n<strong>- Livre 1 :</strong> Opérations fondamentales et Problèmes Intelligents appliqués à des situations réelles.\n<strong>- Livre 2 :</strong> Développement complet des normes du M.E.N.\n<strong>- Livre 3 :</strong> Projets, jeux, activités complémentaires et Épreuve Saber.\n\nActivités axées sur le format <strong>Épreuve Saber</strong> dans tous les livres."
+    },
+    "Grado4": {
+      "title": "4e Année",
+      "description": "✅ <strong>Que comprend le module ?</strong>\n<strong>4e Année – Mathématiques appliquées au quotidien.</strong>\n\n<strong>- Livre 1 :</strong> Renforcement des opérations fondamentales.\n<strong>- Livre 2 :</strong> Normes du M.E.N. avec activités pratiques.\n<strong>- Livre 3 :</strong> Projets, jeux, activités complémentaires et Épreuve Saber.\n\nExercices axés sur le format <strong>Épreuve Saber</strong> tout au long du module."
+    },
+    "Grado5": {
+      "title": "5e Année",
+      "description": "✅ <strong>Que comprend le module ?</strong>\n<strong>5e Année – Préparation aux grands défis mathématiques</strong>\n\n<strong>- Livre 1 :</strong> Opérations fondamentales avec approche de maîtrise.\n<strong>- Livre 2 :</strong> Normes du M.E.N. expliquées clairement.\n<strong>- Livre 3 :</strong> Projets, jeux, activités complémentaires et Épreuve Saber.\n\nActivités axées sur le format <strong>Épreuve Saber</strong> dans tous les livres."
+    },
+    "Grado6": {
+      "title": "6e Année",
+      "description": "✅ <strong>Que comprend le module ?</strong>\n<strong>6e Année – Transition vers un raisonnement mathématique approfondi</strong>\n\n<strong>- Livre 1 :</strong> Opérations essentielles comme socle de nouveaux concepts.\n<strong>- Livre 2 :</strong> Normes du M.E.N. pour la 6e année.\n<strong>- Livre 3 :</strong> Projets, jeux, activités complémentaires et Épreuve Saber.\n\nExercices axés sur le format <strong>Épreuve Saber</strong> tout au long du module."
+    },
+    "Grado7": {
+      "title": "7e Année",
+      "description": "✅ <strong>Que comprend le module ?</strong>\n<strong>7e Année – Les mathématiques pour comprendre le monde</strong>\n\n<strong>- Livre 1 :</strong> Opérations appliquées à de nouveaux contextes.\n<strong>- Livre 2 :</strong> Normes du M.E.N. développées selon une approche pratique.\n<strong>- Livre 3 :</strong> Projets, jeux, activités complémentaires et Épreuve Saber.\n\nActivités axées sur le format <strong>Épreuve Saber</strong> dans tous les livres."
+    },
+    "Grado8": {
+      "title": "8e Année",
+      "description": "✅ <strong>Que comprend le module ?</strong>\n<strong>8e Année – Les mathématiques pour comprendre le monde</strong>\n\n<strong>- Livre 1 :</strong> Opérations appliquées à de nouveaux contextes.\n<strong>- Livre 2 :</strong> Normes du M.E.N. développées selon une approche pratique.\n<strong>- Livre 3 :</strong> Projets, jeux, activités complémentaires et Épreuve Saber.\n\nActivités axées sur le format <strong>Épreuve Saber</strong> dans tous les livres."
+    },
+    "Grado9": {
+      "title": "9e Année",
+      "description": "✅ <strong>Que comprend le module ?</strong>\n<strong>9e Année – Les mathématiques pour comprendre le monde</strong>\n\n<strong>- Livre 1 :</strong> Opérations appliquées à de nouveaux contextes.\n<strong>- Livre 2 :</strong> Normes du M.E.N. développées selon une approche pratique.\n<strong>- Livre 3 :</strong> Projets, jeux, activités complémentaires et Épreuve Saber.\n\nActivités axées sur le format <strong>Épreuve Saber</strong> dans tous les livres."
+    },
+    "Grado10": {
+      "title": "10e Année",
+      "description": "✅ <strong>Que comprend le module ?</strong>\n<strong>10e Année – Préparation stratégique pour l'Épreuve Saber</strong>\n\n<strong>- Livre 1 :</strong> Normes du M.E.N.\n<strong>- Livre 2 :</strong> Diagnostic\n<strong>- Livre 3 :</strong> Épreuve blanche. Pour évaluer et renforcer les compétences."
+    },
+    "Grado11": {
+      "title": "11e Année & Pré-Universitaire",
+      "description": "<strong>✅ Que comprend le module ?</strong>\n<strong>11e Année – Entraînement final pour l'excellence académique</strong>\n\n<strong>- Livre 1 :</strong> Normes du M.E.N.\n<strong>- Livre 2 :</strong> Diagnostic\n<strong>- Livre 3 :</strong> Épreuve blanche. Pour garantir un niveau de préparation optimal."
+    }
+  }
 }

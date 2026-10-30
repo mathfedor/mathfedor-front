@@ -1,6 +1,8 @@
 import { getRequestConfig } from 'next-intl/server';
 import { routing, Locale } from './routing';
 
+// Force i18n cache invalidation
+
 export default getRequestConfig(async ({ requestLocale }) => {
   let locale = await requestLocale;
 

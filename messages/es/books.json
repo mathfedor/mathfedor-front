@@ -58,6 +58,15 @@
   "catalog": {
     "title": "Nuestros Módulos de Aprendizaje",
     "subtitle": "Elige el módulo perfecto para tus necesidades y compra de forma segura.",
+    "family_savings_badge": "💡 Ahorro Familiar",
+    "family_savings_title": "¿Tienes 2 o más hijos o prefieres pagos mensuales?",
+    "family_savings_desc": "Conoce el Plan Familiar Anual: 2do hijo a solo <strong>$120.000</strong> y a partir del 3ero a <strong>$80.000 c/u</strong>. O suscríbete mensual desde $24.999.",
+    "view_all_plans": "Ver Todos los Planes →",
+    "regular_price": "Precio regular:",
+    "with_annual_plan": "Con Plan Anual:",
+    "per_year": "COP / año",
+    "monthly_equivalent": "⚡ Equivale a solo $15.000 / mes",
+    "view_and_buy": "Ver Contenido y Comprar",
     "grado1_books": "El módulo tiene 2 libros para descargar y un libro digital gamificado en línea:",
     "other_books": "El módulo tiene 3 libros para descargar y un libro digital gamificado en línea:",
     "content_btn": "Contenido",
@@ -104,5 +113,74 @@
     "cta_plan": "Conocer Plan Institucional"
   },
   "loading": "Cargando módulos...",
-  "error_loading": "Error al cargar los módulos"
+  "error_loading": "Error al cargar los módulos",
+  "module_detail": {
+    "loading": "Cargando módulo...",
+    "error_title": "Error",
+    "not_found": "Módulo no encontrado",
+    "load_error": "Error al cargar el módulo",
+    "book_fallback": "Libro",
+    "regular_price": "Precio regular:",
+    "with_annual_plan": "Con Plan Anual:",
+    "per_year": "COP / año",
+    "monthly_equivalent": "⚡ Equivale a $15.000 / mes (o mensual desde $24.999)",
+    "choose_access_plan": "Elegir Plan de Acceso",
+    "competency_standards": "Estándares básicos de competencia:",
+    "no_standards": "No hay estándares básicos de competencia definidos",
+    "show_standards_pdf": "Mostrar PDF de estándares y competencias",
+    "hide_standards_pdf": "Ocultar PDF de estándares y competencias",
+    "standards_and_competencies": "Estándares y competencias",
+    "what_included_header": "¿Qué incluye el módulo?"
+  },
+  "modules_list": {
+    "title": "Módulos de Aprendizaje",
+    "view_details": "Ver Detalles",
+    "load_error": "Error al cargar los módulos"
+  },
+  "modules_content": {
+    "Grado1": {
+      "title": "Grado 1°",
+      "description": "✅ <strong>¿Qué incluye el módulo?</strong>\n\n<strong>Grado 1° – Construyendo bases sólidas con diversión</strong>\n\n<strong>- Libro 1:</strong> Operaciones básicas (Adición, Sustracción, Multiplicación y División) y Problemas Inteligentes que permiten practicar ilimitadamente sin alterar el puntaje. Estándares del M.E.N. desarrollados de forma clara y progresiva.\n<strong>- Libro 2:</strong> Proyectos, juegos, actividades complementarias y una Prueba Saber.\n\nTodos los libros incluyen ejercicios con enfoque tipo <strong>Prueba Saber</strong>."
+    },
+    "Grado2": {
+      "title": "Grado 2°",
+      "description": "✅ <strong>¿Qué incluye el módulo?</strong>\n<strong>Grado 2° – Construyendo bases sólidas con diversión</strong>\n\n<strong>- Libro 1:</strong> Operaciones básicas (Adición, Sustracción, Multiplicación y División) y Problemas Inteligentes que permiten practicar ilimitadamente sin alterar el puntaje.\n<strong>- Libro 2:</strong> Estándares del M.E.N. desarrollados de forma clara y progresiva.\n<strong>- Libro 3:</strong> Proyectos, juegos, actividades complementarias y una Prueba Saber.\n\nTodos los libros incluyen ejercicios con enfoque tipo <strong>Prueba Saber</strong>."
+    },
+    "Grado3": {
+      "title": "Grado 3°",
+      "description": "✅ <strong>¿Qué incluye el módulo?</strong>\n\n<strong>Grado 3° – Dominio de operaciones y pensamiento lógico</strong>\n\n<strong>- Libro 1:</strong> Operaciones básicas y Problemas Inteligentes para profundizar en aplicaciones reales.\n<strong>- Libro 2:</strong> Desarrollo completo de los estándares del M.E.N.\n<strong>- Libro 3:</strong> Proyectos, juegos, actividades complementarias y Prueba Saber.\n\nActividades tipo <strong>Prueba Saber</strong> en todos los libros."
+    },
+    "Grado4": {
+      "title": "Grado 4°",
+      "description": "✅ <strong>¿Qué incluye el módulo?</strong>\n<strong>Grado 4° – Matemáticas aplicadas a la vida real.</strong>\n\n<strong>- Libro 1:</strong> Operaciones básicas reforzadas.\n<strong>- Libro 2:</strong> Estándares del M.E.N. con actividades prácticas.\n<strong>- Libro 3:</strong> Proyectos, juegos, actividades complementarias y Prueba Saber.\n\nEjercicios tipo <strong>Prueba Saber</strong> en todo el módulo."
+    },
+    "Grado5": {
+      "title": "Grado 5°",
+      "description": "✅ <strong>¿Qué incluye el módulo?</strong>\n<strong>Grado 5° – Preparación para retos matemáticos mayores</strong>\n\n<strong>- Libro 1:</strong> Operaciones básicas con enfoque de dominio.\n<strong>- Libro 2:</strong> Estándares del M.E.N. desarrollados con claridad.\n<strong>- Libro 3:</strong> Proyectos, juegos, actividades complementarias y Prueba Saber.\n\nActividades tipo <strong>Prueba Saber</strong> en todos los libros."
+    },
+    "Grado6": {
+      "title": "Grado 6°",
+      "description": "✅ <strong>¿Qué incluye el módulo?</strong>\n<strong>Grado 6° – Transición a un pensamiento matemático más profundo</strong>\n\n<strong>- Libro 1:</strong> Operaciones básicas como base para nuevos conceptos.\n<strong>- Libro 2:</strong> Estándares del M.E.N. para grado 6°.\n<strong>- Libro 3:</strong> Proyectos, juegos, actividades complementarias y Prueba Saber.\n\nEjercicios tipo <strong>Prueba Saber</strong> en todo el módulo."
+    },
+    "Grado7": {
+      "title": "Grado 7°",
+      "description": "✅ <strong>¿Qué incluye el módulo?</strong>\n<strong>Grado 7° – Matemáticas para comprender el mundo</strong>\n\n<strong>- Libro 1:</strong> Operaciones básicas aplicadas a nuevos contextos.\n<strong>- Libro 2:</strong> Estándares del M.E.N. desarrollados con enfoque práctico.\n<strong>- Libro 3:</strong> Proyectos, juegos, actividades complementarias y Prueba Saber.\n\nActividades tipo <strong>Prueba Saber</strong> en todos los libros."
+    },
+    "Grado8": {
+      "title": "Grado 8°",
+      "description": "✅ <strong>¿Qué incluye el módulo?</strong>\n<strong>Grado 8° – Matemáticas para comprender el mundo</strong>\n\n<strong>- Libro 1:</strong> Operaciones básicas aplicadas a nuevos contextos.\n<strong>- Libro 2:</strong> Estándares del M.E.N. desarrollados con enfoque práctico.\n<strong>- Libro 3:</strong> Proyectos, juegos, actividades complementarias y Prueba Saber.\n\nActividades tipo <strong>Prueba Saber</strong> en todos los libros."
+    },
+    "Grado9": {
+      "title": "Grado 9°",
+      "description": "✅ <strong>¿Qué incluye el módulo?</strong>\n<strong>Grado 9° – Matemáticas para comprender el mundo</strong>\n\n<strong>- Libro 1:</strong> Operaciones básicas aplicadas a nuevos contextos.\n<strong>- Libro 2:</strong> Estándares del M.E.N. desarrollados con enfoque práctico.\n<strong>- Libro 3:</strong> Proyectos, juegos, actividades complementarias y Prueba Saber.\n\nActividades tipo <strong>Prueba Saber</strong> en todos los libros."
+    },
+    "Grado10": {
+      "title": "Grado 10°",
+      "description": "✅ <strong>¿Qué incluye el módulo?</strong>\n<strong>Grado 10° – Preparación estratégica para la Prueba Saber</strong>\n\n<strong>- Libro 1:</strong> Estándares del M.E.N.\n<strong>- Libro 2:</strong> Diagnóstico\n<strong>- Libro 3:</strong> Simulacro. Para medir y fortalecer el desempeño."
+    },
+    "Grado11": {
+      "title": "Grado 11 y Pre-Universitario",
+      "description": "<strong>✅ ¿Qué incluye el módulo?</strong>\n<strong>Grado 11° – Entrenamiento final para la excelencia académica</strong>\n\n<strong>- Libro 1:</strong> Estándares del M.E.N.\n<strong>- Libro 2:</strong> Diagnóstico\n<strong>- Libro 3:</strong> Simulacro. Para asegurar un alto nivel de preparación."
+    }
+  }
 }

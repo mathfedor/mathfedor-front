@@ -1,3 +1,4 @@
+// Config updated for i18n content
 const path = require('path');
 const createNextIntlPlugin = require('next-intl/plugin');
 

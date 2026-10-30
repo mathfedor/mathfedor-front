@@ -70,5 +70,28 @@
     "encrypted": "Verschlüsselte Zahlungen mit Wompi Bancolombia",
     "methods": "Wir akzeptieren Nequi, Daviplata, PSE und Karten",
     "instant": "Sofortige Aktivierung nach Zahlungsbestätigung"
+  },
+  "modal": {
+    "badge": "Akademisches Abonnement",
+    "title": "Wählen Sie Ihren Zugangstarif für {title}",
+    "subtitle": "Inklusive vollständigem interaktivem Digitalbuch, Fedor-Zone und kostenlosen Excel-Modulen.",
+    "close_aria": "Modal schließen",
+    "family_benefit_title": "🎉 Familienrabatt anerkannt!",
+    "family_benefit_desc": "Wir haben festgestellt, dass Sie bereits {count} aktive(s) Jahresabonnement(s) haben. Daher gilt für diese neue Stufe der geschützte Tarif von <strong1>${price} COP / Jahr</strong1> (Über 40% Ersparnis!).",
+    "monthly_excel_perk": "✓ 1 kostenloses Excel-Modul",
+    "semestral_excel_perk": "✓ Alle Excel-Bücher dieser Klassenstufe",
+    "most_popular_badge": "⭐ Am beliebtesten",
+    "annual_school_year": "COP / Schuljahr",
+    "how_many_grades": "Wie viele Klassenstufen?",
+    "grades_count": "{count} Stufe(n)",
+    "student_grade_single": "Kind / Klassenstufe",
+    "student_grade_multi": "Kinder / Klassenstufen",
+    "annual_tip_2nd": "💡 2. Kind für nur <strong1>120.000 COP</strong1>.",
+    "annual_total_saved": "🎉 Sie sparen insgesamt ${amount}!",
+    "total_to_pay": "Gesamtbetrag:",
+    "no_hidden_fees": "✓ Keine versteckten Kosten · Sofortige Freischaltung nach Zahlung",
+    "secure_payment_wompi": "100% sichere Zahlung mit Wompi (Nequi, Daviplata, PSE, Karten)",
+    "cancel": "Abbrechen",
+    "continue_payment": "Weiter zur sicheren Zahlung"
   }
 }

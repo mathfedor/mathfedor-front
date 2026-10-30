@@ -58,6 +58,15 @@
   "catalog": {
     "title": "Our Learning Modules",
     "subtitle": "Choose the perfect module for your needs and purchase securely.",
+    "family_savings_badge": "💡 Family Savings",
+    "family_savings_title": "Have 2 or more children or prefer monthly payments?",
+    "family_savings_desc": "Discover the Annual Family Plan: 2nd child for only <strong>$120,000 COP</strong> and from the 3rd onwards at <strong>$80,000 COP each</strong>. Or subscribe monthly from $24,999.",
+    "view_all_plans": "View All Plans →",
+    "regular_price": "Regular price:",
+    "with_annual_plan": "With Annual Plan:",
+    "per_year": "COP / year",
+    "monthly_equivalent": "⚡ Equivalent to only $15,000 / month",
+    "view_and_buy": "View Content & Buy",
     "grado1_books": "This module includes 2 downloadable books and an interactive gamified digital book online:",
     "other_books": "This module includes 3 downloadable books and an interactive gamified digital book online:",
     "content_btn": "Content",
@@ -104,5 +113,74 @@
     "cta_plan": "Explore Institutional Plan"
   },
   "loading": "Loading modules...",
-  "error_loading": "Error loading modules"
+  "error_loading": "Error loading modules",
+  "module_detail": {
+    "loading": "Loading module...",
+    "error_title": "Error",
+    "not_found": "Module not found",
+    "load_error": "Error loading module",
+    "book_fallback": "Book",
+    "regular_price": "Regular price:",
+    "with_annual_plan": "With Annual Plan:",
+    "per_year": "COP / year",
+    "monthly_equivalent": "⚡ Equivalent to $15,000 / month (or monthly from $24,999)",
+    "choose_access_plan": "Choose Access Plan",
+    "competency_standards": "Basic competency standards:",
+    "no_standards": "No basic competency standards defined",
+    "show_standards_pdf": "Show standards and competencies PDF",
+    "hide_standards_pdf": "Hide standards and competencies PDF",
+    "standards_and_competencies": "Standards and competencies",
+    "what_included_header": "What does the module include?"
+  },
+  "modules_list": {
+    "title": "Learning Modules",
+    "view_details": "View Details",
+    "load_error": "Error loading modules"
+  },
+  "modules_content": {
+    "Grado1": {
+      "title": "Grade 1",
+      "description": "✅ <strong>What does the module include?</strong>\n\n<strong>Grade 1 – Building solid foundations with fun</strong>\n\n<strong>- Book 1:</strong> Basic operations (Addition, Subtraction, Multiplication, and Division) and Smart Practice Problems for unlimited practice without altering the score. Colombian M.E.N. standards developed clearly and progressively.\n<strong>- Book 2:</strong> Projects, learning games, complementary activities, and a Saber Assessment Test.\n\nAll books include exercises aligned with the <strong>Saber Assessment Test</strong> framework."
+    },
+    "Grado2": {
+      "title": "Grade 2",
+      "description": "✅ <strong>What does the module include?</strong>\n<strong>Grade 2 – Building solid foundations with fun</strong>\n\n<strong>- Book 1:</strong> Basic operations (Addition, Subtraction, Multiplication, and Division) and Smart Practice Problems for unlimited practice.\n<strong>- Book 2:</strong> Colombian M.E.N. standards developed clearly and progressively.\n<strong>- Book 3:</strong> Projects, games, complementary activities, and a Saber Assessment Test.\n\nAll books include exercises aligned with the <strong>Saber Assessment Test</strong> framework."
+    },
+    "Grado3": {
+      "title": "Grade 3",
+      "description": "✅ <strong>What does the module include?</strong>\n\n<strong>Grade 3 – Mastery of operations and logical thinking</strong>\n\n<strong>- Book 1:</strong> Basic operations and Smart Practice Problems applied to real-world scenarios.\n<strong>- Book 2:</strong> Full development of Colombian M.E.N. standards.\n<strong>- Book 3:</strong> Projects, games, complementary activities, and Saber Assessment Test.\n\nActivities aligned with the <strong>Saber Assessment Test</strong> in every book."
+    },
+    "Grado4": {
+      "title": "Grade 4",
+      "description": "✅ <strong>What does the module include?</strong>\n<strong>Grade 4 – Mathematics applied to everyday life.</strong>\n\n<strong>- Book 1:</strong> Reinforced basic operations.\n<strong>- Book 2:</strong> Colombian M.E.N. standards with hands-on activities.\n<strong>- Book 3:</strong> Projects, games, complementary activities, and Saber Assessment Test.\n\nExercises aligned with the <strong>Saber Assessment Test</strong> throughout the module."
+    },
+    "Grado5": {
+      "title": "Grade 5",
+      "description": "✅ <strong>What does the module include?</strong>\n<strong>Grade 5 – Preparing for advanced mathematical challenges</strong>\n\n<strong>- Book 1:</strong> Basic operations with a mastery approach.\n<strong>- Book 2:</strong> Colombian M.E.N. standards developed clearly.\n<strong>- Book 3:</strong> Projects, games, complementary activities, and Saber Assessment Test.\n\nActivities aligned with the <strong>Saber Assessment Test</strong> in all books."
+    },
+    "Grado6": {
+      "title": "Grade 6",
+      "description": "✅ <strong>What does the module include?</strong>\n<strong>Grade 6 – Transition to deeper mathematical reasoning</strong>\n\n<strong>- Book 1:</strong> Core operations as a foundation for advanced concepts.\n<strong>- Book 2:</strong> Colombian M.E.N. standards for 6th grade.\n<strong>- Book 3:</strong> Projects, games, complementary activities, and Saber Assessment Test.\n\nExercises aligned with the <strong>Saber Assessment Test</strong> throughout the module."
+    },
+    "Grado7": {
+      "title": "Grade 7",
+      "description": "✅ <strong>What does the module include?</strong>\n<strong>Grade 7 – Mathematics to understand the world</strong>\n\n<strong>- Book 1:</strong> Core operations applied to real-world contexts.\n<strong>- Book 2:</strong> Colombian M.E.N. standards with a practical focus.\n<strong>- Book 3:</strong> Projects, games, complementary activities, and Saber Assessment Test.\n\nActivities aligned with the <strong>Saber Assessment Test</strong> in all books."
+    },
+    "Grado8": {
+      "title": "Grade 8",
+      "description": "✅ <strong>What does the module include?</strong>\n<strong>Grade 8 – Mathematics to understand the world</strong>\n\n<strong>- Book 1:</strong> Core operations applied to new mathematical contexts.\n<strong>- Book 2:</strong> Colombian M.E.N. standards with a practical focus.\n<strong>- Book 3:</strong> Projects, games, complementary activities, and Saber Assessment Test.\n\nActivities aligned with the <strong>Saber Assessment Test</strong> in all books."
+    },
+    "Grado9": {
+      "title": "Grade 9",
+      "description": "✅ <strong>What does the module include?</strong>\n<strong>Grade 9 – Mathematics to understand the world</strong>\n\n<strong>- Book 1:</strong> Core operations applied to new contexts.\n<strong>- Book 2:</strong> Colombian M.E.N. standards with a practical focus.\n<strong>- Book 3:</strong> Projects, games, complementary activities, and Saber Assessment Test.\n\nActivities aligned with the <strong>Saber Assessment Test</strong> in all books."
+    },
+    "Grado10": {
+      "title": "Grade 10",
+      "description": "✅ <strong>What does the module include?</strong>\n<strong>Grade 10 – Strategic preparation for the Saber Assessment Test</strong>\n\n<strong>- Book 1:</strong> Colombian M.E.N. standards.\n<strong>- Book 2:</strong> Academic Diagnostic Test.\n<strong>- Book 3:</strong> Test Simulation. To measure and enhance academic performance."
+    },
+    "Grado11": {
+      "title": "Grade 11 & Pre-University",
+      "description": "<strong>✅ What does the module include?</strong>\n<strong>Grade 11 – Final training for academic excellence</strong>\n\n<strong>- Book 1:</strong> Colombian M.E.N. standards.\n<strong>- Book 2:</strong> Academic Diagnostic Test.\n<strong>- Book 3:</strong> Test Simulation. To ensure the highest level of readiness."
+    }
+  }
 }

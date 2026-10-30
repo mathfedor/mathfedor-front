@@ -70,5 +70,28 @@
     "encrypted": "Paiements cryptés avec Wompi Bancolombia",
     "methods": "Nous acceptons Nequi, Daviplata, PSE et Cartes",
     "instant": "Activation immédiate dès confirmation du paiement"
+  },
+  "modal": {
+    "badge": "Abonnement Académique",
+    "title": "Choisissez votre plan d'accès pour {title}",
+    "subtitle": "Comprend le livre numérique interactif complet, la Zone Fedor et des modules Excel offerts.",
+    "close_aria": "Fermer la boîte de dialogue",
+    "family_benefit_title": "🎉 Avantage Familial Reconnu !",
+    "family_benefit_desc": "Nous avons détecté que vous avez déjà {count} abonnement(s) annuel(s) actif(s). Ce nouveau niveau bénéficie d'un tarif protégé de <strong1>${price} COP / an</strong1> (Plus de 40% d'économie !).",
+    "monthly_excel_perk": "✓ 1 module Excel offert",
+    "semestral_excel_perk": "✓ Tous les livres Excel de ce niveau",
+    "most_popular_badge": "⭐ Le plus populaire",
+    "annual_school_year": "COP / année scolaire",
+    "how_many_grades": "Combien de niveaux ?",
+    "grades_count": "{count} Niveau(x)",
+    "student_grade_single": "Enfant / Niveau",
+    "student_grade_multi": "Enfants / Niveaux",
+    "annual_tip_2nd": "💡 2e enfant pour seulement <strong1>120 000 $ COP</strong1>.",
+    "annual_total_saved": "🎉 Vous économisez ${amount} au total !",
+    "total_to_pay": "Total à payer :",
+    "no_hidden_fees": "✓ Sans frais cachés · Activation immédiate après paiement",
+    "secure_payment_wompi": "Paiement 100% sécurisé avec Wompi (Nequi, Daviplata, PSE, Cartes)",
+    "cancel": "Annuler",
+    "continue_payment": "Continuer vers le paiement sécurisé"
   }
 }

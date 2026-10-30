@@ -70,5 +70,28 @@
     "encrypted": "Pagamentos criptografados com Wompi Bancolombia",
     "methods": "Aceitamos Nequi, Daviplata, PSE e Cartões",
     "instant": "Ativação imediata ao confirmar o pagamento"
+  },
+  "modal": {
+    "badge": "Assinatura Acadêmica",
+    "title": "Escolha seu plano de acesso para {title}",
+    "subtitle": "Inclui livro digital interativo completo, Zona Fedor e módulos de cortesia no Excel.",
+    "close_aria": "Fechar modal",
+    "family_benefit_title": "🎉 Benefício Familiar Reconhecido!",
+    "family_benefit_desc": "Detectamos que você já possui {count} assinatura(s) anual(is) ativa(s). Portanto, este novo grau tem tarifa protegida de <strong1>${price} COP / ano</strong1> (Economize mais de 40%!).",
+    "monthly_excel_perk": "✓ 1 Módulo no Excel de cortesia",
+    "semestral_excel_perk": "✓ Todos os livros Excel deste ano",
+    "most_popular_badge": "⭐ Mais Popular",
+    "annual_school_year": "COP / ano letivo",
+    "how_many_grades": "Quantos anos/graus?",
+    "grades_count": "{count} Grau(s)",
+    "student_grade_single": "Filho / Grau",
+    "student_grade_multi": "Filhos / Graus",
+    "annual_tip_2nd": "💡 2º filho por apenas <strong1>$120.000 COP</strong1>.",
+    "annual_total_saved": "🎉 Você economiza ${amount} no total!",
+    "total_to_pay": "Total a pagar:",
+    "no_hidden_fees": "✓ Sem custos ocultos · Ativação imediata após pagamento",
+    "secure_payment_wompi": "Pagamento 100% seguro com Wompi (Nequi, Daviplata, PSE, Cartões)",
+    "cancel": "Cancelar",
+    "continue_payment": "Continuar para Pagamento Seguro"
   }
 }

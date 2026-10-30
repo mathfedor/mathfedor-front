@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { use } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/routing';
+import { useLocale, useTranslations } from 'next-intl';
 import { moduleService, Module } from '@/services/module.service';
 import { authService } from '@/services/auth.service';
 import Image from 'next/image';
@@ -31,6 +32,9 @@ const getStandardsPdfByGroup = (group?: string) => {
 export default function ModuleDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations('books.module_detail');
+  const tBooks = useTranslations('books');
   const [module, setModule] = useState<Module | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +44,7 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
   useEffect(() => {
     const fetchModule = async () => {
       try {
-        const modules = await moduleService.getAllModules();
+        const modules = await moduleService.getAllModules(locale);
         const foundModule = modules.find((m) => m._id === id);
 
         if (foundModule) {
@@ -80,17 +84,17 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
             ],
           });
         } else {
-          setError('Modulo no encontrado');
+          setError(t('not_found'));
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error al cargar el modulo');
+        setError(err instanceof Error ? err.message : t('load_error'));
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchModule();
-  }, [id]);
+  }, [id, locale, t]);
 
   const handleBuyClick = () => {
     setIsPlanModalOpen(true);
@@ -154,14 +158,39 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-red-500 text-center">
-          <p className="text-xl font-semibold">Error</p>
-          <p>{error || 'Modulo no encontrado'}</p>
+          <p className="text-xl font-semibold">{t('error_title')}</p>
+          <p>{error || t('not_found')}</p>
         </div>
       </div>
     );
   }
 
   const standardsPdf = getStandardsPdfByGroup(module.group);
+
+  const groupKey = module.group;
+  const localizedTitle =
+    groupKey && tBooks.has(`modules_content.${groupKey}.title`)
+      ? tBooks(`modules_content.${groupKey}.title`)
+      : module.title;
+
+  let rawDescription: string =
+    groupKey && tBooks.has(`modules_content.${groupKey}.description`)
+      ? (tBooks.raw(`modules_content.${groupKey}.description`) as string)
+      : (module.description || '');
+
+  if (rawDescription && locale !== 'es') {
+    rawDescription = rawDescription
+      .replace(/¿Qué incluye el módulo\?/gi, t('what_included_header'))
+      .replace(/Libro (\d+):/gi, (match, n) => {
+        const bookTranslations: Record<string, string> = {
+          en: `Book ${n}:`,
+          pt: `Livro ${n}:`,
+          fr: `Livre ${n} :`,
+          de: `Buch ${n}:`,
+        };
+        return bookTranslations[locale] || match;
+      });
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -174,59 +203,64 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
                   {module.image ? (
                     <Image
                       src={module.image.startsWith('/') ? module.image : `/${module.image}`}
-                      alt={module.title}
+                      alt={localizedTitle}
                       fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
                       className="object-contain"
                     />
                   ) : (
                     <div className="h-full bg-orange-100 flex items-center justify-center">
-                      <span className="text-8xl text-orange-500">Libro</span>
+                      <span className="text-8xl text-orange-500">{t('book_fallback')}</span>
                     </div>
                   )}
                 </div>
               </div>
               <div className="md:w-1/2 p-8">
-                <h1 className="text-4xl font-bold mb-4">{module.title}</h1>
+                <h1 className="text-4xl font-bold mb-4">{localizedTitle}</h1>
 
                 <div className="border-b pb-6 mb-6">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div className="flex flex-col">
                       <span className="text-sm text-gray-400 font-medium line-through">
-                        Precio regular: ${(module.price || 203000).toLocaleString('es-CO')} COP
+                        {t('regular_price')} ${(module.price || 203000).toLocaleString('es-CO')} COP
                       </span>
                       <div className="flex items-baseline gap-1 mt-0.5">
-                        <span className="text-xs font-semibold text-emerald-600">Con Plan Anual:</span>
+                        <span className="text-xs font-semibold text-emerald-600">{t('with_annual_plan')}</span>
                         <span className="text-3xl font-black text-orange-500">$179.999</span>
-                        <span className="text-xs text-gray-500 font-semibold">COP / año</span>
+                        <span className="text-xs text-gray-500 font-semibold">{t('per_year')}</span>
                       </div>
                       <p className="text-xs text-emerald-600 font-semibold mt-1">
-                        ⚡ Equivale a $15.000 / mes (o mensual desde $24.999)
+                        {t('monthly_equivalent')}
                       </p>
                     </div>
                     <button
                       onClick={handleBuyClick}
                       className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3.5 rounded-xl transition-all shadow-lg shadow-orange-500/25 text-lg font-bold cursor-pointer whitespace-nowrap"
                     >
-                      Elegir Plan de Acceso
+                      {t('choose_access_plan')}
                     </button>
                   </div>
                 </div>
 
                 <div
                   className="text-gray-600 mb-6 whitespace-pre-line prose prose-lg max-w-none"
-                  dangerouslySetInnerHTML={{ __html: module.description.replace(/\n/g, '<br/>') }}
+                  dangerouslySetInnerHTML={{ __html: rawDescription.replace(/\n/g, '<br/>') }}
                 />
 
                 <div className="space-y-4 mb-8">
                   <div className="flex flex-col gap-2">
-                    <span className="font-semibold">Estandares basicos de competencia:</span>
+                    <span className="font-semibold">{t('competency_standards')}</span>
                     <ul className="list-disc list-inside space-y-2">
                       {module.tags && module.tags.length > 0 ? (
                         module.tags.slice(0, 3).map((tag, index) => (
-                          <li key={index} className="text-gray-600">{tag}</li>
+                          <li key={index} className="text-gray-600">
+                            {tag === 'Estándares y competencias'
+                              ? t('standards_and_competencies')
+                              : tag}
+                          </li>
                         ))
                       ) : (
-                        <li className="text-gray-500">No hay estandares basicos de competencia definidos</li>
+                        <li className="text-gray-500">{t('no_standards')}</li>
                       )}
                     </ul>
 
@@ -236,11 +270,11 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
                           type="button"
                           onClick={() => setShowPdf((current) => !current)}
                           className="inline-flex rounded-lg transition-transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
-                          aria-label={showPdf ? 'Ocultar PDF de estandares y competencias' : 'Mostrar PDF de estandares y competencias'}
+                          aria-label={showPdf ? t('hide_standards_pdf') : t('show_standards_pdf')}
                         >
                           <Image
                             src="/estandares-competencias.png"
-                            alt="Estandares y competencias"
+                            alt={t('standards_and_competencies')}
                             width={260}
                             height={72}
                             className="h-auto w-auto max-w-full object-contain"
@@ -252,7 +286,7 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
                             <iframe
                               src={standardsPdf}
                               className="h-full w-full"
-                              title="Estandares y competencias"
+                              title={t('standards_and_competencies')}
                             />
                           </div>
                         )}
@@ -271,7 +305,7 @@ export default function ModuleDetailPage({ params }: { params: Promise<{ id: str
         <PlanSelectModal
           isOpen={isPlanModalOpen}
           onClose={() => setIsPlanModalOpen(false)}
-          module={module}
+          module={{ ...module, title: localizedTitle }}
           onConfirmPlan={handleConfirmPlan}
         />
       )}
