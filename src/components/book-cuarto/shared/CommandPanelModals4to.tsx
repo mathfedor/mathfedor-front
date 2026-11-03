@@ -511,8 +511,13 @@ export default function CommandPanelModals4to({
     return <RepasoModal4to isOpen={true} onClose={onClose} />;
   }
 
-  if (activeTool === 'logros' || activeTool === 'mis-logros') {
-    return <LogrosModal4to isOpen={true} onClose={onClose} />;
+  if (
+    activeTool === 'trofeos' ||
+    activeTool === 'vitrina-trofeos' ||
+    activeTool === 'logros' ||
+    activeTool === 'mis-logros'
+  ) {
+    return <LogrosModal4to isOpen={true} onClose={onClose} initialSubView="trofeos" />;
   }
 
   if (activeTool === 'tienda') {

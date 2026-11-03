@@ -8,32 +8,56 @@ import { SHOP_ITEMS_4TO } from './ShopModal4to';
 interface LogrosModal4toProps {
   isOpen: boolean;
   onClose: () => void;
+  initialSubView?: SubViewType;
 }
 
 type SubViewType = 'hub' | 'trofeos' | 'stickers' | 'certificados' | 'misiones' | 'diario' | 'tienda';
 
-// Los 10 trofeos oficiales del Libro Fedor de 4°
+// Los 10 trofeos oficiales del Libro Fedor de 4° (exactos al diseño original)
 const TROFEOS_4TO = [
-  { id: 't_unidad5', ico: '🏅', name: 'Cinco unidades', desc: 'Completa 5 unidades del libro' },
-  { id: 't_todas', ico: '👑', name: 'Libro completo', desc: 'Completa las 15 unidades de 4°' },
-  { id: 't_racha3', ico: '🔥', name: 'Racha de 3 días', desc: 'Practica 3 días consecutivos' },
-  { id: 't_racha7', ico: '☄️', name: 'Racha de 7 días', desc: 'Practica 7 días consecutivos' },
-  { id: 't_100', ico: '💯', name: 'Centenario', desc: 'Responde 100 ejercicios con éxito' },
-  { id: 't_500', ico: '🚀', name: 'Cohete', desc: 'Responde 500 ejercicios en total' },
-  { id: 't_perfecto', ico: '💎', name: 'Nivel perfecto', desc: 'Supera un nivel sin cometer errores' },
-  { id: 't_saber', ico: '🏆', name: 'SABER Pro', desc: 'Obtén 7/10 o más en una prueba SABER' },
-  { id: 't_gamer', ico: '🎮', name: 'Gamer Fedor', desc: 'Alcanza 300 puntos en un minijuego' },
-  { id: 't_campeon', ico: '🌟', name: 'Gran Campeón', desc: 'Domina los desafíos de 4° de primaria' },
+  { id: 't_unidad1', ico: '🥇', name: 'Primera unidad', desc: 'Completa una unidad (o aprueba su examen)' },
+  { id: 't_unidad5', ico: '🏅', name: 'Cinco unidades', desc: 'Completa 5 unidades' },
+  { id: 't_todas', ico: '👑', name: 'Libro completo', desc: 'Completa todas las unidades del 4°' },
+  { id: 't_racha3', ico: '🔥', name: 'Racha de 3 días', desc: 'Practica 3 días seguidos' },
+  { id: 't_racha7', ico: '☄️', name: 'Racha de 7 días', desc: 'Practica 7 días seguidos' },
+  { id: 't_100', ico: '💯', name: 'Centenario', desc: 'Responde 100 ejercicios' },
+  { id: 't_500', ico: '🚀', name: 'Cohete', desc: 'Responde 500 ejercicios' },
+  { id: 't_perfecto', ico: '💎', name: 'Nivel perfecto', desc: 'Termina un nivel sin errores' },
+  { id: 't_saber', ico: '🏆', name: 'SABER Pro', desc: 'Logra 7/10 o más en una prueba SABER' },
+  { id: 't_gamer', ico: '🎮', name: 'Gamer Fedor', desc: 'Logra 300 puntos en un minijuego' },
 ];
 
-export default function LogrosModal4to({ isOpen, onClose }: LogrosModal4toProps) {
+export default function LogrosModal4to({
+  isOpen,
+  onClose,
+  initialSubView = 'trofeos',
+}: LogrosModal4toProps) {
   const { student, coins, streak, totalXP, book, updateStats } = useBook4();
 
-  const [subView, setSubView] = useState<SubViewType>('hub');
+  const [subView, setSubView] = useState<SubViewType>(initialSubView);
   const [selectedCertIndex, setSelectedCertIndex] = useState<number | null>(null);
   const [ownedTrofeos, setOwnedTrofeos] = useState<Record<string, string>>({});
   const [equippedAvatar, setEquippedAvatar] = useState<string>('av_numerix');
   const [purchasedItems, setPurchasedItems] = useState<Record<string, boolean>>({ av_numerix: true });
+
+  // Reiniciar a la subvista configurada al abrir el modal
+  useEffect(() => {
+    if (isOpen) {
+      setSubView(initialSubView);
+    }
+  }, [isOpen, initialSubView]);
+
+  // Cerrar con Escape
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   // Cargar trofeos y progreso guardados
   useEffect(() => {
@@ -202,7 +226,7 @@ export default function LogrosModal4to({ isOpen, onClose }: LogrosModal4toProps)
               style={{ fontFamily: "'Baloo 2', cursive, sans-serif" }}
             >
               {subView === 'hub' && 'Mis Logros'}
-              {subView === 'trofeos' && 'Vitrina de Trofeos'}
+              {subView === 'trofeos' && 'Vitrina de trofeos'}
               {subView === 'stickers' && 'Álbum de Stickers'}
               {subView === 'certificados' && 'Mis Certificados'}
               {subView === 'misiones' && 'Misiones Diarias'}
@@ -276,41 +300,58 @@ export default function LogrosModal4to({ isOpen, onClose }: LogrosModal4toProps)
         )}
 
         {/* ══════════════════════════════════════════════════════════
-            2. SUB-VISTA: VITRINA DE TROFEOS
+            2. SUB-VISTA: VITRINA DE TROFEOS (Idéntica a la imagen oficial)
             ══════════════════════════════════════════════════════════ */}
         {subView === 'trofeos' && (
           <div className="space-y-3.5 animate-fadeIn">
-            <p className="font-black text-[#5C21A6] text-xs sm:text-sm">
-              {unlockedTrofeosCount} de {TROFEOS_4TO.length} trofeos desbloqueados
+            <p className="font-black text-[#5C21A6] text-sm">
+              {unlockedTrofeosCount} de {TROFEOS_4TO.length} trofeos
             </p>
 
-            <div className="grid grid-cols-2 gap-2.5 max-h-[50vh] overflow-y-auto pr-1">
+            <div className="grid grid-cols-2 gap-3 sm:gap-3.5 max-h-[58vh] overflow-y-auto pr-1">
               {TROFEOS_4TO.map((t) => {
                 const has = !!ownedTrofeos[t.id];
                 return (
                   <div
                     key={t.id}
-                    className="rounded-[16px] p-3 text-center transition-all"
+                    className="rounded-[18px] p-4 text-center transition-all duration-200"
                     style={{
                       background: has
                         ? 'linear-gradient(135deg, #FEF3C7, #FDE68A)'
-                        : '#F3F4F6',
-                      border: `2px solid ${has ? '#F5C518' : '#D1D5DB'}`,
-                      opacity: has ? 1 : 0.65,
+                        : '#FFFFFF',
+                      border: `1.5px solid ${has ? '#F5C518' : '#E5E7EB'}`,
+                      boxShadow: has
+                        ? '0 4px 14px rgba(245, 197, 24, 0.25)'
+                        : '0 1px 3px rgba(0, 0, 0, 0.02)',
                     }}
                   >
-                    <div className="text-3xl leading-none mb-1">
-                      {has ? t.ico : '🔒'}
+                    <div className="flex items-center justify-center mb-1.5 select-none">
+                      {has ? (
+                        <span className="text-3xl leading-none">{t.ico}</span>
+                      ) : (
+                        <svg
+                          className="w-8 h-8 text-[#9CA3AF]"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 00-7.5 0v3h7.5z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      )}
                     </div>
-                    <div className="text-[13px] font-black text-[#1A1033] leading-tight">
+                    <div className="text-[13.5px] font-black text-[#1F2937] leading-tight mb-1">
                       {t.name}
                     </div>
-                    <div className="text-[11px] font-bold text-[#4B5563] leading-tight mt-0.5">
+                    <div className="text-[11px] font-semibold text-[#6B7280] leading-snug">
                       {t.desc}
                     </div>
                     {has && (
-                      <div className="text-[10px] text-[#92400E] font-black mt-1">
-                        ✔ Desbloqueado
+                      <div className="text-[10px] text-[#92400E] font-black mt-1.5 flex items-center justify-center gap-1">
+                        <span>✔</span>
+                        <span>Desbloqueado</span>
                       </div>
                     )}
                   </div>
@@ -318,13 +359,15 @@ export default function LogrosModal4to({ isOpen, onClose }: LogrosModal4toProps)
               })}
             </div>
 
-            <button
-              type="button"
-              onClick={() => setSubView('hub')}
-              className="w-full py-2.5 px-4 rounded-[14px] font-black text-sm text-white bg-[#5C21A6] hover:bg-[#4C188A] transition-colors cursor-pointer border-none mt-2 shadow-sm"
-            >
-              ◀ Volver a Logros
-            </button>
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => setSubView('hub')}
+                className="py-2.5 px-4 rounded-[12px] font-black text-xs sm:text-sm text-white bg-[#5C21A6] hover:bg-[#4C188A] transition-colors cursor-pointer border-none shadow-sm inline-flex items-center gap-1.5"
+              >
+                ◀ Volver a Logros
+              </button>
+            </div>
           </div>
         )}
 

@@ -98,7 +98,7 @@ function Book4Shell() {
         customBg
           ? ''
           : screen === 'setup' || screen === 'home' || screen === 'lesson' || screen === 'unit'
-          ? 'bg-[#F0EDFF] text-[#180D38]'
+          ? dark ? 'bg-[#0E0B1F] text-white' : 'bg-[#F0EDFF] text-[#180D38]'
           : 'bg-[#07091B] text-white'
       } min-h-screen relative font-sans`}
       style={customBg ? { background: customBg } : undefined}
@@ -130,8 +130,8 @@ function Book4Shell() {
         {screen === 'report' && <ReportScreen4to />}
       </div>
 
-      {/* ══ Botones Flotantes del HTML de 4° (visibles excepto en lección y setup) ══ */}
-      {screen !== 'lesson' && screen !== 'setup' && (
+      {/* ══ Botones Flotantes del HTML de 4° (visibles excepto en setup) ══ */}
+      {screen !== 'setup' && (
         <Grade4FloatingButtons
           onOpenAiChat={() => setShowAiChat(true)}
           onOpenIntro={() => setShowLaunchIntro(true)}

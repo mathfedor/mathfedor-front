@@ -519,11 +519,11 @@ export default function HomeScreen4to({ onOpenIntro }: HomeScreen4toProps) {
             type="button"
             className="f5btn"
             style={{ background: 'linear-gradient(145deg, #E8650A, #F5A524)' }}
-            onClick={() => setActiveToolModal('logros')}
-            title="Vitrina de trofeos y medallas"
+            onClick={() => setActiveToolModal('trofeos')}
+            title="Vitrina de trofeos"
           >
             <span>🏆</span>
-            <span>Logros</span>
+            <span>Trofeos</span>
           </button>
           <button
             type="button"
