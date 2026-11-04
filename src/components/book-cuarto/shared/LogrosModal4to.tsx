@@ -641,7 +641,7 @@ export default function LogrosModal4to({
               onClick={() => setSubView('hub')}
               className="w-full py-2.5 px-4 rounded-[14px] font-black text-sm text-white bg-[#E8650A] hover:bg-[#c95305] transition-colors cursor-pointer border-none mt-2 shadow-sm"
             >
-              ◀ Volver a Logros
+              ◀ Volver
             </button>
           </div>
         )}
