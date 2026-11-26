@@ -333,7 +333,7 @@ export const moduleService = {
       if (!canDownload) {
         throw new Error(
           'La descarga de módulos en formato Excel está reservada para usuarios con Plan Anual activo. ' +
-          'El acceso gratuito hasta el 31 de octubre solo incluye el libro digital interactivo para practicar en línea.'
+          'La prueba gratuita de 17 días solo incluye el libro digital interactivo para practicar en línea.'
         );
       }
     } catch (err) {

@@ -15,6 +15,8 @@ import { authService } from '@/services/auth.service';
 import { generateAutoPassword } from '@/lib/password';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { trackFreeAccountCreated } from '@/lib/analytics/leads';
+import { trackMetaCustomEvent } from '@/lib/analytics/meta';
+import WhatsAppFloatingButton from '@/components/landing/WhatsAppFloatingButton';
 import './nueva-landing.css';
 
 export default function NuevaLandingPage() {
@@ -188,6 +190,8 @@ export default function NuevaLandingPage() {
 
   // Pointer drag event handlers for moving the books with the cursor
   const handlePointerDown = (e: React.PointerEvent) => {
+    // Cada gesto empieza limpio: un arrastre anterior no debe anular los clics en mosaico o riel
+    hasMovedRef.current = false;
     if (isMobileRiel || vista === 'mosaico') return;
     if (e.button !== 0 && e.pointerType === 'mouse') return;
 
@@ -198,10 +202,6 @@ export default function NuevaLandingPage() {
     lastTimeRef.current = performance.now();
     velocityXRef.current = 0;
     startPosRef.current = pos;
-
-    try {
-      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-    } catch {}
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
@@ -211,6 +211,9 @@ export default function NuevaLandingPage() {
     if (!hasMovedRef.current && Math.abs(dx) > 4) {
       hasMovedRef.current = true;
       setIsDragging(true);
+      try {
+        (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+      } catch {}
     }
 
     if (hasMovedRef.current) {
@@ -380,10 +383,11 @@ export default function NuevaLandingPage() {
     }
   };
 
-  const openAlta = () => {
+  const openAlta = (grado: number = sel) => {
     setFormError('');
     setFormSuccess(false);
     setIsAltaOpen(true);
+    trackMetaCustomEvent('AbrirRegistro', { content_name: `Grado ${grado}°` });
   };
 
   const currentGrado: GradoItem = GRADOS.find((item) => item.g === sel) || GRADOS[2];
@@ -469,7 +473,7 @@ export default function NuevaLandingPage() {
           <div className="marca">
             Matemáticas de <span>Fedor</span>
           </div>
-          <button className="btn btn-primario" type="button" onClick={openAlta}>
+          <button className="btn btn-primario" type="button" onClick={() => openAlta()}>
             Empezar gratis
           </button>
         </div>
@@ -479,14 +483,12 @@ export default function NuevaLandingPage() {
         {/* Hero Section */}
         <section className="heroe">
           <div className="caja">
-            <span className="cinta">1° a 6° disponible hoy · 7° a 11° en camino</span>
+            <span className="cinta">1° a 5° disponible hoy · 6° a 11° en camino</span>
             <h1>
               ¿Quiere que su hijo <em>destaque</em> en matemáticas?
             </h1>
             <p className="bajada">
-              Ningún papá lo dice en voz alta: yo tampoco me sé la tabla del 7. Por eso su hijo
-              aprende aquí solo, <b>sin que usted tenga que sentarse al lado</b>. Pruébelo 17 días
-              gratis.
+              <strong className="oferta">Pruébelo 17 días gratis</strong>
             </p>
 
             {/* View Mode Switcher */}
@@ -569,16 +571,30 @@ export default function NuevaLandingPage() {
                     className="grado"
                     id={`grado-${item.g}`}
                     data-g={item.g}
+                    data-lado={activo ? 'frente' : item.g < sel ? 'izq' : 'der'}
                     role="radio"
                     aria-checked={activo}
                     tabIndex={activo ? 0 : -1}
-                    aria-label={`Grado ${item.g}${disponible ? '' : ', próximamente'}`}
+                    aria-label={
+                      disponible
+                        ? `Quiero probarlo con mi hijo de ${item.g}°`
+                        : `Avísenme cuando salga ${item.g}°`
+                    }
                     style={getCardStyle(item.g)}
                     onClick={() => {
                       if (hasMovedRef.current) return;
                       elegir(item.g, true);
+                      openAlta(item.g);
                     }}
                   >
+                    <span className="grado-cta" aria-hidden="true">
+                      <span className="largo">
+                        {disponible
+                          ? `Quiero probarlo con mi hijo de ${item.g}°`
+                          : `Avísenme cuando salga ${item.g}°`}
+                      </span>
+                      <span className="corto">{disponible ? `Probar ${item.g}°` : 'Avísenme'}</span>
+                    </span>
                     <div className="lamina">
                       {cover ? (
                         <Image
@@ -644,7 +660,7 @@ export default function NuevaLandingPage() {
             </ul>
 
             <div className="acciones">
-              <button className="btn btn-primario" type="button" onClick={openAlta}>
+              <button className="btn btn-primario" type="button" onClick={() => openAlta()}>
                 {isAvailable
                   ? `Quiero probarlo con mi hijo de ${currentGrado.g}°`
                   : `Avísenme cuando salga ${currentGrado.g}°`}
@@ -654,7 +670,7 @@ export default function NuevaLandingPage() {
               </a>
             </div>
             <p className="nota-btn">
-              No pedimos tarjeta. Solo su nombre y su correo. A los 17 días no se le cobra nada: usted
+              La prueba no incluye descargas. No pedimos tarjeta. Solo su nombre y su correo. A los 17 días no se le cobra nada: usted
               decide si sigue.
             </p>
           </div>
@@ -753,7 +769,7 @@ export default function NuevaLandingPage() {
                 <p className="nombre">Prueba</p>
                 <p className="precio">Gratis</p>
                 <p className="equiv">17 días</p>
-                <p className="detalle">El libro completo y la Zona Fedor. No pedimos tarjeta.</p>
+                <p className="detalle">El libro digital completo y la Zona Fedor, sin descargas. No pedimos tarjeta.</p>
               </div>
               <div className="plan">
                 <p className="nombre">Mensual</p>
@@ -852,7 +868,7 @@ export default function NuevaLandingPage() {
               llamar a cancelar.
             </p>
             <div className="acciones" style={{ justifyContent: 'center' }}>
-              <button className="btn btn-primario" type="button" onClick={openAlta}>
+              <button className="btn btn-primario" type="button" onClick={() => openAlta()}>
                 Quiero empezar con mi hijo
               </button>
               <a className="btn btn-fantasma" href={waHref} target="_blank" rel="noopener noreferrer">
@@ -887,6 +903,13 @@ export default function NuevaLandingPage() {
       >
         Cambiar de grado <span className="nro">{sel}°</span>
       </button>
+
+      <WhatsAppFloatingButton
+        phoneNumber={WA_PHONE}
+        customMessage={`Hola, quiero información del módulo de ${sel}°`}
+        gradeName={`Grado ${sel}°`}
+        tooltipText="¿Dudas? Escríbenos"
+      />
 
       {/* Grade Selector Modal Sheet (#hoja) */}
       <div
@@ -976,7 +999,15 @@ export default function NuevaLandingPage() {
                 </div>
                 <h3>¡Listo, {formNombre.split(' ')[0]}!</h3>
                 <p>
-                  Hemos activado sus <b>17 días gratis</b> para el módulo de <b>Grado {sel}°</b>.
+                  {isAvailable ? (
+                    <>
+                      Hemos activado sus <b>17 días gratis</b> para el módulo de <b>Grado {sel}°</b>.
+                    </>
+                  ) : (
+                    <>
+                      El módulo de <b>Grado {sel}°</b> está en camino y su cuenta quedó creada.
+                    </>
+                  )}{' '}
                   Le enviamos un correo a <b>{formCorreo}</b> con su clave de acceso para entrar de inmediato.
                 </p>
                 <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -989,7 +1020,9 @@ export default function NuevaLandingPage() {
                   </Link>
                   <a
                     href={`https://wa.me/${WA_PHONE}?text=${encodeURIComponent(
-                      `Hola, acabo de activar mi prueba de 17 días para Grado ${sel}° (${formCorreo})`
+                      isAvailable
+                        ? `Hola, acabo de activar mi prueba de 17 días para Grado ${sel}° (${formCorreo})`
+                        : `Hola, quiero que me avisen cuando salga Grado ${sel}° (${formCorreo})`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -1045,7 +1078,7 @@ export default function NuevaLandingPage() {
                   disabled={isSubmitting}
                 >
                   {isSubmitting
-                    ? 'Activando 17 días...'
+                    ? (isAvailable ? 'Activando 17 días...' : 'Registrando...')
                     : (isAvailable ? 'Empezar la prueba gratis de 17 días' : `Notificarme cuando salga ${sel}°`)}
                 </button>
 

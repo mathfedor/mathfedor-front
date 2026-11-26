@@ -25,7 +25,7 @@ import {
     isAnnualPlanPurchase,
     canUserDownloadModule,
     FREE_TRIAL_MODULE_METADATA,
-    FREE_TRIAL_END_DATE,
+    isTrialActive,
 } from '@/constants/module-access.constants';
 
 interface ModuleItem {
@@ -129,8 +129,7 @@ export default function DownloadsPage() {
             });
 
             // B) Asegurar que los 5 módulos del trial gratuito estén presentes para que el usuario conozca su estado
-            const isTrialActive = new Date() <= FREE_TRIAL_END_DATE;
-            if (isTrialActive) {
+            if (isTrialActive()) {
                 FREE_TRIAL_MODULE_METADATA.forEach((trialMeta) => {
                     // Verificar si ya fue agregado por el backend
                     const existing = Array.from(moduleMap.values()).find(
@@ -305,7 +304,7 @@ export default function DownloadsPage() {
                                 <FiAlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
                                 <div className="text-xs text-amber-900 dark:text-amber-200 leading-relaxed">
                                     <p className="font-semibold mb-1">Tu beneficio gratuito actual:</p>
-                                    <p>Puedes ingresar y practicar con todos los ejercicios y simulaciones en línea dentro de la plataforma sin costo hasta el 31 de octubre.</p>
+                                    <p>Puedes ingresar y practicar con todos los ejercicios y simulaciones en línea dentro de la plataforma sin costo durante sus 17 días de prueba. La prueba no incluye descargas.</p>
                                 </div>
                             </div>
                         </div>

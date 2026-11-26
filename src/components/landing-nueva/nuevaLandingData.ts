@@ -20,18 +20,18 @@ export const GRADOS: GradoItem[] = [
       ['Contar hasta 999', 'Con fichas que mueve con el dedo en la pantalla'],
       ['Sumar y restar llevando', 'Ese paso donde se enreda, explicado despacio'],
       ['Figuras, metros y reloj', 'Medir la casa, leer la hora, reconocer formas'],
-      ['2 libros para descargar', 'En Excel, interactivos. Suyos, incluso si algún día cancela']
+      ['2 libros para descargar', 'En Excel, interactivos. Con plan de pago; la prueba no incluye descargas']
     ]
   },
   {
     g: 2,
     etapa: 'primaria',
-    titulo: 'Restar llevando sin que termine llorando',
+    titulo: '¿Le cuesta restar? Con FEDOR aprende fácil.',
     temas: [
       ['El paso de llevar uno', 'Donde se pierde medio salón. Aquí lo ve, no lo memoriza'],
       ['Las primeras multiplicaciones', 'Multiplicar es sumar varias veces. Así lo entiende'],
       ['Problemas de dos pasos', 'Primero entender qué le preguntan, después operar'],
-      ['3 libros para descargar', 'En Excel, interactivos. Suyos, incluso si algún día cancela']
+      ['3 libros para descargar', 'En Excel, interactivos. Con plan de pago; la prueba no incluye descargas']
     ]
   },
   {
@@ -42,7 +42,7 @@ export const GRADOS: GradoItem[] = [
       ['Las tablas con sentido', 'Ve por qué 6 por 4 son 24. Después ya no se le olvida'],
       ['Dividir', 'Repartir de verdad, no seguir una receta'],
       ['Simulacros Saber 3°', 'Preguntas iguales a las de la prueba, pero sin presión'],
-      ['3 libros para descargar', 'En Excel, interactivos. Suyos, incluso si algún día cancela']
+      ['3 libros para descargar', 'En Excel, interactivos. Con plan de pago; la prueba no incluye descargas']
     ]
   },
   {
@@ -53,7 +53,7 @@ export const GRADOS: GradoItem[] = [
       ['Fracciones', 'Por qué 1/2 es más que 1/4. Lo ve en pantalla, no se lo explican'],
       ['Decimales', 'Con precios del mercado y medidas de la casa'],
       ['Dividir por dos cifras', 'Cómo arrancar sin quedarse mirando la hoja'],
-      ['3 libros para descargar', 'En Excel, interactivos. Suyos, incluso si algún día cancela']
+      ['3 libros para descargar', 'En Excel, interactivos. Con plan de pago; la prueba no incluye descargas']
     ]
   },
   {
@@ -64,7 +64,7 @@ export const GRADOS: GradoItem[] = [
       ['Múltiplos y divisores', 'El mínimo común múltiplo, por fin con un para qué'],
       ['¿Qué se resuelve primero?', 'El orden de las operaciones, sin adivinar'],
       ['Simulacros Saber 5°', 'Tal como se la van a poner en el colegio'],
-      ['3 libros para descargar', 'En Excel, interactivos. Suyos, incluso si algún día cancela']
+      ['3 libros para descargar', 'En Excel, interactivos. Con plan de pago; la prueba no incluye descargas']
     ]
   },
   {
@@ -75,7 +75,7 @@ export const GRADOS: GradoItem[] = [
       ['Negativos y fracciones', 'El puente entre primaria y el álgebra'],
       ['Ciudad Órbita', '440 niveles. Avanza como en un juego, no como en una clase'],
       ['Zona Fedor', 'Juegos donde usa las matemáticas sin darse cuenta'],
-      ['3 libros para descargar', 'En Excel, interactivos. Suyos, incluso si algún día cancela']
+      ['3 libros para descargar', 'En Excel, interactivos. Con plan de pago; la prueba no incluye descargas']
     ]
   },
   {
@@ -87,7 +87,7 @@ export const GRADOS: GradoItem[] = [
       ['Fracciones y negativos juntos', 'Donde se enreda casi todo el salón'],
       ['Las primeras x', 'La letra es un número que todavía no sabemos. Nada más'],
       ['Regla de tres', 'Para que sepa cuándo se usa y cuándo no'],
-      ['3 libros para descargar', 'En Excel, interactivos. Suyos, incluso si algún día cancela']
+      ['3 libros para descargar', 'En Excel, interactivos. Con plan de pago; la prueba no incluye descargas']
     ]
   },
   {
@@ -99,7 +99,7 @@ export const GRADOS: GradoItem[] = [
       ['Productos notables', 'Con dibujo, no con una fórmula para copiar'],
       ['Factorización', 'Si este se le pierde, lo arrastra hasta once'],
       ['Ecuaciones', 'Entender qué le hace a cada lado del igual'],
-      ['3 libros para descargar', 'En Excel, interactivos. Suyos, incluso si algún día cancela']
+      ['3 libros para descargar', 'En Excel, interactivos. Con plan de pago; la prueba no incluye descargas']
     ]
   },
   {
@@ -111,7 +111,7 @@ export const GRADOS: GradoItem[] = [
       ['Ecuaciones cuadráticas', 'Tres formas de resolverlas y cuál le conviene'],
       ['Funciones', 'Mirar una gráfica y saber qué está diciendo'],
       ['Pitágoras', 'Usado en algo real, no recitado de memoria'],
-      ['3 libros para descargar', 'En Excel, interactivos. Suyos, incluso si algún día cancela']
+      ['3 libros para descargar', 'En Excel, interactivos. Con plan de pago; la prueba no incluye descargas']
     ]
   },
   {
@@ -123,7 +123,7 @@ export const GRADOS: GradoItem[] = [
       ['Seno, coseno y tangente', 'De dónde salen. No llegan porque sí'],
       ['Identidades', 'Demostradas en pantalla, paso por paso'],
       ['Entrenamiento para el Icfes', 'Preguntas del estilo de la prueba, todas las semanas'],
-      ['3 libros para descargar', 'En Excel, interactivos. Suyos, incluso si algún día cancela']
+      ['3 libros para descargar', 'En Excel, interactivos. Con plan de pago; la prueba no incluye descargas']
     ]
   },
   {
@@ -135,7 +135,7 @@ export const GRADOS: GradoItem[] = [
       ['Los primeros límites', 'Lo que le van a pedir en primer semestre'],
       ['Estadística y probabilidad', 'Leer una gráfica, no solo calcular'],
       ['Simulacros Saber 11', 'Completos y con reloj, como el día real'],
-      ['3 libros para descargar', 'En Excel, interactivos. Suyos, incluso si algún día cancela']
+      ['3 libros para descargar', 'En Excel, interactivos. Con plan de pago; la prueba no incluye descargas']
     ]
   }
 ];
@@ -145,8 +145,7 @@ export const DISPONIBLES: Record<number, boolean> = {
   2: true,
   3: true,
   4: true,
-  5: true,
-  6: true
+  5: true
 };
 
 export const PORTADAS_MAP: Record<number, string> = {

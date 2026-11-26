@@ -176,17 +176,17 @@
     "badge_free_trial": "Teste Gratuito (Livro Digital)",
     "badge_locked": "Bloqueado",
     "locked_requires_annual": "Bloqueado — Requer Plano Anual",
-    "valid_free_trial": "Grátis até 31 de out de 2026 (Apenas Livro Digital)",
-    "banner_free_trial_title": "Módulos do 1º ao 5º ano em teste gratuito até 31 de outubro",
+    "valid_free_trial": "Teste de 17 dias (Apenas Livro Digital)",
+    "banner_free_trial_title": "Módulos do 1º ao 5º ano em teste gratuito por 17 dias",
     "banner_free_trial_desc": "Sua conta inclui acesso completo aos livros digitais interativos para estudar e praticar online. O download dos módulos em formato Excel (.xlsx) requer uma assinatura do Plano Anual.",
     "btn_get_annual_plan": "Adquirir Plano Anual",
     "btn_study_online": "Estudar online",
     "upgrade_modal_title": "Downloads em Excel exclusivos do Plano Anual",
-    "upgrade_modal_desc": "Os módulos do 1º ao 5º ano estão disponíveis gratuitamente até 31 de outubro para você estudar e praticar com o livro digital interativo na plataforma. O download de módulos e planilhas em Excel é reservado para usuários com Plano Anual ativo.",
+    "upgrade_modal_desc": "Os módulos do 1º ao 5º ano ficam gratuitos durante 17 dias após o cadastro, para estudar com o livro digital interativo. O teste não inclui downloads: módulos e planilhas em Excel são reservados para usuários com Plano Anual ativo.",
     "upgrade_modal_btn_plan": "Ver Planos e Comprar Plano Anual",
     "upgrade_modal_btn_cancel": "Continuar com livro digital",
     "empty_no_downloads_title": "Nenhum download em Excel disponível",
-    "empty_no_downloads_desc": "Sua conta tem acesso gratuito aos livros digitais interativos do 1º ao 5º ano até 31 de outubro. Para baixar arquivos em Excel e modelos para impressão, assine um Plano Anual."
+    "empty_no_downloads_desc": "Seu teste de 17 dias inclui os livros digitais interativos do 1º ao 5º ano, sem downloads. Para baixar arquivos em Excel e modelos para impressão, assine um Plano Anual."
   },
   "legal": {
     "title": "Administração de Documentos Legais",

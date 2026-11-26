@@ -8,7 +8,6 @@ import {
   isAnnualPlanPurchase,
   isPurchaseExpired,
   getPurchaseExpirationDate,
-  FREE_TRIAL_END_DATE,
   type ModuleAccessInfo,
   type ModuleAccessType,
 } from '@/constants/module-access.constants';
@@ -83,7 +82,7 @@ export function ModuleAccessProvider({ children }: { children: ReactNode }) {
           isFreeTrialGrade(moduleId) ||
           isFreeTrialGrade(module.title)
         ) {
-          // Sin compra, pero módulo de Grado 1, 2, 3, 4 o 5 en periodo de trial hasta el 31/Oct/2026
+          // Sin compra, pero módulo de Grado 1, 2, 3, 4 o 5 en periodo de trial durante los días de prueba
           accessType = 'free_trial';
           canAccessExercises = true;
           canAccessDownloads = false; // Descargas de Excel requieren compra de Plan Anual
@@ -132,8 +131,7 @@ export function ModuleAccessProvider({ children }: { children: ReactNode }) {
 
   const hasExerciseAccess = useCallback((moduleId: string) => {
     const norm = (moduleId || '').toLowerCase().trim();
-    const isTrialActive = new Date() <= FREE_TRIAL_END_DATE;
-    if (isTrialActive && isFreeTrialGrade(norm)) {
+    if (isFreeTrialGrade(norm)) {
       return true;
     }
     const info = moduleAccess[moduleId] || moduleAccess[norm];

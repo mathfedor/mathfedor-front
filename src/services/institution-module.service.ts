@@ -21,7 +21,7 @@ export interface StudentModuleAccess {
     downloadFiles: Array<{ index: number; name: string }>;
   } | null;
   downloadedIndices: number[];
-  source: 'purchase' | 'institution';
+  source: 'purchase' | 'institution' | 'trial';
 }
 
 const getErrorMessage = (error: unknown, fallback: string) => {
