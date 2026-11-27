@@ -1,13 +1,36 @@
 /**
  * Constantes y helpers para el acceso a módulos.
  *
- * - Trial gratuito: módulos de Grado 1, 2, 3, 4 y 5 accesibles (solo ejercicios)
- *   hasta el 31 de octubre de 2026.
+ * - Trial gratuito: módulos de Grado 1, 2, 3, 4 y 5 accesibles (solo ejercicios, sin descargas)
+ *   durante 17 días contados desde el registro de cada usuario.
  * - Compra válida: 1 año desde la fecha de compra.
  */
 
-/** Fecha límite del trial gratuito (31 Oct 2026, 23:59:59 hora Colombia). */
-export const FREE_TRIAL_END_DATE = new Date('2026-10-31T23:59:59.999-05:00');
+/** Duración de la prueba gratuita, contada desde el registro de cada usuario. */
+export const FREE_TRIAL_DAYS = 17;
+
+/**
+ * Fecha en que termina la prueba del usuario con sesión, o null si no hay sesión.
+ * El registro se toma del id de MongoDB: sus primeros 8 caracteres son la fecha de creación en segundos.
+ */
+export function getTrialEndDate(): Date | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const user = JSON.parse(window.localStorage.getItem('user') || 'null');
+    const id = String(user?.id || user?._id || '');
+    if (!/^[0-9a-f]{24}$/i.test(id)) return null;
+    const createdAt = parseInt(id.slice(0, 8), 16) * 1000;
+    return new Date(createdAt + FREE_TRIAL_DAYS * 24 * 60 * 60 * 1000);
+  } catch {
+    return null;
+  }
+}
+
+/** true mientras el usuario con sesión esté dentro de sus días de prueba. */
+export function isTrialActive(): boolean {
+  const end = getTrialEndDate();
+  return end !== null && new Date() <= end;
+}
 
 /** Grupos de módulos que aplican al trial gratuito en todos los idiomas. */
 export const FREE_TRIAL_GRADES: string[] = [
@@ -24,12 +47,11 @@ export const PURCHASE_VALIDITY_MS = 365 * 24 * 60 * 60 * 1000;
 
 /**
  * Verifica si un módulo está dentro del periodo de trial gratuito.
- * Aplica a módulos de Grado 1, 2, 3, 4 y 5, hasta el 31/Oct/2026.
+ * Aplica a módulos de Grado 1, 2, 3, 4 y 5, durante los días de prueba del usuario.
  */
 export function isModuleInFreeTrial(group: string | undefined | null): boolean {
   if (!group) return false;
-  const now = new Date();
-  if (now > FREE_TRIAL_END_DATE) return false;
+  if (!isTrialActive()) return false;
 
   const normalized = group.trim().toLowerCase();
   if (FREE_TRIAL_GRADES.some(g => g.toLowerCase() === normalized)) return true;
@@ -70,14 +92,13 @@ export interface ModuleAccessInfo {
 
 /**
  * Identifica si un módulo o identificador corresponde a 1°, 2°, 3°, 4° o 5° grado
- * dentro del periodo del trial gratuito (hasta el 31/Oct/2026).
+ * dentro de los días de prueba del usuario.
  */
 export function isFreeTrialGrade(
   identifierOrModule: string | { _id?: string; slug?: string; title?: string; group?: string } | undefined | null
 ): boolean {
   if (!identifierOrModule) return false;
-  const now = new Date();
-  if (now > FREE_TRIAL_END_DATE) return false;
+  if (!isTrialActive()) return false;
 
   if (typeof identifierOrModule === 'object') {
     const mod = identifierOrModule;
@@ -180,35 +201,35 @@ export const FREE_TRIAL_MODULE_METADATA = [
     slug: 'libro-1ro',
     title: 'Matemáticas de Fedor 1°',
     group: 'Grado1',
-    description: 'Módulo interactivo digital para grado 1°. Prueba gratuita hasta el 31 de octubre.',
+    description: 'Módulo interactivo digital para grado 1°. Incluido en la prueba gratuita de 17 días.',
   },
   {
     module_id: '6830d619fecd7406dc6f96ad',
     slug: 'matematicas-fedor-2',
     title: 'Matemáticas de Fedor 2°',
     group: 'Grado2',
-    description: 'Módulo interactivo digital para grado 2°. Prueba gratuita hasta el 31 de octubre.',
+    description: 'Módulo interactivo digital para grado 2°. Incluido en la prueba gratuita de 17 días.',
   },
   {
     module_id: '6832543f6fee7c84b2f077c0',
     slug: 'matematicas-fedor-3',
     title: 'Matemáticas de Fedor 3°',
     group: 'Grado3',
-    description: 'Módulo interactivo digital para grado 3°. Prueba gratuita hasta el 31 de octubre.',
+    description: 'Módulo interactivo digital para grado 3°. Incluido en la prueba gratuita de 17 días.',
   },
   {
     module_id: '6832543f6fee7c84b2f077c1',
     slug: 'matematicas-fedor-4',
     title: 'Matemáticas de Fedor 4°',
     group: 'Grado4',
-    description: 'Módulo interactivo digital para grado 4°. Prueba gratuita hasta el 31 de octubre.',
+    description: 'Módulo interactivo digital para grado 4°. Incluido en la prueba gratuita de 17 días.',
   },
   {
     module_id: '6832543f6fee7c84b2f077c2',
     slug: 'matematicas-fedor-5',
     title: 'Matemáticas de Fedor 5°',
     group: 'Grado5',
-    description: 'Módulo interactivo digital para grado 5°. Prueba gratuita hasta el 31 de octubre.',
+    description: 'Módulo interactivo digital para grado 5°. Incluido en la prueba gratuita de 17 días.',
   },
 ];
 

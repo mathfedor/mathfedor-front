@@ -11,8 +11,11 @@ import {
   isModuleInFreeTrial,
   isPurchaseExpired,
   getPurchaseExpirationDate,
-  FREE_TRIAL_END_DATE,
+  getTrialEndDate,
+  isTrialActive,
+  FREE_TRIAL_MODULE_METADATA,
 } from '@/constants/module-access.constants';
+import { moduleService } from '@/services/module.service';
 
 export default function MisModulosPage() {
   const router = useRouter();
@@ -32,7 +35,8 @@ export default function MisModulosPage() {
   const loadModules = async (userId: string) => {
     setIsLoading(true);
     try {
-      const data = await institutionModuleService.getStudentModules(userId);
+      const owned = await institutionModuleService.getStudentModules(userId);
+      const data = [...owned, ...(await trialModules(owned))];
       setModules(data);
       setFiltered(data);
     } finally {
@@ -184,8 +188,30 @@ export default function MisModulosPage() {
   );
 }
 
+/** Libros de 1.° a 5.° que el usuario puede abrir durante su prueba y que todavía no tiene. */
+async function trialModules(owned: StudentModuleAccess[]): Promise<StudentModuleAccess[]> {
+  if (!isTrialActive()) return [];
+  const catalog = await moduleService.getAllModules().catch(() => []);
+  return FREE_TRIAL_MODULE_METADATA.flatMap((meta) => {
+    const found = catalog.find((c) => c._id === meta.module_id || c.slug === meta.slug);
+    const id = found?._id || meta.module_id;
+    if (owned.some((o) => o.module_id === id || o.module_id === meta.module_id)) return [];
+    return [{
+      module_id: id,
+      title: found?.title || meta.title,
+      group: meta.group,
+      image: '',
+      purchaseDate: null,
+      gradeConfig: null,
+      downloadedIndices: [],
+      source: 'trial' as const,
+    }];
+  });
+}
+
 function ModuleCard({ module, t }: { module: StudentModuleAccess; t: ReturnType<typeof useTranslations> }) {
-  const isFreeTrialModule =
+  // La lista de libros solo cuenta mientras la prueba del usuario siga vigente
+  const isFreeTrialModule = isTrialActive() && (
     isModuleInFreeTrial(module.group) ||
     [
       'libro-1ro', 'matematicas-fedor-1',
@@ -199,7 +225,7 @@ function ModuleCard({ module, t }: { module: StudentModuleAccess; t: ReturnType<
       '6832543f6fee7c84b2f077c0', '6832543f6fee7c84b2f077c1',
       '694c7c4322a78467aa1783b6', '6832543f6fee7c84b2f077c2',
       '694c7c4322a78467aa1783b7'
-    ].includes(module.module_id);
+    ].includes(module.module_id));
   const isInstitution = module.source === 'institution';
   const expired = module.purchaseDate ? isPurchaseExpired(module.purchaseDate) : false;
   const expirationDate = module.purchaseDate
@@ -208,7 +234,7 @@ function ModuleCard({ module, t }: { module: StudentModuleAccess; t: ReturnType<
 
   // Un módulo es accesible si:
   // - Tiene compra activa (no expirada)
-  // - Es de trial gratuito (Grado1/Grado2 antes del 17/Sep/2026)
+  // - Es de 1.° a 5.° y el usuario está en sus días de prueba
   // - Es institucional
   const canAccessExercises = (module.source === 'purchase' && !expired)
     || isFreeTrialModule
@@ -221,7 +247,7 @@ function ModuleCard({ module, t }: { module: StudentModuleAccess; t: ReturnType<
         {isFreeTrialModule && module.source !== 'purchase' && (
           <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/20 text-amber-300 border border-amber-500/30">
             <FiClock className="w-3 h-3" />
-            {t('badge_free_trial')} {FREE_TRIAL_END_DATE.toLocaleDateString()}
+            {t('badge_free_trial')} {getTrialEndDate()?.toLocaleDateString()}
           </span>
         )}
         {expired && !isFreeTrialModule && (

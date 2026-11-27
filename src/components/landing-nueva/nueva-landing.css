@@ -184,7 +184,7 @@
 .nueva-landing-root .escenario {
   position: relative;
   z-index: 1;
-  height: calc(var(--carta-w) * var(--act) + 52px);
+  height: calc(var(--carta-w) * var(--act) + 132px);
   perspective: 1400px;
   overflow: hidden;
   margin-top: 14px;
@@ -245,6 +245,81 @@
   user-select: none;
   border-radius: 14px;
   transition: border-radius 0.3s ease;
+}
+
+/* la pista es un plano delante de los libros laterales: no debe capturar sus clics */
+.nueva-landing-root .escenario:not(.riel):not(.mosaico) .pista {
+  pointer-events: none;
+}
+
+.nueva-landing-root .escenario:not(.riel):not(.mosaico) .grado {
+  pointer-events: auto;
+}
+
+/* botón encima de cada libro */
+.nueva-landing-root .grado-cta {
+  display: block;
+  margin: 0 auto 10px;
+  width: fit-content;
+  max-width: 100%;
+  background: var(--naranja);
+  color: #1a0d00;
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 0.82rem;
+  line-height: 1.2;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.nueva-landing-root .grado-cta .corto,
+.nueva-landing-root .escenario.mosaico .grado-cta .largo {
+  display: none;
+}
+
+.nueva-landing-root .escenario.mosaico .grado-cta .corto {
+  display: inline;
+}
+
+.nueva-landing-root .escenario.mosaico .grado-cta {
+  padding: 6px 10px;
+  font-size: 0.76rem;
+}
+
+/* libros laterales: texto corto, corrido hacia el borde que queda a la vista */
+.nueva-landing-root .escenario:not(.riel):not(.mosaico) .grado:not([data-lado="frente"]) .grado-cta {
+  white-space: nowrap;
+}
+
+.nueva-landing-root .escenario:not(.riel):not(.mosaico) .grado:not([data-lado="frente"]) .grado-cta .largo {
+  display: none;
+}
+
+.nueva-landing-root .escenario:not(.riel):not(.mosaico) .grado:not([data-lado="frente"]) .grado-cta .corto {
+  display: inline;
+}
+
+.nueva-landing-root .escenario:not(.riel):not(.mosaico) .grado[data-lado="izq"] .grado-cta {
+  margin-left: 0;
+}
+
+.nueva-landing-root .escenario:not(.riel):not(.mosaico) .grado[data-lado="der"] .grado-cta {
+  margin-right: 0;
+}
+
+/* oferta destacada del encabezado */
+.nueva-landing-root .bajada .oferta {
+  display: inline-block;
+  background: var(--naranja);
+  color: #1a0d00;
+  border-radius: 12px;
+  padding: 8px 20px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.35em;
 }
 
 /* flechas de navegación rápida en escritorio */
